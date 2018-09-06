@@ -10,11 +10,11 @@ module Lab1 where
 import Data.List
 import Test.QuickCheck
 
-prime :: Integer -> Bool
+prime :: Int -> Bool
 prime n = n > 1 && all (\ x -> rem n x /= 0) xs
   where xs = takeWhile (\ y -> y^2 <= n) primes
 
-primes :: [Integer]
+primes :: [Int]
 primes = 2 : filter prime [3..]
 
 infix 1 -->
@@ -25,7 +25,7 @@ p --> q = (not p) || q
 forall :: [a] -> (a -> Bool) -> Bool
 forall = flip all
 
-reversal :: Integer -> Integer
+reversal :: Int -> Int
 reversal = read . reverse . show
 
 data Boy = Matthew | Peter | Jack | Arnold | Carl
@@ -69,6 +69,32 @@ exFiveTest xs = (length (xs) < 10) --> length (permutations xs) == factorial (le
 -- We are checking the mathematical fact, proven by induction.
 
 --Exercise 4
+-- time: 30 mins
+
+findPrimes :: Int -> [Int]
+findPrimes n = filter prime [0..n]
+
+isReversablePrime :: Int -> Bool
+isReversablePrime n = prime n && prime (reversal n)
+
+reversablePrimes :: [Int]
+reversablePrimes = filter (isReversablePrime) (findPrimes 10000)
+
+-- We could test this function by iterating of all primes and checking if every reversable prime is in the list.
+
+--Exercise 5
+-- Source of slice:
+-- https://www.google.nl/search?q=haskell+slice+list&oq=haskell+slice&aqs=chrome.0.69i59j69i60j0j69i57j0l2.1217j0j7&sourceid=chrome&ie=UTF-8
+
 -- time:
-exFiveTest :: [Int] -> Bool
-exFiveTest xs = (length (xs) < 10) --> length (permutations xs) == factorial (length (xs))
+slice :: Int -> Int -> [Int] -> [Int]
+slice from to xs = take (to - from + 1) (drop from xs)
+
+getSumOfPrimes :: Int -> Int -> Int
+getSumOfPrimes i j
+    | prime(sum (slice i j primes )) = sum (slice i j primes )
+    | otherwise = getSumOfPrimes (i+1) (j+1)
+
+get101Prime = getSumOfPrimes 0 100
+
+-- We can test this by going over all primes starting at 100, and checking whether it is a sum of the 100 primes before it
