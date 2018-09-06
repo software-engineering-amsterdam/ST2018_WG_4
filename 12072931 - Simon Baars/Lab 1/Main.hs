@@ -1,5 +1,6 @@
 import Test.QuickCheck
 import Data.List
+import Data.Maybe
 
 infix 1 -->
 
@@ -85,10 +86,25 @@ reversal :: Integer -> Integer
 reversal = read . reverse . show
 
 findAllReversedPrimesTillTenThousand :: [Integer]
-findAllReversedPrimesTillTenThousand = takeWhile (<10000) (filter (\x -> prime(reversal x)) primes)
+findAllReversedPrimesTillTenThousand = takeWhile (<10000) (filter (prime . reversal) primes)
+
+-- How would you test this function, by the way?
+-- By checking for every prime below 10.000 that if it is inversible that it is in the resulting list, and if it's not inversible that it is not in the resulting list:
 
 reversedPrimesTest :: Bool
 reversedPrimesTest = all (\x -> prime(reversal x) --> x `elem` findAllReversedPrimesTillTenThousand) (takeWhile (<10000) primes)
+
+-- Assignment 5
+
+findFirst101ConsecutivePrimeSum :: Integer
+findFirst101ConsecutivePrimeSum = head (filter prime (map (\x -> sum(take 101 (drop (fromMaybe 0 (elemIndex x primes)) primes))) primes))
+
+-- Do you have to test that your answer is correct? How could this be checked?
+-- Yes, you do have to test the answer. However, writing a test in haskell would result in writing exactly the same code, which doesn't prove much.
+
+-- Assignment 6
+
+
 
 main :: IO ()
 main = do
@@ -101,4 +117,6 @@ main = do
   --quickCheckResult $ forAll genAssignment3 permutationTest
   putStrLn "Running tests for Assignment 4"
   print reversedPrimesTest
+  putStrLn "Running tests for Assignment 5"
+  print findFirst101ConsecutivePrimeSum
   putStrLn "Done!"
