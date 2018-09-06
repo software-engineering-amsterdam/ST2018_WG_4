@@ -104,8 +104,11 @@ findFirst101ConsecutivePrimeSum = head (filter prime (map (\x -> sum(take 101 (d
 
 -- Assignment 6
 
-generateConjunctureCounterexamples :: [Int]
-generateConjunctureCounterexamples = filter (\x -> not(prime(product(take x primes)+1))) [1..]
+generateConjunctureCounterexamples :: [[Integer]]
+generateConjunctureCounterexamples = map (`take` primes) (filter (\x -> not(prime(product(take x primes)+1))) [1..])
+
+--generateConjunctureCounterexamplesTest :: Integer -> Bool
+--generateConjunctureCounterexamplesTest primeIndex = (primeIndex >= 0) --> if prime(product(take primeIndex primes)+1) then (foldl (\acc x -> if x >) 0 generateConjunctureCounterexamples) else (take primeIndex primes) `elem` generateConjunctureCounterexamples
 
 
 main :: IO ()
