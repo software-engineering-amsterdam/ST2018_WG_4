@@ -97,13 +97,15 @@ reversedPrimesTest = all (\x -> prime(reversal x) --> x `elem` findAllReversedPr
 -- Assignment 5
 
 findFirst101ConsecutivePrimeSum :: Integer
-findFirst101ConsecutivePrimeSum = head (filter prime (map (\x -> sum(take 101 (drop (fromMaybe 0 (elemIndex x primes)) primes))) primes))
+findFirst101ConsecutivePrimeSum = head (filter prime (map (\x -> sum(take 101 (drop x primes))) [0..]))
 
 -- Do you have to test that your answer is correct? How could this be checked?
 -- Yes, you do have to test the answer. However, writing a test in haskell would result in writing exactly the same code, which doesn't prove much.
 
 -- Assignment 6
 
+generateConjunctureCounterexamples :: [Int]
+generateConjunctureCounterexamples = filter (\x -> not(prime(product(take x primes)+1))) [1..]
 
 
 main :: IO ()
@@ -119,4 +121,6 @@ main = do
   print reversedPrimesTest
   putStrLn "Running tests for Assignment 5"
   print findFirst101ConsecutivePrimeSum
+  putStrLn "The smallest counter example for Assignment 6 is "
+  print $ head generateConjunctureCounterexamples
   putStrLn "Done!"
