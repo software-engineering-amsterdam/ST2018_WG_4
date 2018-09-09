@@ -1,6 +1,7 @@
 import Test.QuickCheck
 import Data.List
 import Data.Maybe
+import Data.Char
 
 infix 1 -->
 
@@ -107,8 +108,14 @@ findFirst101ConsecutivePrimeSum = head (filter prime (map (\x -> sum(take 101 (d
 generateConjunctureCounterexamples :: [[Integer]]
 generateConjunctureCounterexamples = map (`take` primes) (filter (\x -> not(prime(product(take x primes)+1))) [1..])
 
---generateConjunctureCounterexamplesTest :: Integer -> Bool
---generateConjunctureCounterexamplesTest primeIndex = (primeIndex >= 0) --> if prime(product(take primeIndex primes)+1) then (foldl (\acc x -> if x >) 0 generateConjunctureCounterexamples) else (take primeIndex primes) `elem` generateConjunctureCounterexamples
+-- Assignment 7
+
+luhn :: Int -> Bool
+luhn x = (tail $ show (foldl (\acc x -> acc + (digitToInt x)) 0 (foldr doEncrypt [] $ zip [0..] (show x)))) == "0"
+    where
+        doEncrypt (i,y) acc = if not(even i)
+            then (head $ show(((uncurry (+) . (`divMod` 10) . (*2)) (digitToInt y)))) : acc
+            else y : acc
 
 
 main :: IO ()
