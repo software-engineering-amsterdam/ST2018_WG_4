@@ -140,7 +140,6 @@ isVisa n = take 1 (show n) == "4" && (let numberLength = length (show n)
 
 -- 9
 
-
 sumPythagorean :: Int -> Int -> Int
 sumPythagorean a b = sum [a, b, (floor (sqrt(fromIntegral(a^2) + fromIntegral(b^2))))]
 
@@ -156,5 +155,24 @@ pythagoreanTriplets a b | a >= b = pythagoreanTriplets a (a+1)
 
 specialPythagoreanTriplet :: [Int]
 specialPythagoreanTriplet = pythagoreanTriplets 1 2
+-- [200, 375, 425]
 
 -- 10
+
+sumPrimesBelowTwoMillion :: Integer
+sumPrimesBelowTwoMillion = sum (takeWhile (< 2000000) primes)
+-- 142913828922
+
+
+
+-- 49
+
+isPermutation :: Integer -> Integer -> Bool
+isPermutation a b = elem (show a) (permutations (show b))
+
+sequencePrime :: Integer -> String
+sequencePrime x = (show x) ++ (show (x+3330)) ++ (show (x+6660))
+
+primePermutations :: [String]
+primePermutations = map (sequencePrime) (filter (\ x -> prime (x+3330) && prime (x+6660) && isPermutation x (x+3330) && isPermutation x (x+6660)) (takeWhile (\ y -> y <= 9999) primes))
+-- ["148748178147","296962999629"]
