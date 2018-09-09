@@ -2,6 +2,7 @@ module Excercises where
 
 import Lab1
 
+import Data.Char
 import Data.List
 import Test.QuickCheck
 
@@ -91,23 +92,39 @@ productPlusOneIsNotPrime :: [Integer] -> Bool
 productPlusOneIsNotPrime n = not (prime ((product n) + 1))
 
 refuteConsecutivePrimes :: [[Integer]]
-refuteConsecutivePrimes = filter (productPlusOneIsNotPrime) (map (primeList) [1..])
+refuteConsecutivePrimes = filter productPlusOneIsNotPrime (map (primeList) [1..])
 -- 'take 1 refuteConsecutivePrimes' yields '[[2,3,5,7,11,13]]'
 
 
 
 -- Excercise 7
 
-numDigits :: Int -> Int
-numDigits x = length (show x)
+isEven :: Int -> Bool
+isEven n = mod n 2 == 0
 
-parity :: Integer -> Integer
-parity x = rem (x - 1) 2
+isOdd :: Int -> Bool
+isOdd n = not (isEven n)
 
-luhn :: [Integer] -> Integer -> Bool
-luhn [] sum = rem sum 10 == 0
--- luhn (d:ds) sum = luhn ds
+processDigit :: Int -> Int
+processDigit d | d <= 9     = d
+               | otherwise  = d - 9
 
--- isAmericanExpress, isMaster, isVisa :: Integer -> Bool
+checkLuhn :: [Int] -> Bool
+checkLuhn ds = rem (sum (filter (isEven) ds) + sum (map (processDigit) (filter (isOdd) (map (*2) ds)))) 10 == 0
+
+luhn :: Integer -> Bool
+luhn ds = checkLuhn (map (digitToInt) (reverse (show ds)))
+
+isAmericanExpress, isMaster, isVisa :: Integer -> Bool
+isAmericanExpress n = length (show n) == 15 && ( ("34" `isPrefixOf` (show n) || "37" `isPrefixOf` (show n)))
+
+isMaster n = length (show n) == 16 && (
+                                (let first2 = take 2 (show n)
+                                  in (first2 >= "50" && first2 <= "55") ) ||
+                                (let first6 = take 6 (show n)
+                                  in (first6 >= "222100" && first6 <= "272099") ) )
+
+isVisa n = take 1 (show n) == "4" && (let numberLength = length (show n)
+                                    in (numberLength == 13 || numberLength == 16 || numberLength == 19) )
 
 -- Excercise 8
