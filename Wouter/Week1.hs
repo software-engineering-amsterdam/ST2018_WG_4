@@ -128,3 +128,33 @@ isVisa n = take 1 (show n) == "4" && (let numberLength = length (show n)
                                     in (numberLength == 13 || numberLength == 16 || numberLength == 19) )
 
 -- Excercise 8
+
+-- accuses :: Boy -> Boy -> Bool
+--
+-- accusers :: Boy -> [Boy]
+--
+-- guilty, honest :: [Boy]
+
+
+-- BONUS
+
+-- 9
+
+
+sumPythagorean :: Int -> Int -> Int
+sumPythagorean a b = sum [a, b, (floor (sqrt(fromIntegral(a^2) + fromIntegral(b^2))))]
+
+isSpecial :: Int -> Int -> Bool
+isSpecial a b = ((a^2) + (b^2)) == floor ((sqrt(fromIntegral(a)^2 + fromIntegral(b)^2)))^2
+
+pythagoreanTriplets :: Int -> Int -> [Int]
+pythagoreanTriplets a b | a >= b = pythagoreanTriplets a (a+1)
+                        | sumPythagorean a b < 1000 = pythagoreanTriplets a (b+1)
+                        | sumPythagorean a b == 1000 && isSpecial a b = [a, b, floor (sqrt(fromIntegral(a^2) + fromIntegral(b^2)))]
+                        | sumPythagorean a b > 1000 && (a == (b-1)) = []
+                        | otherwise = pythagoreanTriplets (a+1) (a+2)
+
+specialPythagoreanTriplet :: [Int]
+specialPythagoreanTriplet = pythagoreanTriplets 1 2
+
+-- 10
