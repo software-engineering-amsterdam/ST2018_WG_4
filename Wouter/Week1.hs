@@ -77,17 +77,24 @@ takePrimes x y = drop x (take (y+1) primes)
 consecutive :: Int -> Int -> Integer
 consecutive x y     | prime (sum (takePrimes x y)) = sum (takePrimes x y)
                     | otherwise = consecutive (x+1) (y+1)
+
 consecutive101 :: Integer
 consecutive101 = consecutive 0 100
 
 
 -- Excercise 6
 
-productPlusOneIsPrime :: Int -> Bool
-productPlusOneIsPrime n = prime ((product (take n primes)) + 1)
+primeList :: Int -> [Integer]
+primeList x = take x primes
 
-refuteConsecutivePrimes :: [Int]
-refuteConsecutivePrimes = filter (productPlusOneIsPrime (primes)) primes
+productPlusOneIsNotPrime :: [Integer] -> Bool
+productPlusOneIsNotPrime n = not (prime ((product n) + 1))
+
+refuteConsecutivePrimes :: [[Integer]]
+refuteConsecutivePrimes = filter (productPlusOneIsNotPrime) (map (primeList) [1..])
+-- 'take 1 refuteConsecutivePrimes' yields '[[2,3,5,7,11,13]]'
+
+
 
 -- Excercise 7
 
