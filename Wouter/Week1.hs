@@ -21,6 +21,10 @@ listProduct :: [Integer] -> Integer
 listProduct [] = 1
 listProduct (x:xs) = x * listProduct xs
 
+digs :: Integral x => x -> [x]
+digs 0 = []
+digs x = digs (x `div` 10) ++ [x `mod` 10]
+
 -- Excercise 1
 
 formula2 :: Int -> Int
@@ -40,7 +44,7 @@ test3 = quickCheckResult (\n -> n >= 0 --> tripleFaculty n == formula3 n)
 formula4 :: Int -> Int
 formula4 n = length (subsequences [1..n])
 
-test4 = quickCheckResult (\n -> squareFaculty n == formula3 n) 
+test4 = quickCheckResult (\n -> squareFaculty n == formula3 n)
 
 
 -- Exercise 3
@@ -48,7 +52,7 @@ test4 = quickCheckResult (\n -> squareFaculty n == formula3 n)
 permLength :: Int -> Int
 permLength n = length (permutations [1..n])
 
-test5 = quickCheckResult (\n -> n >= 0 --> faculty n == permLength n) 
+test5 = quickCheckResult (\n -> n >= 0 --> faculty n == permLength n)
 
 
 -- Excercise 4
@@ -73,22 +77,30 @@ takePrimes x y = drop x (take (y+1) primes)
 consecutive :: Int -> Int -> Integer
 consecutive x y     | prime (sum (takePrimes x y)) = sum (takePrimes x y)
                     | otherwise = consecutive (x+1) (y+1)
+consecutive101 :: Integer
+consecutive101 = consecutive 0 100
 
 
 -- Excercise 6
 
-test7 = quickCheckResult (\n -> n >= 2 --> prime ((product [2..n]) + 1))
--- First fail is 4, because (2 * 3 * 4) + 1 = 25. 25 can be devided by 5 and thus is not a prime
+productPlusOneIsPrime :: Int -> Bool
+productPlusOneIsPrime n = prime ((product (take n primes)) + 1)
 
+refuteConsecutivePrimes :: [Int]
+refuteConsecutivePrimes = filter (productPlusOneIsPrime (primes)) primes
 
 -- Excercise 7
 
--- numDigits :: Integer -> Integer
--- numDigits x = length show x
+numDigits :: Int -> Int
+numDigits x = length (show x)
 
--- parity :: Integer -> Integer
--- parity x = x - 1 % 2
+parity :: Integer -> Integer
+parity x = rem (x - 1) 2
 
+luhn :: [Integer] -> Integer -> Bool
+luhn [] sum = rem sum 10 == 0
+-- luhn (d:ds) sum = luhn ds
+
+-- isAmericanExpress, isMaster, isVisa :: Integer -> Bool
 
 -- Excercise 8
-
