@@ -185,27 +185,27 @@ checkVisas = map isVisa visaCards
 
 -- Exercise 8
 --  time
+-- Three boys speak the truth, therefore is someone has three accusers someone is guilty?
 
 accuses :: Boy -> Boy -> Bool
 accuses b1 b2
-    | b1 == Peter && (b2 == Matthew || b2 == Jack) = True
-    | b1 == Jack && (b2 == Matthew || b2 == Peter) = True
-    | b1 == Carl && b2 == Arnold = True
-    -- | b1 == Arnold && (b2 == Matthew || b2 == Peter) = True
+    | b1 == Matthew = (b1 /= b2 && b2 /= Carl)
+    | b1 == Peter = (b2 == Matthew || b2 == Jack)
+    | b1 == Jack = not (accuses Matthew b2 || accuses Peter b2)
+    | b1 == Arnold = (/=) (accuses Matthew b2) (accuses Peter b2)
+    | b1 == Carl = not (accuses Arnold b2)
     | otherwise = False
 
 accusers :: Boy -> [Boy]
-accusers b
-    | b == Matthew = [Peter, Jack]
-    | b == Peter = [Jack]
-    | b == Jack = [Peter]
-    | b == Arnold = [Carl]
-    | b == Carl = []
-    | otherwise = []
+accusers b1 = [b2 | b2 <- boys, accuses b2 b1 == True]
 
+honest :: [Boy]
+honest = filter (\x -> accuses x Jack) boys
 
--- guilty :: [Boy]
--- honest :: [Boy]
+guilty :: [Boy]
+guilty = filter (\x -> length (accusers x) == 3) boys
+
+-- Guilty: [Jack], Honest: [Matthew,Peter,Carl]
 
 
 -- Euler problem 9
