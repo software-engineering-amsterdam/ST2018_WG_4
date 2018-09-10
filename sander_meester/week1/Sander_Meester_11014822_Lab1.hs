@@ -225,9 +225,35 @@ getRightPtriple xs
 --  time
 
 -- Finds the sum of the first 2 million primes
-sumManyPrimes :: [Int]
-sumManyPrimes = sum (slice 0 2000000 eprimes)
+-- Answer: 142913828922
+sumManyPrimes :: Int
+sumManyPrimes = sum (takeWhile (< 2000000) primes)
 -- To Slow right now
+
+-- The arithmetic sequence, 1487, 4817, 8147, in which each of the terms increases by 3330, is unusual in two ways: (i) each of the three terms are prime, and, (ii) each of the 4-digit numbers are permutations of one another.
+--
+-- There are no arithmetic sequences made up of three 1-, 2-, or 3-digit primes, exhibiting this property, but there is one other 4-digit increasing sequence.
+--
+-- What 12-digit number do you form by concatenating the three terms in this sequence?
 
 -- Euler problem 49
 --  time
+fourDigPrimes :: [Int]
+fourDigPrimes = filter (> 999) primes
+
+getPrimePermutations :: Int -> [Integer]
+getPrimePermutations n = sort (map listToDigit (nub (filter (\x -> x !! 0 /= 0) (permutations (map digitToInt (show(n)))))))
+
+getPossiblePrimes :: [[Integer]]
+getPossiblePrimes = map getPrimePermutations fourDigPrimes
+
+checkPrimes :: [Integer] -> [Bool]
+checkPrimes ps = map prime (map fromIntegral ps)
+
+findSeqPrimes :: [[Integer]] -> [Integer]
+findSeqPrimes (p:ps)
+       | length (filter (==True) (checkPrimes(p))) > 2 = p
+       | otherwise = findSeqPrimes ps
+
+-- euler49 :: [[Integer]]
+-- euler49 =
