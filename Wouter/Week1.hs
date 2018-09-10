@@ -67,8 +67,10 @@ isPrimeReversal x = prime x && prime (reversal x)
 primeReversalRange:: Integer -> [Integer]
 primeReversalRange x = filter (isPrimeReversal) (primeRange x)
 
+primeReversalRange10000:: [Integer]
+primeReversalRange10000 = primeReversalRange 10000
+
 test6 = quickCheckResult (\n -> n >= 0 --> (isPrimeReversal n) == (elem n (primeReversalRange n)))
--- HORRIBLE IMPLEMENTATION !!!! PLEASE DO NOT USE THIS
 
 -- Excercise 5
 
@@ -99,40 +101,41 @@ refuteConsecutivePrimes = filter productPlusOneIsNotPrime (map (primeList) [1..]
 
 -- Excercise 7
 
-isEven :: Int -> Bool
-isEven n = mod n 2 == 0
-
-isOdd :: Int -> Bool
-isOdd n = not (isEven n)
-
 processDigit :: Int -> Int
 processDigit d | d <= 9     = d
                | otherwise  = d - 9
 
-checkLuhn :: [Int] -> Bool
-checkLuhn ds = rem (sum (filter (isEven) ds) + sum (map (processDigit) (filter (isOdd) (map (*2) ds)))) 10 == 0
+sumLuhn :: Int -> Int -> [Int] -> Int
+sumLuhn n total [] = total
+sumLuhn n total (d:ds)  | mod n 2 == 0 = sumLuhn (n+1) (total + (processDigit d)) ds
+                        | otherwise = sumLuhn (n+1) (total + d) ds
 
 luhn :: Integer -> Bool
-luhn ds = checkLuhn (map (digitToInt) (reverse (show ds)))
+luhn ds = rem (sumLuhn 1 0 (map (digitToInt) (reverse (show ds)))) 10 == 0
 
 isAmericanExpress, isMaster, isVisa :: Integer -> Bool
-isAmericanExpress n = length (show n) == 15 && ( ("34" `isPrefixOf` (show n) || "37" `isPrefixOf` (show n)))
 
-isMaster n = length (show n) == 16 && (
+isAmericanExpress n = luhn n && length (show n) == 15 && ( ("34" `isPrefixOf` (show n) || "37" `isPrefixOf` (show n)))
+
+isMaster n = luhn n && length (show n) == 16 && (
                                 (let first2 = take 2 (show n)
                                   in (first2 >= "50" && first2 <= "55") ) ||
                                 (let first6 = take 6 (show n)
                                   in (first6 >= "222100" && first6 <= "272099") ) )
 
-isVisa n = take 1 (show n) == "4" && (let numberLength = length (show n)
+isVisa n = luhn n && take 1 (show n) == "4" && (let numberLength = length (show n)
                                     in (numberLength == 13 || numberLength == 16 || numberLength == 19) )
 
 -- Excercise 8
 
 -- accuses :: Boy -> Boy -> Bool
---
--- accusers :: Boy -> [Boy]
---
+-- accuses a b =
+
+accusers :: Boy -> [Boy]
+accusers a  | a == Matthew = [Peter, Jack, Arnold]
+            | a == Jack = [Peter]
+            | otherwise = []
+
 -- guilty, honest :: [Boy]
 
 
