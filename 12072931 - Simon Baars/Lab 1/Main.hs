@@ -126,6 +126,29 @@ isMaster x = ((length creditCardString == 16) && (head creditCardString == '5'))
   where creditCardString = show x
         secondNumber = digitToInt $ head $ tail creditCardString
 
+-- Assignment 8
+
+data Boy = Matthew | Peter | Jack | Arnold | Carl
+           deriving (Eq,Show)
+
+boys = [Matthew, Peter, Jack, Arnold, Carl]
+
+accuses :: Boy -> Boy -> Bool
+accuses Matthew other = (other /= Matthew) && (other /= Carl)
+accuses Peter Matthew = True
+accuses Peter Jack = True
+accuses Jack other = not $ accuses Matthew other || accuses Peter other
+accuses Arnold other =  accuses Matthew other /= accuses Peter other
+accuses Carl other = not $ accuses Arnold other
+accuses x y = False
+
+accusers :: Boy -> [Boy]
+accusers b1 = filter (`accuses` b1) boys
+
+guilty, honest :: [Boy]
+guilty = filter (\x -> length (accusers x) == 3) boys
+honest = filter (\x -> accuses x (head guilty)) boys
+
 main :: IO ()
 main = do
   putStrLn "Running tests for Assignment 1"
@@ -141,5 +164,9 @@ main = do
   print findFirst101ConsecutivePrimeSum
   putStrLn "The smallest counter example for Assignment 6 is "
   print $ head generateConjunctureCounterexamples
-  putStrLn "Running tests for Assignment 6"
+  putStrLn "Running tests for Assignment 7"
+
+  putStrLn "Results of Assignment 8:"
+  print guilty
+  print honest
   putStrLn "Done!"
