@@ -18,6 +18,11 @@ prime n = n > 1 && all (\ x -> rem n x /= 0) xs
 primes :: [Int]
 primes = 2 : filter prime [3..]
 
+sieve :: [Int] -> [Int]
+sieve (n:ns) = n : sieve (filter (\m -> rem m n /= 0) ns)
+
+eprimes = sieve [2..]
+
 infix 1 -->
 
 (-->) :: Bool -> Bool -> Bool
@@ -111,7 +116,7 @@ getCounterExample = getProductOfPrimes 2
 -- The smallest counterexample is [2*3*5*7*11*13]+1 = 30031 (Pn=13)
 
 --Exercise 7
--- time 1 hour (- tests)
+-- time 1.25 hour
 -- https://stackoverflow.com/questions/2838727/how-do-i-get-the-sums-of-the-digits-of-a-large-number-in-haskell
 sumDigit :: Int -> Int
 sumDigit 0 = 0
@@ -121,16 +126,62 @@ doubleSecondDigits :: [Int] -> [Int]
 doubleSecondDigits (n:nt:ns) = n : sumDigit(nt*2) : doubleSecondDigits(ns)
 doubleSecondDigits n = n
 
+digitToList :: Integer -> [Int]
+digitToList n = map digitToInt (show n)
+
+listToDigit :: [Int] -> Integer
+listToDigit ns = read (map intToDigit ns)
+
 luhn :: Integer -> Bool
-luhn n = sum (doubleSecondDigits (map digitToInt (show n))) `mod` 10 == 0
+luhn n = sum (doubleSecondDigits (reverse (digitToList n))) `mod` 10 == 0
 
 isAmericanExpress, isMaster, isVisa :: Integer -> Bool
-isAmericanExpress n = luhn n
-isMaster n = luhn n
-isVisa n = luhn n
+isAmericanExpress n = (luhn n) && (length (show n) == 15) && (listToDigit ( slice 0 2 (digitToList n)) > 33) && (listToDigit ( slice 0 1 (digitToList n)) < 38)
+isMaster n = luhn n && (length (show n) == 16) && (
+              ((listToDigit ( slice 0 1 (digitToList n)) > 50) &&
+               (listToDigit ( slice 0 1 (digitToList n)) < 56)) ||
+              ((listToDigit ( slice 0 3 (digitToList n)) > 2221) &&
+               (listToDigit ( slice 0 3 (digitToList n)) < 2720))
+             )
+isVisa n = luhn n && (length (show n) == 16) && (slice 0 0 (digitToList n) !! 0 == 4)
 
--- Test functions:
--- TODO: these
+-- Tests:
+visaCards = [4916036260934004,
+             4539301335926626,
+             4916848251695919,
+             4539738376397136,
+             4485933520215466,
+             6277500350364257,
+             550612643282991,
+             4323950234189624,
+             375543148983147,
+             53252569781795000]
+
+masterCards = [5277500350364257,
+               5506126432829910,
+               5323950234189624,
+               5407673640547685,
+               5325256978179500,
+               6277500350364257,
+               550612643282991,
+               4323950234189624,
+               375543148983147,
+               53252569781795000]
+
+americanExpressCards = [375543148983147,
+                        379773178506528,
+                        372003346961034,
+                        340656764193148,
+                        344174328134547,
+                        6277500350364257,
+                        550612643282991,
+                        4323950234189624,
+                        075543148983147,
+                        53252569781795000]
+
+checkAmericanExpress= map isAmericanExpress americanExpressCards
+checkMasterCards = map isMaster masterCards
+checkVisas = map isVisa visaCards
 
 -- Exercise 8
 --  time
@@ -155,3 +206,28 @@ accusers b
 
 -- guilty :: [Boy]
 -- honest :: [Boy]
+
+
+-- Euler problem 9
+--  time 30 mins
+pythTriples :: [(Integer,Integer,Integer)]
+pythTriples = filter (\ (x,y,z) -> x^2 + y^2 == z^2)
+   [ (x,y,z) | z <- [1..], x <- [1..z], y <- [1..z], x < y  ]
+
+getRightPtriple :: [(Integer,Integer,Integer)] -> (Integer, Integer, Integer)
+getRightPtriple xs
+       | map (\(x,y,z) -> x+y+z ) ([head xs]) !! 0 == 1000 = head xs
+       | otherwise = getRightPtriple (tail xs)
+
+-- Product of abc: (200,375,425) = 1000
+
+-- Euler problem 10
+--  time
+
+-- Finds the sum of the first 2 million primes
+sumManyPrimes :: [Int]
+sumManyPrimes = sum (slice 0 2000000 eprimes)
+-- To Slow right now
+
+-- Euler problem 49
+--  time
