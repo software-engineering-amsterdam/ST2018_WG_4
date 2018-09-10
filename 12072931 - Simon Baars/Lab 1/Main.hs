@@ -111,12 +111,20 @@ generateConjunctureCounterexamples = map (`take` primes) (filter (\x -> not(prim
 -- Assignment 7
 
 luhn :: Int -> Bool
-luhn x = (tail $ show (foldl (\acc x -> acc + (digitToInt x)) 0 (foldr doEncrypt [] $ zip [0..] (show x)))) == "0"
+luhn x = tail (show (foldl (\acc x -> acc + digitToInt x) 0 (foldr doEncrypt [] $ zip [0..] (show x)))) == "0"
     where
-        doEncrypt (i,y) acc = if not(even i)
-            then (head $ show(((uncurry (+) . (`divMod` 10) . (*2)) (digitToInt y)))) : acc
+        doEncrypt (i,y) acc = if odd i
+            then head (show((uncurry (+) . (`divMod` 10) . (*2)) (digitToInt y))) : acc
             else y : acc
 
+isAmericanExpress, isMaster, isVisa :: Integer -> Bool
+isAmericanExpress x = ((length creditCardString == 15) && (head creditCardString == '3')) && ((secondCharacter == '4') || (secondCharacter == '7'))
+    where creditCardString = show x
+          secondCharacter = head $ tail creditCardString
+isVisa x = (length creditCardString == 16) && (head creditCardString == '4') where creditCardString = show x
+isMaster x = ((length creditCardString == 16) && (head creditCardString == '5')) && ((secondNumber >= 1) || (secondNumber <= 5))
+  where creditCardString = show x
+        secondNumber = digitToInt $ head $ tail creditCardString
 
 main :: IO ()
 main = do
@@ -133,4 +141,5 @@ main = do
   print findFirst101ConsecutivePrimeSum
   putStrLn "The smallest counter example for Assignment 6 is "
   print $ head generateConjunctureCounterexamples
+  putStrLn "Running tests for Assignment 6"
   putStrLn "Done!"
