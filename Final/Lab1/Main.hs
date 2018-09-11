@@ -227,6 +227,9 @@ checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
 checkTestResult False = "Test failed!"
 
+sumTriple :: Num a => (a, a, a) -> a
+sumTriple (x,y,z) = x+y+z
+
 main :: IO ()
 main = do
   putStrLn "== Assignment 1 =="
@@ -258,7 +261,8 @@ main = do
   putStrLn $ "Honest persons: " ++ show honest
 
   putStrLn "\n== BONUS 1: Euler Problem 9 =="
-  putStrLn $ "Right P triple: " ++ show(getRightPtriple [(200,375,425)])
+  let pTriple = getRightPtriple pythTriples
+  putStrLn $ "Right P triple: " ++ show pTriple ++ " and the sum is " ++ show(sumTriple pTriple)
 
   putStrLn "\n== BONUS 2: Euler Problem 10 =="
   putStrLn $ "Sum of first 2 million primes: " ++ show sumManyPrimes
