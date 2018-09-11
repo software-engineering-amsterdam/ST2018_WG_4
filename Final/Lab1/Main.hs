@@ -185,6 +185,48 @@ guilty, honest :: [Boy]
 guilty = filter (\x -> length (accusers x) == 3) boys
 honest = filter (\x -> accuses x (head guilty)) boys
 
+-- Euler problem 9
+--  Time: 30 minutes
+pythTriples :: [(Integer,Integer,Integer)]
+pythTriples = filter (\ (x,y,z) -> x^2 + y^2 == z^2)
+   [ (x,y,z) | z <- [1..], x <- [1..z], y <- [1..z], x < y  ]
+
+getRightPtriple :: [(Integer,Integer,Integer)] -> (Integer, Integer, Integer)
+getRightPtriple xs
+       | map (\(x,y,z) -> x+y+z ) ([head xs]) !! 0 == 1000 = head xs
+       | otherwise = getRightPtriple (tail xs)
+
+-- Product of abc: (200,375,425) = 1000
+
+-- Euler problem 10
+--  Time: 10 minutes
+
+-- Finds the sum of the first 2 million primes
+-- Answer: 142913828922
+sumManyPrimes :: Integer
+sumManyPrimes = sum (takeWhile (< 2000000) primes)
+-- Too Slow right now
+
+-- The arithmetic sequence, 1487, 4817, 8147, in which each of the terms increases by 3330, is unusual in two ways: (i) each of the three terms are prime, and, (ii) each of the 4-digit numbers are permutations of one another.
+--
+-- There are no arithmetic sequences made up of three 1-, 2-, or 3-digit primes, exhibiting this property, but there is one other 4-digit increasing sequence.
+--
+-- What 12-digit number do you form by concatenating the three terms in this sequence?
+
+-- Euler problem 49
+--  Time: 40 minutes
+isPermutation :: Integer -> Integer -> Bool
+isPermutation a b = elem (show a) (permutations (show b))
+
+sequencePrime :: Integer -> String
+sequencePrime x = (show x) ++ (show (x+3330)) ++ (show (x+6660))
+
+primePermutations :: [String]
+primePermutations = map (sequencePrime) (filter (\ x -> prime (x+3330) && prime (x+6660) && isPermutation x (x+3330) && isPermutation x (x+6660)) (takeWhile (\ y -> y <= 9999) primes))
+
+
+-- ============================================================================
+
 checkTestResult :: Bool -> String
 checkTestResult True = "Test succeeded!"
 checkTestResult False = "Test failed!"
@@ -196,7 +238,7 @@ main = do
   quickCheckResult assignmentThreeTest
 
   putStrLn "\n== Assignment 2 =="
-  --quickCheckResult $ forAll genAssignment2 powerListInductionTest
+  quickCheckResult $ forAll genAssignment2 powerListInductionTest
 
   putStrLn "\n== Assignment 3 =="
   quickCheckResult $ forAll genAssignment3 permutationTest
@@ -218,3 +260,12 @@ main = do
   putStrLn "\n== Assignment 8 =="
   putStrLn $ "Guilty person: " ++ show guilty
   putStrLn $ "Honest persons: " ++ show honest
+
+  putStrLn "\n== BONUS 1: Euler Problem 9 =="
+  putStrLn $ "Right P triple: " ++ show(getRightPtriple [(200,375,425)])
+
+  putStrLn "\n== BONUS 2: Euler Problem 10 =="
+  putStrLn $ "Sum of first 2 million primes: " ++ show sumManyPrimes
+
+  putStrLn "\n== BONUS 3: Euler Problem 49 =="
+  putStrLn $ "Prime permutations: " ++ show primePermutations
