@@ -1,46 +1,43 @@
-import           Lab1
 import           Data.Char
 import           Data.List
+import           Lab1
 import           Test.QuickCheck
 
 -- Lab Assignment 1:
 -- Time: 30 minutes
 
-assignmentTwoLeftSide :: Integer -> Integer
-assignmentTwoLeftSide n = sum(map (^2) [1..n])
+leftSide :: Integer -> Integer -> Integer
+leftSide x n = sum(map (^x) [1..n])
 
 assignmentTwoRightSide :: Integer -> Integer
 assignmentTwoRightSide n = (n*(n+1)*(2*n+1)) `div` 6
 
 assignmentTwoTest :: Integer -> Bool
-assignmentTwoTest n = (n > 0) --> assignmentTwoLeftSide n == assignmentTwoRightSide n
-
-assignmentThreeLeftSide :: Integer -> Integer
-assignmentThreeLeftSide n = sum(map (^3) [1..n])
+assignmentTwoTest n = (n > 0) --> leftSide 2 n == assignmentTwoRightSide n
 
 assignmentThreeRightSide :: Integer -> Integer
 assignmentThreeRightSide n = ((n*(n+1)) `div` 2)^2
 
 assignmentThreeTest :: Integer -> Bool
-assignmentThreeTest n = (n > 0) --> assignmentThreeLeftSide n == assignmentThreeRightSide n
+assignmentThreeTest n = (n > 0) --> leftSide 3 n == assignmentThreeRightSide n
 
 -- Lab Assignment 2:
 -- Time: 20 minutes
 
 getListOfSizeN :: Integer -> [Integer]
 getListOfSizeN n
- | n <= 0 = [] -- Base case
+ | n <= 0 = []
  | otherwise = [0..n]
 
 getPowerListOfSizeN :: Integer -> [[Integer]]
 getPowerListOfSizeN  n
- | n <= 0 = [[]] -- Base case
+ | n <= 0 = [[]]
  | otherwise = subsequences [0..n]
 
 powerListInductionTest :: Integer -> Bool
 powerListInductionTest n = (n >= 0) --> length(getPowerListOfSizeN n) == 2 ^ length(getListOfSizeN n)
 
-genAssignment2 :: Gen Integer
+genAssignment2 :: Gen Integer -- Generator for QuickCheck because it would otherwise pick such big numbers that the program would hang for a long time.
 genAssignment2 = abs `fmap` (arbitrary :: Gen Integer) `suchThat` (< 25)
 
 -- Question: Is the property hard to test? If you find that it is, can you given a reason why?
@@ -57,13 +54,13 @@ factorial n = product [1..n]
 
 permutationsList :: Integer -> [[Integer]]
 permutationsList n
- | n <= 0 = [[]] -- Base case
+ | n <= 0 = [[]]
  | otherwise = permutations [1..n]
 
 permutationTest :: Integer -> Bool
 permutationTest n = (n >= 0) --> length(permutationsList n) == fromIntegral(factorial n)
 
-genAssignment3 :: Gen Integer
+genAssignment3 :: Gen Integer -- Generator for QuickCheck because it would otherwise pick such big numbers that the program would hang for a long time.
 genAssignment3 = abs `fmap` (arbitrary :: Gen Integer) `suchThat` (< 10)
 
 -- Question: Is the property hard to test? If you find that it is, can you given a reason why?
@@ -97,18 +94,18 @@ findFirst101ConsecutivePrimeSum = head (filter prime (map (\x -> sum(take 101 (d
 -- Time: 20 minutes
 
 generateConjunctureCounterexamples :: [[Integer]]
-generateConjunctureCounterexamples = map (`take` primes) (filter (\x -> not(prime(product(take x primes)+1))) [1..])
+generateConjunctureCounterexamples = map (`take` primes) (filter (\x -> not $ prime $ product(take x primes)+1) [1..])
 
 -- Assignment 7
 -- Time: 155 minutes
 
-doEncrypt :: String -> String -> String
-doEncrypt acc (evenEl:oddEl:restOfList) = doEncrypt (evenEl : head (show((uncurry (+) . (`divMod` 10) . (*2)) (digitToInt oddEl))) : acc) restOfList
-doEncrypt acc (lastEl:emptyList) = lastEl : acc
-doEncrypt acc [] = acc
+doubleOrAppend :: String -> String -> String
+doubleOrAppend acc (evenEl:oddEl:restOfList) = doubleOrAppend (evenEl : head (show((uncurry (+) . (`divMod` 10) . (*2)) (digitToInt oddEl))) : acc) restOfList
+doubleOrAppend acc (lastEl:emptyList) = lastEl : acc
+doubleOrAppend acc [] = acc
 
 luhn :: Integer -> Bool
-luhn x = tail (show (foldl (\acc x -> acc + digitToInt x) 0 (doEncrypt [] $ reverse $ show x))) == "0"
+luhn x = tail(show (foldl (\acc x -> acc + digitToInt x) 0 (doubleOrAppend [] $ reverse $ show x))) == "0"
 
 inRanges :: Integer -> [(Integer, Integer)] -> Bool
 inRanges checking [] = False
@@ -174,7 +171,7 @@ accuses Matthew other = (other /= Matthew) && (other /= Carl)
 accuses Peter Matthew = True
 accuses Peter Jack    = True
 accuses Jack other    = not $ accuses Matthew other || accuses Peter other
-accuses Arnold other  =  accuses Matthew other /= accuses Peter other
+accuses Arnold other  = accuses Matthew other /= accuses Peter other
 accuses Carl other    = not $ accuses Arnold other
 accuses x y           = False
 
@@ -193,7 +190,7 @@ pythTriples = filter (\ (x,y,z) -> x^2 + y^2 == z^2)
 
 getRightPtriple :: [(Integer,Integer,Integer)] -> (Integer, Integer, Integer)
 getRightPtriple xs
-       | map (\(x,y,z) -> x+y+z ) ([head xs]) !! 0 == 1000 = head xs
+       | head(map (\(x,y,z) -> x+y+z ) [head xs]) == 1000 = head xs
        | otherwise = getRightPtriple (tail xs)
 
 -- Product of abc: (200,375,425) = 1000
@@ -202,10 +199,9 @@ getRightPtriple xs
 --  Time: 10 minutes
 
 -- Finds the sum of the first 2 million primes
--- Answer: 142913828922
 sumManyPrimes :: Integer
 sumManyPrimes = sum (takeWhile (< 2000000) primes)
--- Too Slow right now
+
 
 -- The arithmetic sequence, 1487, 4817, 8147, in which each of the terms increases by 3330, is unusual in two ways: (i) each of the three terms are prime, and, (ii) each of the 4-digit numbers are permutations of one another.
 --
@@ -216,19 +212,19 @@ sumManyPrimes = sum (takeWhile (< 2000000) primes)
 -- Euler problem 49
 --  Time: 40 minutes
 isPermutation :: Integer -> Integer -> Bool
-isPermutation a b = elem (show a) (permutations (show b))
+isPermutation a b = show a `elem` permutations (show b)
 
 sequencePrime :: Integer -> String
-sequencePrime x = (show x) ++ (show (x+3330)) ++ (show (x+6660))
+sequencePrime x = show x ++ show (x+3330) ++ show (x+6660)
 
 primePermutations :: [String]
-primePermutations = map (sequencePrime) (filter (\ x -> prime (x+3330) && prime (x+6660) && isPermutation x (x+3330) && isPermutation x (x+6660)) (takeWhile (\ y -> y <= 9999) primes))
+primePermutations = map sequencePrime (filter (\ x -> prime (x+3330) && prime (x+6660) && isPermutation x (x+3330) && isPermutation x (x+6660)) (takeWhile (<= 9999) primes))
 
 
 -- ============================================================================
 
 checkTestResult :: Bool -> String
-checkTestResult True = "Test succeeded!"
+checkTestResult True  = "Test succeeded!"
 checkTestResult False = "Test failed!"
 
 main :: IO ()
