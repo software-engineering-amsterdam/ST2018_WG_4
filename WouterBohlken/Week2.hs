@@ -11,15 +11,16 @@ import Test.QuickCheck
 
 devideQuartiles :: IO ()
 devideQuartiles = do
-                      xs <- probs 10000
-                      let
-                        l1 = filter (\x -> x > 0 && x <= 0.25) xs
-                        l2 = filter (\x -> x > 0.25 && x <= 0.5) xs
-                        l3 = filter (\x -> x > 0.5 && x <= 0.75) xs
-                        l4 = filter (\x -> x > 0.75 && x <= 1) xs
-                        in print [length l1, length l2, length l3, length l4]
+                    xs <- probs 10000
+                    let
+                      l1 = filter (\x -> x >= 0 && x <= 0.25) xs
+                      l2 = filter (\x -> x > 0.25 && x <= 0.5) xs
+                      l3 = filter (\x -> x > 0.5 && x <= 0.75) xs
+                      l4 = filter (\x -> x > 0.75 && x <= 1) xs
+                      in print [length l1, length l2, length l3, length l4]
 
--- devideRandomQuartiles ::
+-- test1 = quickCheck (sum (read $ devideQuartiles) == 10000)
+-- Test that the sum of all lists == 10000
 
 -- Recognizing triangles
 
@@ -88,11 +89,7 @@ rotate :: Int -> [a] -> [a]
 rotate _ [] = []
 rotate n xs = zipWith const (drop n (cycle xs)) xs
 
-iban :: String -> IO ()
--- iban s = concat ( map (\x -> (show (indexInAlphabet x `mod` 26))) s)
-iban s = do
-          let x = read $ (concat (map (\x -> if elem x alphabet then (show ((indexInAlphabet x `mod` 26) + 10)) else [x]) (rotate 4 s))) :: Integer
-          print (x `mod` 97 == 1)
-
+iban :: String -> Bool
+iban s = (read $ (concat (map (\x -> if elem x alphabet then (show ((indexInAlphabet x `mod` 26) + 10)) else [x]) (rotate 4 (filter (/=' ') s)))) :: Integer) `mod` 97 == 1
 
 -- TODO: Generate tests using random integers and a check digit which is random, except the correct one
