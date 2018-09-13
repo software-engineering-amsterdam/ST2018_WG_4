@@ -49,10 +49,21 @@ property4 x = (even x && x > 3) || even x
 
 -- Recognizing Permutations
 
+perms :: [a] ->[[a]]
+perms [] = [[]]
+perms (x:xs) = concat (map (insrt x) (perms xs)) where
+insrt x [] = [[x]]
+insrt x (y:ys) = (x:y:ys) : map (y:) (insrt x ys)
 
--- isPermutation :: Eq a => [a] -> [a] -> Bool
--- isPermutation a b = quicksort a == quicksort b
+removeItem _ []                 = []
+removeItem x (y:ys) | x == y    = removeItem x ys
+                    | otherwise = y : removeItem x ys
 
+isPermutation :: Eq a => [a] -> [a] -> Bool
+isPermutation [] [] = True
+isPermutation [] ys = False
+isPermutation (x:xs) ys | elem x ys = isPermutation xs (removeItem x ys)
+                        | otherwise = False
 
 -- Recognizing and generating derangements
 
@@ -72,15 +83,23 @@ alphabet = ['a'..'z'] ++ ['A'..'Z']
 indexInAlphabet :: Char -> Int
 indexInAlphabet c = fromJust $ elemIndex c alphabet
 
+letterByIndex :: Int -> Char
+letterByIndex n = alphabet!!n
+
 transRot13 :: Char -> Char
 transRot13 c  | not (elem c alphabet) = c
-              | (indexInAlphabet c) >= 26 = alphabet!!((((indexInAlphabet c) + 13) `mod` 26) + 26)
-              | otherwise = alphabet!!(((indexInAlphabet c) + 13) `mod` 26)
+              | (indexInAlphabet c) >= 26 = letterByIndex ((((indexInAlphabet c) + 13) `mod` 26) + 26)
+              | otherwise = letterByIndex (((indexInAlphabet c) + 13) `mod` 26)
 -- TODO: Refactor this...
-
 
 rot13 :: String -> String
 rot13 s = concat (map (\y -> [transRot13 y]) s)
+
+-- Test that the inverse of Rot13 is the same
+testRot13String = quickCheck ((\s -> rot13 (rot13 s) == s) :: [Char] -> Bool)
+-- Test that Rot13 does not change integer values
+testRot13Int = quickCheck ((\n -> rot13 (show n) == (show n)) :: [Int] -> Bool)
+
 
 -- Implementing and testing IBAN validation
 
@@ -91,5 +110,13 @@ rotate n xs = zipWith const (drop n (cycle xs)) xs
 
 iban :: String -> Bool
 iban s = (read $ (concat (map (\x -> if elem x alphabet then (show ((indexInAlphabet x `mod` 26) + 10)) else [x]) (rotate 4 (filter (/=' ') s)))) :: Integer) `mod` 97 == 1
+
+validIbans = ["AL35202111090000000001234567",
+              "AD1400080001001234567890",
+              "AT483200000012345864",
+              "AZ96AZEJ00000000001234567890",
+              "BH02CITI00001077181611",
+              "BY86AKBB10100000002966000000"]
+testIbans = quickCheckResult(all (\i -> iban i) validIbans)
 
 -- TODO: Generate tests using random integers and a check digit which is random, except the correct one
