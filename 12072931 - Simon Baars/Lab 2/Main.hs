@@ -1,5 +1,6 @@
 module Main where
 import Lab2
+import Lecture2
 import System.Random
 import Test.QuickCheck
 import System.IO.Unsafe
@@ -56,7 +57,12 @@ genBigNumbers = abs `fmap` (arbitrary :: Gen Int) `suchThat` (>1000)
 --            triangle 12 10 11 --> Other
 --            triangle 11 12 10 --> Other
 --
--- All these properties are being tested for by the function `testTriangle`.
+-- All these properties are being tested for by the function `testTriangle`. This is the result of running that function:
+--      Tests for shape NoTriangle succeeded for input variables 90, 10, 10
+--      Tests for shape Equilateral succeeded for input variables 10, 10, 10
+--      Tests for shape Rectangular succeeded for input variables 3, 4, 5
+--      Tests for shape Isosceles succeeded for input variables 20, 15, 15
+--      Tests for shape Other succeeded for input variables 10, 11, 12
 
 isPythagorean :: Integer -> Integer -> Integer -> Bool
 isPythagorean a b c = a^2 + b^2 == c^2
@@ -89,6 +95,22 @@ testTriangle = do
   checkTriangleFunction 20 15 15 Isosceles
   checkTriangleFunction 10 11 12 Other
 
+-- Assignment 3
+
+evenAndMoreThanThree, evenOrMoreThanThree, evenAndMoreThanThreeOrEvenRight, evenAndMoreThanThreeOrEvenLeft :: Int -> Bool
+evenAndMoreThanThree y = stronger [-10..10] (\ x -> even x && x > 3) even
+evenOrMoreThanThree y = stronger [-10..10] (\ x -> even x || x > 3) even
+evenAndMoreThanThreeOrEvenRight y = stronger [-10..10] (\ x -> (even x && x > 3) || even x) even
+evenAndMoreThanThreeOrEvenLeft y = stronger [-10..10] even (\ x -> (even x && x > 3) || even x)
+
+p1, p2, p3, p4 :: Int -> Bool
+p1 x = even x && x > 3
+p2 x = even x || x > 3
+p3 x = (even x && x > 3) || even x
+p4 x = (even x && x > 3) || even x
+
+
+
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
 checkTestResult False = "Test failed!"
@@ -101,5 +123,8 @@ main = do
 
   putStrLn "\n== Assignment 2 =="
   testTriangle
+
+  putStrLn "\n== Assignment 3 =="
+
 
   putStrLn "Done"

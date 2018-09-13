@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-13 16:31:36.057568946 UTC
+2018-09-13 18:47:00.203055666 UTC
 
 interface main:Main 8043
-  interface hash: 2b7308bb3a81de369e7b14f549a37237
-  ABI hash: fd01fee9f6d84855bbfabea553e485b6
-  export-list hash: 98320eea1c95445bcd869ce4d9cb1192
+  interface hash: 4173efb9c2c05aebbef3df3241823697
+  ABI hash: e862c594ee5b94fa30e4a4cddc559bd8
+  export-list hash: 0909c084d4773e95493d5ef643ad144f
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 8e9ed84417c9432185130cd9861fe2b6
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -17,6 +17,10 @@ exports:
   Main.calcQuartile
   Main.checkTestResult
   Main.checkTriangleFunction
+  Main.evenAndMoreThanThree
+  Main.evenAndMoreThanThreeOrEvenLeft
+  Main.evenAndMoreThanThreeOrEvenRight
+  Main.evenOrMoreThanThree
   Main.genBigNumbers
   Main.getAmountInQuartile
   Main.isPythagorean
@@ -27,7 +31,7 @@ exports:
   Main.triangle
   Main.triangleType
   Main.withinPercentage
-module dependencies: Lab2
+module dependencies: Lab2 Lecture2
 package dependencies: QuickCheck-2.11.3 array-0.5.2.0 base-4.11.1.0
                       containers-0.5.11.0 deepseq-1.4.3.0 ghc-boot-th-8.4.3
                       ghc-prim-0.5.2.0 integer-gmp-1.0.2.0 pretty-1.1.3.6
@@ -89,7 +93,16 @@ import  -/  Lab2 58f142ce979bc82be2c0114c7ac77986
   Rectangular ebc803140599615cc2f652994ae189b5
   Shape 4f321edfbfaf3dc5f384e8b53049cebc
   probs 93788a82fb6e0e80b0f083ea2b1d6786
+import  -/  Lecture2 217d1f81d64de0e9de04f332a47a0619
+  exports: d9f76553a58edbff754f00d8da3dde40
+  stronger 4c551e650a6fdcd24b6d9e1bd56e5b42
 import  -/  random-1.1:System.Random 31994b60c33f032d578c64a928f735f7
+e1ba3b426d23671c81b2b52507b37882
+  $seven1 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (0) -}
+925dc3de0eaadaca4d0e2c9218c415d8
+  $seven2 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (2) -}
 be86c9d078d3acbf19ba91fe74a24273
   $trModule :: GHC.Types.Module
   {- HasNoCafRefs, Strictness: m,
@@ -319,6 +332,105 @@ f259455213a5f5374054d0926c228555
     -> Lab2.Shape
     -> GHC.Types.IO ()
   {- Arity: 4, Strictness: <S,U><S,U><S,U><S,U> -}
+ebbedd4cc8c1492314b5ffbfed118b7d
+  evenAndMoreThanThree :: GHC.Types.Int -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (0, True, True)
+                Main.evenAndMoreThanThree1
+                  `cast`
+                (<GHC.Types.Int>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
+d2ff581c65e502e6c5f3bd551fc9b463
+  evenAndMoreThanThree1 ::
+    GHC.Types.Int -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (1, True, True)
+                (\ (y :: GHC.Types.Int) -> Main.evenAndMoreThanThree2) -}
+b53cfae77f09566082386168a5d9bb14
+  evenAndMoreThanThree2 :: Data.Semigroup.Internal.All
+  {- Unfolding: (Main.evenAndMoreThanThree_go
+                   (GHC.Enum.enumDeltaToInteger1
+                      Main.evenAndMoreThanThree4
+                      Main.evenAndMoreThanThree3)) -}
+553ca2e9440969dc38f6e7a43bb69f9c
+  evenAndMoreThanThree3 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (10) -}
+30c2f46c58426d9bd932bc10946bf7ee
+  evenAndMoreThanThree4 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (-10) -}
+5b207cb86d79ed2798c138ddfe0a3688
+  evenAndMoreThanThreeOrEvenLeft :: GHC.Types.Int -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (0, True, True)
+                Main.evenAndMoreThanThreeOrEvenLeft1
+                  `cast`
+                (<GHC.Types.Int>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
+4cf038e44c36ecb6345964377042fefa
+  evenAndMoreThanThreeOrEvenLeft1 ::
+    GHC.Types.Int -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (1, True, True)
+                (\ (y :: GHC.Types.Int) -> Main.evenAndMoreThanThreeOrEvenLeft2) -}
+b736cf1ed0670dab49f3879c30871f0f
+  evenAndMoreThanThreeOrEvenLeft2 :: Data.Semigroup.Internal.All
+  {- Unfolding: (Main.evenAndMoreThanThreeOrEvenLeft_go
+                   (GHC.Enum.enumDeltaToInteger1
+                      Main.evenAndMoreThanThree4
+                      Main.evenAndMoreThanThree3)) -}
+026d3432ac2cc166b6ceed03f0bfc075
+  evenAndMoreThanThreeOrEvenLeft_go ::
+    [GHC.Integer.Type.Integer] -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <S,1*U> -}
+b0b796882fd6353cf1f76ceb77764d0e
+  evenAndMoreThanThreeOrEvenRight :: GHC.Types.Int -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (0, True, True)
+                Main.evenAndMoreThanThreeOrEvenRight1
+                  `cast`
+                (<GHC.Types.Int>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
+fe8fa86c6ffa0812f86b1c4f7e2c63d9
+  evenAndMoreThanThreeOrEvenRight1 ::
+    GHC.Types.Int -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (1, True, True)
+                (\ (y :: GHC.Types.Int) ->
+                 Main.evenAndMoreThanThreeOrEvenRight2) -}
+d4d1fdd5b36d94c097e5977601ae9292
+  evenAndMoreThanThreeOrEvenRight2 :: Data.Semigroup.Internal.All
+  {- Unfolding: (Main.evenAndMoreThanThreeOrEvenRight_go
+                   (GHC.Enum.enumDeltaToInteger1
+                      Main.evenAndMoreThanThree4
+                      Main.evenAndMoreThanThree3)) -}
+6ba2955bfc738862ab7bb4cc2629c6b2
+  evenAndMoreThanThreeOrEvenRight_go ::
+    [GHC.Integer.Type.Integer] -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <S,1*U> -}
+bcf3e4caaaafe946ef53c691050ea3e9
+  evenAndMoreThanThree_go ::
+    [GHC.Integer.Type.Integer] -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <S,1*U> -}
+b9a371b1b365d8e97c6afe84178e5591
+  evenOrMoreThanThree :: GHC.Types.Int -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (0, True, True)
+                Main.evenOrMoreThanThree1
+                  `cast`
+                (<GHC.Types.Int>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
+c931e7c308ad9e89c5ea16fb2e0b3f38
+  evenOrMoreThanThree1 ::
+    GHC.Types.Int -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (1, True, True)
+                (\ (y :: GHC.Types.Int) -> Main.evenOrMoreThanThree2) -}
+f9eae78d13b3b1e5dfce94823ef95b76
+  evenOrMoreThanThree2 :: Data.Semigroup.Internal.All
+  {- Unfolding: (Main.evenOrMoreThanThree_go
+                   (GHC.Enum.enumDeltaToInteger1
+                      Main.evenAndMoreThanThree4
+                      Main.evenAndMoreThanThree3)) -}
+cdfd3bdcda4d46523e34d156d18bfd3d
+  evenOrMoreThanThree_go ::
+    [GHC.Integer.Type.Integer] -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <S,1*U> -}
 1d5ff3a09539d534f7a5c58adc34d09c
   genBigNumbers :: Test.QuickCheck.Gen.Gen GHC.Types.Int
   {- Arity: 2,
@@ -421,12 +533,12 @@ dc06da07a31c99000d29d580a46a05ff
                            (GHC.Integer.Type.timesInteger b b))
                         (GHC.Integer.Type.timesInteger c c) of wild { DEFAULT ->
                  GHC.Prim.tagToEnum# @ GHC.Types.Bool wild }) -}
-479ca96a35a2fcb8bad4038d5fa39253
+642c5662e594adc5730a5e609cb4ed3d
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-d2a7baf45f02f36a6305a804b873e628
+4c7813127656e3735a0048682bbfd69e
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -434,7 +546,7 @@ d2a7baf45f02f36a6305a804b873e628
      Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        Main.main18
+                        Main.main19
                         GHC.Types.True
                         s of ds1 { (#,#) ipv ipv1 ->
                  case Main.$wtestQuartilesSafe
@@ -443,7 +555,7 @@ d2a7baf45f02f36a6305a804b873e628
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
                         (GHC.CString.unpackAppendCString#
-                           Main.main17
+                           Main.main18
                            (case ipv3 of wild {
                               GHC.Types.False -> Main.checkTestResult3
                               GHC.Types.True -> Main.checkTestResult1 }))
@@ -456,44 +568,52 @@ d2a7baf45f02f36a6305a804b873e628
                         Test.QuickCheck.Test.stdArgs2
                         GHC.Types.True
                         GHC.Base.maxInt
-                        Main.main16
+                        Main.main17
                           `cast`
                         (Sym (Test.QuickCheck.Gen.N:Gen[0]
                                   (Test.QuickCheck.Property.N:Prop[0])) ; Sym (Test.QuickCheck.Property.N:Property[0]))
                         ipv4 of ds4 { (#,#) ipv6 ipv7 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        Main.main14
+                        Main.main15
                         GHC.Types.True
                         ipv6 of ds5 { (#,#) ipv8 ipv9 ->
-                 case Main.main4 ipv8 of ds6 { (#,#) ipv10 ipv11 ->
+                 case Main.main6 ipv8 of ds6 { (#,#) ipv10 ipv11 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main4
+                        GHC.Types.True
+                        ipv10 of ds7 { (#,#) ipv12 ipv13 ->
                  GHC.IO.Handle.Text.hPutStr2
                    GHC.IO.Handle.FD.stdout
                    Main.main2
                    GHC.Types.True
-                   ipv10 } } } } } }) -}
-182e3e3c35e59c3bdb62a075ea192257
+                   ipv12 } } } } } } }) -}
+9578e903c0608b2aa6de692416f6d499
   main10 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (4) -}
-e1131913590008d31ca2ae1ac01a9402
+  {- HasNoCafRefs, Unfolding: (20) -}
+7f02543d2795615d743ca1f140bf4629
   main11 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (3) -}
-22ef853f0da701533de77be742814591
+  {- HasNoCafRefs, Unfolding: (5) -}
+4dafc866b1ec3f12ef786a91c4881290
   main12 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (10) -}
-fc0b4e79e1564496b5d65d8f9d93b37a
+  {- HasNoCafRefs, Unfolding: (4) -}
+19808691fd668c4fd7d1509389aaa439
   main13 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (3) -}
+76094e3b5f842bd5887467bee556b5dc
+  main14 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (90) -}
-28591c9fb54ab8aebc506ba4dff0eb91
-  main14 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.main15) -}
-9b0fcdfce3d581d224d92c5d2450141e
-  main15 :: GHC.Prim.Addr#
+d2d78fbd1fc8bba3d7ec5383efba5764
+  main15 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main16) -}
+5336efa8f242f59cbf5b661474624b7e
+  main16 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("\n\
                  \== Assignment 2 =="#) -}
-6d19f06bcccb32d6a1b744364dda4791
-  main16 ::
+7066e4ce1755d40b63ae48b6f9352c9a
+  main17 ::
     Test.QuickCheck.Random.QCGen
     -> GHC.Types.Int
     -> Test.QuickCheck.Property.Rose Test.QuickCheck.Property.Result
@@ -520,20 +640,20 @@ fc0b4e79e1564496b5d65d8f9d93b37a
                    ww3
                    ww4
                    eta1 }) -}
-57dd9a7637ed7a20e81fb34467e7be42
-  main17 :: GHC.Prim.Addr#
+c4a92c4d50cad248f934df23866cac2b
+  main18 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Safe, but without QuickCheck: "#) -}
-f92e6fb9925fd569db15a41970d9d277
-  main18 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.main19) -}
-b97b926e814f25faa3887e9f691a612a
-  main19 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("== Assignment 1 =="#) -}
+f950ee1e393eecc179b7e8bf5b35cd95
+  main19 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main20) -}
 21ee1e9ce3c251c7ad2ca4e7f5b78afc
   main2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.main3) -}
-e9d4437acdba47074bf52baae0b86aa6
-  main20 ::
+e41a1f4a9f00acb618aa48e30d554c2b
+  main20 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("== Assignment 1 =="#) -}
+ff028743c535bb8b0513218341626972
+  main21 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1,
@@ -543,67 +663,69 @@ e9d4437acdba47074bf52baae0b86aa6
 44ddb9097779558b7596e4d0209f99ed
   main3 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Done"#) -}
-3c4956335a501c9a4d625000b8c36fcd
-  main4 ::
+7f741c54402e5537c7924519d22c6340
+  main4 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main5) -}
+7a1c7cc11795f9fc45393b481d4fb518
+  main5 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("\n\
+                 \== Assignment 3 =="#) -}
+dbadd38889cead236bbc002e5a80f8b5
+  main6 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case (Main.checkTriangleFunction
-                         Main.main13
-                         Main.main12
-                         Main.main12
+                         Main.main14
+                         Main.evenAndMoreThanThree3
+                         Main.evenAndMoreThanThree3
                          Lab2.NoTriangle)
                         `cast`
                       (GHC.Types.N:IO[0] <()>_R)
                         s of ds1 { (#,#) ipv ipv1 ->
                  case (Main.checkTriangleFunction
-                         Main.main12
-                         Main.main12
-                         Main.main12
+                         Main.evenAndMoreThanThree3
+                         Main.evenAndMoreThanThree3
+                         Main.evenAndMoreThanThree3
                          Lab2.Equilateral)
                         `cast`
                       (GHC.Types.N:IO[0] <()>_R)
                         ipv of ds2 { (#,#) ipv2 ipv3 ->
                  case (Main.checkTriangleFunction
+                         Main.main13
+                         Main.main12
                          Main.main11
-                         Main.main10
-                         Main.main9
                          Lab2.Rectangular)
                         `cast`
                       (GHC.Types.N:IO[0] <()>_R)
                         ipv2 of ds3 { (#,#) ipv4 ipv5 ->
                  case (Main.checkTriangleFunction
-                         Main.main8
-                         Main.main7
-                         Main.main7
+                         Main.main10
+                         Main.main9
+                         Main.main9
                          Lab2.Isosceles)
                         `cast`
                       (GHC.Types.N:IO[0] <()>_R)
                         ipv4 of ds4 { (#,#) ipv6 ipv7 ->
                  (Main.checkTriangleFunction
-                    Main.main12
-                    Main.main6
-                    Main.main5
+                    Main.evenAndMoreThanThree3
+                    Main.main8
+                    Main.main7
                     Lab2.Other)
                    `cast`
                  (GHC.Types.N:IO[0] <()>_R)
                    ipv6 } } } }) -}
-8a9e72d85893ffb570b47e9fda1e188d
-  main5 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (12) -}
-1a9601085247d782f5e45a2626507342
-  main6 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (11) -}
-fd72521c53c04d6d47f49c2e00511c24
+7c6325a423c42151605dfd1a4cb6e0c2
   main7 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (15) -}
-e6dbae02ecda49759e11a2cf336a0d1e
+  {- HasNoCafRefs, Unfolding: (12) -}
+caad6210754496ea751c722b47892312
   main8 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (20) -}
-bef8e1c265b95bdad60effcf9f3dcb60
+  {- HasNoCafRefs, Unfolding: (11) -}
+35c02c8c7b75c463bca2145382072f24
   main9 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (5) -}
+  {- HasNoCafRefs, Unfolding: (15) -}
 203516a2ae7bb85a5ed330ef20ff16d0
   testQuartiles :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S(S),1*U(U)>, Inline: [0],
@@ -629,11 +751,11 @@ bef8e1c265b95bdad60effcf9f3dcb60
                    (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wtestQuartilesSafe ww1 w1 }) -}
-72eb5016ec1951707cb6130f22492a54
+4ff0e6bb036fbbeec41830b69e598dd1
   testTriangle :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
-                Main.main4 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
+                Main.main6 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
 ee74330f3ede76cb0524cdd7ea2325ef
   triangle ::
     GHC.Integer.Type.Integer
