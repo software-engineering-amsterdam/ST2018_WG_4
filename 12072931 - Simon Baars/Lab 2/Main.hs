@@ -125,6 +125,36 @@ properties = [Prop "p1" p1, Prop "p2" p2, Prop "p3" p3, Prop "p4" p4, Prop "p5" 
 
 -- Assignment 4 (Recognizing Permutations)
 
+isPermutation :: Eq a => [a] -> [a] -> Bool
+isPermutation x y = length x == length y && all (\z -> length(filter (==z) x) == length(filter (==z) y)) x
+
+-- Property: Being rotated. Rotated lists will always be a permutation.
+rotate :: Int -> [a] -> [a]
+rotate _ [] = []
+rotate n xs = zipWith const (drop n (cycle xs)) xs
+
+propRotated :: Eq a => Int -> [a] -> Bool
+propRotated rotation origList = isPermutation origList (rotate rotation origList)
+
+propAllRotations :: Eq a => [a] -> Bool
+propAllRotations origList = not(null origList) --> all (`propRotated` origList) [1..length origList-1]
+
+-- Property: Being reversed. Reversed lists will always be a permutation.
+propReversed :: Eq a => [a] -> Bool
+propReversed origList = isPermutation origList (reverse origList)
+
+-- Property: Having 2 elements swapped. Swapped lists will always be a permutation.
+swapAt :: Int -> [a] -> [a]
+swapAt index list = take index list ++ head swapWithPos : head swapPos : tail swapWithPos
+  where swapPos = drop index list
+        swapWithPos = drop 1 swapPos
+
+propSwapped :: Eq a => Int -> [a] -> Bool
+propSwapped index origList = isPermutation origList (swapAt index origList)
+
+propAllSwapped :: Eq a => [a] -> Bool
+propAllSwapped origList = (length origList > 1) --> all (`propSwapped` origList) [0..length origList-2]
+
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
 checkTestResult False = "Test failed!"
