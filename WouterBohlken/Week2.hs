@@ -36,14 +36,28 @@ triangle a b c  | (a + b) <= c || (a + c) <= b || (b + c) <= a = NoTriangle
 
 -- Testing properties strength
 
-property1, property2, property3, property4 :: Int -> Bool
+property1, property2, property3, property4, property5 :: Int -> Bool
 property1 x = even x && x > 3
 property2 x = even x || x > 3
 property3 x = (even x && x > 3) || even x
 property4 x = (even x && x > 3) || even x
+property5 x = even x
 
--- strengthList :: IO ()
--- strengthList = do
+properties :: [Int -> Bool]
+properties = [property1, property2, property3, property4, property5]
+
+testProperties :: (Int -> Bool) -> [(Int -> Bool)] -> [Bool]
+testProperties property [] = []
+testProperties property (p:properties) = [(stronger [-10..10] property p)] ++ testProperties property properties
+
+countPropertyStrength :: (Int -> Bool) -> Int
+countPropertyStrength p = length (filter (\x -> x == True) (testProperties p properties) )
+
+propertyStrength :: (Int -> Bool) -> Int
+propertyStrength p = countPropertyStrength p
+
+-- strengthList :: [Int]
+-- strengthList = sortBy (compare `on` (length . snd)) (map (\l -> (propertyStrength l, head l))) properties
 
 
 
