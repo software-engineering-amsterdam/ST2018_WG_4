@@ -5,8 +5,8 @@ import System.Random
 import Test.QuickCheck
 import System.IO.Unsafe
 
--- Assignment 1
--- Time: 180 minutes
+-- Assignment 1 (Random floating point numbers)
+-- Time: 190 minutes
 -- Result: getAmountInQuartile 10000 --> [2454,2486,2523,2537]
 -- Result: testQuartilesSafe 10000 >>= \y -> checkTestResult y --> Test succeeded!
 -- Result: quickCheckResult $ forAll genBigNumbers testQuartiles --> +++ OK, passed 100 tests.
@@ -31,7 +31,7 @@ genBigNumbers :: Gen Int -- Generator for QuickCheck because it would otherwise 
 genBigNumbers = abs `fmap` (arbitrary :: Gen Int) `suchThat` (>1000)
 
 
--- Assignment 2
+-- Assignment 2 (Recognizing triangles)
 -- Time: 50 minutes.
 -- To test assignment 2, I tested the following cases:
 --      Testing NoTriangle by checking if different types of invalid triangles result in NoTriangle (making sure I hit all parts of the NoTriangle pattern's condition):
@@ -95,7 +95,9 @@ testTriangle = do
   checkTriangleFunction 20 15 15 Isosceles
   checkTriangleFunction 10 11 12 Other
 
--- Assignment 3
+-- Assignment 3 (Testing properties strength)
+-- Time: 60 minutes
+-- Result: [p1,p3,p4,p5,p2]
 
 evenAndMoreThanThree, evenOrMoreThanThree, evenAndMoreThanThreeOrEvenRight, evenAndMoreThanThreeOrEvenLeft :: Int -> Bool
 evenAndMoreThanThree y = stronger [-10..10] (\ x -> even x && x > 3) even
@@ -109,7 +111,19 @@ p2 x = even x || x > 3
 p3 x = (even x && x > 3) || even x
 p4 x = (even x && x > 3) || even x
 
+domain = [-10..10]
 
+data Prop a = Prop { name :: String, propertyFunction :: Int -> Bool}
+instance Show (Prop a) where show = name
+instance Eq (Prop a) where y == z = name y == name z
+instance Ord (Prop a) where
+  compare Prop { propertyFunction = x } Prop { propertyFunction = y }
+    | stronger domain y x = GT
+    | weaker domain y x = LT
+    | otherwise = EQ
+properties = [Prop "p1" p1, Prop "p2" p2, Prop "p3" p3, Prop "p4" p4, Prop "p5" even]
+
+-- Assignment 4 (Recognizing Permutations)
 
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
@@ -117,14 +131,17 @@ checkTestResult False = "Test failed!"
 
 main :: IO ()
 main = do
-  putStrLn "== Assignment 1 =="
+  putStrLn "== Assignment 1 (Random floating point numbers) =="
   testQuartilesSafe 10000 >>= \y -> putStrLn("Safe, but without QuickCheck: " ++ checkTestResult y)
   quickCheckResult $ forAll genBigNumbers testQuartiles
 
-  putStrLn "\n== Assignment 2 =="
+  putStrLn "\n== Assignment 2 (Recognizing triangles) =="
   testTriangle
 
-  putStrLn "\n== Assignment 3 =="
+  putStrLn "\n== Assignment 3 (Testing properties strength) =="
+  print $ quicksort properties
+
+  putStrLn "\n== Assignment 4 (Recognizing Permutations) =="
 
 
   putStrLn "Done"
