@@ -96,8 +96,8 @@ testTriangle = do
   checkTriangleFunction 10 11 12 Other
 
 -- Assignment 3 (Testing properties strength)
--- Time: 60 minutes
--- Result: [p1,p3,p4,p5,p2]
+-- Time: 90 minutes
+-- Result: print $ quicksort properties --> [p1,p3,p4,p5,p2]
 
 evenAndMoreThanThree, evenOrMoreThanThree, evenAndMoreThanThreeOrEvenRight, evenAndMoreThanThreeOrEvenLeft :: Int -> Bool
 evenAndMoreThanThree y = stronger [-10..10] (\ x -> even x && x > 3) even
@@ -124,6 +124,8 @@ instance Ord (Prop a) where
 properties = [Prop "p1" p1, Prop "p2" p2, Prop "p3" p3, Prop "p4" p4, Prop "p5" even]
 
 -- Assignment 4 (Recognizing Permutations)
+-- Time: 70 minutes
+-- Result: [Bigger,Increased,Smaller,Reversed,Rotated,Swapped]
 
 isPermutation :: Eq a => [a] -> [a] -> Bool
 isPermutation x y = length x == length y && all (\z -> length(filter (==z) x) == length(filter (==z) y)) x
@@ -155,6 +157,29 @@ propSwapped index origList = isPermutation origList (swapAt index origList)
 propAllSwapped :: Eq a => [a] -> Bool
 propAllSwapped origList = (length origList > 1) --> all (`propSwapped` origList) [0..length origList-2]
 
+-- Property: Being smaller. Smaller lists will never be a permutation.
+propSmaller :: Eq a => Int -> [a] -> Bool
+propSmaller amount origList = isPermutation origList (take amount origList)
+
+propAllSmaller :: Eq a => [a] -> Bool
+propAllSmaller origList = not(null origList) --> all (`propSmaller` origList) [1..length origList-1]
+
+-- Property: Being bigger. Bigger lists will never be a permutation.
+propBigger :: [Int] -> Bool
+propBigger origList = isPermutation origList (0:origList)
+
+-- Property: Being increased. Increased lists will never be a permutation.
+propIncreased :: Int -> [Int] -> Bool
+propIncreased amount origList = isPermutation origList (map (+amount) origList)
+
+-- Because the stronger and weaker functions require an (a -> Bool) function to be able to operate upon a domain, this function converts the list operating properties into (Int -> Bool) functions by creating a list of the given size.
+propListOfSize :: ([Int] -> Bool) -> Int -> Bool
+propListOfSize propFunction size = propFunction [1..size]
+
+permutationProperties = [Prop "Reversed" (propListOfSize propReversed), Prop "Rotated" (propListOfSize propAllRotations), Prop "Swapped" (propListOfSize propAllSwapped), Prop "Smaller" (propListOfSize propAllSmaller), Prop "Bigger" (propListOfSize propBigger), Prop "Increased" (propListOfSize (propIncreased 1))]
+
+-- Assignment 5 (Recognizing and generating derangements)
+
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
 checkTestResult False = "Test failed!"
@@ -172,6 +197,6 @@ main = do
   print $ quicksort properties
 
   putStrLn "\n== Assignment 4 (Recognizing Permutations) =="
-
+  print $ quicksort permutationProperties
 
   putStrLn "Done"
