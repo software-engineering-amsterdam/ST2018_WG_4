@@ -34,6 +34,16 @@ triangle a b c  | (a + b) <= c || (a + c) <= b || (b + c) <= a = NoTriangle
                 | isPythagorean a b c || isPythagorean b c a || isPythagorean c a b = Rectangular
                 | otherwise = Other
 
+triangleText :: Integer -> Integer -> Integer -> String
+triangleText a b c  | triangle a b c == NoTriangle = "Not a triangle"
+                    | triangle a b c == Equilateral = "Equilateral"
+                    | triangle a b c == Isosceles = "Isosceles"
+                    | triangle a b c == Rectangular = "Rectangular"
+                    | otherwise = "Other"
+
+-- We verify that the order of parameters doesn't has no effect on the output of the function
+test2 = quickCheckResult(\a b c -> (triangle a b c) == (triangle b a c) && (triangle a b c) == (triangle c a b))
+
 -- Testing properties strength
 
 property1, property2, property3, property4, property5 :: Int -> Bool
@@ -56,10 +66,12 @@ countPropertyStrength p = length (filter (\x -> x == True) (testProperties p pro
 propertyStrength :: (Int -> Bool) -> Int
 propertyStrength p = countPropertyStrength p
 
--- strengthList :: [Int]
--- strengthList = sortBy (compare `on` (length . snd)) (map (\l -> (propertyStrength l, head l))) properties
+propertyMapping :: Int -> [Int] -> [(String, Int)]
+propertyMapping n [] = []
+propertyMapping n (x:xs) = [("property" ++ show n, x)] ++ propertyMapping (n+1) xs
 
-
+strengthList :: [(String, Int)]
+strengthList = sortBy (\ x y -> compare (snd y) (snd x)) (propertyMapping 1 ((map (propertyStrength)) properties))
 
 -- Recognizing Permutations
 
