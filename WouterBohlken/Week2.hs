@@ -7,7 +7,8 @@ import Data.List
 import Data.Maybe
 import Test.QuickCheck
 
--- Useful logic notation
+-- probs
+-- Time: 1:30 minutes
 
 devideQuartiles :: IO ()
 devideQuartiles = do
@@ -22,7 +23,9 @@ devideQuartiles = do
 -- test1 = quickCheck (sum (read $ devideQuartiles) == 10000)
 -- Test that the sum of all lists == 10000
 
+
 -- Recognizing triangles
+-- Time: 1 hour
 
 isPythagorean :: Integer -> Integer -> Integer -> Bool
 isPythagorean a b c = (a^2 + b^2) == c^2
@@ -44,7 +47,10 @@ triangleText a b c  | triangle a b c == NoTriangle = "Not a triangle"
 -- We verify that the order of parameters doesn't has no effect on the output of the function
 test2 = quickCheckResult(\a b c -> (triangle a b c) == (triangle b a c) && (triangle a b c) == (triangle c a b))
 
+
+
 -- Testing properties strength
+-- Time: 1:30 hours
 
 property1, property2, property3, property4, property5 :: Int -> Bool
 property1 x = even x && x > 3
@@ -73,7 +79,11 @@ propertyMapping n (x:xs) = [("property" ++ show n, x)] ++ propertyMapping (n+1) 
 strengthList :: [(String, Int)]
 strengthList = sortBy (\ x y -> compare (snd y) (snd x)) (propertyMapping 1 ((map (propertyStrength)) properties))
 
+
+
+
 -- Recognizing Permutations
+-- Time: 1 hour
 
 perms :: [a] ->[[a]]
 perms [] = [[]]
@@ -91,8 +101,10 @@ isPermutation [] ys = False
 isPermutation (x:xs) ys | elem x ys = isPermutation xs (removeItem x ys)
                         | otherwise = False
 
--- Recognizing and generating derangements
 
+
+-- Recognizing and generating derangements
+-- Time: 30 minutes
 
 isDerangement :: [Int] -> [Int] -> Bool
 isDerangement xs ys = quicksort xs == quicksort ys && (filter (\x -> fst x == snd x) (zip xs ys) == [])
@@ -101,7 +113,9 @@ deran :: [Int] -> [[Int]]
 deran xs = filter (isDerangement xs) (permutations xs)
 
 
+
 -- Implementing and testing ROT13 encoding
+-- Time: 45 minutes
 
 alphabet :: String
 alphabet = ['a'..'z'] ++ ['A'..'Z']
@@ -127,7 +141,10 @@ testRot13String = quickCheck ((\s -> rot13 (rot13 s) == s) :: [Char] -> Bool)
 testRot13Int = quickCheck ((\n -> rot13 (show n) == (show n)) :: [Int] -> Bool)
 
 
+
 -- Implementing and testing IBAN validation
+-- Time: 45 hours
+
 
 -- rotate function found on stack overflow https://stackoverflow.com/questions/16378773/rotate-a-list-in-haskell
 rotate :: Int -> [a] -> [a]
