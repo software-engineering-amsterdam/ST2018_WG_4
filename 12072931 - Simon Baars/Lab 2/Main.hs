@@ -232,34 +232,34 @@ testPermutations = do
 --        Testing all bigger lists: Test succeeded!
 --        Testing increased list: Test succeeded!
 
-isDerangement :: Eq a => [a] -> [a] -> Bool
+isDerangement :: [Int] -> [Int] -> Bool
 isDerangement x y = length x == length y && isPermutation x y && all (uncurry (/=)) (zip x y)
 
 deran :: [Int] -> [[Int]]
 deran x = filter (`isDerangement` x) (permutations x)
 
 -- Property: Being rotated. Rotated lists will always be a derangement.
-propDeranRotated :: Eq a => Int -> [a] -> Bool
+propDeranRotated :: Int -> [Int] -> Bool
 propDeranRotated rotation origList = isDerangement origList (rotate rotation origList)
 
 -- All derangement rotations. For example [1,2,3] has [3,1,2] and [2,3,1] as rotations, which are all derangements.
-propAllDeranRotations :: Eq a => [a] -> Bool
-propAllDeranRotations origList = not(null origList) --> all (`propDeranRotated` origList) [1..length origList-1]
+propAllDeranRotations :: [Int] -> Bool
+propAllDeranRotations origList = not(null origList) && allDifferent origList --> all (`propDeranRotated` origList) [1..length origList-1]
 
 -- Property: Being reversed. Reversed lists will be a derangement half of the time. For example, [1,2,3] has [3,2,1] as reverse, which is not a derangement. However, [1,2,3,4] has [4,3,2,1] as a reverse, which is actually a derangement.
-propDeranReversed :: Eq a => [a] -> Bool
-propDeranReversed origList = isDerangement origList (reverse origList)
+propDeranReversed :: [Int] -> Bool
+propDeranReversed origList = allDifferent origList --> isDerangement origList (reverse origList)
 
 -- Property: Having every 2 elements swapped. Swapped lists will be a derangement half of the time. For example, [1,2,3] has [2,1,3] as swapped list, which is not a derangement. However, [1,2,3,4] has [2,1,4,3] as swapped list, which is actually a derangement.
-propDeranSwapped :: Eq a => [a] -> Bool
-propDeranSwapped origList = isDerangement origList (foldr swapAt origList [0,2..length origList-2])
+propDeranSwapped :: [Int] -> Bool
+propDeranSwapped origList = allDifferent origList --> isDerangement origList (foldr swapAt origList [0,2..length origList-2])
 
 -- Property: Being smaller. Smaller lists will never be a derangement.
-propDeranSmaller :: Eq a => Int -> [a] -> Bool
+propDeranSmaller :: Int -> [Int] -> Bool
 propDeranSmaller amount origList = isDerangement origList (take amount origList)
 
 -- All smaller. For example [1,2,3] has [1,2] and [1] as smaller lists.
-propAllDeranSmaller :: Eq a => [a] -> Bool
+propAllDeranSmaller :: [Int] -> Bool
 propAllDeranSmaller origList = not(null origList) --> all (`propDeranSmaller` origList) [1..length origList-1]
 
 -- Property: Being bigger. Bigger lists will never be a derangement.
@@ -268,15 +268,51 @@ propDeranBigger origList = isDerangement origList (0:origList)
 
 -- Property: Being increased. Increased lists will never be a derangement.
 propDeranIncreased :: Int -> [Int] -> Bool
-propDeranIncreased amount origList = isDerangement origList (map (+amount) origList)
+propDeranIncreased amount origList = (amount /= 0) --> isDerangement origList (map (+amount) origList)
 
 derangementProperties = [Prop "Reversed" (propListOfSize propDeranReversed), Prop "Rotated" (propListOfSize propAllDeranRotations), Prop "Swapped" (propListOfSize propDeranSwapped), Prop "Smaller" (propListOfSize propAllDeranSmaller), Prop "Bigger" (propListOfSize propDeranBigger), Prop "Increased" (propListOfSize (propDeranIncreased 1))]
+
+allDifferent :: (Eq a) => [a] -> Bool
+allDifferent []     = True
+allDifferent (x:xs) = x `notElem` xs && allDifferent xs
 
 derangementTestList = [1,2,3]
 derangementTestListTwo = [1,2,3,4]
 
+evenListSizeReverse :: [Int] -> Bool
+evenListSizeReverse list = even (length list) --> propDeranReversed list
+
+evenListSizeSwapped :: [Int] -> Bool
+evenListSizeSwapped list = even (length list) --> propDeranSwapped list
+
+oddListSizeReverse :: [Int] -> Bool
+oddListSizeReverse list = odd (length list) && allDifferent list --> not(propDeranReversed list)
+
+oddListSizeSwapped :: [Int] -> Bool
+oddListSizeSwapped list = odd (length list) && allDifferent list --> not(propDeranSwapped list)
+
+testPropAllDeranSmaller :: [Int] -> Bool
+testPropAllDeranSmaller list = length list > 1--> not(propAllDeranSmaller list)
+
+testPropDeranBigger :: [Int] -> Bool
+testPropDeranBigger list = not(propDeranBigger list)
+
+testPropDeranIncreased :: Int -> [Int] -> Bool
+testPropDeranIncreased x list = x /= 0 && not(null list) --> not(propDeranIncreased x list)
+
 testDerangements :: IO ()
 testDerangements = do
+  putStrLn "\nRunning automated testcases."
+  quickCheck propAllDeranRotations
+  quickCheck evenListSizeReverse
+  quickCheck evenListSizeSwapped
+  quickCheck oddListSizeReverse
+  quickCheck oddListSizeSwapped
+  quickCheck testPropAllDeranSmaller
+  quickCheck testPropDeranBigger
+  quickCheck testPropDeranIncreased
+
+  putStrLn "\nRunning manual testcases."
   putStrLn $ "Testing same list: "++checkTestResult (not(isDerangement derangementTestList derangementTestList))
   putStrLn $ "Testing all rotated lists: "++checkTestResult (propAllDeranRotations derangementTestList)
   putStrLn $ "Testing reversed list on even lists: "++checkTestResult (propDeranReversed derangementTestListTwo)
