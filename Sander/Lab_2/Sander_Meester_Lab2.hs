@@ -103,7 +103,54 @@ performROT13 (c:cs)
      | otherwise = []
 performROT13 c = []
 
--- Exersize 7:
---  Time
+-- Project Euler Bonus
 
-iban :: String -> Bool
+-- Euler 25:
+-- What is the index of the first term in the Fibonacci sequence to contain 1000 digits?
+--   - index = 4782
+--  Time 45 minutes
+
+-- Fibs function with help from https://wiki.haskell.org/The_Fibonacci_sequence
+fibs :: [Integer]
+fibs = map fst (iterate (\(a,b) -> (b,a+b)) (0,1))
+
+solveEuler25 :: Int
+solveEuler25 = length (takeWhile (< 10^999) fibs)
+
+-- Euler 35:
+-- How many circular primes are there below one million?
+--  - 55
+--  Time 60 minutes
+prime :: Int -> Bool
+prime n = n > 1 && all (\ x -> rem n x /= 0) xs
+  where xs = takeWhile (\ y -> y^2 <= n) primes
+
+primes :: [Int]
+primes = 2 : filter prime [3..]
+
+digitToList :: Int -> [Int]
+digitToList n = map digitToInt (show n)
+
+listToDigit :: [Int] -> Int
+listToDigit ns = read (map intToDigit ns)
+
+rotate :: [Int] -> [Int]
+rotate (x:xs) = xs ++ [x]
+
+rotations :: Int -> [Int] -> [[Int]]
+rotations n xs = take n (iterate rotate xs)
+
+getRotOfDigit :: Int -> [Int]
+getRotOfDigit n = map listToDigit (rotations (length(digitToList n)) (digitToList n))
+--
+isCircPrime :: Int -> Bool
+isCircPrime n = all prime (getRotOfDigit n)
+--
+solveEuler35 :: Int
+solveEuler35 = length (filter isCircPrime (takeWhile (<10^6) primes))
+
+main = do
+  putStrLn "\nIndex of the first term in the Fibonacci sequence to contain 1000 digits:"
+  print solveEuler25
+  putStrLn "\nCircular primes below one million:"
+  print solveEuler35
