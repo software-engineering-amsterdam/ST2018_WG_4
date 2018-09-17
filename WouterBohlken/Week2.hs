@@ -59,10 +59,21 @@ triangleText a b c  | triangle a b c == NoTriangle = "Not a triangle"
 -- We verify that the order of parameters doesn't has no effect on the output of the function
 testTriangleInput = quickCheckResult(\a b c -> (triangle a b c) == (triangle b a c) && (triangle a b c) == (triangle c a b))
 
+-- To verify that when the sum of 2 sides is smaller than one other side, we generate 2 variales
+-- Then we generate a third parameter by adding these variables + 1, and then verify that the output is "NoTriangle"
+
 testNoTriangle = quickCheckResult(\a b -> a >= 1 && b >= 1 --> triangle a b (a+b+1) == NoTriangle)
+-- We verify that when we use a single random number as all 3 parameters, the outcome will always be "Equilateral"
+
 testEqualateral = quickCheckResult(\a -> a >= 1 --> triangle a a a == Equilateral)
+-- When 2 parameters are the same, the outcome should be "Isosceles", as an extra check, we verify that a /= b, otherwise the outcome would be "Equilateral"
+
 testIsosceles = quickCheckResult(\a b -> a >= 1 && b >= 1 && a /= b && (a+a) > b && (b+b) > a --> triangle a a b == Isosceles)
+
 -- testRectangular = quickCheckResult(\a b -> a >= 2 && b >= 3 && a /= b --> triangle a b (sqrt (a^2 + b^2)) == Rectangular)
+
+-- We test other cases by generating a number strating from 4, and adding 1 and 2 to the other parameters, respectively
+-- We start from 4, as the outcome a=1 would be "NoTriangle", and a=3 would be "Rectangular"
 testOther = quickCheckResult(\a -> a >= 4 --> triangle a (a+1) (a+2) == Other)
 
 -- Testing properties strength
@@ -100,6 +111,8 @@ strengthList = sortBy (\ x y -> compare (snd y) (snd x)) (propertyMapping 1 ((ma
 
 -- Recognizing Permutations
 -- Time: 1:30 hours
+-- "You may assume that your input lists do not contain duplicates. What does this mean for your testing procedure":
+-- This means that we need to include a precondition that filters list containing duplicates
 
 perms :: [a] ->[[a]]
 perms [] = [[]]
@@ -144,7 +157,7 @@ derangementTests = [(([1,2,3], [2,3,1]), True),
                       (([1,2,3,4], [2,3,1,4]), False),
                       (([], []), True)]
 
-testDerangements = quickCheckResult(all (\(x, t) -> isDerangement (fst x) (snd x) == t) derangementTests)
+testDerangements = quickCheckResult(all (\(x, b) -> isDerangement (fst x) (snd x) == b) derangementTests)
 -- TODO: Ordered list of stronger and weaker
 -- TODO: Automate using new techniques
 
@@ -169,13 +182,12 @@ transRot13 :: Char -> Char
 transRot13 c  | not (elem c alphabet) = c
               | (indexInAlphabet c) >= 26 = letterByIndex ((((indexInAlphabet c) + 13) `mod` 26) + 26)
               | otherwise = letterByIndex (((indexInAlphabet c) + 13) `mod` 26)
--- TODO: Refactor this...
 
 rot13 :: String -> String
 rot13 s = concat (map (\c -> [transRot13 c]) s)
 
 -- Test that the inverse of Rot13 is the same
-testRot13StringInverse = quickCheck ((\s -> rot13 (rot13 s) == s) :: [Char] -> Bool)
+testRot13StringInverse = quickCheck ((\s -> ((rot13 . rot13) s) == s) :: [Char] -> Bool)
 -- Test that Rot13 does not change integer values
 testRot13IntEqual = quickCheck ((\n -> rot13 (show n) == (show n)) :: [Int] -> Bool)
 -- TODO: QuickChecks by Specification
@@ -202,6 +214,12 @@ validIbans = ["AL35202111090000000001234567",
 
 testValidIbans = quickCheckResult(all (\i -> iban i) validIbans)
 -- TODO: Generate tests
+
+-- Euler project 1
+-- Time: 20 seconds
+multiples :: [Int]
+multiples = filter (\x -> x `mod` 3 == 0 || x `mod` 5 == 0) [0..1000]
+
 
 main = do
   putStrLn "\nProbs"
