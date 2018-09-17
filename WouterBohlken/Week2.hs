@@ -145,7 +145,7 @@ testPermutations = quickCheckResult(all (\(x, t) -> isPermutation (fst x) (snd x
 -- Recognizing and generating derangements
 -- Time: 1 hour
 
-isDerangement :: [Int] -> [Int] -> Bool
+isDerangement :: Ord a => [a] -> [a] -> Bool
 isDerangement xs ys = quicksort xs == quicksort ys && (filter (\x -> fst x == snd x) (zip xs ys) == [])
 
 deran :: [Int] -> [[Int]]
