@@ -4,6 +4,7 @@ import Lecture2
 import System.Random
 import Test.QuickCheck
 import System.IO.Unsafe
+import Data.List
 
 -- Assignment 1 (Random floating point numbers)
 -- Time: 190 minutes
@@ -99,12 +100,6 @@ testTriangle = do
 -- Time: 90 minutes
 -- Result: print $ quicksort properties --> [p1,p3,p4,p5,p2]
 
-evenAndMoreThanThree, evenOrMoreThanThree, evenAndMoreThanThreeOrEvenRight, evenAndMoreThanThreeOrEvenLeft :: Int -> Bool
-evenAndMoreThanThree y = stronger [-10..10] (\ x -> even x && x > 3) even
-evenOrMoreThanThree y = stronger [-10..10] (\ x -> even x || x > 3) even
-evenAndMoreThanThreeOrEvenRight y = stronger [-10..10] (\ x -> (even x && x > 3) || even x) even
-evenAndMoreThanThreeOrEvenLeft y = stronger [-10..10] even (\ x -> (even x && x > 3) || even x)
-
 p1, p2, p3, p4 :: Int -> Bool
 p1 x = even x && x > 3
 p2 x = even x || x > 3
@@ -124,8 +119,27 @@ instance Ord (Prop a) where
 properties = [Prop "p1" p1, Prop "p2" p2, Prop "p3" p3, Prop "p4" p4, Prop "p5" even]
 
 -- Assignment 4 (Recognizing Permutations)
--- Time: 70 minutes
+-- Time: 120 minutes
 -- Result: [Bigger,Increased,Smaller,Reversed,Rotated,Swapped]
+-- Executed tests:
+--        Testing same list: Tests `isPermutation [1,2,3] [1,2,3]`, which is expected to return True.
+--        Testing all rotated lists: Tests `isPermutation [1,2,3] [2,3,1]` and `isPermutation [1,2,3] [3,1,2]`, which are both expected to return True.
+--        Testing reversed list: Tests `isPermutation [1,2,3] [3,2,1]`, which is expected to return True.
+--        Testing all swapped lists: Tests `isPermutation [1,2,3] [2,1,3]` and `isPermutation [1,2,3] [1,3,2]`, which are both expected to return True.
+--        Testing all smaller lists: Tests `isPermutation [1,2,3] [1,2]` and `isPermutation [1,2,3] [1]`, which are both expected to return False.
+--        Testing all bigger lists: Tests `isPermutation [1,2,3] [1,2,3,0]`, which is expected to return False.
+--        Testing increased list: Tests `isPermutation [1,2,3] [2,3,4]`, which is expected to return False.
+--
+-- With these tests all different combinations are tested of cases that should return True and cases that return False for input [1,2,3] and all it's variations.
+--
+-- Test results (which can be retrieved by running the "testPermutations" function):
+--        Testing same list: Test succeeded!
+--        Testing all rotated lists: Test succeeded!
+--        Testing reversed list: Test succeeded!
+--        Testing all swapped lists: Test succeeded!
+--        Testing all smaller lists: Test succeeded!
+--        Testing all bigger lists: Test succeeded!
+--        Testing increased list: Test succeeded!
 
 isPermutation :: Eq a => [a] -> [a] -> Bool
 isPermutation x y = length x == length y && all (\z -> length(filter (==z) x) == length(filter (==z) y)) x
@@ -138,10 +152,11 @@ rotate n xs = zipWith const (drop n (cycle xs)) xs
 propRotated :: Eq a => Int -> [a] -> Bool
 propRotated rotation origList = isPermutation origList (rotate rotation origList)
 
+-- All rotations. For example [1,2,3] has [3,1,2] and [2,3,1] as rotations.
 propAllRotations :: Eq a => [a] -> Bool
 propAllRotations origList = not(null origList) --> all (`propRotated` origList) [1..length origList-1]
 
--- Property: Being reversed. Reversed lists will always be a permutation.
+-- Property: Being reversed. Reversed lists will always be a permutation. For example, [1,2,3] has [3,2,1] as reverse.
 propReversed :: Eq a => [a] -> Bool
 propReversed origList = isPermutation origList (reverse origList)
 
@@ -154,6 +169,7 @@ swapAt index list = take index list ++ head swapWithPos : head swapPos : tail sw
 propSwapped :: Eq a => Int -> [a] -> Bool
 propSwapped index origList = isPermutation origList (swapAt index origList)
 
+-- All swapped elements. For example [1,2,3] has [2,1,3] and [1,3,2] as swapped.
 propAllSwapped :: Eq a => [a] -> Bool
 propAllSwapped origList = (length origList > 1) --> all (`propSwapped` origList) [0..length origList-2]
 
@@ -161,6 +177,7 @@ propAllSwapped origList = (length origList > 1) --> all (`propSwapped` origList)
 propSmaller :: Eq a => Int -> [a] -> Bool
 propSmaller amount origList = isPermutation origList (take amount origList)
 
+-- All smaller. For example [1,2,3] has [1,2] and [1] as smaller lists.
 propAllSmaller :: Eq a => [a] -> Bool
 propAllSmaller origList = not(null origList) --> all (`propSmaller` origList) [1..length origList-1]
 
@@ -178,7 +195,97 @@ propListOfSize propFunction size = propFunction [1..size]
 
 permutationProperties = [Prop "Reversed" (propListOfSize propReversed), Prop "Rotated" (propListOfSize propAllRotations), Prop "Swapped" (propListOfSize propAllSwapped), Prop "Smaller" (propListOfSize propAllSmaller), Prop "Bigger" (propListOfSize propBigger), Prop "Increased" (propListOfSize (propIncreased 1))]
 
+permutationTestList = [1,2,3]
+
+testPermutations :: IO ()
+testPermutations = do
+  putStrLn $ "Testing same list: "++checkTestResult (isPermutation permutationTestList permutationTestList)
+  putStrLn $ "Testing all rotated lists: "++checkTestResult (propAllRotations permutationTestList)
+  putStrLn $ "Testing reversed list: "++checkTestResult (propReversed permutationTestList)
+  putStrLn $ "Testing all swapped lists: "++checkTestResult (propAllSwapped permutationTestList)
+  putStrLn $ "Testing all smaller lists: "++checkTestResult (not (propAllSmaller permutationTestList))
+  putStrLn $ "Testing all bigger lists: "++checkTestResult (not (propBigger permutationTestList))
+  putStrLn $ "Testing increased list: "++checkTestResult (not (propIncreased 1 permutationTestList))
+
 -- Assignment 5 (Recognizing and generating derangements)
+-- Time: 90 minutes
+-- Result: [Bigger,Increased,Smaller,Reversed,Swapped,Rotated]
+-- Executed tests:
+--        Testing same list: Test succeeded!
+--        Testing all rotated lists: Test succeeded!
+--        Testing reversed list on even lists: Test succeeded!
+--        Testing all swapped lists on even lists: Test succeeded!
+--        Testing reversed list on uneven lists: Test succeeded!
+--        Testing all swapped lists on uneven lists: Test succeeded!
+--        Testing all smaller lists: Test succeeded!
+--        Testing all bigger lists: Test succeeded!
+--        Testing increased list: Test succeeded!
+--
+-- Result additional tests:
+--        Testing same list: Test succeeded!
+--        Testing all rotated lists: Test succeeded!
+--        Testing reversed list on even lists: Test succeeded!
+--        Testing all swapped lists on even lists: Test succeeded!
+--        Testing reversed list on uneven lists: Test succeeded!
+--        Testing all swapped lists on uneven lists: Test succeeded!
+--        Testing all smaller lists: Test succeeded!
+--        Testing all bigger lists: Test succeeded!
+--        Testing increased list: Test succeeded!
+
+isDerangement :: Eq a => [a] -> [a] -> Bool
+isDerangement x y = length x == length y && isPermutation x y && all (uncurry (/=)) (zip x y)
+
+deran :: [Int] -> [[Int]]
+deran x = filter (`isDerangement` x) (permutations x)
+
+-- Property: Being rotated. Rotated lists will always be a derangement.
+propDeranRotated :: Eq a => Int -> [a] -> Bool
+propDeranRotated rotation origList = isDerangement origList (rotate rotation origList)
+
+-- All derangement rotations. For example [1,2,3] has [3,1,2] and [2,3,1] as rotations, which are all derangements.
+propAllDeranRotations :: Eq a => [a] -> Bool
+propAllDeranRotations origList = not(null origList) --> all (`propDeranRotated` origList) [1..length origList-1]
+
+-- Property: Being reversed. Reversed lists will be a derangement half of the time. For example, [1,2,3] has [3,2,1] as reverse, which is not a derangement. However, [1,2,3,4] has [4,3,2,1] as a reverse, which is actually a derangement.
+propDeranReversed :: Eq a => [a] -> Bool
+propDeranReversed origList = isDerangement origList (reverse origList)
+
+-- Property: Having every 2 elements swapped. Swapped lists will be a derangement half of the time. For example, [1,2,3] has [2,1,3] as swapped list, which is not a derangement. However, [1,2,3,4] has [2,1,4,3] as swapped list, which is actually a derangement.
+propDeranSwapped :: Eq a => [a] -> Bool
+propDeranSwapped origList = isDerangement origList (foldr swapAt origList [0,2..length origList-2])
+
+-- Property: Being smaller. Smaller lists will never be a derangement.
+propDeranSmaller :: Eq a => Int -> [a] -> Bool
+propDeranSmaller amount origList = isDerangement origList (take amount origList)
+
+-- All smaller. For example [1,2,3] has [1,2] and [1] as smaller lists.
+propAllDeranSmaller :: Eq a => [a] -> Bool
+propAllDeranSmaller origList = not(null origList) --> all (`propDeranSmaller` origList) [1..length origList-1]
+
+-- Property: Being bigger. Bigger lists will never be a derangement.
+propDeranBigger :: [Int] -> Bool
+propDeranBigger origList = isDerangement origList (0:origList)
+
+-- Property: Being increased. Increased lists will never be a derangement.
+propDeranIncreased :: Int -> [Int] -> Bool
+propDeranIncreased amount origList = isDerangement origList (map (+amount) origList)
+
+derangementProperties = [Prop "Reversed" (propListOfSize propDeranReversed), Prop "Rotated" (propListOfSize propAllDeranRotations), Prop "Swapped" (propListOfSize propDeranSwapped), Prop "Smaller" (propListOfSize propAllDeranSmaller), Prop "Bigger" (propListOfSize propDeranBigger), Prop "Increased" (propListOfSize (propDeranIncreased 1))]
+
+derangementTestList = [1,2,3]
+derangementTestListTwo = [1,2,3,4]
+
+testDerangements :: IO ()
+testDerangements = do
+  putStrLn $ "Testing same list: "++checkTestResult (not(isDerangement derangementTestList derangementTestList))
+  putStrLn $ "Testing all rotated lists: "++checkTestResult (propAllDeranRotations derangementTestList)
+  putStrLn $ "Testing reversed list on even lists: "++checkTestResult (propDeranReversed derangementTestListTwo)
+  putStrLn $ "Testing all swapped lists on even lists: "++checkTestResult (propDeranSwapped derangementTestListTwo)
+  putStrLn $ "Testing reversed list on uneven lists: "++checkTestResult (not(propDeranReversed derangementTestList))
+  putStrLn $ "Testing all swapped lists on uneven lists: "++checkTestResult (not(propDeranSwapped derangementTestList))
+  putStrLn $ "Testing all smaller lists: "++checkTestResult (not (propAllDeranSmaller derangementTestList))
+  putStrLn $ "Testing all bigger lists: "++checkTestResult (not (propDeranBigger derangementTestList))
+  putStrLn $ "Testing increased list: "++checkTestResult (not (propDeranIncreased 1 derangementTestList))
 
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
@@ -196,7 +303,13 @@ main = do
   putStrLn "\n== Assignment 3 (Testing properties strength) =="
   print $ quicksort properties
 
+  let testingList = [1,2,3]
   putStrLn "\n== Assignment 4 (Recognizing Permutations) =="
   print $ quicksort permutationProperties
+  testPermutations
+
+  putStrLn "\n== Assignment 5 (Recognizing and generating derangements) =="
+  print $ quicksort derangementProperties
+  testDerangements
 
   putStrLn "Done"
