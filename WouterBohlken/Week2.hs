@@ -19,15 +19,23 @@ probs n = do
              ps <- probs (n-1)
              return (p:ps)
 
-devideQuartiles :: IO ()
-devideQuartiles = do
-                    xs <- probs 10000
+devideQuartiles :: Int -> IO [Int]
+devideQuartiles n = do
+                    xs <- probs n
                     let
                       l1 = filter (\x -> x >= 0 && x <= 0.25) xs
                       l2 = filter (\x -> x > 0.25 && x <= 0.5) xs
                       l3 = filter (\x -> x > 0.5 && x <= 0.75) xs
                       l4 = filter (\x -> x > 0.75 && x <= 1) xs
-                      in print [length l1, length l2, length l3, length l4]
+                    return [length l1, length l2, length l3, length l4]
+
+-- First we test if all numbers are contained in quartiles and thus there is no x where x < 0 or x > 1
+devideQuartilesAmountTest :: Int -> IO ()
+devideQuartilesAmountTest n = do
+                        quartiles <- devideQuartiles n;
+                        quickCheck((sum quartiles) == n)
+
+
 
 -- test1 = quickCheck (sum (read $ devideQuartiles) == 10000)
 -- TODO: Test that the sum of all lists == 10000
@@ -249,7 +257,7 @@ multiples = filter (\x -> x `mod` 3 == 0 || x `mod` 5 == 0) [0..1000]
 
 main = do
   putStrLn "\nProbs"
-
+  devideQuartilesAmountTest 1000000
 
   putStrLn "\nRecognizing triangles"
   testTriangleInput
