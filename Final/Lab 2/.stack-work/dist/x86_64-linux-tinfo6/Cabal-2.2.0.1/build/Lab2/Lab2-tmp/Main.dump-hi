@@ -1,12 +1,12 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-18 18:15:41.177920463 UTC
+2018-09-18 18:51:56.982841844 UTC
 
 interface main:Main 8043
-  interface hash: f73fe38210c6bb9e751059be30dc6382
-  ABI hash: f0a3bc6af4b55da254311ccee5ac8f30
-  export-list hash: 8cf1d984b4977cdd565b841425a9bd9c
-  orphan hash: b1956613db98ad335f0dfdc7bcc95333
+  interface hash: eea28537f9d6804ca40367b33ac48ab3
+  ABI hash: 5b687ff15ac3ae300a078d69af8dc144
+  export-list hash: 353c3e17a530d53c4b6742920402741b
+  orphan hash: e88dc429f51a2a480468f8b008bd138d
   flag hash: 8e9ed84417c9432185130cd9861fe2b6
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
   hpc_hash: 93b885adfe0da089cdf634904fd59f71
@@ -22,6 +22,7 @@ exports:
   Main.derangementProperties
   Main.derangementTestList
   Main.derangementTestListTwo
+  Main.digitToList
   Main.doRotate
   Main.domain
   Main.doubleRotYieldsBeginResult
@@ -29,24 +30,33 @@ exports:
   Main.equalNonLetterCharacters
   Main.evenListSizeReverse
   Main.evenListSizeSwapped
+  Main.fibs
   Main.genBigNumbers
   Main.getAmountInQuartile
+  Main.getRotOfDigit
   Main.iban
   Main.ibanCheckTest
   Main.ibanLengthTable
   Main.isCharacterLetter
+  Main.isCircPrime
   Main.isDerangement
   Main.isPermutation
   Main.isPythagorean
+  Main.largestPandigital
   Main.lengthSame
+  Main.listToDigit
   Main.main
+  Main.multiples
   Main.oddListSizeReverse
   Main.oddListSizeSwapped
   Main.p1
   Main.p2
   Main.p3
+  Main.pandigital
   Main.permutationProperties
   Main.permutationTestList
+  Main.prime
+  Main.primes
   Main.propAllDeranRotations
   Main.propAllDeranSmaller
   Main.propAllRotations
@@ -69,6 +79,10 @@ exports:
   Main.replace
   Main.rot13
   Main.rotate
+  Main.rotateOneSpot
+  Main.rotations
+  Main.solveEuler25
+  Main.solveEuler35
   Main.swapAt
   Main.testDerangements
   Main.testIBANs
@@ -156,7 +170,7 @@ import  -/  Lecture2 217d1f81d64de0e9de04f332a47a0619
   stronger 4c551e650a6fdcd24b6d9e1bd56e5b42
   weaker 2278bf5f4b4bd82946015a679a84790a
 import  -/  random-1.1:System.Random 31994b60c33f032d578c64a928f735f7
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fEqProp :: GHC.Classes.Eq (Main.Prop a)
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -164,28 +178,28 @@ ede75935349030b8682e7de44f5871b1
                   @ (Main.Prop a)
                   (Main.$fEqProp_$c== @ a)
                   (Main.$fEqProp_$c/= @ a) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fEqProp_$c/= :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs,
      Strictness: <S(SL),1*U(1*U,A)><S(SL),1*U(1*U,A)>,
      Inline: (sat-args=2),
      Unfolding: InlineRule (2, False, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
-                 case x of wild { Main.Prop ds ds1 ->
-                 case y of wild1 { Main.Prop ds2 ds3 ->
-                 case GHC.Base.eqString ds ds2 of wild2 {
+                 case x of wild { Main.Prop ds2 ds3 ->
+                 case y of wild1 { Main.Prop ds4 ds5 ->
+                 case GHC.Base.eqString ds2 ds4 of wild2 {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False } } }) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fEqProp_$c== :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs,
      Strictness: <S(SL),1*U(1*U,A)><S(SL),1*U(1*U,A)>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (y :: Main.Prop a) (z :: Main.Prop a) ->
-                 case y of wild { Main.Prop ds ds1 ->
-                 case z of wild1 { Main.Prop ds2 ds3 ->
-                 GHC.Base.eqString ds ds2 } }) -}
-ede75935349030b8682e7de44f5871b1
+                 case y of wild { Main.Prop ds2 ds3 ->
+                 case z of wild1 { Main.Prop ds4 ds5 ->
+                 GHC.Base.eqString ds2 ds4 } }) -}
+2202bc46ad63a6627f120d5dad5d2d21
   $fOrdProp :: GHC.Classes.Ord (Main.Prop a)
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -199,35 +213,35 @@ ede75935349030b8682e7de44f5871b1
                   (Main.$fOrdProp_$c>= @ a)
                   (Main.$fOrdProp_$cmax @ a)
                   (Main.$fOrdProp_$cmin @ a) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fOrdProp_$c< :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> GHC.Types.False GHC.Types.LT -> GHC.Types.True }) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fOrdProp_$c<= :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> GHC.Types.True GHC.Types.GT -> GHC.Types.False }) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fOrdProp_$c> :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> GHC.Types.False GHC.Types.GT -> GHC.Types.True }) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fOrdProp_$c>= :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> GHC.Types.True GHC.Types.LT -> GHC.Types.False }) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fOrdProp_$ccompare ::
     Main.Prop a -> Main.Prop a -> GHC.Types.Ordering
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
@@ -237,21 +251,21 @@ ede75935349030b8682e7de44f5871b1
                  case w of ww { Main.Prop ww1 ww2 ->
                  case w1 of ww3 { Main.Prop ww4 ww5 ->
                  Main.$w$ccompare @ a ww2 ww5 } }) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fOrdProp_$cmax :: Main.Prop a -> Main.Prop a -> Main.Prop a
   {- Arity: 2, Strictness: <S,1*U(U,U)><S,1*U(U,U)>m,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> y GHC.Types.GT -> x }) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fOrdProp_$cmin :: Main.Prop a -> Main.Prop a -> Main.Prop a
   {- Arity: 2, Strictness: <S,1*U(U,U)><S,1*U(U,U)>m,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> x GHC.Types.GT -> y }) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fShowProp :: GHC.Show.Show (Main.Prop a)
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -260,42 +274,42 @@ ede75935349030b8682e7de44f5871b1
                   (Main.$fShowProp_$cshowsPrec @ a)
                   (Main.name @ a)
                   (Main.$fShowProp_$cshowList @ a) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fShowProp1 :: Main.Prop a -> GHC.Base.String -> [GHC.Types.Char]
   {- Arity: 2, HasNoCafRefs, Strictness: <S(SL),1*U(1*U,A)><L,1*U>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (s :: GHC.Base.String)[OneShot] ->
-                 case x of wild { Main.Prop ds ds1 ->
+                 case x of wild { Main.Prop ds2 ds3 ->
                  GHC.Base.augment
                    @ GHC.Types.Char
                    (\ @ b
                       (c :: GHC.Types.Char -> b -> b)[OneShot]
                       (n :: b)[OneShot] ->
-                    GHC.Base.foldr @ GHC.Types.Char @ b c n ds)
+                    GHC.Base.foldr @ GHC.Types.Char @ b c n ds2)
                    s }) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fShowProp_$cshowList :: [Main.Prop a] -> GHC.Show.ShowS
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,U>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (ls :: [Main.Prop a]) (s :: GHC.Base.String) ->
                  GHC.Show.showList__ @ (Main.Prop a) (Main.$fShowProp1 @ a) ls s) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   $fShowProp_$cshowsPrec ::
     GHC.Types.Int -> Main.Prop a -> GHC.Show.ShowS
   {- Arity: 3, HasNoCafRefs,
      Strictness: <L,A><S(SL),1*U(1*U,A)><L,1*U>,
      Unfolding: InlineRule (3, True, False)
                 (\ @ a
-                   (ds :: GHC.Types.Int)
+                   (ds2 :: GHC.Types.Int)
                    (x :: Main.Prop a)
                    (s :: GHC.Base.String) ->
-                 case x of wild { Main.Prop ds1 ds2 ->
+                 case x of wild { Main.Prop ds3 ds4 ->
                  GHC.Base.augment
                    @ GHC.Types.Char
                    (\ @ b
                       (c :: GHC.Types.Char -> b -> b)[OneShot]
                       (n :: b)[OneShot] ->
-                    GHC.Base.foldr @ GHC.Types.Char @ b c n ds1)
+                    GHC.Base.foldr @ GHC.Types.Char @ b c n ds3)
                    s }) -}
 61c6d9e324766287331725eee37d5c0b
   $s$fArbitraryZipList1 ::
@@ -365,8 +379,17 @@ cb77c7ac93eb07167659c5871b42d656
                    @ GHC.Types.Int
                    Test.QuickCheck.Arbitrary.$fArbitrary1IntMap_$sshrinkIntegral
                    eta) -}
-2337f19ee379498eb4859440d993f4a7
-  $seven :: GHC.Types.Int -> GHC.Types.Bool
+4037c972197a0c88217594c9989277ee
+  $s^1 :: GHC.Types.Int
+  {- Strictness: x -}
+60f908c3ae49ba1e6faa200dc661ff57
+  $s^2 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (0) -}
+571cd0ff7d6cf1a37c3b6b1e80be992e
+  $seven1 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (2) -}
+bf1ce031266d24e5310b6a3249c62aba
+  $seven2 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
                 (\ (n :: GHC.Types.Int) ->
@@ -539,7 +562,18 @@ d026be77cb9ced20e35a61514e0458aa
                    ww2
                    ww3
                    w1) -}
-a3564ac6b6e3f78e8319ac4c59e72e78
+0b89a6d82fecb62a69f4a687def6bc1b
+  $w$s^ :: GHC.Types.Int -> GHC.Integer.Type.Integer -> GHC.Prim.Int#
+  {- Arity: 2, Strictness: <L,1*U(U)><S,U>, Inline: [0],
+     Unfolding: (\ (w :: GHC.Types.Int)
+                   (w1 :: GHC.Integer.Type.Integer) ->
+                 case GHC.Integer.Type.ltInteger# w1 Main.$s^2 of wild {
+                   DEFAULT
+                   -> case GHC.Integer.Type.eqInteger# w1 Main.$s^2 of wild1 {
+                        DEFAULT -> case w of ww { GHC.Types.I# ww1 -> Main.$wf ww1 w1 }
+                        1# -> 1# }
+                   1# -> case Main.$s^1 ret_ty GHC.Prim.Int# of {} }) -}
+b9003941d3dff4a3230b30066edc40c9
   $wderangementProperties :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -553,7 +587,7 @@ a3564ac6b6e3f78e8319ac4c59e72e78
                       @ GHC.Types.Int
                       Main.derangementProperties8
                       origList)) -}
-ea26597f7d94a1fb468f10d704ddac2e
+dfd3f67a4192ee6af64350e7d12a6113
   $wderangementProperties1 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -566,7 +600,7 @@ ea26597f7d94a1fb468f10d704ddac2e
                       @ GHC.Types.Int
                       Main.derangementProperties13
                       origList)) -}
-1f232083236eee94d02a2d3a5c53e70c
+e899363fc7d08fa5197d035759c596c6
   $wderangementProperties2 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -582,7 +616,23 @@ ea26597f7d94a1fb468f10d704ddac2e
                            @ GHC.Types.Int
                            origList
                            (GHC.Types.[] @ GHC.Types.Int)) }) -}
-835ebed4606aa92964498d0d376afba1
+3442da7f9a4d4aa4dd2f81b21f002054
+  $wdigitToList :: GHC.Prim.Int# -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#) ->
+                 case GHC.Show.$wshowSignedInt
+                        0#
+                        ww
+                        (GHC.Types.[] @ GHC.Types.Char) of ww4 { (#,#) ww5 ww6 ->
+                 GHC.Base.map
+                   @ GHC.Types.Char
+                   @ GHC.Types.Int
+                   Data.Char.digitToInt
+                   (GHC.Types.: @ GHC.Types.Char ww5 ww6) }) -}
+cd89efe16adc89a36f0955a0c1b3f7cb
+  $wf :: GHC.Prim.Int# -> GHC.Integer.Type.Integer -> GHC.Prim.Int#
+  {- Arity: 2, Strictness: <S,U><S,U>, Inline: [0] -}
+dba3d00deb4936c95732a8f04cbbed6f
   $wgenBigNumbers ::
     GHC.Prim.ByteArray#
     -> GHC.Prim.Word#
@@ -607,19 +657,99 @@ ea26597f7d94a1fb468f10d704ddac2e
                    ww2
                    ww3
                    ww4) -}
+f4cd3e0614479a89d3552b8002d7ff06
+  $wgetRotOfDigit :: GHC.Prim.Int# -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#) ->
+                 case GHC.Show.$wshowSignedInt
+                        0#
+                        ww
+                        (GHC.Types.[] @ GHC.Types.Char) of ww4 { (#,#) ww5 ww6 ->
+                 let {
+                   exit :: GHC.Prim.Int# -> [GHC.Types.Int]
+                     <join 1> {- Arity: 1, Strictness: <S,U> -}
+                   = \ (ww1 :: GHC.Prim.Int#)[OneShot] ->
+                     case GHC.Prim.<# 0# ww1 of lwild {
+                       DEFAULT -> GHC.Types.[] @ GHC.Types.Int
+                       1#
+                       -> Main.$wgo1
+                            (case GHC.Show.$wshowSignedInt
+                                    0#
+                                    ww
+                                    (GHC.Types.[] @ GHC.Types.Char) of ww2 { (#,#) ww3 ww7 ->
+                             GHC.Base.map
+                               @ GHC.Types.Char
+                               @ GHC.Types.Int
+                               Data.Char.digitToInt
+                               (GHC.Types.: @ GHC.Types.Char ww3 ww7) })
+                            ww1 }
+                 } in
+                 letrec {
+                   $wgo8 :: [GHC.Types.Char] -> GHC.Prim.Int# -> [GHC.Types.Int]
+                     <join 2> {- Arity: 2, Strictness: <S,1*U><S,U>, Inline: [0] -}
+                   = \ (w :: [GHC.Types.Char]) (ww1 :: GHC.Prim.Int#) ->
+                     case w of wild {
+                       [] -> exit ww1 : y ys -> $wgo8 ys (GHC.Prim.+# ww1 1#) }
+                 } in
+                 $wgo8 (GHC.Types.: @ GHC.Types.Char ww5 ww6) 0# }) -}
 6268d1e69ac60efee874ca4e86740837
   $wgo :: [GHC.Types.Char] -> GHC.Prim.Int# -> [GHC.Types.Char]
   {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0] -}
+1b840cee4f930b1f4b191a008efcddcd
+  $wgo1 :: [GHC.Types.Int] -> GHC.Prim.Int# -> [GHC.Types.Int]
+  {- Arity: 2, Strictness: <L,U><S,1*U>m2, Inline: [0] -}
+a372f040e299d7afbc7422c4a87b1168
+  $wgo2 ::
+    (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+    -> (# GHC.Integer.Type.Integer, [GHC.Integer.Type.Integer] #)
+  {- Arity: 1, Strictness: <L,U(U,U)>, Inline: [0] -}
+1a911f7fc2c21101225ce9f066956870
+  $wgo3 ::
+    [(GHC.Types.Int, GHC.Base.String)]
+    -> GHC.Types.Int
+    -> GHC.Base.String
+    -> (GHC.Types.Int, GHC.Base.String)
+  {- Arity: 3, HasNoCafRefs, Strictness: <S,1*U><L,U><L,U>m,
+     Inline: [0] -}
+32e34277fd027e6cfcaef8ee8f4c93ef
+  $wgo4 ::
+    GHC.Prim.Int#
+    -> (# (GHC.Types.Int, GHC.Base.String),
+          [(GHC.Types.Int, GHC.Base.String)] #)
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U>, Inline: [0] -}
+479a9fde52d0a8fd75388e19ed016ccc
+  $wgo5 :: [GHC.Types.Int] -> GHC.Prim.Int# -> [[GHC.Types.Int]]
+  {- Arity: 2, Strictness: <L,U><S,1*U>m2, Inline: [0] -}
+26e05224877f6c8638cfcc8165ed0bcd
+  $wgo6 ::
+    [GHC.Integer.Type.Integer] -> GHC.Prim.Int# -> GHC.Prim.Int#
+  {- Arity: 2, Strictness: <S,1*U><S,U>, Inline: [0] -}
+710ead80f2c08c7d8bdad3a7180ae713
+  $wgo7 :: [GHC.Types.Int] -> GHC.Prim.Int# -> GHC.Prim.Int#
+  {- Arity: 2, Strictness: <S,1*U><S,U>, Inline: [0] -}
 ceb02596fde198e1fc37dea3b6819691
   $wibanLengthTable :: GHC.Base.String -> GHC.Prim.Int#
   {- Arity: 1, Strictness: <S,U>, Inline: [0] -}
+7c99d6ebf2961c80c5f554641a54cb07
+  $wisCircPrime :: GHC.Prim.Int# -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <S,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#) ->
+                 Main.isCircPrime_go (Main.$wgetRotOfDigit ww)) -}
 171e0e363b6443ce9c178d6b2a89760d
   $wp3 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
                  case GHC.Prim.remInt# ww 2# of wild {
                    DEFAULT -> GHC.Types.False 0# -> GHC.Types.True }) -}
-0f01aff83b39807713ca5d1f2092f621
+c5fe613830f562e4f87c820920a28938
+  $wpandigital ::
+    GHC.Types.Int
+    -> GHC.Types.Int
+    -> GHC.Base.String
+    -> (# GHC.Types.Int, GHC.Base.String #)
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,U(U)><L,U(U)><S,U>,
+     Inline: [0] -}
+158864392109a5c5e985111899391f14
   $wpermutationProperties :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -633,7 +763,7 @@ ceb02596fde198e1fc37dea3b6819691
                       @ GHC.Types.Int
                       Main.derangementProperties8
                       origList)) -}
-5b2edc602495a90a5d4b5328306c052d
+3d74faa662b045fc9002aa54e45ac6fa
   $wpermutationProperties1 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -646,7 +776,7 @@ ceb02596fde198e1fc37dea3b6819691
                       @ GHC.Types.Int
                       Main.derangementProperties13
                       origList)) -}
-d197402d5bedca28525df30feeda14ac
+880a8ecebb339e2cf224e7af519efa65
   $wpermutationProperties2 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -659,7 +789,36 @@ d197402d5bedca28525df30feeda14ac
                       @ GHC.Types.Int
                       origList
                       (GHC.Types.[] @ GHC.Types.Int))) -}
-d6418dbfd0a89d20352c3efa3cdee7aa
+996030b5caffccf54de6add1033c31de
+  $wprime :: GHC.Prim.Int# -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#) ->
+                 case GHC.Prim.># ww 1# of lwild {
+                   DEFAULT -> GHC.Types.False
+                   1#
+                   -> letrec {
+                        go :: [GHC.Types.Int] -> GHC.Types.Bool
+                          <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                        = \ (ds2 :: [GHC.Types.Int]) ->
+                          case ds2 of wild {
+                            [] -> GHC.Types.True
+                            : y ys
+                            -> case y of wild1 { GHC.Types.I# x ->
+                               case GHC.Prim.<=# (GHC.Prim.*# x x) ww of lwild1 {
+                                 DEFAULT -> GHC.Types.True
+                                 1#
+                                 -> case x of wild2 {
+                                      DEFAULT
+                                      -> case GHC.Prim.remInt# ww wild2 of wild3 {
+                                           DEFAULT -> go ys 0# -> GHC.Types.False }
+                                      -1# -> GHC.Types.False
+                                      0#
+                                      -> case GHC.Real.divZeroError
+                                         ret_ty GHC.Types.Bool
+                                         of {} } } } }
+                      } in
+                      go Main.primes }) -}
+2eb35d3cc06cbd503a08b3667103ef39
   $wpropDeranIncreased ::
     GHC.Prim.Int# -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,U>, Inline: [0],
@@ -671,12 +830,12 @@ d6418dbfd0a89d20352c3efa3cdee7aa
                         (GHC.Base.map
                            @ GHC.Types.Int
                            @ GHC.Types.Int
-                           (\ (ds :: GHC.Types.Int) ->
-                            case ds of wild1 { GHC.Types.I# x ->
+                           (\ (ds2 :: GHC.Types.Int) ->
+                            case ds2 of wild1 { GHC.Types.I# x ->
                             GHC.Types.I# (GHC.Prim.+# x wild) })
                            w)
                    0# -> GHC.Types.True }) -}
-300d2616f9a79f6229ebb233b52f6377
+5eca25bec6146584d0ff533a563e5f9f
   $wpropDeranSmaller ::
     GHC.Prim.Int# -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><S,U>, Inline: [0],
@@ -687,7 +846,7 @@ d6418dbfd0a89d20352c3efa3cdee7aa
                    -> Main.isDerangement
                         w
                         (GHC.List.$wunsafeTake @ GHC.Types.Int ww w) }) -}
-1c14ebe150a9ba6b4161757f90ed3801
+78ee4d56cc03f136747dcc538c1106e5
   $wpropSmaller ::
     GHC.Classes.Eq a => GHC.Prim.Int# -> [a] -> GHC.Types.Bool
   {- Arity: 3, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,U><S,U>,
@@ -704,7 +863,7 @@ d6418dbfd0a89d20352c3efa3cdee7aa
                         w
                         w1
                         (GHC.List.$wunsafeTake @ a ww w1) }) -}
-428e9e490721aa9d2b5848e1e2253367
+9075cf45c5cfcdaaf36135f3c4b38e3b
   $wreplace ::
     GHC.Prim.Int#
     -> GHC.Types.Char -> GHC.Base.String -> [GHC.Types.Char]
@@ -728,19 +887,27 @@ d6418dbfd0a89d20352c3efa3cdee7aa
                    DEFAULT -> n1
                    1#
                    -> letrec {
-                        $wgo1 :: [GHC.Types.Char] -> GHC.Prim.Int# -> [GHC.Types.Char]
+                        $wgo8 :: [GHC.Types.Char] -> GHC.Prim.Int# -> [GHC.Types.Char]
                           {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0] -}
                         = \ (w2 :: [GHC.Types.Char]) (ww1 :: GHC.Prim.Int#) ->
                           case w2 of wild {
                             [] -> n1
                             : y ys
-                            -> case ww1 of ds1 {
+                            -> case ww1 of ds2 {
                                  DEFAULT
-                                 -> GHC.Types.: @ GHC.Types.Char y ($wgo1 ys (GHC.Prim.-# ds1 1#))
+                                 -> GHC.Types.: @ GHC.Types.Char y ($wgo8 ys (GHC.Prim.-# ds2 1#))
                                  1# -> GHC.Types.: @ GHC.Types.Char y n1 } }
                       } in
-                      $wgo1 w1 ww }) -}
-b60ccf795840fabaa74f136fddf18554
+                      $wgo8 w1 ww }) -}
+003c1e783b46b89d2c5e9d1bfc3dcd42
+  $wrotations ::
+    GHC.Prim.Int# -> [GHC.Types.Int] -> [[GHC.Types.Int]]
+  {- Arity: 2, Strictness: <S,U><L,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#) (w :: [GHC.Types.Int]) ->
+                 case GHC.Prim.<# 0# ww of lwild {
+                   DEFAULT -> GHC.Types.[] @ [GHC.Types.Int]
+                   1# -> Main.$wgo5 w ww }) -}
+24a3a9d5dfb9c0d4a4f1285c8bb3164d
   $wswapAt :: GHC.Prim.Int# -> [a] -> [a]
   {- Arity: 2, Strictness: <S,U><L,U>, Inline: [0],
      Unfolding: (\ @ a (ww :: GHC.Prim.Int#) (w :: [a]) ->
@@ -755,16 +922,16 @@ b60ccf795840fabaa74f136fddf18554
                  let {
                    n :: a
                    = case swapWithPos of wild {
-                       [] -> GHC.List.badHead @ a : x ds1 -> x }
+                       [] -> GHC.List.badHead @ a : x ds2 -> x }
                  } in
                  let {
                    n1 :: a
-                   = case swapPos of wild { [] -> GHC.List.badHead @ a : x ds1 -> x }
+                   = case swapPos of wild { [] -> GHC.List.badHead @ a : x ds2 -> x }
                  } in
                  let {
                    n2 :: [a]
                    = case swapWithPos of wild {
-                       [] -> GHC.List.scanl2 @ a : ds1 xs -> xs }
+                       [] -> GHC.List.scanl2 @ a : ds2 xs -> xs }
                  } in
                  let {
                    n3 :: [a] = GHC.Types.: @ a n1 n2
@@ -776,18 +943,18 @@ b60ccf795840fabaa74f136fddf18554
                    DEFAULT -> n4
                    1#
                    -> letrec {
-                        $wgo1 :: [a] -> GHC.Prim.Int# -> [a]
+                        $wgo8 :: [a] -> GHC.Prim.Int# -> [a]
                           {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0] -}
                         = \ (w1 :: [a]) (ww1 :: GHC.Prim.Int#) ->
                           case w1 of wild {
                             [] -> n4
                             : y ys
-                            -> case ww1 of ds1 {
-                                 DEFAULT -> GHC.Types.: @ a y ($wgo1 ys (GHC.Prim.-# ds1 1#))
+                            -> case ww1 of ds2 {
+                                 DEFAULT -> GHC.Types.: @ a y ($wgo8 ys (GHC.Prim.-# ds2 1#))
                                  1# -> GHC.Types.: @ a y n4 } }
                       } in
-                      $wgo1 w ww }) -}
-fdee09d6a1790d9c001f6131fe8bdf86
+                      $wgo8 w ww }) -}
+040aafc498509c97530a5ad7e5d4871c
   $wtestPropDeranIncreased ::
     GHC.Prim.Int# -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U>, Inline: [0],
@@ -796,20 +963,20 @@ fdee09d6a1790d9c001f6131fe8bdf86
                    DEFAULT
                    -> case w of wild1 {
                         [] -> GHC.Types.True
-                        : ds1 ds2
+                        : ds2 ds3
                         -> case Main.isDerangement
                                   wild1
                                   (GHC.Base.map
                                      @ GHC.Types.Int
                                      @ GHC.Types.Int
-                                     (\ (ds :: GHC.Types.Int) ->
-                                      case ds of wild2 { GHC.Types.I# x ->
+                                     (\ (ds4 :: GHC.Types.Int) ->
+                                      case ds4 of wild2 { GHC.Types.I# x ->
                                       GHC.Types.I# (GHC.Prim.+# x wild) })
                                      wild1) of wild2 {
                              GHC.Types.False -> GHC.Types.True
                              GHC.Types.True -> GHC.Types.False } }
                    0# -> GHC.Types.True }) -}
-00d5f4cc9343a222a34eabf6787eb55e
+3501ee9bd75a83e0273db7eca495cbcb
   $wtestQuartiles :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -824,43 +991,43 @@ fdee09d6a1790d9c001f6131fe8bdf86
                               case GHC.Prim.noDuplicate#
                                      @ GHC.Prim.RealWorld
                                      s of s' { DEFAULT ->
-                              case Lab2.$wprobs ww s' of ds1 { (#,#) ipv ipv1 ->
+                              case Lab2.$wprobs ww s' of ds2 { (#,#) ipv ipv1 ->
                               (# ipv,
                                  Main.calcQuartile
                                    ipv1
-                                   Main.getAmountInQuartile2 #) } }) of ds { (#,#) ipv ipv1 ->
+                                   Main.getAmountInQuartile2 #) } }) of ds2 { (#,#) ipv ipv1 ->
                       let {
-                        lvl257 :: GHC.Prim.Int# = GHC.Prim.uncheckedIShiftRA# ww 2#
+                        lvl275 :: GHC.Prim.Int# = GHC.Prim.uncheckedIShiftRA# ww 2#
                       } in
                       let {
-                        lvl258 :: GHC.Types.Int
-                        = case GHC.Classes.divInt# lvl257 100# of v { DEFAULT ->
+                        lvl276 :: GHC.Types.Int
+                        = case GHC.Classes.divInt# lvl275 100# of v { DEFAULT ->
                           GHC.Types.I# v }
                       } in
                       letrec {
                         go :: [GHC.Types.Int] -> GHC.Types.Bool
                           <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                        = \ (ds1 :: [GHC.Types.Int]) ->
-                          case ds1 of wild {
+                        = \ (ds3 :: [GHC.Types.Int]) ->
+                          case ds3 of wild {
                             [] -> GHC.Types.True
                             : y ys
-                            -> case lvl258 of v { GHC.Types.I# v1 ->
+                            -> case lvl276 of v { GHC.Types.I# v1 ->
                                case y of wild1 { GHC.Types.I# x ->
                                let {
                                  y1 :: GHC.Prim.Int# = GHC.Prim.*# v1 25#
                                } in
                                case GHC.Prim.>=#
                                       x
-                                      (GHC.Prim.-# (GHC.Prim.-# lvl257 y1) 1#) of lwild1 {
+                                      (GHC.Prim.-# (GHC.Prim.-# lvl275 y1) 1#) of lwild1 {
                                  DEFAULT -> GHC.Types.False
                                  1#
                                  -> case GHC.Prim.<=#
                                            x
-                                           (GHC.Prim.+# (GHC.Prim.+# lvl257 y1) 1#) of lwild2 {
+                                           (GHC.Prim.+# (GHC.Prim.+# lvl275 y1) 1#) of lwild2 {
                                       DEFAULT -> GHC.Types.False 1# -> go ys } } } } }
                       } in
                       go ipv1 } }) -}
-c5ef8b608afa9803077844cbe7656559
+ab66a6172e8816f502e6b20ef649c2e7
   $wtestQuartilesSafe ::
     GHC.Prim.Int#
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -868,39 +1035,39 @@ c5ef8b608afa9803077844cbe7656559
   {- Arity: 2, Strictness: <S,U><S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#)
                    (w :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 case Lab2.$wprobs ww w of ds1 { (#,#) ipv ipv1 ->
+                 case Lab2.$wprobs ww w of ds2 { (#,#) ipv ipv1 ->
                  (# ipv,
                     case GHC.Prim.># ww 0# of lwild {
                       DEFAULT -> GHC.Types.True
                       1#
                       -> let {
-                           lvl257 :: GHC.Prim.Int# = GHC.Prim.uncheckedIShiftRA# ww 2#
+                           lvl275 :: GHC.Prim.Int# = GHC.Prim.uncheckedIShiftRA# ww 2#
                          } in
                          let {
-                           lvl258 :: GHC.Types.Int
-                           = case GHC.Classes.divInt# lvl257 100# of v { DEFAULT ->
+                           lvl276 :: GHC.Types.Int
+                           = case GHC.Classes.divInt# lvl275 100# of v { DEFAULT ->
                              GHC.Types.I# v }
                          } in
                          letrec {
                            go :: [GHC.Types.Int] -> GHC.Types.Bool
                              <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                           = \ (ds :: [GHC.Types.Int]) ->
-                             case ds of wild {
+                           = \ (ds3 :: [GHC.Types.Int]) ->
+                             case ds3 of wild {
                                [] -> GHC.Types.True
                                : y ys
-                               -> case lvl258 of v { GHC.Types.I# v1 ->
+                               -> case lvl276 of v { GHC.Types.I# v1 ->
                                   case y of wild1 { GHC.Types.I# x ->
                                   let {
                                     y1 :: GHC.Prim.Int# = GHC.Prim.*# v1 10#
                                   } in
                                   case GHC.Prim.>=#
                                          x
-                                         (GHC.Prim.-# (GHC.Prim.-# lvl257 y1) 1#) of lwild1 {
+                                         (GHC.Prim.-# (GHC.Prim.-# lvl275 y1) 1#) of lwild1 {
                                     DEFAULT -> GHC.Types.False
                                     1#
                                     -> case GHC.Prim.<=#
                                               x
-                                              (GHC.Prim.+# (GHC.Prim.+# lvl257 y1) 1#) of lwild2 {
+                                              (GHC.Prim.+# (GHC.Prim.+# lvl275 y1) 1#) of lwild2 {
                                          DEFAULT -> GHC.Types.False 1# -> go ys } } } } }
                          } in
                          go (Main.calcQuartile ipv1 Main.getAmountInQuartile2) } #) }) -}
@@ -967,7 +1134,7 @@ c5ef8b608afa9803077844cbe7656559
   $wunsafeDrop :: GHC.Prim.Int# -> [a1] -> [a1]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U><S,1*U>,
      Inline: [0] -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   type role Prop phantom
   data Prop a
     = Prop {name :: GHC.Base.String,
@@ -982,12 +1149,12 @@ e8f0eb75174129746e95b52a9100d97d
   calcQuartile ::
     [GHC.Types.Float] -> [GHC.Types.Float] -> [GHC.Types.Int]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-1360b2fe0904050bab925ba79003f352
+d7783b45dd192e866cf02d7903c212bf
   checkTestResult :: GHC.Types.Bool -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
-                (\ (ds :: GHC.Types.Bool) ->
-                 case ds of wild {
+                (\ (ds2 :: GHC.Types.Bool) ->
+                 case ds2 of wild {
                    GHC.Types.False -> Main.checkTestResult3
                    GHC.Types.True -> Main.checkTestResult1 }) -}
 07e9afa9026195e449fc2901f6e320ce
@@ -1010,13 +1177,13 @@ f259455213a5f5374054d0926c228555
     -> Lab2.Shape
     -> GHC.Types.IO ()
   {- Arity: 4, Strictness: <S,U><S,U><S,U><S,U> -}
-f95b8f0e9698b05c8bfc07d19c1c5396
+7089f028b475977cff98a2c2b43f6ceb
   deran :: [GHC.Types.Int] -> [[GHC.Types.Int]]
   {- Arity: 1, HasNoCafRefs, Strictness: <L,U>,
      Unfolding: (\ (x :: [GHC.Types.Int]) ->
                  GHC.List.filter
                    @ [GHC.Types.Int]
-                   (\ (ds :: [GHC.Types.Int]) -> Main.isDerangement ds x)
+                   (\ (ds2 :: [GHC.Types.Int]) -> Main.isDerangement ds2 x)
                    (GHC.Types.:
                       @ [GHC.Types.Int]
                       x
@@ -1024,7 +1191,7 @@ f95b8f0e9698b05c8bfc07d19c1c5396
                          @ GHC.Types.Int
                          x
                          (GHC.Types.[] @ GHC.Types.Int)))) -}
-f4a7070374a31c6ca5740e1e3f7bdab8
+ec4e978ad0aba1829e6a3574f3d5cea8
   derangementProperties :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1032,7 +1199,7 @@ f4a7070374a31c6ca5740e1e3f7bdab8
                    @ (Main.Prop a)
                    (Main.derangementProperties28 @ a)
                    (Main.derangementProperties1 @ a)) -}
-3d4465c6642c5e4b2bbd9317122523d9
+97895b15593c4354c70a3e4058f388b1
   derangementProperties1 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1043,7 +1210,7 @@ f4a7070374a31c6ca5740e1e3f7bdab8
 2e1280c05b63317631bc03bfdeab7679
   derangementProperties10 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Increased"#) -}
-6f735b8229ce3f2eb4f521b7339d1e6f
+1f49393e194751d7d6967529d8dddd97
   derangementProperties11 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1051,7 +1218,7 @@ f4a7070374a31c6ca5740e1e3f7bdab8
                    @ a
                    Main.derangementProperties14
                    Main.derangementProperties12) -}
-1c5027710d3fccdcca854bd2cf8e5993
+b9757935755c953d89d50b3ceaee479a
   derangementProperties12 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
@@ -1068,7 +1235,7 @@ f4a7070374a31c6ca5740e1e3f7bdab8
 e4ae6758d107faf94e8987957d1d2ee9
   derangementProperties15 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Bigger"#) -}
-43124dae54586f08b6a5b371e004973a
+98867b831f7d5e4bcc91b3035032c7cb
   derangementProperties16 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1076,7 +1243,7 @@ e4ae6758d107faf94e8987957d1d2ee9
                    @ a
                    Main.derangementProperties18
                    Main.derangementProperties17) -}
-5ff2d9eccf0beef436a158b1e4c95fc1
+a81c2aebbc2db5497c62bb5b174017ca
   derangementProperties17 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1094,7 +1261,7 @@ e4ae6758d107faf94e8987957d1d2ee9
 cf12cc512499f16cb17f83a022b126a6
   derangementProperties19 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Smaller"#) -}
-be77f4cd4550b81ae99136960db38149
+1127d7a2c1d313bfa63a0b329a865b07
   derangementProperties2 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1102,7 +1269,7 @@ be77f4cd4550b81ae99136960db38149
                    @ (Main.Prop a)
                    (Main.derangementProperties20 @ a)
                    (Main.derangementProperties3 @ a)) -}
-50a2bb4d99fdbf8532478fbe098e2bd6
+5f4212c148a94f59abd8e7a5f336ee0b
   derangementProperties20 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1110,7 +1277,7 @@ be77f4cd4550b81ae99136960db38149
                    @ a
                    Main.derangementProperties22
                    Main.derangementProperties21) -}
-79ec9bce5c1340b772e34922b05954c1
+02e1cce3c84ba63f8cb0c7e3eee1c6a2
   derangementProperties21 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1128,7 +1295,7 @@ be77f4cd4550b81ae99136960db38149
 488fe437cdfa728cd5956f269a460e04
   derangementProperties23 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Swapped"#) -}
-d606150e6b78c5b3382bd3d4bde74b24
+ea8a9c19ea1ac22457de7397b4c28f78
   derangementProperties24 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1136,7 +1303,7 @@ d606150e6b78c5b3382bd3d4bde74b24
                    @ a
                    Main.derangementProperties26
                    Main.derangementProperties25) -}
-a64e0e97c402f082c2ae7b246dfee04d
+3ec9c47940e01d5d00c94af273835e10
   derangementProperties25 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1154,7 +1321,7 @@ a64e0e97c402f082c2ae7b246dfee04d
 ddd9025ff828b57e2db59c11de942248
   derangementProperties27 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Rotated"#) -}
-3d4fdd31e1b359a1634b9664d48e9849
+02bab869c01e60db72606abe5aa4ef21
   derangementProperties28 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1162,14 +1329,14 @@ ddd9025ff828b57e2db59c11de942248
                    @ a
                    Main.derangementProperties30
                    Main.derangementProperties29) -}
-cb36c5731f9efb2dc6aaf2e54615ce11
+00cf9b00ddc1a11e1a5479cd8d24c974
   derangementProperties29 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wderangementProperties2 ww1 }) -}
-a8ed9f03eac52d600be33c4328bb189f
+5150dc82265b586fd1685bdba364b9ae
   derangementProperties3 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1184,7 +1351,7 @@ a8ed9f03eac52d600be33c4328bb189f
 59592e7ad12c7a995eafbfe03b2d281a
   derangementProperties31 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Reversed"#) -}
-474264d883d0a1db4829c6d685404839
+a0cbff16a3622283c8b076c4e0547171
   derangementProperties4 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1192,7 +1359,7 @@ a8ed9f03eac52d600be33c4328bb189f
                    @ (Main.Prop a)
                    (Main.derangementProperties11 @ a)
                    (Main.derangementProperties5 @ a)) -}
-67eacdd6ab4d8fa8243b31208b58832b
+f4d94f305d4a3697d0916eaa02f3b54b
   derangementProperties5 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1200,7 +1367,7 @@ a8ed9f03eac52d600be33c4328bb189f
                    @ (Main.Prop a)
                    (Main.derangementProperties6 @ a)
                    (GHC.Types.[] @ (Main.Prop a))) -}
-73321b37f9a39aeef9d1bf9f0a2f8e27
+a76b24761f7ed6581ad4cb57d4beb5b4
   derangementProperties6 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1208,18 +1375,18 @@ a8ed9f03eac52d600be33c4328bb189f
                    @ a
                    Main.derangementProperties9
                    Main.derangementProperties7) -}
-860d06b0fb508a3b5b3eea5cc7bf01d3
+7286f568b6be3876b93d6a2fe9f2eae6
   derangementProperties7 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wderangementProperties ww1 }) -}
-49a4af33193758b07bf35204011783c5
+b82bfb2e4cdc164cf2636dee6301b621
   derangementProperties8 :: GHC.Types.Int -> GHC.Types.Int
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>m,
-     Unfolding: (\ (ds :: GHC.Types.Int) ->
-                 case ds of wild { GHC.Types.I# x ->
+     Unfolding: (\ (ds2 :: GHC.Types.Int) ->
+                 case ds2 of wild { GHC.Types.I# x ->
                  GHC.Types.I# (GHC.Prim.+# x 1#) }) -}
 065c546d723330c95ca3639eb7129dbd
   derangementProperties9 :: [GHC.Types.Char]
@@ -1259,7 +1426,13 @@ e8961132c88e0fbf13b0c3097d065f3f
 167546ac5f2de9fac1e62ac250d3bf37
   derangementTestListTwo4 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 4#) -}
-d456de089548a60cd847d85ea6c88e0d
+d9f6779ce9a858cf0ba36385f5c812a7
+  digitToList :: GHC.Types.Int -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S(S),1*U(U)>, Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: GHC.Types.Int) ->
+                 case w of ww { GHC.Types.I# ww1 -> Main.$wdigitToList ww1 }) -}
+dd01a77411f0578685962b331db306ee
   doRotate :: GHC.Base.String -> GHC.Types.Char -> GHC.Types.Char
   {- Arity: 2, Strictness: <S,U><L,1*U(U)>,
      Unfolding: (\ (domain1 :: GHC.Base.String)
@@ -1269,7 +1442,7 @@ d456de089548a60cd847d85ea6c88e0d
                    -> case rotatingCharacter of wild { GHC.Types.C# c# ->
                       case domain1 of wild1 {
                         [] -> case GHC.List.badHead ret_ty GHC.Types.Char of {}
-                        : x ds1
+                        : x ds2
                         -> case x of wild2 { GHC.Types.C# c#1 ->
                            case GHC.Classes.modInt#
                                   (GHC.Prim.-#
@@ -1320,21 +1493,32 @@ d6a4e46e91c0dc1e792ac78a140b6840
   equalNonLetterCharacters_go2 ::
     [GHC.Types.Char] -> [GHC.Types.Char] -> Data.Semigroup.Internal.All
   {- Arity: 2, Strictness: <S,1*U><L,1*U> -}
-05c9b7f851a2895bd1180e7f056d75c1
+395bf7ac4b8153fdc1bf7136865acf5f
   evenListSizeReverse :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
                  case GHC.List.$wlenAcc @ GHC.Types.Int list 0# of ww2 { DEFAULT ->
                  case GHC.Prim.remInt# ww2 2# of wild {
                    DEFAULT -> GHC.Types.True 0# -> Main.propDeranReversed list } }) -}
-6075f2c7017754d092bbb7689f6970e5
+6b62c5841a61d2d2defbdf6da3b7dd0e
   evenListSizeSwapped :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
                  case GHC.List.$wlenAcc @ GHC.Types.Int list 0# of ww2 { DEFAULT ->
                  case GHC.Prim.remInt# ww2 2# of wild {
                    DEFAULT -> GHC.Types.True 0# -> Main.propDeranSwapped list } }) -}
-1d5ff3a09539d534f7a5c58adc34d09c
+79eb885cedbb90e54922be34354733b9
+  fibs :: [GHC.Integer.Type.Integer]
+  {- Unfolding: (case Main.$wgo2 Main.fibs1 of ww { (#,#) ww1 ww2 ->
+                 GHC.Types.: @ GHC.Integer.Type.Integer ww1 ww2 }) -}
+60b4f06d3a3904b0d8fb42e2e737b43a
+  fibs1 :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: ((Main.$s^2, Main.fibs2)) -}
+2da59d0c2a8e75e7bd8061ddbcaf4e88
+  fibs2 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (1) -}
+f13dfb439bbf1ff6e004edc522d2181d
   genBigNumbers :: Test.QuickCheck.Gen.Gen GHC.Types.Int
   {- Arity: 2,
      Strictness: <S(SSSSLL),1*U(U,U,U,1*U,A,A)><S(S),1*U(U)>,
@@ -1342,7 +1526,7 @@ d6a4e46e91c0dc1e792ac78a140b6840
                 Main.genBigNumbers1
                   `cast`
                 (Sym (Test.QuickCheck.Gen.N:Gen[0] <GHC.Types.Int>_R)) -}
-f6364b4636c81c661f12e6d2ab8ec4cd
+060e16c6fda8694b401d4fea9dad6a10
   genBigNumbers1 ::
     Test.QuickCheck.Random.QCGen -> GHC.Types.Int -> GHC.Types.Int
   {- Arity: 2,
@@ -1354,12 +1538,12 @@ f6364b4636c81c661f12e6d2ab8ec4cd
                       (Test.QuickCheck.Random.N:QCGen[0]) of ww { System.Random.TF.Gen.TFGen ww1 ww2 ww3 ww4 ww5 ww6 ->
                  case w1 of ww7 { GHC.Types.I# ww8 ->
                  Main.$wgenBigNumbers ww1 ww2 ww3 ww4 ww8 } }) -}
-05b3eb220256edcf295dfd263358c54c
+3a6f277eea7a80839553a1b83c58ddb7
   genBigNumbers2 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
-                (\ (ds :: GHC.Types.Int) ->
-                 case ds of wild { GHC.Types.I# x ->
+                (\ (ds2 :: GHC.Types.Int) ->
+                 case ds2 of wild { GHC.Types.I# x ->
                  GHC.Prim.tagToEnum# @ GHC.Types.Bool (GHC.Prim.># x 1000#) }) -}
 4f31152f4a88b5bf09001ac54bba68fd
   genBigNumbers3 ::
@@ -1381,7 +1565,7 @@ f6364b4636c81c661f12e6d2ab8ec4cd
                  case GHC.Prim.>=# ww9 0# of lwild {
                    DEFAULT -> GHC.Types.I# (GHC.Prim.negateInt# ww9)
                    1# -> GHC.Types.I# ww9 } } } }) -}
-f87ffc90a38bdf25b142b08c5e43f32c
+21d21b07497db64ecc6b97891d8e46ef
   getAmountInQuartile ::
     GHC.Types.Int -> GHC.Types.IO [GHC.Types.Int]
   {- Arity: 2, Strictness: <S(S),1*U(1*U)><S,U>,
@@ -1390,7 +1574,7 @@ f87ffc90a38bdf25b142b08c5e43f32c
                   `cast`
                 (<GHC.Types.Int>_R
                  ->_R Sym (GHC.Types.N:IO[0] <[GHC.Types.Int]>_R)) -}
-c61e0fe09466a4f80ae3107d71c39b6e
+9d7cd1db340ab5172e620ff1f2fdb3fe
   getAmountInQuartile1 ::
     GHC.Types.Int
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -1400,7 +1584,7 @@ c61e0fe09466a4f80ae3107d71c39b6e
                 (\ (x :: GHC.Types.Int)
                    (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case x of ww { GHC.Types.I# ww1 ->
-                 case Lab2.$wprobs ww1 s of ds1 { (#,#) ipv ipv1 ->
+                 case Lab2.$wprobs ww1 s of ds2 { (#,#) ipv ipv1 ->
                  (# ipv, Main.calcQuartile ipv1 Main.getAmountInQuartile2 #) } }) -}
 a8ab5a6afd23d27eef1dc8226e21731e
   getAmountInQuartile2 :: [GHC.Types.Float]
@@ -1420,7 +1604,13 @@ a8ab5a6afd23d27eef1dc8226e21731e
 e26b34f29ce2f7068141f7d6d6850d3e
   getAmountInQuartile5 :: GHC.Types.Float
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.F# 0.0#) -}
-4444cb4b1c46c69ace37da8351e54418
+6a21739e2b5e30e46348932bd8b8079b
+  getRotOfDigit :: GHC.Types.Int -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S(S),1*U(U)>, Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: GHC.Types.Int) ->
+                 case w of ww { GHC.Types.I# ww1 -> Main.$wgetRotOfDigit ww1 }) -}
+ef77cc9eead9fceede97a5dbaaa44cf9
   iban :: GHC.Base.String -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (inputIBAN :: GHC.Base.String) ->
@@ -1440,27 +1630,27 @@ e26b34f29ce2f7068141f7d6d6850d3e
                              @ GHC.Integer.Type.Integer
                              (Text.ParserCombinators.ReadP.run
                                 @ GHC.Integer.Type.Integer
-                                Main.iban6
+                                Main.iban5
                                 (let {
                                    z :: [GHC.Types.Char] = Main.$wgo inputIBAN 4#
                                  } in
                                  letrec {
                                    go :: [GHC.Types.Char] -> [GHC.Types.Char]
                                      {- Arity: 1, Strictness: <S,1*U> -}
-                                   = \ (ds :: [GHC.Types.Char]) ->
-                                     case ds of wild {
+                                   = \ (ds2 :: [GHC.Types.Char]) ->
+                                     case ds2 of wild {
                                        [] -> z
                                        : y ys
                                        -> case GHC.List.elem
                                                  @ GHC.Types.Char
                                                  GHC.Classes.$fEqChar
                                                  y
-                                                 Main.iban_letters of wild1 {
+                                                 Main.iban_upper of wild1 {
                                             GHC.Types.False
                                             -> GHC.Types.: @ GHC.Types.Char y (go ys)
                                             GHC.Types.True
                                             -> case y of wild2 { GHC.Types.C# c# ->
-                                               case Main.iban5 of wild3 { GHC.Types.C# c#1 ->
+                                               case Main.iban4 of wild3 { GHC.Types.C# c#1 ->
                                                case GHC.Show.$wshowSignedInt
                                                       0#
                                                       (GHC.Prim.+#
@@ -1477,45 +1667,42 @@ e26b34f29ce2f7068141f7d6d6850d3e
                                                  ww6 } } } } }
                                  } in
                                  go (Main.$wunsafeDrop @ GHC.Types.Char 4# inputIBAN))) of wild {
-                        [] -> case Main.iban4 ret_ty GHC.Types.Bool of {}
-                        : x ds
-                        -> case ds of wild1 {
+                        [] -> case Main.iban3 ret_ty GHC.Types.Bool of {}
+                        : x ds2
+                        -> case ds2 of wild1 {
                              []
                              -> case GHC.Integer.Type.eqInteger#
-                                       (GHC.Integer.Type.modInteger x Main.iban3)
-                                       Main.iban2 of wild2 { DEFAULT ->
+                                       (GHC.Integer.Type.modInteger x Main.iban2)
+                                       Main.fibs2 of wild2 { DEFAULT ->
                                 GHC.Prim.tagToEnum# @ GHC.Types.Bool wild2 }
                              : ipv ipv1
                              -> case Main.iban1 ret_ty GHC.Types.Bool of {} } } } } }) -}
 613a277ce8f383cdc758691a46582f8c
   iban1 :: GHC.Integer.Type.Integer
   {- Strictness: x -}
-b5b80b75712021f835d235eddc7f4422
+dfc79cf505b1a9a8a0a079a46b2a5b01
   iban2 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (1) -}
-b44565d705ab1921a88c60cab7b7a5e0
-  iban3 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (97) -}
-2584fff3fea28891f1664498a99c0692
-  iban4 :: GHC.Integer.Type.Integer
+3c84d3b00c6b044886c5a29cb1f6f67d
+  iban3 :: GHC.Integer.Type.Integer
   {- Strictness: x -}
-b3d987966e253e441dceca0155fd34f1
-  iban5 :: GHC.Types.Char
-  {- Unfolding: (case Main.iban_letters of wild {
-                   [] -> GHC.List.badHead @ GHC.Types.Char : x ds1 -> x }) -}
-2a8a81e24e71096ade4436902c420d13
-  iban6 :: Text.ParserCombinators.ReadP.P GHC.Integer.Type.Integer
+9a1d344f41c9e34cbde3b4afe760a988
+  iban4 :: GHC.Types.Char
+  {- Unfolding: (case Main.iban_upper of wild {
+                   [] -> GHC.List.badHead @ GHC.Types.Char : x ds2 -> x }) -}
+49f5f0b5d1da060bbf98ec28d54dfa3a
+  iban5 :: Text.ParserCombinators.ReadP.P GHC.Integer.Type.Integer
   {- Unfolding: (GHC.Read.$fReadInteger_$sreadNumber
                    GHC.Read.$fReadInteger2
                    Text.ParserCombinators.ReadPrec.minPrec
                    @ GHC.Integer.Type.Integer
                    (Text.Read.readEither7 @ GHC.Integer.Type.Integer)) -}
-c388b674b4f8da916c1ff254aee69495
+63eded242a06d1456f2f5d382a25a847
   ibanCheckTest :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.ibanCheckTest1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-0aca39900076ba5a22e1f4f602cc2595
+558cf27465b42115bf7b7d44d4a9b5e7
   ibanCheckTest1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -1525,7 +1712,7 @@ c388b674b4f8da916c1ff254aee69495
                         GHC.IO.Handle.FD.stdout
                         Main.ibanCheckTest5
                         GHC.Types.True
-                        s of ds1 { (#,#) ipv ipv1 ->
+                        s of ds2 { (#,#) ipv ipv1 ->
                  GHC.IO.Handle.Text.hPutStr2
                    GHC.IO.Handle.FD.stdout
                    Main.ibanCheckTest2
@@ -1566,8 +1753,8 @@ f41c14064bb7007c626f6d512e5188f6
                 (\ (w :: GHC.Base.String) ->
                  case Main.$wibanLengthTable w of ww { DEFAULT ->
                  GHC.Types.I# ww }) -}
-9b5d59c65a1f9209741f44bf46842784
-  iban_letters :: [GHC.Types.Char]
+4bcabddefb5a319147e858adf30d4a10
+  iban_upper :: [GHC.Types.Char]
   {- Unfolding: (GHC.Enum.eftChar 65# 90#) -}
 46cf01ff52536d598023ea9ecbf8bae0
   isCharacterLetter :: GHC.Base.String -> GHC.Types.Bool
@@ -1586,7 +1773,23 @@ f41c14064bb7007c626f6d512e5188f6
   isCharacterLetter_go2 ::
     [GHC.Types.Char] -> [GHC.Types.Char] -> Data.Semigroup.Internal.All
   {- Arity: 2, Strictness: <S,1*U><L,1*U> -}
-9173178e8ae5dc9e75ed5b1eb8ca6c67
+6d8342fcd49a972c3feaa375ddc96425
+  isCircPrime :: GHC.Types.Int -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S(S),1*U(U)>,
+     Unfolding: InlineRule (0, True, True)
+                Main.isCircPrime1
+                  `cast`
+                (<GHC.Types.Int>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
+d79a86bf8b659d3701b81886f9085631
+  isCircPrime1 :: GHC.Types.Int -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <S(S),1*U(U)>, Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: GHC.Types.Int) ->
+                 case w of ww { GHC.Types.I# ww1 -> Main.$wisCircPrime ww1 }) -}
+7a78d0dc0a3a4078847dedcd4da5cf17
+  isCircPrime_go :: [GHC.Types.Int] -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <S,1*U> -}
+b4a397c26b128c05200b922001babbf5
   isDerangement ::
     [GHC.Types.Int] -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><S,U>,
@@ -1599,7 +1802,7 @@ f41c14064bb7007c626f6d512e5188f6
                    -> case Main.isDerangement_$sisPermutation x y of wild {
                         GHC.Types.False -> GHC.Types.False
                         GHC.Types.True -> Main.isDerangement_go2 x y } } } }) -}
-a08f9d4a35bdf02235c14a6d16be3ed4
+203af1cf353b245b59a8f9f7f9701e1b
   isDerangement_$sisPermutation ::
     [GHC.Types.Int] -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><S,U>,
@@ -1612,12 +1815,12 @@ a08f9d4a35bdf02235c14a6d16be3ed4
                    -> letrec {
                         go :: [GHC.Types.Int] -> GHC.Types.Bool
                           <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                        = \ (ds :: [GHC.Types.Int]) ->
-                          case ds of wild {
+                        = \ (ds2 :: [GHC.Types.Int]) ->
+                          case ds2 of wild {
                             [] -> GHC.Types.True
                             : y1 ys
                             -> letrec {
-                                 $wgo1 :: [GHC.Types.Int] -> GHC.Prim.Int# -> GHC.Prim.Int#
+                                 $wgo8 :: [GHC.Types.Int] -> GHC.Prim.Int# -> GHC.Prim.Int#
                                    {- Arity: 2, Strictness: <S,1*U><S,U>, Inline: [0] -}
                                  = \ (w :: [GHC.Types.Int]) (ww :: GHC.Prim.Int#) ->
                                    case w of wild1 {
@@ -1626,11 +1829,11 @@ a08f9d4a35bdf02235c14a6d16be3ed4
                                      -> case y2 of wild2 { GHC.Types.I# x1 ->
                                         case y1 of wild3 { GHC.Types.I# y3 ->
                                         case GHC.Prim.==# x1 y3 of lwild1 {
-                                          DEFAULT -> $wgo1 ys1 ww
-                                          1# -> $wgo1 ys1 (GHC.Prim.+# ww 1#) } } } }
+                                          DEFAULT -> $wgo8 ys1 ww
+                                          1# -> $wgo8 ys1 (GHC.Prim.+# ww 1#) } } } }
                                } in
-                               case $wgo1 x 0# of ww { DEFAULT ->
-                               case $wgo1 y 0# of ww3 { DEFAULT ->
+                               case $wgo8 x 0# of ww { DEFAULT ->
+                               case $wgo8 y 0# of ww3 { DEFAULT ->
                                case GHC.Prim.==# ww ww3 of lwild1 {
                                  DEFAULT -> GHC.Types.False 1# -> go ys } } } }
                       } in
@@ -1639,7 +1842,7 @@ a08f9d4a35bdf02235c14a6d16be3ed4
   isDerangement_go2 ::
     [GHC.Types.Int] -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U> -}
-70dafccb32f56a6d59ac8cb36f6c6a5e
+15133fd711b180a98efc0a1036b0b062
   isPermutation :: GHC.Classes.Eq a => [a] -> [a] -> GHC.Types.Bool
   {- Arity: 3, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,U><S,U>,
      Unfolding: (\ @ a
@@ -1654,23 +1857,23 @@ a08f9d4a35bdf02235c14a6d16be3ed4
                    -> letrec {
                         go :: [a] -> GHC.Types.Bool
                           <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                        = \ (ds :: [a]) ->
-                          case ds of wild {
+                        = \ (ds2 :: [a]) ->
+                          case ds2 of wild {
                             [] -> GHC.Types.True
                             : y1 ys
                             -> letrec {
-                                 $wgo1 :: [a] -> GHC.Prim.Int# -> GHC.Prim.Int#
+                                 $wgo8 :: [a] -> GHC.Prim.Int# -> GHC.Prim.Int#
                                    {- Arity: 2, Strictness: <S,1*U><S,U>, Inline: [0] -}
                                  = \ (w :: [a]) (ww :: GHC.Prim.Int#) ->
                                    case w of wild1 {
                                      [] -> ww
                                      : y2 ys1
                                      -> case GHC.Classes.== @ a $dEq y2 y1 of wild2 {
-                                          GHC.Types.False -> $wgo1 ys1 ww
-                                          GHC.Types.True -> $wgo1 ys1 (GHC.Prim.+# ww 1#) } }
+                                          GHC.Types.False -> $wgo8 ys1 ww
+                                          GHC.Types.True -> $wgo8 ys1 (GHC.Prim.+# ww 1#) } }
                                } in
-                               case $wgo1 x 0# of ww { DEFAULT ->
-                               case $wgo1 y 0# of ww3 { DEFAULT ->
+                               case $wgo8 x 0# of ww { DEFAULT ->
+                               case $wgo8 y 0# of ww3 { DEFAULT ->
                                case GHC.Prim.==# ww ww3 of lwild1 {
                                  DEFAULT -> GHC.Types.False 1# -> go ys } } } }
                       } in
@@ -1691,6 +1894,10 @@ dc06da07a31c99000d29d580a46a05ff
                            (GHC.Integer.Type.timesInteger b b))
                         (GHC.Integer.Type.timesInteger c c) of wild { DEFAULT ->
                  GHC.Prim.tagToEnum# @ GHC.Types.Bool wild }) -}
+efeebafebf3c1d49cc476fd747a1e9dd
+  largestPandigital :: (GHC.Types.Int, GHC.Base.String)
+  {- Unfolding: (case Main.$wgo4 1# of ww { (#,#) ww1 ww2 ->
+                 case ww1 of ww3 { (,) ww4 ww5 -> Main.$wgo3 ww2 ww4 ww5 } }) -}
 b2bbbe32511e77bdf2c58fc291ac369e
   lengthSame :: GHC.Base.String -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
@@ -1704,6 +1911,37 @@ b2bbbe32511e77bdf2c58fc291ac369e
                         (Main.rot13 decoded)
                         0# of ww1 { DEFAULT ->
                  GHC.Prim.tagToEnum# @ GHC.Types.Bool (GHC.Prim.==# ww2 ww1) } }) -}
+d0dc446c79f794f7dc5f79f404fe5afd
+  listToDigit :: [GHC.Types.Int] -> GHC.Types.Int
+  {- Arity: 1, Strictness: <L,1*U>,
+     Unfolding: (\ (ns :: [GHC.Types.Int]) ->
+                 case Text.Read.readEither8
+                        @ GHC.Types.Int
+                        (Text.ParserCombinators.ReadP.run
+                           @ GHC.Types.Int
+                           Main.listToDigit3
+                           (GHC.Base.map
+                              @ GHC.Types.Int
+                              @ GHC.Types.Char
+                              GHC.Show.intToDigit
+                              ns)) of wild {
+                   [] -> Main.listToDigit2
+                   : x ds2
+                   -> case ds2 of wild1 {
+                        [] -> x : ipv ipv1 -> Main.listToDigit1 } }) -}
+919232af85da77d2460f5f7ef3f3f4a1
+  listToDigit1 :: GHC.Types.Int
+  {- Strictness: x -}
+8d0ae07897de0f26b08303b156a230c3
+  listToDigit2 :: GHC.Types.Int
+  {- Strictness: x -}
+6ed9d0ca3b0fb08f5ce78cbb29b42f68
+  listToDigit3 :: Text.ParserCombinators.ReadP.P GHC.Types.Int
+  {- Unfolding: (GHC.Read.$fReadInt_$sreadNumber
+                   GHC.Read.$fReadInt2
+                   Text.ParserCombinators.ReadPrec.minPrec
+                   @ GHC.Types.Int
+                   (Text.Read.readEither7 @ GHC.Types.Int)) -}
 b4f9ae97a091b232a88173a93240314d
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
@@ -1722,14 +1960,20 @@ b4f9ae97a091b232a88173a93240314d
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-ede75935349030b8682e7de44f5871b1
+72d23807a777bb6c674219ee9c3cce96
+  multiples :: [GHC.Types.Int]
+  {- Unfolding: (Main.multiples_go 0#) -}
+5c0a0cbe8aed94559988993c33af1e68
+  multiples_go :: GHC.Prim.Int# -> [GHC.Types.Int]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,U> -}
+2202bc46ad63a6627f120d5dad5d2d21
   name :: Main.Prop a -> GHC.Base.String
   RecSel Left Main.Prop
   {- Arity: 1, HasNoCafRefs, Strictness: <S(SL),1*U(1*U,A)>,
      Unfolding: InlineRule (1, True, False)
-                (\ @ a (ds :: Main.Prop a) ->
-                 case ds of wild { Main.Prop ds1 ds2 -> ds1 }) -}
-4545a5bdc6a13666460cbea4d17d47e9
+                (\ @ a (ds2 :: Main.Prop a) ->
+                 case ds2 of wild { Main.Prop ds3 ds4 -> ds3 }) -}
+9da03d50afdda133c70c1dd70ce37adb
   oddListSizeReverse :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
@@ -1748,7 +1992,7 @@ ede75935349030b8682e7de44f5871b1
                              GHC.Types.False -> GHC.Types.True
                              GHC.Types.True -> GHC.Types.False } }
                    0# -> GHC.Types.True } }) -}
-de9bab3dde9526f6261f8a3cd541ec3e
+8f193a00b7b390757d376334ad24d9ea
   oddListSizeSwapped :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
@@ -1787,7 +2031,21 @@ a9c6984e1896a02ce6e6ede5b4bd0f67
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 -> Main.$wp3 ww1 }) -}
-c11dc2672186bde93185c39bfab67101
+9f00a18bbe2287646954a55c901cffe1
+  pandigital ::
+    GHC.Types.Int
+    -> GHC.Types.Int
+    -> GHC.Base.String
+    -> (GHC.Types.Int, GHC.Base.String)
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,U(U)><L,U(U)><S,U>m,
+     Inline: [0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: GHC.Types.Int)
+                   (w2 :: GHC.Base.String) ->
+                 case Main.$wpandigital w w1 w2 of ww { (#,#) ww1 ww2 ->
+                 (ww1, ww2) }) -}
+da9aca9c0494668d06d7282a52589217
   permutationProperties :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1795,7 +2053,7 @@ c11dc2672186bde93185c39bfab67101
                    @ (Main.Prop a)
                    (Main.permutationProperties16 @ a)
                    (Main.permutationProperties1 @ a)) -}
-c6306fdaca1d5659b88364113140f1d7
+1f3bf4a4aabfa394d077ebe2c360bcc1
   permutationProperties1 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1803,7 +2061,7 @@ c6306fdaca1d5659b88364113140f1d7
                    @ (Main.Prop a)
                    (Main.permutationProperties14 @ a)
                    (Main.permutationProperties2 @ a)) -}
-611d14ac6de846bee86775fa5b131a58
+a670bc16f24f881e81fe4ecd4eabcfcc
   permutationProperties10 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1811,7 +2069,7 @@ c6306fdaca1d5659b88364113140f1d7
                    @ a
                    Main.derangementProperties18
                    Main.permutationProperties11) -}
-49c7a731abe7c8db49b50d60e63916b3
+933ae2e8240897d5771236a378327896
   permutationProperties11 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1822,7 +2080,7 @@ c6306fdaca1d5659b88364113140f1d7
                       @ GHC.Types.Int
                       (\ @ b (c :: GHC.Types.Int -> b -> b)[OneShot] (n :: b)[OneShot] ->
                        GHC.Enum.eftIntFB @ b c n 1# y)) }) -}
-9e61267e2ba75adf29405abc7690a280
+a221f13b8f2b95544edc7d0b7f32fb4f
   permutationProperties12 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1830,7 +2088,7 @@ c6306fdaca1d5659b88364113140f1d7
                    @ a
                    Main.derangementProperties22
                    Main.permutationProperties13) -}
-797fbe309b3ea7b3a39fee2aa77c0efd
+9cd76f842412590a5b8f3927f3d14613
   permutationProperties13 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1841,7 +2099,7 @@ c6306fdaca1d5659b88364113140f1d7
                       @ GHC.Types.Int
                       (\ @ b (c :: GHC.Types.Int -> b -> b)[OneShot] (n :: b)[OneShot] ->
                        GHC.Enum.eftIntFB @ b c n 1# y)) }) -}
-04405a384efb699e3ccf130dddfa1ccc
+ceb7ad82c59331f2c910de18b93ac161
   permutationProperties14 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1849,7 +2107,7 @@ c6306fdaca1d5659b88364113140f1d7
                    @ a
                    Main.derangementProperties26
                    Main.permutationProperties15) -}
-496998d543c484f25c92112aefc8c1cf
+d2d12dd280520f3398ed7bd874f07e14
   permutationProperties15 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1860,7 +2118,7 @@ c6306fdaca1d5659b88364113140f1d7
                       @ GHC.Types.Int
                       (\ @ b (c :: GHC.Types.Int -> b -> b)[OneShot] (n :: b)[OneShot] ->
                        GHC.Enum.eftIntFB @ b c n 1# y)) }) -}
-60fe444244555af684ef03e3646a1413
+ee79b429d161f274a6d08e11650d5b4d
   permutationProperties16 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1868,14 +2126,14 @@ c6306fdaca1d5659b88364113140f1d7
                    @ a
                    Main.derangementProperties30
                    Main.permutationProperties17) -}
-160fe725148868057415e9cb8930a224
+f89c2c882553e8be40e7c250a30513e0
   permutationProperties17 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpermutationProperties2 ww1 }) -}
-2f5a263c12c5d883719225359a6acf5e
+4b7b531dbb9b3aef71d763b311210b03
   permutationProperties2 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1883,7 +2141,7 @@ c6306fdaca1d5659b88364113140f1d7
                    @ (Main.Prop a)
                    (Main.permutationProperties12 @ a)
                    (Main.permutationProperties3 @ a)) -}
-a3acf2386ef1c31cf8418a0d8f014f4b
+8fc36f1ea6ce7247c2e257870133a14d
   permutationProperties3 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1891,7 +2149,7 @@ a3acf2386ef1c31cf8418a0d8f014f4b
                    @ (Main.Prop a)
                    (Main.permutationProperties10 @ a)
                    (Main.permutationProperties4 @ a)) -}
-1947473f5f607b616646a7927b005af2
+f4dc30f8a4ffa9491864437b58613ef6
   permutationProperties4 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1899,7 +2157,7 @@ a3acf2386ef1c31cf8418a0d8f014f4b
                    @ (Main.Prop a)
                    (Main.permutationProperties8 @ a)
                    (Main.permutationProperties5 @ a)) -}
-e75dad3b9181b0459f9c2d2b587e29d5
+47e12844277870a71b984d4e68d0941e
   permutationProperties5 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1907,7 +2165,7 @@ e75dad3b9181b0459f9c2d2b587e29d5
                    @ (Main.Prop a)
                    (Main.permutationProperties6 @ a)
                    (GHC.Types.[] @ (Main.Prop a))) -}
-00854d4c1f1b0b483fa91e8ada5e6130
+7200586b5a716fbb1bb978f8f40bac5d
   permutationProperties6 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1915,14 +2173,14 @@ e75dad3b9181b0459f9c2d2b587e29d5
                    @ a
                    Main.derangementProperties9
                    Main.permutationProperties7) -}
-69c4991bbf15ac9c805bcefb795ffefb
+c1ec832260b5036a1c11c5b5fd645d42
   permutationProperties7 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpermutationProperties ww1 }) -}
-238a209695630cbfc036035a0b073408
+87dcfe3692fc1e4656bdc128c09ef617
   permutationProperties8 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1930,21 +2188,21 @@ e75dad3b9181b0459f9c2d2b587e29d5
                    @ a
                    Main.derangementProperties14
                    Main.permutationProperties9) -}
-53673dbc58436ee7ed55882cb90e6814
+36def7eb80233e86c06b62cdf2afd60d
   permutationProperties9 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpermutationProperties1 ww1 }) -}
-a72192937a89f850817c687e0eb09a56
+f9f10b65d4d2169b2c4e4f83e25c343f
   permutationProperties_$spropAllRotations ::
     [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
                  case origList of wild {
                    [] -> GHC.Types.True
-                   : ds1 ds2
+                   : ds2 ds3
                    -> case GHC.List.$wlenAcc
                              @ GHC.Types.Int
                              wild
@@ -1968,14 +2226,14 @@ a72192937a89f850817c687e0eb09a56
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-4309d6edce2257544b221578c3985028
+62a3e71b553dbdb6cea4f5d9713842cb
   permutationProperties_$spropAllSmaller ::
     [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
                  case origList of wild {
                    [] -> GHC.Types.True
-                   : ds1 ds2
+                   : ds2 ds3
                    -> case GHC.List.$wlenAcc
                              @ GHC.Types.Int
                              wild
@@ -1986,7 +2244,7 @@ a72192937a89f850817c687e0eb09a56
                       case GHC.Prim.># 1# y of lwild {
                         DEFAULT
                         -> let {
-                             lvl257 :: GHC.Types.Bool
+                             lvl275 :: GHC.Types.Bool
                              = Main.isDerangement_$sisPermutation
                                  wild
                                  (GHC.Types.[] @ GHC.Types.Int)
@@ -1997,7 +2255,7 @@ a72192937a89f850817c687e0eb09a56
                              = \ (x :: GHC.Prim.Int#) ->
                                case GHC.Prim.<# 0# x of lwild1 {
                                  DEFAULT
-                                 -> case lvl257 of wild1 {
+                                 -> case lvl275 of wild1 {
                                       GHC.Types.False -> GHC.Types.False
                                       GHC.Types.True
                                       -> case GHC.Prim.==# x y of lwild2 {
@@ -2014,7 +2272,7 @@ a72192937a89f850817c687e0eb09a56
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-8f79b917d3171b775e3e353da367472c
+71cd8cf62e09c19a00d758a4b51bba41
   permutationProperties_$spropAllSwapped ::
     [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
@@ -2075,13 +2333,32 @@ f71fa97651f4d6b0e64e69ca52ac985a
 87cbe41af0f1f1eea8aca8a80952bc3d
   permutationTestList5 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 1#) -}
-1814c8c84affa989cc753c71b330ccc9
+efeeeac3da951bda3604920c6dece82f
+  prime :: GHC.Types.Int -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S(S),1*U(U)>, Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: GHC.Types.Int) ->
+                 case w of ww { GHC.Types.I# ww1 -> Main.$wprime ww1 }) -}
+8d73cc5639648274204a6d5f5e1c1c6a
+  primes :: [GHC.Types.Int]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ GHC.Types.Int
+                   Main.permutationTestList4
+                   Main.primes1) -}
+72500df93cb698eab3031ea949eddf03
+  primes1 :: [GHC.Types.Int]
+  {- Unfolding: (Main.primes_go 3#) -}
+6f711d9cc5c34c9b2acfc091a99bd933
+  primes_go :: GHC.Prim.Int# -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,U> -}
+d374abececc71629dfed5e1bf7208d9f
   propAllDeranRotations :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
                  case origList of wild {
                    [] -> GHC.Types.True
-                   : ds1 ds2
+                   : ds2 ds3
                    -> case Main.allDifferent_$sallDifferent wild of wild1 {
                         GHC.Types.False -> GHC.Types.True
                         GHC.Types.True
@@ -2111,13 +2388,13 @@ f71fa97651f4d6b0e64e69ca52ac985a
                                 } in
                                 go 1#
                              1# -> GHC.Types.True } } } }) -}
-814241dd23beda93735dd306b6be69ac
+f4c2ac4424eac2b922990c61556224c7
   propAllDeranSmaller :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
                  case origList of wild {
                    [] -> GHC.Types.True
-                   : ds1 ds2
+                   : ds2 ds3
                    -> case GHC.List.$wlenAcc
                              @ GHC.Types.Int
                              wild
@@ -2128,7 +2405,7 @@ f71fa97651f4d6b0e64e69ca52ac985a
                       case GHC.Prim.># 1# y of lwild {
                         DEFAULT
                         -> let {
-                             lvl257 :: GHC.Types.Bool
+                             lvl275 :: GHC.Types.Bool
                              = Main.isDerangement wild (GHC.Types.[] @ GHC.Types.Int)
                            } in
                            letrec {
@@ -2137,7 +2414,7 @@ f71fa97651f4d6b0e64e69ca52ac985a
                              = \ (x :: GHC.Prim.Int#) ->
                                case GHC.Prim.<# 0# x of lwild1 {
                                  DEFAULT
-                                 -> case lvl257 of wild1 {
+                                 -> case lvl275 of wild1 {
                                       GHC.Types.False -> GHC.Types.False
                                       GHC.Types.True
                                       -> case GHC.Prim.==# x y of lwild2 {
@@ -2154,13 +2431,13 @@ f71fa97651f4d6b0e64e69ca52ac985a
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-a39776a5c8da0e73b2999ed6daf06f14
+024b3d8c2d073d9aef1605d99fc708f4
   propAllRotations :: GHC.Classes.Eq a => [a] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,1*U>,
      Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (origList :: [a]) ->
                  case origList of wild {
                    [] -> GHC.Types.True
-                   : ds1 ds2
+                   : ds2 ds3
                    -> case GHC.List.$wlenAcc @ a wild 0# of ww2 { DEFAULT ->
                       let {
                         y :: GHC.Prim.Int# = GHC.Prim.-# ww2 1#
@@ -2183,13 +2460,13 @@ a39776a5c8da0e73b2999ed6daf06f14
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-11058616484b397c39c3c646ec7c06ee
+65471432206c8446ce2954034f1a4576
   propAllSmaller :: GHC.Classes.Eq a => [a] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,1*U>,
      Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (origList :: [a]) ->
                  case origList of wild {
                    [] -> GHC.Types.True
-                   : ds1 ds2
+                   : ds2 ds3
                    -> case GHC.List.$wlenAcc @ a wild 0# of ww2 { DEFAULT ->
                       let {
                         y :: GHC.Prim.Int# = GHC.Prim.-# ww2 1#
@@ -2197,7 +2474,7 @@ a39776a5c8da0e73b2999ed6daf06f14
                       case GHC.Prim.># 1# y of lwild {
                         DEFAULT
                         -> let {
-                             lvl257 :: GHC.Types.Bool
+                             lvl275 :: GHC.Types.Bool
                              = Main.isPermutation @ a $dEq wild (GHC.Types.[] @ a)
                            } in
                            letrec {
@@ -2206,7 +2483,7 @@ a39776a5c8da0e73b2999ed6daf06f14
                              = \ (x :: GHC.Prim.Int#) ->
                                case GHC.Prim.<# 0# x of lwild1 {
                                  DEFAULT
-                                 -> case lvl257 of wild1 {
+                                 -> case lvl275 of wild1 {
                                       GHC.Types.False -> GHC.Types.False
                                       GHC.Types.True
                                       -> case GHC.Prim.==# x y of lwild2 {
@@ -2225,7 +2502,7 @@ a39776a5c8da0e73b2999ed6daf06f14
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-eb06675981ee8662dac463057c53298b
+8babc0d572c8df464741a384bf2c0c3f
   propAllSwapped :: GHC.Classes.Eq a => [a] -> GHC.Types.Bool
   {- Arity: 2, Strictness: <L,U(C(C1(U)),A)><S,U>,
      Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (origList :: [a]) ->
@@ -2254,7 +2531,7 @@ eb06675981ee8662dac463057c53298b
                            } in
                            go 0#
                         1# -> GHC.Types.True } } }) -}
-5aa13f098d3c3c7e22fe6949eaee8e5a
+cd8098b2ab34a71c1ad4d0244d7fe40d
   propBigger :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
@@ -2265,7 +2542,7 @@ eb06675981ee8662dac463057c53298b
                       @ GHC.Types.Int
                       Main.derangementProperties13
                       origList)) -}
-b4f52f12b3ff42a624021828c8d78740
+51895a0b0e233651d8bf22a122fde1c4
   propDeranBigger :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
@@ -2276,7 +2553,7 @@ b4f52f12b3ff42a624021828c8d78740
                       @ GHC.Types.Int
                       Main.derangementProperties13
                       origList)) -}
-11cda879c723d818689890d8a74ce2c3
+4481e018b348776b7f0be86b81fe0a14
   propDeranIncreased ::
     GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S(S),1*U(1*U)><L,U>,
@@ -2285,7 +2562,7 @@ b4f52f12b3ff42a624021828c8d78740
                 (\ (w :: GHC.Types.Int) (w1 :: [GHC.Types.Int]) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpropDeranIncreased ww1 w1 }) -}
-8f8727b48d129c340fc2d33249a6c86f
+1f4d2cdcd56e327188382f37e09aa5bc
   propDeranReversed :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
@@ -2298,7 +2575,7 @@ b4f52f12b3ff42a624021828c8d78740
                            @ GHC.Types.Int
                            origList
                            (GHC.Types.[] @ GHC.Types.Int)) }) -}
-7ba6dc12854bb5d3c69e282da917c80c
+a72c246448babe77f96e69b3e3ba644d
   propDeranRotated ::
     GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U(U)><S,U>,
@@ -2307,7 +2584,7 @@ b4f52f12b3ff42a624021828c8d78740
                  Main.isDerangement
                    origList
                    (Main.rotate @ GHC.Types.Int rotation origList)) -}
-5e6b766ae4de136d30e93887175c7e43
+74d9d05638da98aeb2cb9a265db5cf03
   propDeranSmaller ::
     GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S(S),1*U(U)><S,U>,
@@ -2316,7 +2593,7 @@ b4f52f12b3ff42a624021828c8d78740
                 (\ (w :: GHC.Types.Int) (w1 :: [GHC.Types.Int]) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpropDeranSmaller ww1 w1 }) -}
-88ec2e9705da243a081cc38cb454b1db
+7a4e21dcc8b9feaee990717ae57567ba
   propDeranSwapped :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
@@ -2357,7 +2634,7 @@ b4f52f12b3ff42a624021828c8d78740
                                   origList
                                   (Main.$wswapAt @ GHC.Types.Int 0# origList)
                              1# -> Main.isDerangement origList origList } } } }) -}
-e08d654aa3ab7917adb3bdaf98b29348
+1f5111d2cf6ec5849460c40394969a67
   propIncreased :: GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(U)><S,U>,
      Unfolding: (\ (amount :: GHC.Types.Int)
@@ -2367,7 +2644,7 @@ e08d654aa3ab7917adb3bdaf98b29348
                    (GHC.Base.map
                       @ GHC.Types.Int
                       @ GHC.Types.Int
-                      (\ (ds :: GHC.Types.Int) -> GHC.Num.$fNumInt_$c+ ds amount)
+                      (\ (ds2 :: GHC.Types.Int) -> GHC.Num.$fNumInt_$c+ ds2 amount)
                       origList)) -}
 5781ac6ee5a5eeaea20835e0a6f3a2e8
   propListOfSize ::
@@ -2383,7 +2660,7 @@ e08d654aa3ab7917adb3bdaf98b29348
                       @ GHC.Types.Int
                       (\ @ b (c :: GHC.Types.Int -> b -> b)[OneShot] (n :: b)[OneShot] ->
                        GHC.Enum.eftIntFB @ b c n 1# y) })) -}
-63fbba2853e2424364f249b9c2cc5623
+24ba9b63a917dfec5800fa6345978169
   propReversed :: GHC.Classes.Eq a => [a] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,U>,
      Unfolding: InlineRule (2, True, False)
@@ -2393,7 +2670,7 @@ e08d654aa3ab7917adb3bdaf98b29348
                    $dEq
                    origList
                    (GHC.List.reverse1 @ a origList (GHC.Types.[] @ a))) -}
-e37be0a7b031f0c2a5a449ad4f9a7757
+690f7c7b3eabb3aa237eec053a1b94ed
   propRotated ::
     GHC.Classes.Eq a => GHC.Types.Int -> [a] -> GHC.Types.Bool
   {- Arity: 3, HasNoCafRefs,
@@ -2408,7 +2685,7 @@ e37be0a7b031f0c2a5a449ad4f9a7757
                    $dEq
                    origList
                    (Main.rotate @ a rotation origList)) -}
-3d40cd8b0209bfc2fc26c148879f3588
+07c2acc4b7830919def8f1d690e1fd60
   propSmaller ::
     GHC.Classes.Eq a => GHC.Types.Int -> [a] -> GHC.Types.Bool
   {- Arity: 3, HasNoCafRefs,
@@ -2417,7 +2694,7 @@ e37be0a7b031f0c2a5a449ad4f9a7757
                 (\ @ a (w :: GHC.Classes.Eq a) (w1 :: GHC.Types.Int) (w2 :: [a]) ->
                  case w1 of ww { GHC.Types.I# ww1 ->
                  Main.$wpropSmaller @ a w ww1 w2 }) -}
-2f446251760bbd6894a40161a46bce6b
+d1bda7471e4cf685212a5d8bcd460298
   propSwapped ::
     GHC.Classes.Eq a => GHC.Types.Int -> [a] -> GHC.Types.Bool
   {- Arity: 3, Strictness: <L,U(C(C1(U)),A)><S(S),1*U(U)><S,U>,
@@ -2431,7 +2708,7 @@ e37be0a7b031f0c2a5a449ad4f9a7757
                    $dEq
                    origList
                    (Main.swapAt @ a index origList)) -}
-f466586228116ec18502e7309419635b
+bbc1f92102f6cafbe1c7c325c9ddf414
   properties :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -2439,7 +2716,7 @@ f466586228116ec18502e7309419635b
                    @ (Main.Prop a)
                    (Main.properties13 @ a)
                    (Main.properties1 @ a)) -}
-339b20e54725e07bba51d3919c1a5cd8
+4f9c4d7420f970358c90f476e6e3deef
   properties1 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -2447,7 +2724,7 @@ f466586228116ec18502e7309419635b
                    @ (Main.Prop a)
                    (Main.properties10 @ a)
                    (Main.properties2 @ a)) -}
-8180b28ba954a13a9f4f1625024a9243
+77d3fd64d8454269877cec073dd587ef
   properties10 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a -> Main.Prop @ a Main.properties11 Main.p2) -}
@@ -2457,7 +2734,7 @@ f466586228116ec18502e7309419635b
 b85ebdcd95c7b80a164307c73c4d212e
   properties12 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("p2"#) -}
-4647516c3fcf0dcc372a808179683188
+922b321579a66bd26add6ca0c386bac7
   properties13 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a -> Main.Prop @ a Main.properties14 Main.p1) -}
@@ -2467,7 +2744,7 @@ c5fce8efef0caa3c782d6125872b97f2
 b3d1c2186816a4b2ec753c0481d706ed
   properties15 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("p1"#) -}
-03d3c7fbe151ccce0e9a2cd50e48250a
+504336bb16ca2e380cd4907984d923a7
   properties2 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -2475,7 +2752,7 @@ b3d1c2186816a4b2ec753c0481d706ed
                    @ (Main.Prop a)
                    (Main.properties7 @ a)
                    (Main.properties3 @ a)) -}
-ef130b2d694e2e592d1c6f98b68bcc58
+ae1f8b111c20c854a29f1c43f3dc4bd8
   properties3 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -2483,17 +2760,18 @@ ef130b2d694e2e592d1c6f98b68bcc58
                    @ (Main.Prop a)
                    (Main.properties4 @ a)
                    (GHC.Types.[] @ (Main.Prop a))) -}
-9cbe78cad923a84836ec422077d3e015
+91de38ae660421e33685d1a4ff8a28ca
   properties4 :: Main.Prop a
   {- Strictness: m,
-     Unfolding: (\ @ a -> Main.Prop @ a Main.properties5 Main.$seven) -}
+     Unfolding: (\ @ a ->
+                 Main.Prop @ a Main.properties5 Main.$seven2) -}
 3f1816a38f31f9c453363706786aa606
   properties5 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.properties6) -}
 abc94d0332716324e6f551b90ffd48c0
   properties6 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("p4"#) -}
-fd94fd9c716ee682b5ecd0e45cf71915
+adc4cae45666c0d703599a9b87e9005c
   properties7 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a -> Main.Prop @ a Main.properties8 Main.p3) -}
@@ -2503,14 +2781,14 @@ fd94fd9c716ee682b5ecd0e45cf71915
 e5d3de7dc60267969334a0b96dfeaeef
   properties9 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("p3"#) -}
-ede75935349030b8682e7de44f5871b1
+2202bc46ad63a6627f120d5dad5d2d21
   propertyFunction :: Main.Prop a -> GHC.Types.Int -> GHC.Types.Bool
   RecSel Left Main.Prop
   {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(A,1*U)>,
      Unfolding: InlineRule (1, True, False)
-                (\ @ a (ds :: Main.Prop a) ->
-                 case ds of wild { Main.Prop ds1 ds2 -> ds2 }) -}
-1ee85fc3aab158de3ef99d6e332b7b44
+                (\ @ a (ds2 :: Main.Prop a) ->
+                 case ds2 of wild { Main.Prop ds3 ds4 -> ds4 }) -}
+751d3c174bcfa2db0f4e409345390a6f
   replace ::
     GHC.Types.Int
     -> GHC.Types.Char -> GHC.Base.String -> GHC.Base.String
@@ -2524,14 +2802,14 @@ ede75935349030b8682e7de44f5871b1
 22c9bd79da59be5f98207fbd09624d8b
   rot13 :: GHC.Base.String -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U> -}
-c600f45d19a1a9afe90d8e559eaa11fb
+09b3059caa2ba2d29327983e8a483e41
   rotate :: GHC.Types.Int -> [a] -> [a]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U(U)><S,1*U>,
-     Unfolding: (\ @ a (ds :: GHC.Types.Int) (ds1 :: [a]) ->
-                 case ds1 of wild {
+     Unfolding: (\ @ a (ds2 :: GHC.Types.Int) (ds3 :: [a]) ->
+                 case ds3 of wild {
                    [] -> GHC.Types.[] @ a
                    : ipv ipv1
-                   -> case ds of wild1 { GHC.Types.I# x ->
+                   -> case ds2 of wild1 { GHC.Types.I# x ->
                       letrec {
                         xs' :: [a] = GHC.Base.++_$s++ @ a xs' ipv ipv1
                       } in
@@ -2541,7 +2819,40 @@ c600f45d19a1a9afe90d8e559eaa11fb
 480efeb0636ffa66ba7a5a09b9d7b291
   rotate1 :: [a] -> [a] -> [a]
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U> -}
-d1e09aa9197686a40fc40172ef201c4e
+7b78c00ed2afcce4a167a57fb4219a76
+  rotateOneSpot :: [GHC.Types.Int] -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds2 :: [GHC.Types.Int]) ->
+                 case ds2 of wild {
+                   [] -> Main.rotateOneSpot1
+                   : x xs
+                   -> GHC.Base.augment
+                        @ GHC.Types.Int
+                        (\ @ b (c :: GHC.Types.Int -> b -> b)[OneShot] (n :: b)[OneShot] ->
+                         GHC.Base.foldr @ GHC.Types.Int @ b c n xs)
+                        (GHC.Types.:
+                           @ GHC.Types.Int
+                           x
+                           (GHC.Types.[] @ GHC.Types.Int)) }) -}
+92ac18c1b449f035b728e1a145e56e5d
+  rotateOneSpot1 :: [GHC.Types.Int]
+  {- Strictness: x -}
+a2779df3f4e27ca26793025f269182e5
+  rotations :: GHC.Types.Int -> [GHC.Types.Int] -> [[GHC.Types.Int]]
+  {- Arity: 2, Strictness: <S(S),1*U(U)><L,U>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: GHC.Types.Int) (w1 :: [GHC.Types.Int]) ->
+                 case w of ww { GHC.Types.I# ww1 -> Main.$wrotations ww1 w1 }) -}
+a68ab8919c4fa1e1e88e0a7fc5bab414
+  solveEuler25 :: GHC.Types.Int
+  {- Unfolding: (case Main.$wgo6 Main.fibs 0# of ww { DEFAULT ->
+                 GHC.Types.I# ww }) -}
+23114c0626b31fd24fadaa0a68c9a7a9
+  solveEuler35 :: GHC.Types.Int
+  {- Unfolding: (case Main.$wgo7 Main.primes 0# of ww { DEFAULT ->
+                 GHC.Types.I# ww }) -}
+a976041564113a657bf538a4cb9a7f2c
   swapAt :: GHC.Types.Int -> [a] -> [a]
   {- Arity: 2, Strictness: <S(S),1*U(U)><L,U>, Inline: [0],
      Unfolding: InlineRule (2, True, False)
@@ -3533,12 +3844,12 @@ adb85dc9b12449f74ff6a3e30eeb5c71
 adc98e672e31a5d342b38e78864562ea
   testIBANs99 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs100) -}
-9c4ef982c9cf7a7314c4ad6165b23f25
+8c56766a98bf8d224a608d02cce5a29b
   testPermutations :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.testPermutations1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-7a8aec76053b6239a246259b5598c422
+3f40de4b8f5896f56a1a7e25c4afaa57
   testPermutations1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -3548,38 +3859,38 @@ adc98e672e31a5d342b38e78864562ea
                         GHC.IO.Handle.FD.stdout
                         Main.testPermutations21
                         GHC.Types.True
-                        s of ds1 { (#,#) ipv ipv1 ->
+                        s of ds2 { (#,#) ipv ipv1 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
                         Main.testPermutations18
                         GHC.Types.True
-                        ipv of ds2 { (#,#) ipv2 ipv3 ->
+                        ipv of ds3 { (#,#) ipv2 ipv3 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
                         Main.testPermutations15
                         GHC.Types.True
-                        ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                        ipv2 of ds4 { (#,#) ipv4 ipv5 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
                         Main.testPermutations12
                         GHC.Types.True
-                        ipv4 of ds4 { (#,#) ipv6 ipv7 ->
+                        ipv4 of ds5 { (#,#) ipv6 ipv7 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
                         Main.testPermutations9
                         GHC.Types.True
-                        ipv6 of ds5 { (#,#) ipv8 ipv9 ->
+                        ipv6 of ds6 { (#,#) ipv8 ipv9 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
                         Main.testPermutations5
                         GHC.Types.True
-                        ipv8 of ds6 { (#,#) ipv10 ipv11 ->
+                        ipv8 of ds7 { (#,#) ipv10 ipv11 ->
                  GHC.IO.Handle.Text.hPutStr2
                    GHC.IO.Handle.FD.stdout
                    Main.testPermutations2
                    GHC.Types.True
                    ipv10 } } } } } }) -}
-714d49561b80629b4e7724718a8be195
+6e35294b6d10c632b8fd6cc321ce1801
   testPermutations10 :: [GHC.Types.Char]
   {- Unfolding: (case Main.permutationProperties_$spropAllSmaller
                         Main.permutationTestList of wild {
@@ -3588,12 +3899,12 @@ adc98e672e31a5d342b38e78864562ea
 f4c975f573a4f3f00c3b8c21b9f7329f
   testPermutations11 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing all smaller lists: "#) -}
-1614d4e0319b3d6940902b957b4cf6b2
+97c22ffbe5ccbc67e8d9bc7e018fcba9
   testPermutations12 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations14
                    Main.testPermutations13) -}
-b04dc554f97d4603d2a7f06e05908848
+269f12d1ab5a8ecd1af96c95394c7db6
   testPermutations13 :: [GHC.Types.Char]
   {- Unfolding: (case Main.permutationProperties_$spropAllSwapped
                         Main.permutationTestList of wild {
@@ -3602,12 +3913,12 @@ b04dc554f97d4603d2a7f06e05908848
 2dbbb734330bd7296f4fd53d6b4f6670
   testPermutations14 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing all swapped lists: "#) -}
-34ebd07f048dc6b9a9f8044a1389253d
+f88e9c032b348b9646cc07a6753d816e
   testPermutations15 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations17
                    Main.testPermutations16) -}
-4de5b9f062ac842d8674fee76ec246b9
+8b2697c72a2513c3f029bdf830f216fc
   testPermutations16 :: [GHC.Types.Char]
   {- Unfolding: (case Main.isDerangement_$sisPermutation
                         Main.permutationTestList
@@ -3620,18 +3931,18 @@ b04dc554f97d4603d2a7f06e05908848
 e993608182ca2652c863d17f60f69736
   testPermutations17 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing reversed list: "#) -}
-51c56d404085046d7ef35dd5a7701f3a
+1f9b7b8c0b6dc6670cb94ceed035c411
   testPermutations18 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations20
                    Main.testPermutations19) -}
-8fee23e5f4cec19c4c91938cd35f1df4
+1004b6392e2272742844b008f5f7f979
   testPermutations19 :: [GHC.Types.Char]
   {- Unfolding: (case Main.permutationProperties_$spropAllRotations
                         Main.permutationTestList of wild {
                    GHC.Types.False -> Main.checkTestResult3
                    GHC.Types.True -> Main.checkTestResult1 }) -}
-e3f6d8e74ba7739a14c08748bf8d2000
+9082cd7f4c35ae597545365370bfdfd3
   testPermutations2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations4
@@ -3639,12 +3950,12 @@ e3f6d8e74ba7739a14c08748bf8d2000
 1fffa2aeed651117c2b92f98a7281a97
   testPermutations20 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing all rotated lists: "#) -}
-48c6c80ae8ffc40619030e379a6833d3
+e0132930a9b7d552ba483950b45e4f9c
   testPermutations21 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations23
                    Main.testPermutations22) -}
-ffb727bc9531700d656977900f5c1495
+16cd6151b6eaddd4bd45a61c8854040a
   testPermutations22 :: [GHC.Types.Char]
   {- Unfolding: (case Main.isDerangement_$sisPermutation
                         Main.permutationTestList
@@ -3654,7 +3965,7 @@ ffb727bc9531700d656977900f5c1495
 2b4f62792a84a1906ceae2b76937be7c
   testPermutations23 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing same list: "#) -}
-59344b3c0b40f1217b9bd3a6037a8370
+379771229256469b528abc608b76b527
   testPermutations3 :: [GHC.Types.Char]
   {- Unfolding: (case Main.propIncreased
                         Main.permutationTestList5
@@ -3664,12 +3975,12 @@ ffb727bc9531700d656977900f5c1495
 6cde21d5c55140ddae787ddf29ba6f5c
   testPermutations4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing increased list: "#) -}
-9b8f742eeed4bb3e6b10fba7d4c5f5b5
+e31629876bb57e710bc4e350a8cbc21e
   testPermutations5 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations8
                    Main.testPermutations6) -}
-ddea3c85d4c972868d8865eb9cbf939f
+b82f5c4fe0d2e97364f510200719c8fd
   testPermutations6 :: [GHC.Types.Char]
   {- Unfolding: (case Main.isDerangement_$sisPermutation
                         Main.permutationTestList
@@ -3686,12 +3997,12 @@ ddea3c85d4c972868d8865eb9cbf939f
 2812dd0077871a18365e6266306f74ab
   testPermutations8 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing all bigger lists: "#) -}
-aa98eb3f9fb5a0b522653b5e8c0352bc
+e3b1a7123c5a2ce9def0da17335093e5
   testPermutations9 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations11
                    Main.testPermutations10) -}
-c690f8716b3c9f95bc4250979ec9e9c7
+6685b9aebc3615ff5853295790756f29
   testPropAllDeranSmaller :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
@@ -3702,7 +4013,7 @@ c690f8716b3c9f95bc4250979ec9e9c7
                    -> case Main.propAllDeranSmaller list of wild {
                         GHC.Types.False -> GHC.Types.True
                         GHC.Types.True -> GHC.Types.False } } }) -}
-a0e58e0933e3e9a6d3876b32a31481fc
+08c7638da6e5cdb690b8652cd95857cc
   testPropDeranBigger :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
@@ -3715,7 +4026,7 @@ a0e58e0933e3e9a6d3876b32a31481fc
                            list) of wild {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False }) -}
-53002a840fa9a5f5233f2d7692d991f0
+60410fe242768d1dc73af895ecc64679
   testPropDeranIncreased ::
     GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S(S),1*U(1*U)><L,1*U>,
@@ -3724,13 +4035,13 @@ a0e58e0933e3e9a6d3876b32a31481fc
                 (\ (w :: GHC.Types.Int) (w1 :: [GHC.Types.Int]) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wtestPropDeranIncreased ww1 w1 }) -}
-ba200e6387cf9d90b2a74a42d58c8c67
+60ed4e8ddd555ac0362fe69e1f5de10d
   testQuartiles :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 -> Main.$wtestQuartiles ww1 }) -}
-06774c81cfc30f84f75d14b07a34648f
+c0ac45e20c32121ef02894dfe2f418f1
   testQuartilesSafe :: GHC.Types.Int -> GHC.Types.IO GHC.Types.Bool
   {- Arity: 2, Strictness: <S(S),1*U(U)><S,U>,
      Unfolding: InlineRule (0, True, True)
@@ -3738,7 +4049,7 @@ ba200e6387cf9d90b2a74a42d58c8c67
                   `cast`
                 (<GHC.Types.Int>_R
                  ->_R Sym (GHC.Types.N:IO[0] <GHC.Types.Bool>_R)) -}
-8640d12a96ab7ef139c35760bab3d4ac
+65672d794dfc356a001a7fa42498186c
   testQuartilesSafe1 ::
     GHC.Types.Int
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -3749,12 +4060,12 @@ ba200e6387cf9d90b2a74a42d58c8c67
                    (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wtestQuartilesSafe ww1 w1 }) -}
-6b5fa94a2f00e6b3b7a8d2fc85990043
+acadcf2f1c45f1b198a78b37771380d8
   testTriangle :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.testTriangle1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-f681a6358e7e5465cca3b8fae5a9476f
+56dcad8178ebd9145f0e4a9bd61730c7
   testTriangle1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -3767,7 +4078,7 @@ f681a6358e7e5465cca3b8fae5a9476f
                          Lab2.NoTriangle)
                         `cast`
                       (GHC.Types.N:IO[0] <()>_R)
-                        s of ds1 { (#,#) ipv ipv1 ->
+                        s of ds2 { (#,#) ipv ipv1 ->
                  case (Main.checkTriangleFunction
                          Main.testTriangle9
                          Main.testTriangle9
@@ -3775,7 +4086,7 @@ f681a6358e7e5465cca3b8fae5a9476f
                          Lab2.Equilateral)
                         `cast`
                       (GHC.Types.N:IO[0] <()>_R)
-                        ipv of ds2 { (#,#) ipv2 ipv3 ->
+                        ipv of ds3 { (#,#) ipv2 ipv3 ->
                  case (Main.checkTriangleFunction
                          Main.testTriangle8
                          Main.testTriangle7
@@ -3783,7 +4094,7 @@ f681a6358e7e5465cca3b8fae5a9476f
                          Lab2.Rectangular)
                         `cast`
                       (GHC.Types.N:IO[0] <()>_R)
-                        ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                        ipv2 of ds4 { (#,#) ipv4 ipv5 ->
                  case (Main.checkTriangleFunction
                          Main.testTriangle5
                          Main.testTriangle4
@@ -3791,7 +4102,7 @@ f681a6358e7e5465cca3b8fae5a9476f
                          Lab2.Isosceles)
                         `cast`
                       (GHC.Types.N:IO[0] <()>_R)
-                        ipv4 of ds4 { (#,#) ipv6 ipv7 ->
+                        ipv4 of ds5 { (#,#) ipv6 ipv7 ->
                  (Main.checkTriangleFunction
                     Main.testTriangle9
                     Main.testTriangle3
@@ -3827,7 +4138,7 @@ c586b619c65a07181e4f436a46fd6107
 f8cfd3554325b3c8eb0ace246fd74b3e
   testTriangle9 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (10) -}
-ee74330f3ede76cb0524cdd7ea2325ef
+229caae1cc6eb73c1c0e04b584573e63
   triangle ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
@@ -3838,15 +4149,15 @@ ee74330f3ede76cb0524cdd7ea2325ef
                    (y :: GHC.Integer.Type.Integer)
                    (z :: GHC.Integer.Type.Integer) ->
                  let {
-                   ds :: [GHC.Types.Char] = Main.$wtriangleType x y z
+                   ds2 :: [GHC.Types.Char] = Main.$wtriangleType x y z
                  } in
-                 case GHC.Base.eqString ds Main.triangle7 of wild {
+                 case GHC.Base.eqString ds2 Main.triangle7 of wild {
                    GHC.Types.False
-                   -> case GHC.Base.eqString ds Main.triangle5 of wild1 {
+                   -> case GHC.Base.eqString ds2 Main.triangle5 of wild1 {
                         GHC.Types.False
-                        -> case GHC.Base.eqString ds Main.triangle3 of wild2 {
+                        -> case GHC.Base.eqString ds2 Main.triangle3 of wild2 {
                              GHC.Types.False
-                             -> case GHC.Base.eqString ds Main.triangle1 of wild3 {
+                             -> case GHC.Base.eqString ds2 Main.triangle1 of wild3 {
                                   GHC.Types.False -> Lab2.Other GHC.Types.True -> Lab2.Rectangular }
                              GHC.Types.True -> Lab2.NoTriangle }
                         GHC.Types.True -> Lab2.Isosceles }
@@ -3947,7 +4258,7 @@ instance GHC.Show.Show [Main.Prop] = Main.$fShowProp
   = Main.$s$fArbitraryZipList2
 "SPEC/Main even @ Int" [orphan] forall ($dIntegral :: GHC.Real.Integral
                                                         GHC.Types.Int)
-  GHC.Real.even @ GHC.Types.Int $dIntegral = Main.$seven
+  GHC.Real.even @ GHC.Types.Int $dIntegral = Main.$seven2
 vectorised variables:
 vectorised tycons:
 vectorised reused tycons:

@@ -99,7 +99,7 @@ testTriangle = do
 
 -- Assignment 3 (Testing properties strength)
 -- Time: 90 minutes
--- Result: print $ quicksort properties --> [p1,p3,p4,p5,p2]
+-- Result: print . reverse $ quicksort permutationProperties --> [p2,p3,p4,p1]
 
 p1, p2, p3 :: Int -> Bool
 p1 x = even x && x > 3
@@ -120,7 +120,7 @@ properties = [Prop "p1" p1, Prop "p2" p2, Prop "p3" p3, Prop "p4" even]
 
 -- Assignment 4 (Recognizing Permutations)
 -- Time: 120 minutes
--- Result: [Bigger,Increased,Smaller,Reversed,Rotated,Swapped]
+-- Result: [Bigger,Increased,Smaller,Swapped,Rotated,Reversed]
 -- Executed tests:
 --        Testing same list: Tests `isPermutation [1,2,3] [1,2,3]`, which is expected to return True.
 --        Testing all rotated lists: Tests `isPermutation [1,2,3] [2,3,1]` and `isPermutation [1,2,3] [3,1,2]`, which are both expected to return True.
@@ -209,7 +209,7 @@ testPermutations = do
 
 -- Assignment 5 (Recognizing and generating derangements)
 -- Time: 90 minutes
--- Result: [Bigger,Increased,Smaller,Reversed,Swapped,Rotated]
+-- Result: [Rotated,Smaller,Reversed,Swapped,Increased,Bigger]
 -- Executed tests (both with automated and manual input). Down here, the manual tests are documented. The automated tests do kinda the same, but then with automated input (down here the input [1,2,3] is used):
 --        Testing same list: Tests `isDerangement [1,2,3] [1,2,3]`, which is expected to return False.
 --        Testing all rotated lists: Tests `isDerangement [1,2,3] [2,3,1]` and `isDerangement [1,2,3] [3,1,2]`, which are both expected to return True.
@@ -547,11 +547,11 @@ digitToList n = map digitToInt (show n)
 listToDigit :: [Int] -> Int
 listToDigit ns = read (map intToDigit ns)
 
-rotate :: [Int] -> [Int]
-rotate (x:xs) = xs ++ [x]
+rotateOneSpot :: [Int] -> [Int]
+rotateOneSpot (x:xs) = xs ++ [x]
 
 rotations :: Int -> [Int] -> [[Int]]
-rotations n xs = take n (iterate rotate xs)
+rotations n xs = take n (iterate rotateOneSpot xs)
 
 getRotOfDigit :: Int -> [Int]
 getRotOfDigit n = map listToDigit (rotations (length(digitToList n)) (digitToList n))
@@ -567,10 +567,10 @@ solveEuler35 = length (filter isCircPrime (takeWhile (<10^6) primes))
 pandigital :: Int -> Int -> String -> (Int, String)
 pandigital i n p  | length p == 9 && n > 1 = (i, p)
                   | length p > 9 = (i, "")
-                  | otherwise = pandigital i (n+1) (p ++ (show (i * n)))
+                  | otherwise = pandigital i (n+1) (p ++ show (i * n))
 
 largestPandigital :: (Int, String)
-largestPandigital = last $ sortBy (\ x y -> compare (snd x) (snd y)) (map (\x -> pandigital x 1 "") [1..50000])
+largestPandigital = maximumBy (\ x y -> compare (snd x) (snd y)) (map (\x -> pandigital x 1 "") [1..50000])
 -- We take 50000 as a maximum since (1 * 50000) + (2 * 50000) = 50000100000 which exceeds the 9 digit limit
 -- Outcome is (9999,"999919998"), 9999 is the largest 1 to 9 pandigital 9-digit number
 
@@ -592,7 +592,7 @@ main = do
 
   let testingList = [1,2,3]
   putStrLn "\n== Assignment 4 (Recognizing Permutations) =="
-  print $ quicksort permutationProperties
+  print . reverse $ quicksort permutationProperties -- Reversed so it's descending
   testPermutations
 
   putStrLn "\n== Assignment 5 (Recognizing and generating derangements) =="
