@@ -142,15 +142,15 @@ rotations n xs = take n (iterate rotate xs)
 
 getRotOfDigit :: Int -> [Int]
 getRotOfDigit n = map listToDigit (rotations (length(digitToList n)) (digitToList n))
---
+
 isCircPrime :: Int -> Bool
 isCircPrime n = all prime (getRotOfDigit n)
---
+
 solveEuler35 :: Int
 solveEuler35 = length (filter isCircPrime (takeWhile (<10^6) primes))
 
 main = do
-  putStrLn "\nIndex of the first term in the Fibonacci sequence to contain 1000 digits:"
+  putStrLn "\nEuler25: Index of the first term in the Fibonacci sequence to contain 1000 digits:"
   print solveEuler25
-  putStrLn "\nCircular primes below one million:"
+  putStrLn "\nEuler35: Circular primes below one million:"
   print solveEuler35
