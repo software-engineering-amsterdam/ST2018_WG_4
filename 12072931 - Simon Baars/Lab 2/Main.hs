@@ -5,6 +5,7 @@ import System.Random
 import Test.QuickCheck
 import System.IO.Unsafe
 import Data.List
+import Data.Char
 
 -- Assignment 1 (Random floating point numbers)
 -- Time: 190 minutes
@@ -335,6 +336,45 @@ testDerangements = do
   putStrLn $ "Testing increased list: "++checkTestResult (not (propDeranIncreased 1 derangementTestList))
 
 -- Assigment 6 (Implementing and testing ROT13 encoding)
+-- ROT13 specification: For every character `x` in the list ['a'..'z'] or ['A'..'Z'], it has to be replaced by the character that is in the same list at index `index(x)+13`. If the result is more than the length of the list, the length of the list is to be subtracted from this index, and the entry at the resulting index will be used for the substitution.
+-- Time: 60 minutes
+-- Result of running QuickCheck on all 4 properties:
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+
+doRotate :: String -> Char -> Char
+doRotate domain rotatingCharacter = domain!!(((ord rotatingCharacter + 13) - ord (head domain)) `mod` length domain)
+
+rot13 :: String -> String
+rot13 = foldr (\c acc -> if c `elem` lower then doRotate lower c : acc else if c `elem` upper then doRotate upper c : acc else c:acc) []
+  where upper = ['A'..'Z']
+        lower = ['a'..'z']
+
+-- Property: The length must be the same after rotation.
+lengthSame :: String -> Bool
+lengthSame decoded = length decoded == length (rot13 decoded)
+
+-- Property: All letters must still be letters after rotation.
+isCharacterLetter :: String -> Bool
+isCharacterLetter decoded = all (\(x,y) -> y `elem` upper || y `elem` lower) (filter (\(x,y) -> x `elem` upper || x `elem` lower) (zip decoded (rot13 decoded)))
+  where upper = ['A'..'Z']
+        lower = ['a'..'z']
+
+-- Property: All other characters must be the same after rotation.
+equalNonLetterCharacters :: String -> Bool
+equalNonLetterCharacters decoded = all (uncurry (==)) (filter (\(x,y) -> not(x `elem` upper || x `elem` lower)) (zip decoded (rot13 decoded)))
+  where upper = ['A'..'Z']
+        lower = ['a'..'z']
+
+-- Property: The case of the letters stays the same
+equalLetterCase :: String -> Bool
+equalLetterCase decoded = all (\(x,y) -> ((x `elem` upper) --> y `elem` upper) && ((x `elem` lower) --> y `elem` lower)) (zip decoded (rot13 decoded))
+  where upper = ['A'..'Z']
+        lower = ['a'..'z']
+
+-- Assignment 7 (Implementing and testing IBAN validation)
 
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
@@ -360,5 +400,11 @@ main = do
   putStrLn "\n== Assignment 5 (Recognizing and generating derangements) =="
   print $ quicksort derangementProperties
   testDerangements
+
+  putStrLn "\n== Assignment 6 (Implementing and testing ROT13 encoding) =="
+  quickCheck lengthSame
+  quickCheck isCharacterLetter
+  quickCheck equalNonLetterCharacters
+  quickCheck equalLetterCase
 
   putStrLn "Done"
