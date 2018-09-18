@@ -5,6 +5,7 @@ import Lecture2
 import Data.Char
 import Data.List
 import Data.Maybe
+import Data.String
 import System.Random
 import Test.QuickCheck
 
@@ -205,7 +206,8 @@ rotate n xs = zipWith const (drop n (cycle xs)) xs
 iban :: String -> Bool
 iban s = (read $ (concat (map (\x -> if elem x alphabet then (show ((indexInAlphabet x `mod` 26) + 10)) else [x]) (rotate 4 (filter (/=' ') s)))) :: Integer) `mod` 97 == 1
 
-validIbans = ["AL35202111090000000001234567",
+validIbans = ["NL37INGB0008825966",
+              "AL35202111090000000001234567",
               "AD1400080001001234567890",
               "AT483200000012345864",
               "AZ96AZEJ00000000001234567890",
@@ -213,7 +215,31 @@ validIbans = ["AL35202111090000000001234567",
               "BY86AKBB10100000002966000000"]
 
 testValidIbans = quickCheckResult(all (\i -> iban i) validIbans)
--- TODO: Generate tests
+
+-- Found on http://bluebones.net/2007/01/replace-in-haskell/
+replace :: Eq a => [a] -> [a] -> [a] -> [a]
+replace [] _ _ = []
+replace s find repl =
+    if take (length find) s == find
+        then repl ++ (replace (drop (length find) s) find repl)
+        else [head s] ++ (replace (tail s) find repl)
+
+intToCheckDigits :: Int -> String
+intToCheckDigits n  | length (show n) == 1 = "0" ++ show n
+                    | otherwise = show n
+
+
+ibanBase = "NLXXINGB0008825966"
+
+createTestableIban :: Int -> String
+createTestableIban n = replace ibanBase "XX" (intToCheckDigits n)
+
+ibanTestFunction :: Int -> Bool
+ibanTestFunction n = iban (createTestableIban n)
+
+-- In this test, we use an IBAN base, where the check digits are replaced by "XX"
+-- Then we generate IBAN's for all digits 1-97 and we verify that exactly one of the generated IBAN's is valid
+testGeneratedIbans = quickCheck(length (filter (\x -> x == True) (map (ibanTestFunction) [1..97])) == 1)
 
 -- Euler project 1
 -- Time: 20 seconds
@@ -245,3 +271,4 @@ main = do
 
   putStrLn "\nImplementing and testing IBAN validation"
   testValidIbans
+  testGeneratedIbans
