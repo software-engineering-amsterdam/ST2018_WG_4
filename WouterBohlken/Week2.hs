@@ -32,9 +32,16 @@ devideQuartiles n = do
 -- First we test if all numbers are contained in quartiles and thus there is no x where x < 0 or x > 1
 devideQuartilesAmountTest :: Int -> IO ()
 devideQuartilesAmountTest n = do
-                        quartiles <- devideQuartiles n;
-                        quickCheck((sum quartiles) == n)
+                                quartiles <- devideQuartiles n
+                                quickCheck((sum quartiles) == n)
 
+-- devideQuartilesCoefficientTest :: Int -> IO ()
+-- devideQuartilesCoefficientTest n = do
+--                                     quartiles <- devideQuartiles n
+--                                     expectedQuartileAmount = quot n 4
+--                                     let
+--                                       lq1 =
+--                                     quickCheck(0 == 0)
 
 
 -- test1 = quickCheck (sum (read $ devideQuartiles) == 10000)
@@ -254,6 +261,18 @@ testGeneratedIbans = quickCheck(length (filter (\x -> x == True) (map (ibanTestF
 multiples :: [Int]
 multiples = filter (\x -> x `mod` 3 == 0 || x `mod` 5 == 0) [0..1000]
 
+
+-- Euler project 38
+-- Time: 30 minutes
+pandigital :: Int -> Int -> String -> (Int, String)
+pandigital i n p  | length p == 9 && n > 1 = (i, p)
+                  | length p > 9 = (i, "")
+                  | otherwise = pandigital i (n+1) (p ++ (show (i * n)))
+
+largestPandigital :: (Int, String)
+largestPandigital = last $ sortBy (\ x y -> compare (snd x) (snd y)) (map (\x -> pandigital x 1 "") [1..50000])
+-- We take 50000 as a maximum since (1 * 50000) + (2 * 50000) = 50000100000 which exceeds the 9 digit limit
+-- Outcome is (9999,"999919998"), 9999 is the largest 1 to 9 pandigital 9-digit number
 
 main = do
   putStrLn "\nProbs"
