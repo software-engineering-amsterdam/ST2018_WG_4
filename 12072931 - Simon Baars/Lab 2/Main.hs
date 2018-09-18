@@ -210,18 +210,29 @@ testPermutations = do
 -- Assignment 5 (Recognizing and generating derangements)
 -- Time: 90 minutes
 -- Result: [Bigger,Increased,Smaller,Reversed,Swapped,Rotated]
--- Executed tests:
---        Testing same list: Test succeeded!
---        Testing all rotated lists: Test succeeded!
---        Testing reversed list on even lists: Test succeeded!
---        Testing all swapped lists on even lists: Test succeeded!
---        Testing reversed list on uneven lists: Test succeeded!
---        Testing all swapped lists on uneven lists: Test succeeded!
---        Testing all smaller lists: Test succeeded!
---        Testing all bigger lists: Test succeeded!
---        Testing increased list: Test succeeded!
+-- Executed tests (both with automated and manual input). Down here, the manual tests are documented. The automated tests do kinda the same, but then with automated input (down here the input [1,2,3] is used):
+--        Testing same list: Tests `isDerangement [1,2,3] [1,2,3]`, which is expected to return False.
+--        Testing all rotated lists: Tests `isDerangement [1,2,3] [2,3,1]` and `isDerangement [1,2,3] [3,1,2]`, which are both expected to return True.
+--        Testing reversed list on even lists: Tests `isDerangement [1,2,3,4] [4,3,2,1]`, which is expected to return True.
+--        Testing all swapped lists on even lists: Tests `isDerangement [1,2,3,4] [2,1,4,3]`, which is expected to return True.
+--        Testing reversed list on uneven lists: Tests `isDerangement [1,2,3] [3,2,1]`, which is expected to return False.
+--        Testing all swapped lists on uneven lists: Tests `isDerangement [1,2,3] [2,1,3]`, which is expected to return False.
+--        Testing all smaller lists: Tests `isDerangement [1,2,3] [1,2]` and `isDerangement [1,2,3] [1]`, which are both expected to return False.
+--        Testing all bigger lists: Tests `isDerangement [1,2,3] [1,2,3,0]`, which is expected to return False.
+--        Testing increased list: Tests `isDerangement [1,2,3] [2,3,4]`, which is expected to return False.
 --
--- Result additional tests:
+-- Result additional tests (which can be retrieved by running the "testDerangements" function):
+--        Running automated testcases.
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
+--
+--        Running manual testcases.
 --        Testing same list: Test succeeded!
 --        Testing all rotated lists: Test succeeded!
 --        Testing reversed list on even lists: Test succeeded!
@@ -322,6 +333,8 @@ testDerangements = do
   putStrLn $ "Testing all smaller lists: "++checkTestResult (not (propAllDeranSmaller derangementTestList))
   putStrLn $ "Testing all bigger lists: "++checkTestResult (not (propDeranBigger derangementTestList))
   putStrLn $ "Testing increased list: "++checkTestResult (not (propDeranIncreased 1 derangementTestList))
+
+-- Assigment 6 (Implementing and testing ROT13 encoding)
 
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
