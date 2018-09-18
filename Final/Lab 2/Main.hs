@@ -513,6 +513,11 @@ ibanCheckTest = do
 
 -- Project Euler Bonus
 
+-- Euler project 1
+-- Time: 20 seconds
+multiples :: [Int]
+multiples = filter (\x -> x `mod` 3 == 0 || x `mod` 5 == 0) [0..1000]
+
 -- Euler 25:
 -- What is the index of the first term in the Fibonacci sequence to contain 1000 digits?
 --   - index = 4782
@@ -557,6 +562,18 @@ isCircPrime n = all prime (getRotOfDigit n)
 solveEuler35 :: Int
 solveEuler35 = length (filter isCircPrime (takeWhile (<10^6) primes))
 
+-- Euler project 38
+-- Time: 30 minutes
+pandigital :: Int -> Int -> String -> (Int, String)
+pandigital i n p  | length p == 9 && n > 1 = (i, p)
+                  | length p > 9 = (i, "")
+                  | otherwise = pandigital i (n+1) (p ++ (show (i * n)))
+
+largestPandigital :: (Int, String)
+largestPandigital = last $ sortBy (\ x y -> compare (snd x) (snd y)) (map (\x -> pandigital x 1 "") [1..50000])
+-- We take 50000 as a maximum since (1 * 50000) + (2 * 50000) = 50000100000 which exceeds the 9 digit limit
+-- Outcome is (9999,"999919998"), 9999 is the largest 1 to 9 pandigital 9-digit number
+
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
 checkTestResult False = "Test failed!"
@@ -592,10 +609,16 @@ main = do
   putStrLn "\n== Assignment 7 (Implementing and testing IBAN validation) =="
   ibanCheckTest
 
-  putStrLn "\nEuler25: Index of the first term in the Fibonacci sequence to contain 1000 digits:"
+  putStrLn "\nEuler 1: Multiples of 3 and 5:"
+  print multiples
+
+  putStrLn "\nEuler 25: Index of the first term in the Fibonacci sequence to contain 1000 digits:"
   print solveEuler25
 
-  putStrLn "\nEuler35: Circular primes below one million:"
+  putStrLn "\nEuler 35: Circular primes below one million:"
   print solveEuler35
+
+  putStrLn "\nEuler 38: Pandigital multiples:"
+  print largestPandigital
 
   putStrLn "Done"
