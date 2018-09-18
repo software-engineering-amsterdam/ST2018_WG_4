@@ -342,6 +342,7 @@ testDerangements = do
 --        +++ OK, passed 100 tests.
 --        +++ OK, passed 100 tests.
 --        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
 
 doRotate :: String -> Char -> Char
 doRotate domain rotatingCharacter = domain!!(((ord rotatingCharacter + 13) - ord (head domain)) `mod` length domain)
@@ -361,24 +362,32 @@ isCharacterLetter decoded = all (\(x,y) -> y `elem` upper || y `elem` lower) (fi
   where upper = ['A'..'Z']
         lower = ['a'..'z']
 
--- Property: All other characters must be the same after rotation.
+-- Property: All non-letter characters must be the same after rotation (rot13 only modifies letters).
 equalNonLetterCharacters :: String -> Bool
 equalNonLetterCharacters decoded = all (uncurry (==)) (filter (\(x,y) -> not(x `elem` upper || x `elem` lower)) (zip decoded (rot13 decoded)))
   where upper = ['A'..'Z']
         lower = ['a'..'z']
 
--- Property: The case of the letters stays the same
+-- Property: The case of the letters stays the same (an uppercase letter should not become a lowercase letter and vice versa).
 equalLetterCase :: String -> Bool
 equalLetterCase decoded = all (\(x,y) -> ((x `elem` upper) --> y `elem` upper) && ((x `elem` lower) --> y `elem` lower)) (zip decoded (rot13 decoded))
   where upper = ['A'..'Z']
         lower = ['a'..'z']
 
--- Property: When rotated two times rot13 will yield the beginning result
+-- Property: When rotated two times rot13 will yield the beginning result (thanks to Samy for pointing this one out).
 doubleRotYieldsBeginResult :: String -> Bool
 doubleRotYieldsBeginResult decoded = decoded == rot13 (rot13 decoded)
 
 -- Assignment 7 (Implementing and testing IBAN validation)
 -- Time: 100 minutes
+-- Result:
+--     Testing valid IBANs: Test succeeded!
+--     Testing invalid IBANs: Test succeeded!
+--
+-- Examplanation of the result:
+-- To test this function, I included an example IBAN for every country, as available on the official IBAN site (https://www.iban.com/structure). This was absolutely necessary, as this was the only way to hit every case of the `ibanLengthTable`. Also, during testing it seemed that I had forgotten an entry in my `ibanLengthTable`, which was found and could thus be fixed because of the extensive tests. To test if invalid would return False for the IBAN checker, I turned all valid emails into invalid ones by incrementing each by one. This was done by incrementing the fourth number, which would become the final number of the `mod` number and would thus always result in an invalid iban. This even tests the final case of the `ibanLengthTable` (the invalid one that returns -1, thus never resulting in a valid IBAN code) as sometimes the fourth number would be '9' which would, incremented by one, become a number of a greater length (10) and thus resulting in a longer IBAN (which would hit the final case of the `ibanLengthTable`).
+-- Automated testing was not done for this case because there are not many definable properties for the `iban` method that would actually proof much (which the manual testing does). For instance, the property `startsWithValidLetters` could have been written, which would basically have to check for everything the `ibanLengthTable` checks for and would thus not proof anything. The testing which is currently done (manual) is optimal to test the validity of the `iban` function.
+
 
 ibanLengthTable :: String -> Int
 ibanLengthTable "AD" = 24
@@ -457,6 +466,7 @@ ibanLengthTable "MU" = 30
 ibanLengthTable "MZ" = 25
 ibanLengthTable "NE" = 28
 ibanLengthTable "NI" = 32
+ibanLengthTable "NO" = 15
 ibanLengthTable "NL" = 18
 ibanLengthTable "PK" = 24
 ibanLengthTable "PL" = 28
@@ -500,7 +510,7 @@ testIBANs = ["AL35202111090000000001234567","AD1400080001001234567890","AT483200
 ibanCheckTest :: IO ()
 ibanCheckTest = do
   putStrLn $ "Testing valid IBANs: " ++ checkTestResult (all iban testIBANs)
-  --putStrLn $ "Testing invalid IBANs: " ++ checkTestResult (all (not . iban) (foldr (\x acc -> replace 3 (head (show ((read x !! 3)+1))):acc) [] testIBANs))
+  putStrLn $ "Testing invalid IBANs: " ++ checkTestResult (all (not . iban) (map (\x -> replace 3 (head (show (digitToInt (x !! 3) + 1))) x) testIBANs))
 
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
@@ -535,5 +545,6 @@ main = do
   quickCheck doubleRotYieldsBeginResult
 
   putStrLn "\n== Assignment 7 (Implementing and testing IBAN validation) =="
+  ibanCheckTest
 
   putStrLn "Done"
