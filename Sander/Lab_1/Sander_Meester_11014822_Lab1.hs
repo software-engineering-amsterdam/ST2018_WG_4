@@ -197,10 +197,10 @@ accuses b1 b2
     | otherwise = False
 
 accusers :: Boy -> [Boy]
-accusers b1 = [b2 | b2 <- boys, accuses b2 b1 == True]
+accusers b1 = [b2 | b2 <- boys, accuses b2 b1]
 
 honest :: [Boy]
-honest = filter (\x -> accuses x Jack) boys
+honest = filter (\x -> accuses x (head guilty)) boys
 
 guilty :: [Boy]
 guilty = filter (\x -> length (accusers x) == 3) boys
