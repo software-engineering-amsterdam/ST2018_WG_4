@@ -399,7 +399,9 @@ doubleRotYieldsBeginResult decoded = decoded == rot13 (rot13 decoded)
 -- thus never resulting in a valid IBAN code) as sometimes the fourth number would be '9' which would,
 -- incremented by one, become a number of a greater length (10) and thus resulting in a longer IBAN (which would hit the final case of the `ibanLengthTable`).
 
--- Automated testing was not done for this case because there are not many definable properties for the `iban` method that would actually proof much (which the manual testing does). For instance, the property `startsWithValidLetters` could have been written, which would basically have to check for everything the `ibanLengthTable` checks for and would thus not proof anything. The testing which is currently done (manual) is optimal to test the validity of the `iban` function.
+-- Automated testing was not done for this case because there are not many definable properties for the `iban` method that would actually proof much (which the manual testing does).
+-- For instance, the property `startsWithValidLetters` could have been written, which would basically have to check for everything the `ibanLengthTable` checks for and would thus not proof anything.
+-- The testing which is currently done (manual) is optimal to test the validity of the `iban` function.
 
 ibanLengthTable :: String -> Int
 ibanLengthTable "AD" = 24
@@ -524,6 +526,33 @@ ibanCheckTest = do
   putStrLn $ "Testing valid IBANs: " ++ checkTestResult (all iban testIBANs)
   putStrLn $ "Testing invalid IBANs: " ++ checkTestResult (all (not . iban) (map (\x -> replace 3 (head (show (digitToInt (x !! 3) + 1))) x) testIBANs))
 
+
+ibanBase = "NLXXINGB0008825966"
+
+-- Found on http://bluebones.net/2007/01/replace-in-haskell/
+strReplace :: Eq a => [a] -> [a] -> [a] -> [a]
+strReplace [] _ _ = []
+strReplace s find repl =
+    if take (length find) s == find
+        then repl ++ (strReplace (drop (length find) s) find repl)
+        else [head s] ++ (strReplace (tail s) find repl)
+
+intToCheckDigits :: Int -> String
+intToCheckDigits n  | length (show n) == 1 = "0" ++ show n
+                    | otherwise = show n
+
+createTestableIban :: Int -> String
+createTestableIban n = strReplace ibanBase "XX" (intToCheckDigits n)
+
+ibanTestFunction :: Int -> Bool
+ibanTestFunction n = iban (createTestableIban n)
+
+-- In this test, we use an IBAN base, where the check digits are replaced by "XX"
+-- Then we generate IBAN's for all digits 1-97 and we verify that exactly one of the generated IBAN's is valid
+testIbanCheckDigit :: IO ()
+testIbanCheckDigit = do
+  putStrLn $ "Testing IBAN check digit: " ++ checkTestResult(length (filter (\x -> x == True) (map (ibanTestFunction) [1..97])) == 1)
+
 -- Project Euler Bonus
 
 -- Euler project 1
@@ -621,6 +650,7 @@ main = do
 
   putStrLn "\n== Assignment 7 (Implementing and testing IBAN validation) =="
   ibanCheckTest
+  testIbanCheckDigit
 
   putStrLn "\nEuler 1: Multiples of 3 and 5:"
   print multiples
