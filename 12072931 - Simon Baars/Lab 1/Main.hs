@@ -1,14 +1,10 @@
-import Test.QuickCheck
-import Data.List
-import Data.Maybe
-import Data.Char
-
-infix 1 -->
-
-(-->) :: Bool -> Bool -> Bool
-p --> q = not p || q
+import           Lab1
+import           Data.Char
+import           Data.List
+import           Test.QuickCheck
 
 -- Lab Assignment 1:
+-- Time: 30 minutes
 
 assignmentTwoLeftSide :: Integer -> Integer
 assignmentTwoLeftSide n = sum(map (^2) [1..n])
@@ -29,6 +25,7 @@ assignmentThreeTest :: Integer -> Bool
 assignmentThreeTest n = (n > 0) --> assignmentThreeLeftSide n == assignmentThreeRightSide n
 
 -- Lab Assignment 2:
+-- Time: 20 minutes
 
 getListOfSizeN :: Integer -> [Integer]
 getListOfSizeN n
@@ -53,12 +50,13 @@ genAssignment2 = abs `fmap` (arbitrary :: Gen Integer) `suchThat` (< 25)
 -- Answer: Actually I am testing both. If either the `subsequences` method or the mathematical fact `|A| = n then |P(A)| = 2^n` was incorrect, the test would fail. Another aspect of the haskell language that would be tested by this code would be the sequence generator (`[0..n]`).
 
 -- Lab Assignment 3
+-- Time: 25 minutes
 
 factorial :: Integer -> Integer
 factorial n = product [1..n]
 
 permutationsList :: Integer -> [[Integer]]
-permutationsList  n
+permutationsList n
  | n <= 0 = [[]] -- Base case
  | otherwise = permutations [1..n]
 
@@ -75,16 +73,7 @@ genAssignment3 = abs `fmap` (arbitrary :: Gen Integer) `suchThat` (< 10)
 -- Answer: Again, I'd have to conclude that both facts are checked. If either the `permutations` method or the mathematical fact `(n + 1)! is the number of permutations for a list with size n` was incorrect, the test would fail. Additionally we are testing the `factorial` function.
 
 -- Assignment 4
-
-prime :: Integer -> Bool
-prime n = n > 1 && all (\ x -> rem n x /= 0) xs
-  where xs = takeWhile (\ y -> y^2 <= n) primes
-
-primes :: [Integer]
-primes = 2 : filter prime [3..]
-
-reversal :: Integer -> Integer
-reversal = read . reverse . show
+-- Time: 25 minutes
 
 findAllReversedPrimesTillTenThousand :: [Integer]
 findAllReversedPrimesTillTenThousand = takeWhile (<10000) (filter (prime . reversal) primes)
@@ -96,50 +85,136 @@ reversedPrimesTest :: Bool
 reversedPrimesTest = all (\x -> prime(reversal x) --> x `elem` findAllReversedPrimesTillTenThousand) (takeWhile (<10000) primes)
 
 -- Assignment 5
+-- Time: 20 minutes
 
 findFirst101ConsecutivePrimeSum :: Integer
 findFirst101ConsecutivePrimeSum = head (filter prime (map (\x -> sum(take 101 (drop x primes))) [0..]))
 
 -- Do you have to test that your answer is correct? How could this be checked?
--- Yes, you do have to test the answer. However, writing a test in haskell would result in writing exactly the same code, which doesn't prove much.
+-- Yes, you do have to test the answer. However, writing a test in haskell using QuickCheck would result in writing exactly the same code (to check whether the test succeeded), which doesn't prove much. In this case, unit tests would be more applicable.
 
 -- Assignment 6
+-- Time: 20 minutes
 
 generateConjunctureCounterexamples :: [[Integer]]
 generateConjunctureCounterexamples = map (`take` primes) (filter (\x -> not(prime(product(take x primes)+1))) [1..])
 
 -- Assignment 7
+-- Time: 155 minutes
 
-luhn :: Int -> Bool
-luhn x = tail (show (foldl (\acc x -> acc + digitToInt x) 0 (foldr doEncrypt [] $ zip [0..] (show x)))) == "0"
-    where
-        doEncrypt (i,y) acc = if odd i
-            then head (show((uncurry (+) . (`divMod` 10) . (*2)) (digitToInt y))) : acc
-            else y : acc
+doEncrypt :: String -> String -> String
+doEncrypt acc (evenEl:oddEl:restOfList) = doEncrypt (evenEl : head (show((uncurry (+) . (`divMod` 10) . (*2)) (digitToInt oddEl))) : acc) restOfList
+doEncrypt acc (lastEl:emptyList) = lastEl : acc
+doEncrypt acc [] = acc
+
+luhn :: Integer -> Bool
+luhn x = tail (show (foldl (\acc x -> acc + digitToInt x) 0 (doEncrypt [] $ reverse $ show x))) == "0"
+
+inRanges :: Integer -> [(Integer, Integer)] -> Bool
+inRanges checking [] = False
+inRanges checking ((x,y):pairs)
+  | checking>=x && checking<y = True
+  | otherwise = inRanges checking pairs
+
+totalLength :: Int -> Int -> Integer
+totalLength number size =  read(integerString ++ replicate (size-length integerString) '0')
+  where integerString = show number
+
+masterRanges = [(totalLength 51 16, totalLength 56 16), (totalLength 2221 16, totalLength 2721 16)]
+americanExpressRanges = [(totalLength 34 15, totalLength 35 15), (totalLength 37 15, totalLength 38 15)]
+visaRanges = [(totalLength 4 16, totalLength 5 16)]
 
 isAmericanExpress, isMaster, isVisa :: Integer -> Bool
-isAmericanExpress x = ((length creditCardString == 15) && (head creditCardString == '3')) && ((secondCharacter == '4') || (secondCharacter == '7'))
-    where creditCardString = show x
-          secondCharacter = head $ tail creditCardString
-isVisa x = (length creditCardString == 16) && (head creditCardString == '4') where creditCardString = show x
-isMaster x = ((length creditCardString == 16) && (head creditCardString == '5')) && ((secondNumber >= 1) || (secondNumber <= 5))
-  where creditCardString = show x
-        secondNumber = digitToInt $ head $ tail creditCardString
+isAmericanExpress x = luhn x && inRanges x americanExpressRanges
+isVisa x = luhn x && inRanges x visaRanges
+isMaster x = luhn x && inRanges x masterRanges
+
+-- Tests:
+visaCards = [(4916036260934004, True),
+             (4539301335926626, True),
+             (4916848251695919, True),
+             (4539738376397136, True),
+             (4485933520215466, True),
+             (6277500350364257, False),
+             (550612643282991, False),
+             (4323950234189624, False),
+             (375543148983147, False),
+             (53252569781795000, False)]
+
+masterCards = [(5277500350364257, True),
+               (5506126432829910, True),
+               (5323950234189624, True),
+               (5407673640547685, True),
+               (5325256978179500, True),
+               (6277500350364257, False),
+               (550612643282991, False),
+               (4323950234189624, False),
+               (375543148983147, False),
+               (53252569781795000, False)]
+
+americanExpressCards = [(375543148983147, True),
+                        (379773178506528, True),
+                        (372003346961034, True),
+                        (340656764193148, True),
+                        (344174328134547, True),
+                        (6277500350364257, False),
+                        (550612643282991, False),
+                        (4323950234189624, False),
+                        (075543148983147, False),
+                        (53252569781795000, False)]
+
+testCreditCards :: (Integer -> Bool) -> [(Integer, Bool)] -> Bool
+testCreditCards testingFunction = all (\(x, y) -> testingFunction x == y)
+
+-- Assignment 8
+-- Time: 95 minutes
+
+accuses :: Boy -> Boy -> Bool
+accuses Matthew other = (other /= Matthew) && (other /= Carl)
+accuses Peter Matthew = True
+accuses Peter Jack    = True
+accuses Jack other    = not $ accuses Matthew other || accuses Peter other
+accuses Arnold other  =  accuses Matthew other /= accuses Peter other
+accuses Carl other    = not $ accuses Arnold other
+accuses x y           = False
+
+accusers :: Boy -> [Boy]
+accusers b1 = filter (`accuses` b1) boys
+
+guilty, honest :: [Boy]
+guilty = filter (\x -> length (accusers x) == 3) boys
+honest = filter (\x -> accuses x (head guilty)) boys
+
+checkTestResult :: Bool -> String
+checkTestResult True = "Test succeeded!"
+checkTestResult False = "Test failed!"
 
 main :: IO ()
 main = do
-  putStrLn "Running tests for Assignment 1"
+  putStrLn "== Assignment 1 =="
   quickCheckResult assignmentTwoTest
   quickCheckResult assignmentThreeTest
-  putStrLn "Running tests for Assignment 2"
+
+  putStrLn "\n== Assignment 2 =="
   --quickCheckResult $ forAll genAssignment2 powerListInductionTest
-  putStrLn "Running tests for Assignment 3"
-  --quickCheckResult $ forAll genAssignment3 permutationTest
-  putStrLn "Running tests for Assignment 4"
-  print reversedPrimesTest
-  putStrLn "Running tests for Assignment 5"
-  print findFirst101ConsecutivePrimeSum
-  putStrLn "The smallest counter example for Assignment 6 is "
-  print $ head generateConjunctureCounterexamples
-  putStrLn "Running tests for Assignment 6"
-  putStrLn "Done!"
+
+  putStrLn "\n== Assignment 3 =="
+  quickCheckResult $ forAll genAssignment3 permutationTest
+
+  putStrLn "\n== Assignment 4 =="
+  putStrLn $ checkTestResult reversedPrimesTest
+
+  putStrLn "\n== Assignment 5 =="
+  putStrLn $ "The first prime that can be constructed of the sum of 101 consecutive primes is " ++ show findFirst101ConsecutivePrimeSum
+
+  putStrLn "\n== Assignment 6 =="
+  putStrLn $ "The smallest counter example is " ++ show(head generateConjunctureCounterexamples)
+
+  putStrLn "\n== Assignment 7 =="
+  putStrLn $ "Visa test: " ++ checkTestResult(testCreditCards isVisa visaCards)
+  putStrLn $ "Mastercard test: " ++ checkTestResult(testCreditCards isMaster masterCards)
+  putStrLn $ "American Express test: " ++ checkTestResult(testCreditCards isAmericanExpress americanExpressCards)
+
+  putStrLn "\n== Assignment 8 =="
+  putStrLn $ "Guilty person: " ++ show guilty
+  putStrLn $ "Honest persons: " ++ show honest

@@ -1,0 +1,358 @@
+
+==================== FINAL INTERFACE ====================
+2018-09-17 19:43:20.014418808 UTC
+
+interface main:Lab2 8043
+  interface hash: 1e3a2d266c01b42298d7d9bbd967fdda
+  ABI hash: 58f142ce979bc82be2c0114c7ac77986
+  export-list hash: a5316334a3f9b37ecaea00f9011fdb2b
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 0e9f43a6a268d56c5d19130da6b2104e
+  opt_hash: 14e536840aca4e889cad654e6f9b79c1
+  hpc_hash: 93b885adfe0da089cdf634904fd59f71
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Lab2.-->
+  Lab2.probs
+  Lab2.Shape{Lab2.Equilateral Lab2.Isosceles Lab2.NoTriangle Lab2.Other Lab2.Rectangular}
+module dependencies:
+package dependencies: QuickCheck-2.11.3 array-0.5.2.0
+                      base-4.11.1.0* containers-0.5.11.0 deepseq-1.4.3.0
+                      ghc-boot-th-8.4.3 ghc-prim-0.5.2.0 integer-gmp-1.0.2.0
+                      pretty-1.1.3.6 primitive-0.6.3.0 random-1.1*
+                      template-haskell-2.13.0.0 tf-random-0.5 time-1.8.0.2
+                      transformers-0.5.5.0
+orphans: transformers-0.5.5.0:Control.Monad.Trans.Error
+         time-1.8.0.2:Data.Time.Format.Parse
+         time-1.8.0.2:Data.Time.LocalTime.Internal.ZonedTime
+         time-1.8.0.2:Data.Time.LocalTime.Internal.LocalTime
+         time-1.8.0.2:Data.Time.Calendar.Gregorian base-4.11.1.0:GHC.Float
+         base-4.11.1.0:GHC.Base
+family instance modules: base-4.11.1.0:Control.Applicative
+                         base-4.11.1.0:Data.Complex base-4.11.1.0:Data.Functor.Compose
+                         base-4.11.1.0:Data.Functor.Const
+                         base-4.11.1.0:Data.Functor.Identity
+                         base-4.11.1.0:Data.Functor.Product base-4.11.1.0:Data.Functor.Sum
+                         base-4.11.1.0:Data.Monoid base-4.11.1.0:Data.Semigroup
+                         base-4.11.1.0:Data.Semigroup.Internal base-4.11.1.0:Data.Version
+                         base-4.11.1.0:Data.Void base-4.11.1.0:GHC.Exts
+                         base-4.11.1.0:GHC.Generics base-4.11.1.0:GHC.IO.Exception
+                         containers-0.5.11.0:Data.IntMap.Internal
+                         containers-0.5.11.0:Data.IntSet.Internal
+                         containers-0.5.11.0:Data.Map.Internal
+                         containers-0.5.11.0:Data.Sequence.Internal
+                         containers-0.5.11.0:Data.Set.Internal
+                         ghc-boot-th-8.4.3:GHC.ForeignSrcLang.Type
+                         ghc-boot-th-8.4.3:GHC.LanguageExtensions.Type
+                         pretty-1.1.3.6:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.6:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.3.0:Control.Monad.Primitive
+                         primitive-0.6.3.0:Data.Primitive.ByteArray
+                         template-haskell-2.13.0.0:Language.Haskell.TH.Syntax
+import  -/  QuickCheck-2.11.3:Test.QuickCheck e00d138ee3234e83a31cc3113c8c8ffb
+import  -/  base-4.11.1.0:Data.Char 3e89818e2b8ef1a2cc5393163484da72
+import  -/  base-4.11.1.0:Data.List 83dc843e47bfc0c5af51e19c6f3476d5
+import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
+import  -/  base-4.11.1.0:GHC.Num 8e54b26dce4495382dc4b50cf36ab754
+import  -/  base-4.11.1.0:GHC.Show 73be67392447c974f19c3befd83c46c0
+import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
+import  -/  ghc-prim-0.5.2.0:GHC.Classes 122abfcd7450c6c11602933c9ca5f80d
+import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
+import  -/  random-1.1:System.Random 31994b60c33f032d578c64a928f735f7
+fixities infix 1 -->
+4f321edfbfaf3dc5f384e8b53049cebc
+  $fEqShape :: GHC.Classes.Eq Lab2.Shape
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ Lab2.Shape Lab2.$fEqShape_$c== Lab2.$fEqShape_$c/= -}
+4f321edfbfaf3dc5f384e8b53049cebc
+  $fEqShape_$c/= :: Lab2.Shape -> Lab2.Shape -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Inline: (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ (x :: Lab2.Shape) (y :: Lab2.Shape) ->
+                 case x of wild {
+                   Lab2.NoTriangle
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab2.NoTriangle -> GHC.Types.False }
+                   Lab2.Equilateral
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab2.Equilateral -> GHC.Types.False }
+                   Lab2.Isosceles
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab2.Isosceles -> GHC.Types.False }
+                   Lab2.Rectangular
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab2.Rectangular -> GHC.Types.False }
+                   Lab2.Other
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab2.Other -> GHC.Types.False } }) -}
+4f321edfbfaf3dc5f384e8b53049cebc
+  $fEqShape_$c== :: Lab2.Shape -> Lab2.Shape -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Unfolding: (\ (ds :: Lab2.Shape) (ds1 :: Lab2.Shape) ->
+                 case ds of wild {
+                   Lab2.NoTriangle
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab2.NoTriangle -> GHC.Types.True }
+                   Lab2.Equilateral
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab2.Equilateral -> GHC.Types.True }
+                   Lab2.Isosceles
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab2.Isosceles -> GHC.Types.True }
+                   Lab2.Rectangular
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab2.Rectangular -> GHC.Types.True }
+                   Lab2.Other
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab2.Other -> GHC.Types.True } }) -}
+4f321edfbfaf3dc5f384e8b53049cebc
+  $fShowShape :: GHC.Show.Show Lab2.Shape
+  DFunId
+  {- Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ Lab2.Shape
+                  Lab2.$fShowShape_$cshowsPrec
+                  Lab2.$fShowShape_$cshow
+                  Lab2.$fShowShape_$cshowList -}
+720cf61cb559a6d6d0ced9bda9118ebf
+  $fShowShape1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab2.$fShowShape2) -}
+815fc5212958430590d3c3f6a2a281aa
+  $fShowShape10 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("NoTriangle"#) -}
+ec3c7c379506260f47b81477c4d6c49f
+  $fShowShape2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Other"#) -}
+0892faa3347da3f6a8b3a488bf975d91
+  $fShowShape3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab2.$fShowShape4) -}
+1ec023783c77a98696dad6b327505676
+  $fShowShape4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Rectangular"#) -}
+e87722ef85c6ac0eb62f6861d74dc77d
+  $fShowShape5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab2.$fShowShape6) -}
+647b845bc47111f0cc7e3953c08eb53b
+  $fShowShape6 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Isosceles"#) -}
+92ab4fb3aad479f27923798b373ff526
+  $fShowShape7 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab2.$fShowShape8) -}
+ee292d3f80215f116ffd315bedd09e94
+  $fShowShape8 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Equilateral"#) -}
+bd8648ec8211e49719629265c5498c5f
+  $fShowShape9 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab2.$fShowShape10) -}
+4f321edfbfaf3dc5f384e8b53049cebc
+  $fShowShape_$cshow :: Lab2.Shape -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: Lab2.Shape) ->
+                 case x of wild {
+                   Lab2.NoTriangle -> Lab2.$fShowShape9
+                   Lab2.Equilateral -> Lab2.$fShowShape7
+                   Lab2.Isosceles -> Lab2.$fShowShape5
+                   Lab2.Rectangular -> Lab2.$fShowShape3
+                   Lab2.Other -> Lab2.$fShowShape1 }) -}
+4f321edfbfaf3dc5f384e8b53049cebc
+  $fShowShape_$cshowList :: [Lab2.Shape] -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ls :: [Lab2.Shape]) (s :: GHC.Base.String) ->
+                 GHC.Show.showList__ @ Lab2.Shape Lab2.$w$cshowsPrec ls s) -}
+4f321edfbfaf3dc5f384e8b53049cebc
+  $fShowShape_$cshowsPrec ::
+    GHC.Types.Int -> Lab2.Shape -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><S,1*U><L,1*U>, Inline: [0],
+     Unfolding: InlineRule (3, True, True)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: Lab2.Shape)
+                   (w2 :: GHC.Base.String) ->
+                 Lab2.$w$cshowsPrec w1 w2) -}
+86ce67249dd20195e4af680d9226e167
+  $tc'Equilateral :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   7467582010255867206##
+                   7922170364313626789##
+                   Lab2.$trModule
+                   Lab2.$tc'Equilateral2
+                   0#
+                   Lab2.$tc'Equilateral1) -}
+4fa98d132646677c104c39c7ad507605
+  $tc'Equilateral1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m1, Inline: [~] -}
+c9b097646cbe52ed9f8b40cd090b4b99
+  $tc'Equilateral2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab2.$tc'Equilateral3) -}
+0dea05bd0aa17420ca6a01775c3a105a
+  $tc'Equilateral3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Equilateral"#) -}
+7288f4cc444b3f55fb601aafbc39ad9f
+  $tc'Isosceles :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   11495471792746601451##
+                   15527454492454596571##
+                   Lab2.$trModule
+                   Lab2.$tc'Isosceles1
+                   0#
+                   Lab2.$tc'Equilateral1) -}
+79114881b6af850e22c982fbe345c41e
+  $tc'Isosceles1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab2.$tc'Isosceles2) -}
+4641c8d4bbe93314981bbb15edd7e10c
+  $tc'Isosceles2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Isosceles"#) -}
+c31295a3380c2acf1f3b4c251992b28c
+  $tc'NoTriangle :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   17603155102093157249##
+                   2903181073728358337##
+                   Lab2.$trModule
+                   Lab2.$tc'NoTriangle1
+                   0#
+                   Lab2.$tc'Equilateral1) -}
+7b56394ac3570e878d0752d2147fc877
+  $tc'NoTriangle1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab2.$tc'NoTriangle2) -}
+acc14694ed548672eab3bb827ee210b0
+  $tc'NoTriangle2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'NoTriangle"#) -}
+26b7ba95fabd95e12f5945f52f3239d5
+  $tc'Other :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8905919491514580312##
+                   2698051184337372998##
+                   Lab2.$trModule
+                   Lab2.$tc'Other1
+                   0#
+                   Lab2.$tc'Equilateral1) -}
+ab5299ff7fb0113a750c628fd2e4b36e
+  $tc'Other1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab2.$tc'Other2) -}
+e706e8df64b6dec7181f4d61aa7dfcad
+  $tc'Other2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Other"#) -}
+d3b4231a881f4146bd5bcd2abca8cd44
+  $tc'Rectangular :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   10249281854356199402##
+                   1978894660842436692##
+                   Lab2.$trModule
+                   Lab2.$tc'Rectangular1
+                   0#
+                   Lab2.$tc'Equilateral1) -}
+74be4d730f279a99ccfb520991bdd891
+  $tc'Rectangular1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab2.$tc'Rectangular2) -}
+153221f4a2b116bf7485100d89650765
+  $tc'Rectangular2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Rectangular"#) -}
+26ba291804f72b238525a68864dc44bc
+  $tcShape :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   9147924453671990863##
+                   1596555285786196174##
+                   Lab2.$trModule
+                   Lab2.$tcShape1
+                   0#
+                   GHC.Types.krep$*) -}
+9e71ae1b6156075ce2ca0605327eaec2
+  $tcShape1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab2.$tcShape2) -}
+d3346a6e1116690b2a9ab4b7f4bba787
+  $tcShape2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Shape"#) -}
+b719533a48dfe7981529ad774dafccc0
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module Lab2.$trModule3 Lab2.$trModule1) -}
+dfd12962d91e0d2a4423e5af7d5e6543
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab2.$trModule2) -}
+e9f32c976c83335713fb61d1f0c9ac15
+  $trModule2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Lab2"#) -}
+6047e2b574358fe41f8eb54625f9118b
+  $trModule3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab2.$trModule4) -}
+435fdc527852a1bf3f04cab4f4a10d0e
+  $trModule4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("main"#) -}
+4f321edfbfaf3dc5f384e8b53049cebc
+  $w$cshowsPrec :: Lab2.Shape -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0],
+     Unfolding: (\ (w :: Lab2.Shape) (w1 :: GHC.Base.String) ->
+                 case w of wild {
+                   Lab2.NoTriangle
+                   -> GHC.Base.++ @ GHC.Types.Char Lab2.$fShowShape9 w1
+                   Lab2.Equilateral
+                   -> GHC.Base.++ @ GHC.Types.Char Lab2.$fShowShape7 w1
+                   Lab2.Isosceles -> GHC.Base.++ @ GHC.Types.Char Lab2.$fShowShape5 w1
+                   Lab2.Rectangular
+                   -> GHC.Base.++ @ GHC.Types.Char Lab2.$fShowShape3 w1
+                   Lab2.Other
+                   -> GHC.Base.++ @ GHC.Types.Char Lab2.$fShowShape1 w1 }) -}
+1ddfe9bb629eb45fcfd8ffd0f88409b3
+  $wprobs ::
+    GHC.Prim.Int#
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [GHC.Types.Float] #)
+  {- Arity: 2, Strictness: <S,1*U><S,U>, Inline: [0] -}
+b3887377deb1d7cc8d1a797733886330
+  (-->) :: GHC.Types.Bool -> GHC.Types.Bool -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (p :: GHC.Types.Bool) (q :: GHC.Types.Bool) ->
+                 case p of wild {
+                   GHC.Types.False -> GHC.Types.True GHC.Types.True -> q }) -}
+4f321edfbfaf3dc5f384e8b53049cebc
+  data Shape
+    = NoTriangle | Equilateral | Isosceles | Rectangular | Other
+93788a82fb6e0e80b0f083ea2b1d6786
+  probs :: GHC.Types.Int -> GHC.Types.IO [GHC.Types.Float]
+  {- Arity: 2, Strictness: <S(S),1*U(1*U)><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Lab2.probs1
+                  `cast`
+                (<GHC.Types.Int>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <[GHC.Types.Float]>_R)) -}
+9664b16370ec50052b62db900c99f8f7
+  probs1 ::
+    GHC.Types.Int
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [GHC.Types.Float] #)
+  {- Arity: 2, Strictness: <S(S),1*U(1*U)><S,U>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case w of ww { GHC.Types.I# ww1 -> Lab2.$wprobs ww1 w1 }) -}
+instance [safe] GHC.Classes.Eq [Lab2.Shape] = Lab2.$fEqShape
+instance [safe] GHC.Show.Show [Lab2.Shape] = Lab2.$fShowShape
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: safe
+require own pkg trusted: False
+

@@ -1,0 +1,476 @@
+
+==================== FINAL INTERFACE ====================
+2018-09-11 15:46:34.305838269 UTC
+
+interface main:Lab1 8043
+  interface hash: 4afa2a17ff6dc38d17c5b1bc1ca080de
+  ABI hash: 43ba2718df671f0dd1eb211648e84703
+  export-list hash: f39daa347396c14e16c22842a888513b
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: a6ae8284b09fb32960a62b69a9a6100e
+  opt_hash: 14e536840aca4e889cad654e6f9b79c1
+  hpc_hash: 93b885adfe0da089cdf634904fd59f71
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Lab1.-->
+  Lab1.boys
+  Lab1.forall
+  Lab1.prime
+  Lab1.primes
+  Lab1.reversal
+  Lab1.Boy{Lab1.Arnold Lab1.Carl Lab1.Jack Lab1.Matthew Lab1.Peter}
+module dependencies:
+package dependencies: QuickCheck-2.11.3 array-0.5.2.0
+                      base-4.11.1.0* containers-0.5.11.0 deepseq-1.4.3.0
+                      ghc-boot-th-8.4.3 ghc-prim-0.5.2.0 integer-gmp-1.0.2.0
+                      pretty-1.1.3.6 primitive-0.6.3.0 random-1.1
+                      template-haskell-2.13.0.0 tf-random-0.5 time-1.8.0.2
+                      transformers-0.5.5.0
+orphans: transformers-0.5.5.0:Control.Monad.Trans.Error
+         time-1.8.0.2:Data.Time.Format.Parse
+         time-1.8.0.2:Data.Time.LocalTime.Internal.ZonedTime
+         time-1.8.0.2:Data.Time.LocalTime.Internal.LocalTime
+         time-1.8.0.2:Data.Time.Calendar.Gregorian base-4.11.1.0:GHC.Float
+         base-4.11.1.0:GHC.Base
+family instance modules: base-4.11.1.0:Control.Applicative
+                         base-4.11.1.0:Data.Complex base-4.11.1.0:Data.Functor.Compose
+                         base-4.11.1.0:Data.Functor.Const
+                         base-4.11.1.0:Data.Functor.Identity
+                         base-4.11.1.0:Data.Functor.Product base-4.11.1.0:Data.Functor.Sum
+                         base-4.11.1.0:Data.Monoid base-4.11.1.0:Data.Semigroup
+                         base-4.11.1.0:Data.Semigroup.Internal base-4.11.1.0:Data.Version
+                         base-4.11.1.0:Data.Void base-4.11.1.0:GHC.Exts
+                         base-4.11.1.0:GHC.Generics base-4.11.1.0:GHC.IO.Exception
+                         containers-0.5.11.0:Data.IntMap.Internal
+                         containers-0.5.11.0:Data.IntSet.Internal
+                         containers-0.5.11.0:Data.Map.Internal
+                         containers-0.5.11.0:Data.Sequence.Internal
+                         containers-0.5.11.0:Data.Set.Internal
+                         ghc-boot-th-8.4.3:GHC.ForeignSrcLang.Type
+                         ghc-boot-th-8.4.3:GHC.LanguageExtensions.Type
+                         pretty-1.1.3.6:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.6:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.3.0:Control.Monad.Primitive
+                         primitive-0.6.3.0:Data.Primitive.ByteArray
+                         template-haskell-2.13.0.0:Language.Haskell.TH.Syntax
+import  -/  QuickCheck-2.11.3:Test.QuickCheck e00d138ee3234e83a31cc3113c8c8ffb
+import  -/  base-4.11.1.0:Data.Foldable 8ed35c38958063956af33c935ea03444
+import  -/  base-4.11.1.0:Data.List 83dc843e47bfc0c5af51e19c6f3476d5
+import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
+import  -/  base-4.11.1.0:GHC.List 1e4357702d8d00cded0703bd293e50e8
+import  -/  base-4.11.1.0:GHC.Real b4beb0389ba1ad5d9640aae67848c5d3
+import  -/  base-4.11.1.0:GHC.Show 73be67392447c974f19c3befd83c46c0
+import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
+import  -/  base-4.11.1.0:Text.Read 6c02630607b565ffcb34e8127673989b
+import  -/  ghc-prim-0.5.2.0:GHC.Classes 122abfcd7450c6c11602933c9ca5f80d
+import  -/  integer-gmp-1.0.2.0:GHC.Integer.Type f3d5169c3d3830854b19f6565b265403
+fixities infix 1 -->
+8aa82544df2eb4c529208ec471ffa9ee
+  $fEqBoy :: GHC.Classes.Eq Lab1.Boy
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:. @ Lab1.Boy Lab1.$fEqBoy_$c== Lab1.$fEqBoy_$c/= -}
+8aa82544df2eb4c529208ec471ffa9ee
+  $fEqBoy_$c/= :: Lab1.Boy -> Lab1.Boy -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Inline: (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ (x :: Lab1.Boy) (y :: Lab1.Boy) ->
+                 case x of wild {
+                   Lab1.Matthew
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab1.Matthew -> GHC.Types.False }
+                   Lab1.Peter
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab1.Peter -> GHC.Types.False }
+                   Lab1.Jack
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab1.Jack -> GHC.Types.False }
+                   Lab1.Arnold
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab1.Arnold -> GHC.Types.False }
+                   Lab1.Carl
+                   -> case y of wild1 {
+                        DEFAULT -> GHC.Types.True Lab1.Carl -> GHC.Types.False } }) -}
+8aa82544df2eb4c529208ec471ffa9ee
+  $fEqBoy_$c== :: Lab1.Boy -> Lab1.Boy -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Unfolding: (\ (ds :: Lab1.Boy) (ds1 :: Lab1.Boy) ->
+                 case ds of wild {
+                   Lab1.Matthew
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab1.Matthew -> GHC.Types.True }
+                   Lab1.Peter
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab1.Peter -> GHC.Types.True }
+                   Lab1.Jack
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab1.Jack -> GHC.Types.True }
+                   Lab1.Arnold
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab1.Arnold -> GHC.Types.True }
+                   Lab1.Carl
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lab1.Carl -> GHC.Types.True } }) -}
+8aa82544df2eb4c529208ec471ffa9ee
+  $fShowBoy :: GHC.Show.Show Lab1.Boy
+  DFunId
+  {- Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ Lab1.Boy
+                  Lab1.$fShowBoy_$cshowsPrec
+                  Lab1.$fShowBoy_$cshow
+                  Lab1.$fShowBoy_$cshowList -}
+f4de3a1d223e49ec291ec583403d913b
+  $fShowBoy1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab1.$fShowBoy2) -}
+83bfd6dd028f11d7f56cac3e232acbbc
+  $fShowBoy10 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Matthew"#) -}
+7e1674bbb0d5bdd1033ae1e468862d6f
+  $fShowBoy2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Carl"#) -}
+42d465c1021455432d93a8806b7e0929
+  $fShowBoy3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab1.$fShowBoy4) -}
+20bf0f2e570f5e536b221e7f12b7fc54
+  $fShowBoy4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Arnold"#) -}
+7ea72d26db1da0913b50bb546079a2a6
+  $fShowBoy5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab1.$fShowBoy6) -}
+bf64b29e8e23cb8949c794be46d2f890
+  $fShowBoy6 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Jack"#) -}
+dff94eb52ff4cd3bd7113ee62051748f
+  $fShowBoy7 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab1.$fShowBoy8) -}
+995dd7fa93d16a177c9fa25cd8a38280
+  $fShowBoy8 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Peter"#) -}
+41f60e86395e97dcf10e1552f7f6ab5e
+  $fShowBoy9 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lab1.$fShowBoy10) -}
+8aa82544df2eb4c529208ec471ffa9ee
+  $fShowBoy_$cshow :: Lab1.Boy -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: Lab1.Boy) ->
+                 case x of wild {
+                   Lab1.Matthew -> Lab1.$fShowBoy9
+                   Lab1.Peter -> Lab1.$fShowBoy7
+                   Lab1.Jack -> Lab1.$fShowBoy5
+                   Lab1.Arnold -> Lab1.$fShowBoy3
+                   Lab1.Carl -> Lab1.$fShowBoy1 }) -}
+8aa82544df2eb4c529208ec471ffa9ee
+  $fShowBoy_$cshowList :: [Lab1.Boy] -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ls :: [Lab1.Boy]) (s :: GHC.Base.String) ->
+                 GHC.Show.showList__ @ Lab1.Boy Lab1.$w$cshowsPrec ls s) -}
+8aa82544df2eb4c529208ec471ffa9ee
+  $fShowBoy_$cshowsPrec ::
+    GHC.Types.Int -> Lab1.Boy -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><S,1*U><L,1*U>, Inline: [0],
+     Unfolding: InlineRule (3, True, True)
+                (\ (w :: GHC.Types.Int) (w1 :: Lab1.Boy) (w2 :: GHC.Base.String) ->
+                 Lab1.$w$cshowsPrec w1 w2) -}
+9340277058c67f514163809904dcf98e
+  $tc'Arnold :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   16567207840662867545##
+                   14384085703460234011##
+                   Lab1.$trModule
+                   Lab1.$tc'Arnold2
+                   0#
+                   Lab1.$tc'Arnold1) -}
+5c13fb9f1c7108cbedbb7bb8621cbed1
+  $tc'Arnold1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m1, Inline: [~] -}
+0a65a5b7234e6c35729ccfcca30a0be8
+  $tc'Arnold2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab1.$tc'Arnold3) -}
+5b2842325f49a7c32dbfec2157ebb832
+  $tc'Arnold3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Arnold"#) -}
+27c091c61ecbef0e7d575358a0d36f38
+  $tc'Carl :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8433143357462555829##
+                   1289955737889069663##
+                   Lab1.$trModule
+                   Lab1.$tc'Carl1
+                   0#
+                   Lab1.$tc'Arnold1) -}
+aee1384d5925ba0ae244c9ab9fc64581
+  $tc'Carl1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab1.$tc'Carl2) -}
+5ae53156773c5c5aa1252a32bb151c45
+  $tc'Carl2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Carl"#) -}
+f44d345dc3ecaf0af477fb0ccbebac6e
+  $tc'Jack :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   16779106152519553426##
+                   16250463768944870178##
+                   Lab1.$trModule
+                   Lab1.$tc'Jack1
+                   0#
+                   Lab1.$tc'Arnold1) -}
+84044c3f7180fb090557dd23449e6d29
+  $tc'Jack1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab1.$tc'Jack2) -}
+0c9e878416aba05a07887a38bffee0c0
+  $tc'Jack2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Jack"#) -}
+dad1a02075c96dfc680ee2ae24010731
+  $tc'Matthew :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   1081470397093236859##
+                   928750713360184878##
+                   Lab1.$trModule
+                   Lab1.$tc'Matthew1
+                   0#
+                   Lab1.$tc'Arnold1) -}
+befc03268af0994d64b908f9005a5f2a
+  $tc'Matthew1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab1.$tc'Matthew2) -}
+6e071f5ca71de7d120a3a3151d203502
+  $tc'Matthew2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Matthew"#) -}
+4dd815e35b6dba25144df6fcfeeb0c96
+  $tc'Peter :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   960447139978400889##
+                   17270452692850686293##
+                   Lab1.$trModule
+                   Lab1.$tc'Peter1
+                   0#
+                   Lab1.$tc'Arnold1) -}
+244588b396914bcce92efb7e4d41f28d
+  $tc'Peter1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab1.$tc'Peter2) -}
+3ff10c2661b89945129b30c55181ba1c
+  $tc'Peter2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Peter"#) -}
+e9d14f6a71793c518069ce1252af622c
+  $tcBoy :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   12606438796614840921##
+                   4759858650409957244##
+                   Lab1.$trModule
+                   Lab1.$tcBoy1
+                   0#
+                   GHC.Types.krep$*) -}
+49da00f9193885c82efdf523e9282d9b
+  $tcBoy1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab1.$tcBoy2) -}
+60c83a342182314421e24c131ffb8c8c
+  $tcBoy2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Boy"#) -}
+c3267a063085562d6618f6ced1b0fef2
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module Lab1.$trModule3 Lab1.$trModule1) -}
+b5ece6fcb1bca5941421cdcfc2cb59cc
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab1.$trModule2) -}
+0ef1aa48552226f2ea53024d6ede2630
+  $trModule2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Lab1"#) -}
+2295f9342631713244c7070110fa852b
+  $trModule3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lab1.$trModule4) -}
+a71684cc107e790d62c3c114e7b912a6
+  $trModule4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("main"#) -}
+8aa82544df2eb4c529208ec471ffa9ee
+  $w$cshowsPrec :: Lab1.Boy -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0],
+     Unfolding: (\ (w :: Lab1.Boy) (w1 :: GHC.Base.String) ->
+                 case w of wild {
+                   Lab1.Matthew -> GHC.Base.++ @ GHC.Types.Char Lab1.$fShowBoy9 w1
+                   Lab1.Peter -> GHC.Base.++ @ GHC.Types.Char Lab1.$fShowBoy7 w1
+                   Lab1.Jack -> GHC.Base.++ @ GHC.Types.Char Lab1.$fShowBoy5 w1
+                   Lab1.Arnold -> GHC.Base.++ @ GHC.Types.Char Lab1.$fShowBoy3 w1
+                   Lab1.Carl -> GHC.Base.++ @ GHC.Types.Char Lab1.$fShowBoy1 w1 }) -}
+d8c953ef88590feeb7d6f4f6a3e2c1b4
+  $wgo ::
+    GHC.Integer.Type.Integer
+    -> (# GHC.Integer.Type.Integer, [GHC.Integer.Type.Integer] #)
+  {- Arity: 1, Strictness: <S,U>, Inline: [0] -}
+d87425dfa0ade2f443cfabdba337baef
+  (-->) :: GHC.Types.Bool -> GHC.Types.Bool -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (p :: GHC.Types.Bool) (q :: GHC.Types.Bool) ->
+                 case p of wild {
+                   GHC.Types.False -> GHC.Types.True GHC.Types.True -> q }) -}
+8aa82544df2eb4c529208ec471ffa9ee
+  data Boy = Matthew | Peter | Jack | Arnold | Carl
+a731651124e4b8a08d79424d9dc70db3
+  boys :: [Lab1.Boy]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.: @ Lab1.Boy Lab1.Matthew Lab1.boys1) -}
+aae5aabe304a5ed197ebd859415017d1
+  boys1 :: [Lab1.Boy]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.: @ Lab1.Boy Lab1.Peter Lab1.boys2) -}
+e7b7439a8087e2d62b7f6a842817a5ab
+  boys2 :: [Lab1.Boy]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.: @ Lab1.Boy Lab1.Jack Lab1.boys3) -}
+d4a159471dfa819f2432d59159d2b0c8
+  boys3 :: [Lab1.Boy]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.: @ Lab1.Boy Lab1.Arnold Lab1.boys4) -}
+5e4271e7a5e2159efe19aa0bebe3f211
+  boys4 :: [Lab1.Boy]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lab1.Boy
+                   Lab1.Carl
+                   (GHC.Types.[] @ Lab1.Boy)) -}
+a732f87bdc1a7ca82741af6b73c5d59b
+  forall :: [a] -> (a -> GHC.Types.Bool) -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,C(U)>,
+     Unfolding: InlineRule (0, True, True)
+                Lab1.forall1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <[a]>_R
+                 ->_R <a -> GHC.Types.Bool>_R
+                 ->_R Data.Semigroup.Internal.N:All[0]) -}
+51aab27b90d63e78436db01470a367ed
+  forall1 ::
+    [a] -> (a -> GHC.Types.Bool) -> Data.Semigroup.Internal.All
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,C(U)>,
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a (x :: [a]) (y :: a -> GHC.Types.Bool) ->
+                 letrec {
+                   go :: [a] -> Data.Semigroup.Internal.All <join 1> {- Arity: 1 -}
+                   = \ (ds :: [a]) ->
+                     case ds of wild {
+                       []
+                       -> GHC.Types.True `cast` (Sym (Data.Semigroup.Internal.N:All[0]))
+                       : y1 ys
+                       -> case y y1 of wild1 {
+                            GHC.Types.False
+                            -> GHC.Types.False `cast` (Sym (Data.Semigroup.Internal.N:All[0]))
+                            GHC.Types.True -> go ys } }
+                 } in
+                 go x) -}
+d0a864e589e93d68c98b789e035f46d4
+  prime :: GHC.Integer.Type.Integer -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (n :: GHC.Integer.Type.Integer) ->
+                 case GHC.Integer.Type.gtInteger# n Lab1.prime2 of wild {
+                   DEFAULT -> GHC.Types.False
+                   1#
+                   -> letrec {
+                        go :: [GHC.Integer.Type.Integer] -> GHC.Types.Bool
+                          <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                        = \ (ds :: [GHC.Integer.Type.Integer]) ->
+                          case ds of wild1 {
+                            [] -> GHC.Types.True
+                            : y ys
+                            -> case GHC.Integer.Type.leInteger#
+                                      (GHC.Integer.Type.timesInteger y y)
+                                      n of wild2 {
+                                 DEFAULT -> GHC.Types.True
+                                 1#
+                                 -> case GHC.Integer.Type.eqInteger# y Lab1.prime1 of wild3 {
+                                      DEFAULT
+                                      -> case GHC.Integer.Type.neqInteger#
+                                                (GHC.Integer.Type.remInteger n y)
+                                                Lab1.prime1 of wild4 {
+                                           DEFAULT -> GHC.Types.False 1# -> go ys }
+                                      1#
+                                      -> case GHC.Real.divZeroError
+                                         ret_ty GHC.Types.Bool
+                                         of {} } } }
+                      } in
+                      go Lab1.primes }) -}
+cf5b585b1c4e8b9e28112196d166b255
+  prime1 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (0) -}
+6fc2734c70c26a5896e526511252205b
+  prime2 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (1) -}
+e561e45ad8b6f588b6b25ad6341dbf17
+  primes :: [GHC.Integer.Type.Integer]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ GHC.Integer.Type.Integer
+                   Lab1.primes3
+                   Lab1.primes1) -}
+9b5c0504c9e512207c3503e85fd7c6e0
+  primes1 :: [GHC.Integer.Type.Integer]
+  {- Unfolding: (case Lab1.$wgo Lab1.primes2 of ww { (#,#) ww1 ww2 ->
+                 GHC.Types.: @ GHC.Integer.Type.Integer ww1 ww2 }) -}
+b324d46592d06996c9f12004d01d8dd0
+  primes2 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (3) -}
+5f551d990d945693355c1ff5b6f378a3
+  primes3 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (2) -}
+93d34ebaf550cd642c5fc751e1d2ce6f
+  reversal :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
+  {- Arity: 1, Strictness: <L,U>,
+     Unfolding: (\ (x :: GHC.Integer.Type.Integer) ->
+                 case Text.Read.readEither8
+                        @ GHC.Integer.Type.Integer
+                        (Text.ParserCombinators.ReadP.run
+                           @ GHC.Integer.Type.Integer
+                           Lab1.reversal3
+                           (case GHC.Show.$w$cshowsPrec4
+                                   0#
+                                   x
+                                   (GHC.Types.[] @ GHC.Types.Char) of ww2 { (#,#) ww3 ww4 ->
+                            GHC.List.reverse1
+                              @ GHC.Types.Char
+                              (GHC.Types.: @ GHC.Types.Char ww3 ww4)
+                              (GHC.Types.[] @ GHC.Types.Char) })) of wild {
+                   [] -> Lab1.reversal2
+                   : x1 ds
+                   -> case ds of wild1 { [] -> x1 : ipv ipv1 -> Lab1.reversal1 } }) -}
+da1d7494ef78d98e85bdf05817b2886e
+  reversal1 :: GHC.Integer.Type.Integer
+  {- Strictness: x -}
+179cf68637cbf67102e39202ffdca823
+  reversal2 :: GHC.Integer.Type.Integer
+  {- Strictness: x -}
+a68d9ee8c0c44c1ba2d2667861adc170
+  reversal3 ::
+    Text.ParserCombinators.ReadP.P GHC.Integer.Type.Integer
+  {- Unfolding: (GHC.Read.$fReadInteger_$sreadNumber
+                   GHC.Read.$fReadInteger2
+                   Text.ParserCombinators.ReadPrec.minPrec
+                   @ GHC.Integer.Type.Integer
+                   (Text.Read.readEither7 @ GHC.Integer.Type.Integer)) -}
+instance [safe] GHC.Classes.Eq [Lab1.Boy] = Lab1.$fEqBoy
+instance [safe] GHC.Show.Show [Lab1.Boy] = Lab1.$fShowBoy
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: safe
+require own pkg trusted: False
+
