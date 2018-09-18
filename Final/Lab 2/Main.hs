@@ -374,7 +374,7 @@ equalLetterCase decoded = all (\(x,y) -> ((x `elem` upper) --> y `elem` upper) &
   where upper = ['A'..'Z']
         lower = ['a'..'z']
 
--- Property: When rotated two times rot13 will yield the beginning result (thanks to Samy for pointing this one out).
+-- Property: When rotated two times rot13 will yield the beginning result.
 doubleRotYieldsBeginResult :: String -> Bool
 doubleRotYieldsBeginResult decoded = decoded == rot13 (rot13 decoded)
 
@@ -387,7 +387,6 @@ doubleRotYieldsBeginResult decoded = decoded == rot13 (rot13 decoded)
 -- Examplanation of the result:
 -- To test this function, I included an example IBAN for every country, as available on the official IBAN site (https://www.iban.com/structure). This was absolutely necessary, as this was the only way to hit every case of the `ibanLengthTable`. Also, during testing it seemed that I had forgotten an entry in my `ibanLengthTable`, which was found and could thus be fixed because of the extensive tests. To test if invalid would return False for the IBAN checker, I turned all valid emails into invalid ones by incrementing each by one. This was done by incrementing the fourth number, which would become the final number of the `mod` number and would thus always result in an invalid iban. This even tests the final case of the `ibanLengthTable` (the invalid one that returns -1, thus never resulting in a valid IBAN code) as sometimes the fourth number would be '9' which would, incremented by one, become a number of a greater length (10) and thus resulting in a longer IBAN (which would hit the final case of the `ibanLengthTable`).
 -- Automated testing was not done for this case because there are not many definable properties for the `iban` method that would actually proof much (which the manual testing does). For instance, the property `startsWithValidLetters` could have been written, which would basically have to check for everything the `ibanLengthTable` checks for and would thus not proof anything. The testing which is currently done (manual) is optimal to test the validity of the `iban` function.
-
 
 ibanLengthTable :: String -> Int
 ibanLengthTable "AD" = 24
@@ -512,6 +511,52 @@ ibanCheckTest = do
   putStrLn $ "Testing valid IBANs: " ++ checkTestResult (all iban testIBANs)
   putStrLn $ "Testing invalid IBANs: " ++ checkTestResult (all (not . iban) (map (\x -> replace 3 (head (show (digitToInt (x !! 3) + 1))) x) testIBANs))
 
+-- Project Euler Bonus
+
+-- Euler 25:
+-- What is the index of the first term in the Fibonacci sequence to contain 1000 digits?
+--   - index = 4782
+--  Time 45 minutes
+
+-- Fibs function with help from https://wiki.haskell.org/The_Fibonacci_sequence
+fibs :: [Integer]
+fibs = map fst (iterate (\(a,b) -> (b,a+b)) (0,1))
+
+solveEuler25 :: Int
+solveEuler25 = length (takeWhile (< 10^999) fibs)
+
+-- Euler 35:
+-- How many circular primes are there below one million?
+--  - 55
+--  Time 60 minutes
+prime :: Int -> Bool
+prime n = n > 1 && all (\ x -> rem n x /= 0) xs
+  where xs = takeWhile (\ y -> y^2 <= n) primes
+
+primes :: [Int]
+primes = 2 : filter prime [3..]
+
+digitToList :: Int -> [Int]
+digitToList n = map digitToInt (show n)
+
+listToDigit :: [Int] -> Int
+listToDigit ns = read (map intToDigit ns)
+
+rotate :: [Int] -> [Int]
+rotate (x:xs) = xs ++ [x]
+
+rotations :: Int -> [Int] -> [[Int]]
+rotations n xs = take n (iterate rotate xs)
+
+getRotOfDigit :: Int -> [Int]
+getRotOfDigit n = map listToDigit (rotations (length(digitToList n)) (digitToList n))
+
+isCircPrime :: Int -> Bool
+isCircPrime n = all prime (getRotOfDigit n)
+
+solveEuler35 :: Int
+solveEuler35 = length (filter isCircPrime (takeWhile (<10^6) primes))
+
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
 checkTestResult False = "Test failed!"
@@ -546,5 +591,11 @@ main = do
 
   putStrLn "\n== Assignment 7 (Implementing and testing IBAN validation) =="
   ibanCheckTest
+
+  putStrLn "\nEuler25: Index of the first term in the Fibonacci sequence to contain 1000 digits:"
+  print solveEuler25
+
+  putStrLn "\nEuler35: Circular primes below one million:"
+  print solveEuler35
 
   putStrLn "Done"
