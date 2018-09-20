@@ -36,7 +36,6 @@ pAndNotP = Cnj[p,Neg p]
 pOrQ = Dsj[p,q]
 pAndQ = Cnj[p,q]
 
-
 checkTestResult :: Bool -> String
 checkTestResult True  = "\x1b[32mTest succeeded!\x1b[0m"
 checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
@@ -46,34 +45,53 @@ checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
 
 
 -- Assignment 3
--- Time: 1 hour
+-- Time: 3 hours
 -- TODO: Include arrowFree and nnf before the rules below
-cnf :: Form -> Form
-cnf (Prop x) = Prop x
-cnf (Neg (Prop x)) = Neg (Prop x)
-cnf (Cnj [Neg x, Neg y]) = Neg (Cnj [x, y]) -- De morgan law
-cnf (Dsj [ Cnj [x1, y1], Cnj [x2, y2] ]) = Cnj [ Dsj [x1, y1], Dsj [x2, y2] ] -- Distributive property
-
--- arrowfree :: Form -> Form
--- arrowfree (Prop x) = Prop x
--- arrowfree (Neg f) = Neg (arrowfree f)
--- arrowfree (Cnj fs) = Cnj (map arrowfree fs)
--- arrowfree (Dsj fs) = Dsj (map arrowfree fs)
--- arrowfree (Impl f1 f2) =
---   Dsj [Neg (arrowfree f1), arrowfree f2]
--- arrowfree (Equiv f1 f2) =
---   Dsj [Cnj [f1', f2'], Cnj [Neg f1', Neg f2']]
---   where f1' = arrowfree f1
---         f2' = arrowfree f2
+-- cnf :: Form -> Form
+-- cnf (Prop x)                            = Prop x
+-- cnf (Neg (Prop x))                      = Neg (Prop x)
 --
--- nnf :: Form -> Form
--- nnf (Prop x) = Prop x
--- nnf (Neg (Prop x)) = Neg (Prop x)
--- nnf (Neg (Neg f)) = nnf f
--- nnf (Cnj fs) = Cnj (map nnf fs)
--- nnf (Dsj fs) = Dsj (map nnf fs)
--- nnf (Neg (Cnj fs)) = Dsj (map (nnf.Neg) fs)
--- nnf (Neg (Dsj fs)) = Cnj (map (nnf.Neg) fs)
+-- cnf (Dsj [Prop p, Prop q])              = Dsj [Prop p, Prop q]
+-- cnf (Dsj [Neg (Prop p), Prop q])        = Dsj [Neg (Prop p), Prop q]
+-- cnf (Dsj [Prop p, Neg (Prop q)])        = Dsj [Prop p, Neg (Prop q)]
+-- cnf (Dsj [Neg (Prop p), Neg (Prop q)])  = Dsj [Neg (Prop p), Neg (Prop q)]
+--
+-- cnf (Cnj [Prop p, Prop q])              = Cnj [Prop p, Prop q]
+-- cnf (Cnj [Neg (Prop p), Prop q])        = Cnj [Neg (Prop p), Prop q]
+-- cnf (Cnj [Prop p, Neg (Prop q)])        = Cnj [Prop p, Neg (Prop q)]
+-- cnf (Cnj [Neg (Prop p), Neg (Prop q)])  = Cnj [Neg (Prop p), Neg (Prop q)]
+--
+--  -- De morgan law
+-- cnf (Cnj [Neg x, Neg y])                = cnf (Neg (Cnj [x, y]))
+--
+-- cnf (Dsj [Cnj [x1, y1], Cnj [x2, y2] ]) = cnf (Cnj [Dsj [x1, x2], Dsj [y1, y2] ])
+--
+-- -- Distributive property
+-- -- Rule of replacement
+-- cnf (Dsj [Dsj [q, r], p])               = cnf (Dsj [cnf (Dsj [p, q]), cnf (Dsj [p, r])])
+-- cnf (Dsj [Neg (Dsj [q, r]), p])         = cnf (Dsj [cnf (Dsj [p, q]), cnf (Dsj [p, r])])
+-- -- cnf (Dsj [Cnj [q, r], p])               = cnf (Cnj [cnf (Dsj [p, q]), cnf (Dsj [p, r])])
+-- -- cnf (Dsj [p, Cnj [q, r]])               = cnf (Cnj [cnf (Dsj [p, q]), cnf (Dsj [p, r])])
+-- cnf (Dsj [p, Neg (Cnj [q, r])])         = cnf (Cnj [cnf (Dsj [p, Neg q]), cnf (Dsj [p, Neg r])])
+-- cnf (Dsj [Neg (Cnj [q, r]), p])         = cnf (Cnj [cnf (Dsj [p, Neg q]), cnf (Dsj [p, Neg r])])
+--
+--
+-- -- Distribution of conjunction over conjunction
+-- cnf (Cnj [p, Cnj [q, r]])               = cnf (Cnj [ cnf (Cnj [p, q]), cnf (Cnj [p, r])])
+-- cnf (Cnj [Cnj [q, r], p])               = cnf (Cnj [ cnf (Cnj [p, q]), cnf (Cnj [p, r])])
+--
+-- -- Leaf
+-- cnf (Cnj [p, q])                        = Cnj [p, q]
+
+valuationToClause :: Valuation -> Form
+valuationToClause v = Dsj (map (\x -> if snd x then Prop (fst x) else Neg (Prop (fst x))) v)
+
+falseEvals :: Form -> [Valuation]
+falseEvals f = filter (\x -> not (evl x f)) (allVals f)
+
+cnf :: Form -> Form
+cnf f = Cnj (map valuationToClause (falseEvals f))
+
 
 main :: IO ()
 main = do
