@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-20 14:03:19.64146729 UTC
+2018-09-20 21:14:40.540823605 UTC
 
 interface main:Main 8043
-  interface hash: a49846f0335999ab1f4b7d9193d6c3a8
-  ABI hash: 7810acc582f786061a441bbe9c1d234b
+  interface hash: 9cc2545c94264f6e3b83f86a2ecd6149
+  ABI hash: 49f1b4baeea19612fcad850bdc549bfd
   export-list hash: 1df73ee09b507cf89438256706a87199
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 8685d694e67a748160b24bb5044d3233
@@ -72,12 +72,12 @@ import  -/  QuickCheck-2.11.3:Test.QuickCheck e00d138ee3234e83a31cc3113c8c8ffb
 import  -/  base-4.11.1.0:Data.Char 3e89818e2b8ef1a2cc5393163484da72
 import  -/  base-4.11.1.0:Data.Foldable 8ed35c38958063956af33c935ea03444
 import  -/  base-4.11.1.0:Data.List 83dc843e47bfc0c5af51e19c6f3476d5
+import  -/  base-4.11.1.0:Data.Traversable 7ad4edb9184ea1ae8e73f6b94f115c8c
 import  -/  base-4.11.1.0:Data.Tuple 3af66f3ac61ed95ba8a3a3f68ebc5003
 import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
-import  -/  base-4.11.1.0:GHC.Err 5e26aa744981f14e0f1e4d29c44ac52e
-import  -/  base-4.11.1.0:GHC.IO.Unsafe c1dfcbb6f65c5fb985b7e5159499b64e
 import  -/  base-4.11.1.0:GHC.List 1e4357702d8d00cded0703bd293e50e8
 import  -/  base-4.11.1.0:GHC.Num 8e54b26dce4495382dc4b50cf36ab754
+import  -/  base-4.11.1.0:GHC.Show 73be67392447c974f19c3befd83c46c0
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
 import  -/  base-4.11.1.0:System.IO 1c239be44126f7b1ba512ea61300f4dc
 import  -/  base-4.11.1.0:System.IO.Unsafe 0a2eb33ad4988fdd87ebf1fb8b419957
@@ -153,51 +153,16 @@ e5875966b74dad2d29772660b8a75e33
 d026be77cb9ced20e35a61514e0458aa
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("main"#) -}
-7a2c9b05d46dc9843af88f48ce743dad
-  $wchooseRandomProperty ::
-    Main.TreeState -> (# GHC.Types.Int, Lecture3.Form #)
-  {- Arity: 1, Strictness: <L,1*U(1*U(U),A)>, Inline: [0],
-     Unfolding: (\ (w :: Main.TreeState) ->
-                 let {
-                   props :: GHC.Types.Int
-                   = case w of wild { Main.TreeState ds ds1 -> ds }
-                 } in
-                 let {
-                   chosenProperty :: GHC.Types.Int
-                   = Main.chooseTreeOption
-                       (case props of wild { GHC.Types.I# x ->
-                        GHC.Types.I# (GHC.Prim.+# x 1#) })
-                 } in
-                 (# case chosenProperty of wild { GHC.Types.I# x ->
-                    case props of wild1 { GHC.Types.I# y ->
-                    case GHC.Prim.==# x y of lwild {
-                      DEFAULT -> wild1 1# -> GHC.Types.I# (GHC.Prim.+# y 1#) } } },
-                    Lecture3.Prop chosenProperty #)) -}
-b6a4fbc544b6bad2b3760b4917ddbe5c
-  $wchooseRandomSplitForm ::
-    GHC.Types.Int
-    -> Main.TreeState -> (# GHC.Types.Int, Lecture3.Form #)
-  {- Arity: 2, Strictness: <L,U(U)><L,1*U(1*U(U),A)>, Inline: [0] -}
-6049fe753073cc1e97c9fe8866ee19c2
-  $wgenerateForm ::
-    GHC.Prim.Int#
-    -> Main.TreeState -> (# GHC.Types.Int, Lecture3.Form #)
-  {- Arity: 2, Strictness: <S,U><L,1*U(1*U(U),A)>, Inline: [0],
-     Unfolding: (\ (ww :: GHC.Prim.Int#) (w :: Main.TreeState) ->
-                 case Main.generateActualForm7 of wild { GHC.Types.I# x ->
-                 case GHC.Prim.<# x ww of lwild {
-                   DEFAULT -> Main.$wchooseRandomProperty w
-                   1#
-                   -> Main.$wchooseRandomSplitForm
-                        (GHC.Types.I# (GHC.Prim.-# ww 1#))
-                        w } }) -}
-e3f3f24266ddf1ccfc8aebfe31185ad4
+2d4c79f31b94889bda4623940e4b96ef
   $wgenerateFormList ::
     GHC.Types.Int
-    -> Main.TreeState
-    -> [Main.TreeState]
-    -> (# Main.TreeState, [Main.TreeState] #)
-  {- Arity: 3, Strictness: <L,U(U)><L,1*U(1*U(U),A)><L,U>,
+    -> GHC.Types.IO Main.TreeState
+    -> [GHC.Types.IO Main.TreeState]
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          [GHC.Types.IO Main.TreeState] #)
+  {- Arity: 4,
+     Strictness: <L,U(U)><L,C(U(U,1*U(1*U(U),A)))><L,U><S,U>,
      Inline: [0] -}
 2128e83297d9b21a8f1ea63a3285fd41
   data TreeState
@@ -230,79 +195,118 @@ ef9ca2e7c68c30e1a7f88aac6829fc90
 4510ad5bdc66b32f0bbaa0b64274861f
   checkTestResult4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("\ESC[31mTest failed!\ESC[0m"#) -}
-928fcaf2d2d8df5f22b16b36dce52980
-  chooseRandomProperty :: Main.TreeState -> Main.TreeState
-  {- Arity: 1, Strictness: <L,1*U(1*U(U),A)>m, Inline: [0],
-     Unfolding: InlineRule (1, True, False)
-                (\ (w :: Main.TreeState) ->
-                 case Main.$wchooseRandomProperty w of ww { (#,#) ww1 ww2 ->
-                 Main.TreeState ww1 ww2 }) -}
-24e94b960722cfe184174e64c5a03ddf
-  chooseRandomSplitForm ::
-    GHC.Types.Int -> Main.TreeState -> Main.TreeState
-  {- Arity: 2, Strictness: <L,U(U)><L,1*U(1*U(U),A)>m, Inline: [0],
-     Unfolding: InlineRule (2, True, False)
-                (\ (w :: GHC.Types.Int) (w1 :: Main.TreeState) ->
-                 case Main.$wchooseRandomSplitForm w w1 of ww { (#,#) ww1 ww2 ->
-                 Main.TreeState ww1 ww2 }) -}
-c5c494bc8523eca04af8af3d0e084234
-  chooseTreeOption :: GHC.Types.Int -> GHC.Types.Int
-  {- Arity: 1, Strictness: <L,1*U(U)>,
-     Unfolding: (\ (maximumNumber :: GHC.Types.Int) ->
-                 case GHC.Magic.runRW#
-                        @ ('GHC.Types.TupleRep
-                             '['GHC.Types.TupleRep '[], 'GHC.Types.LiftedRep])
-                        @ (# GHC.Prim.State# GHC.Prim.RealWorld, GHC.Types.Int #)
-                        (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
-                         case GHC.Prim.noDuplicate#
-                                @ GHC.Prim.RealWorld
-                                s of s' { DEFAULT ->
-                         case System.Random.theStdGen
-                                `cast`
-                              (GHC.IORef.N:IORef[0] <System.Random.StdGen>_N) of wild { GHC.STRef.STRef r# ->
-                         let {
-                           w1 :: GHC.Integer.Type.Integer
-                           = case maximumNumber of wild1 { GHC.Types.I# x ->
-                             GHC.Integer.Type.smallInteger (GHC.Prim.-# x 1#) }
-                         } in
-                         case GHC.Prim.atomicModifyMutVar#
-                                @ GHC.Prim.RealWorld
+fe39492f48204b604c892a5dcd79f813
+  chooseRandomProperty ::
+    GHC.Types.IO Main.TreeState -> GHC.Types.IO Main.TreeState
+  {- Arity: 2, Strictness: <C(S(SL)),1*C1(U(U,1*U(1*U(U),A)))><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.chooseRandomProperty1
+                  `cast`
+                (<GHC.Types.IO Main.TreeState>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <Main.TreeState>_R)) -}
+5281dca424df853c5085f9d766bf0ca2
+  chooseRandomProperty1 ::
+    GHC.Types.IO Main.TreeState
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Main.TreeState #)
+  {- Arity: 2, Strictness: <C(S(SL)),1*C1(U(U,1*U(1*U(U),A)))><S,U>,
+     Unfolding: (\ (state :: GHC.Types.IO Main.TreeState)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case state `cast` (GHC.Types.N:IO[0] <Main.TreeState>_R)
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 let {
+                   props :: GHC.Types.Int
+                   = case ipv1 of wild { Main.TreeState ds ds2 -> ds }
+                 } in
+                 case Main.chooseRandomProperty2
+                        (case props of wild { GHC.Types.I# x ->
+                         GHC.Types.I# (GHC.Prim.+# x 1#) })
+                        ipv of ds2 { (#,#) ipv2 ipv3 ->
+                 (# ipv2,
+                    Main.TreeState
+                      (case ipv3 of wild { GHC.Types.I# x ->
+                       case props of wild1 { GHC.Types.I# y ->
+                       case GHC.Prim.==# x y of lwild {
+                         DEFAULT -> wild1 1# -> GHC.Types.I# (GHC.Prim.+# y 1#) } } })
+                      (Lecture3.Prop ipv3) #) } }) -}
+5ccf8e13ca8b95ea49b2a31ab9bb2929
+  chooseRandomProperty2 ::
+    GHC.Types.Int
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, GHC.Types.Int #)
+  {- Arity: 2, Strictness: <L,1*U(U)><S,U>m,
+     Unfolding: (\ (maximumNumber :: GHC.Types.Int)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case System.Random.theStdGen
+                        `cast`
+                      (GHC.IORef.N:IORef[0] <System.Random.StdGen>_N) of wild { GHC.STRef.STRef r# ->
+                 let {
+                   w1 :: GHC.Integer.Type.Integer
+                   = case maximumNumber of wild1 { GHC.Types.I# x ->
+                     GHC.Integer.Type.smallInteger (GHC.Prim.-# x 1#) }
+                 } in
+                 case GHC.Prim.atomicModifyMutVar#
+                        @ GHC.Prim.RealWorld
+                        @ System.Random.StdGen
+                        @ (System.Random.StdGen, GHC.Types.Int)
+                        @ GHC.Types.Int
+                        r#
+                        (\ (a1 :: System.Random.StdGen) ->
+                         case System.Random.$wrandomIvalInteger
                                 @ System.Random.StdGen
-                                @ (System.Random.StdGen, GHC.Types.Int)
                                 @ GHC.Types.Int
-                                r#
-                                (\ (a1 :: System.Random.StdGen) ->
-                                 case System.Random.$wrandomIvalInteger
-                                        @ System.Random.StdGen
-                                        @ GHC.Types.Int
-                                        System.Random.$fRandomGenStdGen
-                                        GHC.Num.$fNumInt
-                                        Main.chooseTreeOption_w2
-                                        w1
-                                        a1 of ww2 { (#,#) ww3 ww4 ->
-                                 case ww4 of a'1 { System.Random.StdGen ipv ipv1 -> (a'1, ww3) } })
-                                s' of ds1 { (#,#) ipv ipv1 ->
-                         case ipv1 of b1 { GHC.Types.I# ipv2 ->
-                         ds1 } } } }) of ds { (#,#) ipv ipv1 ->
-                 ipv1 }) -}
-55380711b5abd393cdbd59040791d9be
-  chooseTreeOption_w2 :: GHC.Integer.Type.Integer
+                                System.Random.$fRandomGenStdGen
+                                GHC.Num.$fNumInt
+                                Main.chooseRandomProperty_w2
+                                w1
+                                a1 of ww2 { (#,#) ww3 ww4 ->
+                         case ww4 of a'1 { System.Random.StdGen ipv ipv1 -> (a'1, ww3) } })
+                        eta of ds1 { (#,#) ipv ipv1 ->
+                 case ipv1 of b1 { GHC.Types.I# ipv2 -> ds1 } } }) -}
+1a59469932582400d04391d47d61ddbc
+  chooseRandomProperty_w2 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (0) -}
-b8863301328765edb46cb8be5f5a57f7
+2762f7f0237c0314616ece22dbbaa60f
+  chooseRandomSplitForm ::
+    GHC.Types.Int
+    -> GHC.Types.IO Main.TreeState -> GHC.Types.IO Main.TreeState
+  {- Arity: 3, Strictness: <L,U(U)><L,C(U(U,1*U(1*U(U),A)))><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.chooseRandomSplitForm1
+                  `cast`
+                (<GHC.Types.Int>_R
+                 ->_R <GHC.Types.IO Main.TreeState>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <Main.TreeState>_R)) -}
+530454f82dcf46b6013eb07cc1756fd2
+  chooseRandomSplitForm1 ::
+    GHC.Types.Int
+    -> GHC.Types.IO Main.TreeState
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Main.TreeState #)
+  {- Arity: 3, Strictness: <L,U(U)><L,C(U(U,1*U(1*U(U),A)))><S,U> -}
+9a30b226e9698d3797ae170e49975ccd
+  chooseTreeOption :: GHC.Types.Int -> GHC.Types.IO GHC.Types.Int
+  {- Arity: 2, Strictness: <L,1*U(U)><S,U>m,
+     Unfolding: InlineRule (0, True, True)
+                Main.chooseRandomProperty2
+                  `cast`
+                (<GHC.Types.Int>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <GHC.Types.Int>_R)) -}
+e6eee1be1d722d66e98e05d86474c0c4
   contradiction :: Lecture3.Form -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (f :: Lecture3.Form) ->
                  letrec {
-                   go7 :: [Lecture3.Valuation] -> GHC.Types.Bool
+                   go4 :: [Lecture3.Valuation] -> GHC.Types.Bool
                      <join 1> {- Arity: 1, Strictness: <S,1*U> -}
                    = \ (ds :: [Lecture3.Valuation]) ->
                      case ds of wild {
                        [] -> GHC.Types.True
                        : y ys
                        -> case Lecture3.evl y f of wild1 {
-                            GHC.Types.False -> go7 ys GHC.Types.True -> GHC.Types.False } }
+                            GHC.Types.False -> go4 ys GHC.Types.True -> GHC.Types.False } }
                  } in
-                 go7
+                 go4
                    (Lecture3.genVals
                       (Data.OldList.sortBy
                          @ Lecture3.Name
@@ -356,64 +360,97 @@ b77fe9a5372bca405a853fcceb5fbfbe
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: Main.TreeState) ->
                  case ds of wild { Main.TreeState ds1 ds2 -> ds2 }) -}
-599ff7581d4412b084db1cc8895fda92
-  generateActualForm :: Lecture3.Form
-  {- Unfolding: (case Main.generateActualForm7 of wild { GHC.Types.I# x ->
-                 case GHC.Prim.<# x 9# of lwild {
-                   DEFAULT -> Main.generateActualForm4
+245800a3cefdcea49b114b1509bbd1b9
+  generateActualForm :: GHC.Types.IO Lecture3.Form
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.generateActualForm1
+                  `cast`
+                (Sym (GHC.Types.N:IO[0] <Lecture3.Form>_R)) -}
+3ed2b669f530e46406f9fdbd39111b13
+  generateActualForm1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture3.Form #)
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Main.generateActualForm2
+                        (GHC.Types.I# 4#)
+                        (\ (s1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                         (# s1, Main.TreeState (GHC.Types.I# 1#) Lecture3.p #))
+                          `cast`
+                        (Sym (GHC.Types.N:IO[0] <Main.TreeState>_R))
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 (# ipv, case ipv1 of wild { Main.TreeState ds ds2 -> ds2 } #) }) -}
+5329905db89707b5b9f72f78c822c094
+  generateActualForm2 ::
+    GHC.Types.Int
+    -> GHC.Types.IO Main.TreeState
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Main.TreeState #)
+  {- Arity: 3, Strictness: <L,1*U(U)><L,C(U(U,1*U(1*U(U),A)))><S,U>,
+     Unfolding: (\ (leftTreeChance :: GHC.Types.Int)
+                   (state :: GHC.Types.IO Main.TreeState)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Main.chooseRandomProperty2
+                        Main.maxTreeChance
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 case ipv1 of wild { GHC.Types.I# x ->
+                 case leftTreeChance of wild1 { GHC.Types.I# y ->
+                 case GHC.Prim.<# x y of lwild {
+                   DEFAULT -> Main.chooseRandomProperty1 state ipv
                    1#
-                   -> case Main.$wchooseRandomSplitForm
-                             Main.generateActualForm3
-                             Main.generateActualForm1 of ww { (#,#) ww1 ww2 ->
-                      ww2 } } }) -}
-362f3d60fe0ab407e1fb73da7ddc2943
-  generateActualForm1 :: Main.TreeState
-  {- HasNoCafRefs, Strictness: m,
-     Unfolding: (Main.TreeState Main.generateActualForm2 Lecture3.p) -}
-e2a21d0627d1e2a0328ca1898c356559
-  generateActualForm2 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 1#) -}
-b489675b70704caf134d674759406b66
-  generateActualForm3 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 8#) -}
-f2a9bcee8880949722bfb57672fef225
-  generateActualForm4 :: Lecture3.Form
-  {- Strictness: m1,
-     Unfolding: (Lecture3.Prop Main.generateActualForm5) -}
-58d8a02e54d766594f5ed7a1ad78bfc1
-  generateActualForm5 :: GHC.Types.Int
-  {- Unfolding: (Main.chooseTreeOption Main.generateActualForm6) -}
-656815ed1ca39ca34528a788cc393e1f
-  generateActualForm6 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 2#) -}
-51ff4700453f5c3f8740afec4106e6bb
-  generateActualForm7 :: GHC.Types.Int
-  {- Unfolding: (Main.chooseTreeOption Main.maxTreeChance) -}
-1742b6dc69f5cd26808e2b3de5538228
-  generateForm :: GHC.Types.Int -> Main.TreeState -> Main.TreeState
-  {- Arity: 2, Strictness: <S(S),1*U(U)><L,1*U(1*U(U),A)>m,
-     Inline: [0],
-     Unfolding: InlineRule (2, True, False)
-                (\ (w :: GHC.Types.Int) (w1 :: Main.TreeState) ->
-                 case w of ww { GHC.Types.I# ww1 ->
-                 case Main.$wgenerateForm ww1 w1 of ww2 { (#,#) ww3 ww4 ->
-                 Main.TreeState ww3 ww4 } }) -}
-d2ad201c64e7a113717b327078a50e63
+                   -> Main.chooseRandomSplitForm1
+                        (GHC.Types.I# (GHC.Prim.-# y 1#))
+                        state
+                        ipv } } } }) -}
+c4d42d245a3eb9955a1aff96d1628019
+  generateForm ::
+    GHC.Types.Int
+    -> GHC.Types.IO Main.TreeState -> GHC.Types.IO Main.TreeState
+  {- Arity: 3, Strictness: <L,1*U(U)><L,C(U(U,1*U(1*U(U),A)))><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.generateActualForm2
+                  `cast`
+                (<GHC.Types.Int>_R
+                 ->_R <GHC.Types.IO Main.TreeState>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <Main.TreeState>_R)) -}
+fefeebeb3aa906fb3b2650b95cfdd7b2
   generateFormList ::
     GHC.Types.Int
-    -> Main.TreeState
+    -> GHC.Types.IO Main.TreeState
     -> GHC.Types.Int
-    -> [Main.TreeState]
-    -> [Main.TreeState]
-  {- Arity: 4, Strictness: <L,U(U)><L,1*U(1*U(U),A)><L,A><L,U>m2,
+    -> [GHC.Types.IO Main.TreeState]
+    -> GHC.Types.IO [GHC.Types.IO Main.TreeState]
+  {- Arity: 5,
+     Strictness: <L,U(U)><L,C(U(U,1*U(1*U(U),A)))><L,A><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.generateFormList1
+                  `cast`
+                (<GHC.Types.Int>_R
+                 ->_R <GHC.Types.IO Main.TreeState>_R
+                 ->_R <GHC.Types.Int>_R
+                 ->_R <[GHC.Types.IO Main.TreeState]>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <[GHC.Types.IO Main.TreeState]>_R)) -}
+998dcaf8c050dcc5b2503ea7e073b544
+  generateFormList1 ::
+    GHC.Types.Int
+    -> GHC.Types.IO Main.TreeState
+    -> GHC.Types.Int
+    -> [GHC.Types.IO Main.TreeState]
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          [GHC.Types.IO Main.TreeState] #)
+  {- Arity: 5,
+     Strictness: <L,U(U)><L,C(U(U,1*U(1*U(U),A)))><L,A><L,U><S,U>,
      Inline: [0],
-     Unfolding: InlineRule (4, True, False)
+     Unfolding: InlineRule (5, True, True)
                 (\ (w :: GHC.Types.Int)
-                   (w1 :: Main.TreeState)
+                   (w1 :: GHC.Types.IO Main.TreeState)
                    (w2 :: GHC.Types.Int)
-                   (w3 :: [Main.TreeState]) ->
-                 case Main.$wgenerateFormList w w1 w3 of ww { (#,#) ww1 ww2 ->
-                 GHC.Types.: @ Main.TreeState ww1 ww2 }) -}
+                   (w3 :: [GHC.Types.IO Main.TreeState])
+                   (w4 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 Main.$wgenerateFormList w w1 w3 w4) -}
 b4f9ae97a091b232a88173a93240314d
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
@@ -432,9 +469,9 @@ b4f9ae97a091b232a88173a93240314d
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-edb4904c20347abbdb594edc109f446e
+074d2c70e6a7a794e274b12af08ff830
   maxTreeChance :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 10#) -}
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 5#) -}
 c6812a22a9fe00658800d9b0517df883
   none ::
     Data.Foldable.Foldable t =>
@@ -504,19 +541,19 @@ c2071a06c61b5524933e9ff54fffd3fc
   pOrQ :: Lecture3.Form
   {- HasNoCafRefs, Strictness: m4,
      Unfolding: (Lecture3.Dsj Main.pAndQ1) -}
-f7400667b5e4db4bee2dc9b9c3c11d48
+0a2a01d68ac217c930ba3692abcbd120
   tautology :: Lecture3.Form -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.tautology1
                   `cast`
                 (<Lecture3.Form>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
-6f5fa1b913f890a538423062a9f9cf0a
+1a8d0db28dc6dde3bd016c837af851ac
   tautology1 :: Lecture3.Form -> Data.Semigroup.Internal.All
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (f :: Lecture3.Form) ->
                  letrec {
-                   go7 :: [Lecture3.Valuation] -> Data.Semigroup.Internal.All
+                   go4 :: [Lecture3.Valuation] -> Data.Semigroup.Internal.All
                      <join 1> {- Arity: 1, Strictness: <S,1*U> -}
                    = \ (ds :: [Lecture3.Valuation]) ->
                      case ds of wild {
@@ -526,9 +563,9 @@ f7400667b5e4db4bee2dc9b9c3c11d48
                        -> case Lecture3.evl y f of wild1 {
                             GHC.Types.False
                             -> GHC.Types.False `cast` (Sym (Data.Semigroup.Internal.N:All[0]))
-                            GHC.Types.True -> go7 ys } }
+                            GHC.Types.True -> go4 ys } }
                  } in
-                 go7
+                 go4
                    (Lecture3.genVals
                       (Data.OldList.sortBy
                          @ Lecture3.Name
@@ -537,29 +574,50 @@ f7400667b5e4db4bee2dc9b9c3c11d48
                             @ Lecture3.Name
                             GHC.Classes.eqInt
                             (Lecture3.allVals_pnames f))))) -}
-3d41b792dfb3be856991269567b97e20
+2c37ffdc5d35d1b2cf9cb945fc37ad16
   treeStateListToTreeState ::
     ([Lecture3.Form] -> Lecture3.Form)
-    -> [Main.TreeState] -> Main.TreeState
-  {- Arity: 2, Strictness: <L,1*C1(U)><L,U>m, Inline: [0],
-     Unfolding: InlineRule (2, True, False)
-                (\ (w :: [Lecture3.Form] -> Lecture3.Form)
-                   (w1 :: [Main.TreeState]) ->
-                 Main.TreeState
-                   (letrec {
-                      go7 :: [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
-                        <join 2> {- Arity: 2, Strictness: <S,U><L,U(U,A)>m -}
-                      = \ (ds :: [Main.TreeState]) (eta :: Main.TreeState) ->
-                        case ds of wild {
-                          [] -> case eta of wild1 { Main.TreeState ds1 ds2 -> ds1 }
-                          : y ys -> go7 ys y }
-                    } in
-                    go7 w1 (GHC.List.lastError @ Main.TreeState))
-                   (w (GHC.Base.map
-                         @ Main.TreeState
-                         @ Lecture3.Form
-                         Main.form
-                         w1))) -}
+    -> [GHC.Types.IO Main.TreeState] -> GHC.Types.IO Main.TreeState
+  {- Arity: 3, Strictness: <L,1*C1(U)><S,1*U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.treeStateListToTreeState1
+                  `cast`
+                (<[Lecture3.Form] -> Lecture3.Form>_R
+                 ->_R <[GHC.Types.IO Main.TreeState]>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <Main.TreeState>_R)) -}
+8c42143eae7f5240928ca5ee0942609c
+  treeStateListToTreeState1 ::
+    ([Lecture3.Form] -> Lecture3.Form)
+    -> [GHC.Types.IO Main.TreeState]
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Main.TreeState #)
+  {- Arity: 3, Strictness: <L,1*C1(U)><S,1*U><S,U>,
+     Unfolding: (\ (f :: [Lecture3.Form] -> Lecture3.Form)
+                   (states :: [GHC.Types.IO Main.TreeState])
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Main.treeStateListToTreeState2
+                        states
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 (# ipv,
+                    Main.TreeState
+                      (Main.treeStateListToTreeState_go
+                         ipv1
+                         (GHC.List.lastError @ Main.TreeState))
+                      (f (GHC.Base.map
+                            @ Main.TreeState
+                            @ Lecture3.Form
+                            Main.form
+                            ipv1)) #) }) -}
+41d24c0c0a485587e1849a5648152dfa
+  treeStateListToTreeState2 ::
+    [GHC.Types.IO Main.TreeState]
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Main.TreeState] #)
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,U> -}
+ea93af45ebc50c6b6dbfc6875bc76439
+  treeStateListToTreeState_go ::
+    [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U(1*U(U),A)>m -}
 55aed60940ee180a829d4199fe5e56b6
   truthTable ::
     Lecture3.Form

@@ -60,39 +60,36 @@ pAndQ = Cnj[p,q]
 
 data TreeState = TreeState {amountOfProperties :: Int, form :: Form}
 
-chooseTreeOption :: Int -> Int
-chooseTreeOption maximumNumber = unsafePerformIO (getStdRandom(randomR (0,maximumNumber-1)))
+chooseTreeOption :: Int -> IO Int
+chooseTreeOption maximumNumber = getStdRandom(randomR (0,maximumNumber-1))
 
-maxTreeChance = 10 -- This number decides the size of the resulting form.
+maxTreeChance = 5 -- This number decides the size of the resulting form.
 
-generateActualForm :: Form
-generateActualForm = form (generateForm (maxTreeChance-1) (TreeState 1 p)) -- This number decides the maximum amount of subforms in the resulting form.
+generateActualForm :: IO Form
+generateActualForm =  generateForm (maxTreeChance-1) (return(TreeState 1 p)) >>= \x -> return (form x);
 
-generateForm :: Int -> TreeState -> TreeState
-generateForm leftTreeChance state = if chooseTreeOption maxTreeChance < leftTreeChance then chooseRandomSplitForm (leftTreeChance - 1) state else chooseRandomProperty state
+generateForm :: Int -> IO TreeState -> IO TreeState
+generateForm leftTreeChance state = chooseTreeOption maxTreeChance >>= \x -> if x < leftTreeChance then chooseRandomSplitForm (leftTreeChance - 1) state else chooseRandomProperty state
 
-chooseRandomSplitForm :: Int -> TreeState -> TreeState
-chooseRandomSplitForm leftTreeChance state = case chooseTreeOption 2 of 0 -> let x = generateFormList leftTreeChance state maxTreeChance []
-                                                                             in if chooseTreeOption 2 == 0 then treeStateListToTreeState Cnj x
-                                                                                                           else treeStateListToTreeState Dsj x
-                                                                        1 -> let x = generateForm leftTreeChance state
-                                                                                 y = generateForm leftTreeChance x
-                                                                             in if chooseTreeOption 2 == 0 then TreeState (amountOfProperties y) (Impl (form x) (form y))
-                                                                                                           else TreeState (amountOfProperties y) (Equiv (form x) (form y))
+chooseRandomSplitForm :: Int -> IO TreeState -> IO TreeState
+chooseRandomSplitForm leftTreeChance state = chooseTreeOption 2 >>= \treeOption -> case treeOption of 0 -> generateFormList leftTreeChance state maxTreeChance [] >>= \x ->
+                                                                                                           chooseTreeOption 2 >>= \leftOption -> if leftOption == 0 then treeStateListToTreeState Cnj x
+                                                                                                                                                                       else treeStateListToTreeState Dsj x
+                                                                                                      _ -> let genForm = generateForm leftTreeChance state in genForm >>= \x ->
+                                                                                                           generateForm leftTreeChance genForm >>= \y ->
+                                                                                                           chooseTreeOption 2 >>= \rightOption -> return (if rightOption == 0 then TreeState (amountOfProperties y) (Impl (form x) (form y))
+                                                                                                                                                                              else TreeState (amountOfProperties y) (Equiv (form x) (form y)))
 
-treeStateListToTreeState :: ([Form] -> Form) -> [TreeState] -> TreeState
-treeStateListToTreeState f states = TreeState (amountOfProperties (last states)) (f (map form states))
+treeStateListToTreeState :: ([Form] -> Form) -> [IO TreeState] -> IO TreeState
+treeStateListToTreeState f states = sequence states >>= \currentStates -> return(TreeState (amountOfProperties (last currentStates)) (f (map form currentStates)))
 
-generateFormList :: Int -> TreeState -> Int -> [TreeState] -> [TreeState]
-generateFormList leftTreeChance state maxListSize currentFormList = case chooseTreeOption 2 of 0 -> generatedState:currentFormList
-                                                                                               1 -> generatedState:generateFormList leftTreeChance generatedState (maxListSize-1) currentFormList
-                                                                                               _ -> error "Something impossible just happened!"
+generateFormList :: Int -> IO TreeState -> Int -> [IO TreeState] -> IO [IO TreeState]
+generateFormList leftTreeChance state maxListSize currentFormList = chooseTreeOption 2 >>= \chosenOption -> case chosenOption of 0 -> return (generatedState:currentFormList)
+                                                                                                                                 _ -> generateFormList leftTreeChance generatedState (maxListSize-1) currentFormList >>= \genList -> return(generatedState:genList)
                                                             where generatedState = generateForm leftTreeChance state
 
-chooseRandomProperty :: TreeState -> TreeState
-chooseRandomProperty state = TreeState (if chosenProperty == props then props + 1 else props) (Prop chosenProperty)
-  where props = amountOfProperties state
-        chosenProperty = chooseTreeOption (props + 1)
+chooseRandomProperty :: IO TreeState -> IO TreeState
+chooseRandomProperty state = state >>= \currentState -> let props = amountOfProperties currentState in chooseTreeOption (props + 1) >>= \chosenProperty -> return (TreeState (if chosenProperty == props then props + 1 else props) (Prop chosenProperty))
 
 checkTestResult :: Bool -> String
 checkTestResult True  = "\x1b[32mTest succeeded!\x1b[0m"
@@ -118,5 +115,6 @@ main = do
   putStrLn $ "Testing if `p ∧ q` is logically equivalent to `p` (Expected: False): " ++ checkTestResult (not(equiv pAndQ p))
 
   putStrLn "\n== Assignment 2 (Testing the propositional formula parser) =="
+  generateActualForm >>= \form -> putStrLn $ "Random form: " ++ show form
 
   putStrLn "Done!"
