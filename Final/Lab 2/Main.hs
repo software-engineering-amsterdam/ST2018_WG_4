@@ -189,7 +189,8 @@ propBigger origList = isPermutation origList (0:origList)
 propIncreased :: Int -> [Int] -> Bool
 propIncreased amount origList = isPermutation origList (map (+amount) origList)
 
--- Because the stronger and weaker functions require an (a -> Bool) function to be able to operate upon a domain, this function converts the list operating properties into (Int -> Bool) functions by creating a list of the given size.
+-- Because the stronger and weaker functions require an (a -> Bool) function to be able to operate upon a domain,
+-- this function converts the list operating properties into (Int -> Bool) functions by creating a list of the given size.
 propListOfSize :: ([Int] -> Bool) -> Int -> Bool
 propListOfSize propFunction size = propFunction [1..size]
 
@@ -210,7 +211,8 @@ testPermutations = do
 -- Assignment 5 (Recognizing and generating derangements)
 -- Time: 90 minutes
 -- Result: [Rotated,Smaller,Reversed,Swapped,Increased,Bigger]
--- Executed tests (both with automated and manual input). Down here, the manual tests are documented. The automated tests do kinda the same, but then with automated input (down here the input [1,2,3] is used):
+-- Executed tests (both with automated and manual input). Down here, the manual tests are documented.
+-- The automated tests do kinda the same, but then with automated input (down here the input [1,2,3] is used):
 --        Testing same list: Tests `isDerangement [1,2,3] [1,2,3]`, which is expected to return False.
 --        Testing all rotated lists: Tests `isDerangement [1,2,3] [2,3,1]` and `isDerangement [1,2,3] [3,1,2]`, which are both expected to return True.
 --        Testing reversed list on even lists: Tests `isDerangement [1,2,3,4] [4,3,2,1]`, which is expected to return True.
@@ -257,11 +259,13 @@ propDeranRotated rotation origList = isDerangement origList (rotate rotation ori
 propAllDeranRotations :: [Int] -> Bool
 propAllDeranRotations origList = not(null origList) && allDifferent origList --> all (`propDeranRotated` origList) [1..length origList-1]
 
--- Property: Being reversed. Reversed lists will be a derangement half of the time. For example, [1,2,3] has [3,2,1] as reverse, which is not a derangement. However, [1,2,3,4] has [4,3,2,1] as a reverse, which is actually a derangement.
+-- Property: Being reversed. Reversed lists will be a derangement half of the time. For example, [1,2,3] has [3,2,1] as reverse, which is not a derangement.
+-- However, [1,2,3,4] has [4,3,2,1] as a reverse, which is actually a derangement.
 propDeranReversed :: [Int] -> Bool
 propDeranReversed origList = allDifferent origList --> isDerangement origList (reverse origList)
 
--- Property: Having every 2 elements swapped. Swapped lists will be a derangement half of the time. For example, [1,2,3] has [2,1,3] as swapped list, which is not a derangement. However, [1,2,3,4] has [2,1,4,3] as swapped list, which is actually a derangement.
+-- Property: Having every 2 elements swapped. Swapped lists will be a derangement half of the time. For example, [1,2,3] has [2,1,3] as swapped list, which is not a derangement.
+-- However, [1,2,3,4] has [2,1,4,3] as swapped list, which is actually a derangement.
 propDeranSwapped :: [Int] -> Bool
 propDeranSwapped origList = allDifferent origList --> isDerangement origList (foldr swapAt origList [0,2..length origList-2])
 
@@ -335,7 +339,8 @@ testDerangements = do
   putStrLn $ "Testing increased list: "++checkTestResult (not (propDeranIncreased 1 derangementTestList))
 
 -- Assigment 6 (Implementing and testing ROT13 encoding)
--- ROT13 specification: For every character `x` in the list ['a'..'z'] or ['A'..'Z'], it has to be replaced by the character that is in the same list at index `index(x)+13`. If the result is more than the length of the list, the length of the list is to be subtracted from this index, and the entry at the resulting index will be used for the substitution.
+-- ROT13 specification: For every character `x` in the list ['a'..'z'] or ['A'..'Z'], it has to be replaced by the character that is in the same list at index `index(x)+13`.
+-- If the result is more than the length of the list, the length of the list is to be subtracted from this index, and the entry at the resulting index will be used for the substitution.
 -- Time: 60 minutes
 -- Result of running QuickCheck on all 4 properties:
 --        +++ OK, passed 100 tests.
@@ -385,8 +390,18 @@ doubleRotYieldsBeginResult decoded = decoded == rot13 (rot13 decoded)
 --     Testing invalid IBANs: Test succeeded!
 --
 -- Examplanation of the result:
--- To test this function, I included an example IBAN for every country, as available on the official IBAN site (https://www.iban.com/structure). This was absolutely necessary, as this was the only way to hit every case of the `ibanLengthTable`. Also, during testing it seemed that I had forgotten an entry in my `ibanLengthTable`, which was found and could thus be fixed because of the extensive tests. To test if invalid would return False for the IBAN checker, I turned all valid emails into invalid ones by incrementing each by one. This was done by incrementing the fourth number, which would become the final number of the `mod` number and would thus always result in an invalid iban. This even tests the final case of the `ibanLengthTable` (the invalid one that returns -1, thus never resulting in a valid IBAN code) as sometimes the fourth number would be '9' which would, incremented by one, become a number of a greater length (10) and thus resulting in a longer IBAN (which would hit the final case of the `ibanLengthTable`).
--- Automated testing was not done for this case because there are not many definable properties for the `iban` method that would actually proof much (which the manual testing does). For instance, the property `startsWithValidLetters` could have been written, which would basically have to check for everything the `ibanLengthTable` checks for and would thus not proof anything. The testing which is currently done (manual) is optimal to test the validity of the `iban` function.
+-- To test this function, I included an example IBAN for every country, as available on the official IBAN site (https://www.iban.com/structure).
+-- This was absolutely necessary, as this was the only way to hit every case of the `ibanLengthTable`.
+-- Also, during testing it seemed that I had forgotten an entry in my `ibanLengthTable`, which was found and could thus be fixed because of the extensive tests.
+-- To test if invalid would return False for the IBAN checker, I turned all valid emails into invalid ones by incrementing each by one.
+-- This was done by incrementing the fourth number, which would become the final number of the `mod` number and would thus always result in an invalid iban.
+-- This even tests the final case of the `ibanLengthTable` (the invalid one that returns -1,
+-- thus never resulting in a valid IBAN code) as sometimes the fourth number would be '9' which would,
+-- incremented by one, become a number of a greater length (10) and thus resulting in a longer IBAN (which would hit the final case of the `ibanLengthTable`).
+
+-- Automated testing was not done for this case because there are not many definable properties for the `iban` method that would actually proof much (which the manual testing does).
+-- For instance, the property `startsWithValidLetters` could have been written, which would basically have to check for everything the `ibanLengthTable` checks for and would thus not proof anything.
+-- The testing which is currently done (manual) is optimal to test the validity of the `iban` function.
 
 ibanLengthTable :: String -> Int
 ibanLengthTable "AD" = 24
@@ -511,6 +526,33 @@ ibanCheckTest = do
   putStrLn $ "Testing valid IBANs: " ++ checkTestResult (all iban testIBANs)
   putStrLn $ "Testing invalid IBANs: " ++ checkTestResult (all (not . iban) (map (\x -> replace 3 (head (show (digitToInt (x !! 3) + 1))) x) testIBANs))
 
+
+ibanBase = "NLXXINGB0008825966"
+
+-- Found on http://bluebones.net/2007/01/replace-in-haskell/
+strReplace :: Eq a => [a] -> [a] -> [a] -> [a]
+strReplace [] _ _ = []
+strReplace s find repl =
+    if take (length find) s == find
+        then repl ++ (strReplace (drop (length find) s) find repl)
+        else [head s] ++ (strReplace (tail s) find repl)
+
+intToCheckDigits :: Int -> String
+intToCheckDigits n  | length (show n) == 1 = "0" ++ show n
+                    | otherwise = show n
+
+createTestableIban :: Int -> String
+createTestableIban n = strReplace ibanBase "XX" (intToCheckDigits n)
+
+ibanTestFunction :: Int -> Bool
+ibanTestFunction n = iban (createTestableIban n)
+
+-- In this test, we use an IBAN base, where the check digits are replaced by "XX"
+-- Then we generate IBAN's for all digits 1-97 and we verify that exactly one of the generated IBAN's is valid
+testIbanCheckDigit :: IO ()
+testIbanCheckDigit = do
+  putStrLn $ "Testing IBAN check digit: " ++ checkTestResult(length (filter (\x -> x == True) (map (ibanTestFunction) [1..97])) == 1)
+
 -- Project Euler Bonus
 
 -- Euler project 1
@@ -608,6 +650,7 @@ main = do
 
   putStrLn "\n== Assignment 7 (Implementing and testing IBAN validation) =="
   ibanCheckTest
+  testIbanCheckDigit
 
   putStrLn "\nEuler 1: Multiples of 3 and 5:"
   print multiples
@@ -621,4 +664,4 @@ main = do
   putStrLn "\nEuler 38: Pandigital multiples:"
   print largestPandigital
 
-  putStrLn "Done"
+  putStrLn "Done!"

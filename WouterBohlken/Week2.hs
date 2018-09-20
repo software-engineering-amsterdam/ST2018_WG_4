@@ -229,7 +229,7 @@ validIbans = ["NL37INGB0008825966",
               "BH02CITI00001077181611",
               "BY86AKBB10100000002966000000"]
 
-testValidIbans = quickCheckResult(all (\i -> iban i) validIbans)
+testValidIbans = quickCheckResult(all iban validIbans)
 
 -- Found on http://bluebones.net/2007/01/replace-in-haskell/
 replace :: Eq a => [a] -> [a] -> [a] -> [a]
