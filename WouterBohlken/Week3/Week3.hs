@@ -31,35 +31,19 @@ entails f g = all (\ v -> evl v f --> evl v g) (allVals f)
 equiv :: Form -> Form -> Bool
 equiv f g = allEvals f == allEvals g
 
+checkTestResult :: Bool -> String
+checkTestResult True  = "\x1b[32mTest succeeded!\x1b[0m"
+checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
 
 -- Assignment 2
 
 
+
 -- Assignment 3
+-- Time: 1 hour
 -- TODO: Include arrowFree and nnf before the rules below
 cnf :: Form -> Form
 cnf (Prop x) = Prop x
 cnf (Neg (Prop x)) = Neg (Prop x)
-cnf (Cnj ([Neg x, Neg y])) = Neg (Cnj [x, y]) -- De morgan law
-cnf (Dsj [ (Cnj [x1, y1]), (Cnj [x2, y2]) ]) = (Cnj [ (Dsj [x1, y1]), (Dsj [x2, y2]) ]) -- Distributive property
-
--- arrowfree :: Form -> Form
--- arrowfree (Prop x) = Prop x
--- arrowfree (Neg f) = Neg (arrowfree f)
--- arrowfree (Cnj fs) = Cnj (map arrowfree fs)
--- arrowfree (Dsj fs) = Dsj (map arrowfree fs)
--- arrowfree (Impl f1 f2) =
---   Dsj [Neg (arrowfree f1), arrowfree f2]
--- arrowfree (Equiv f1 f2) =
---   Dsj [Cnj [f1', f2'], Cnj [Neg f1', Neg f2']]
---   where f1' = arrowfree f1
---         f2' = arrowfree f2
---
--- nnf :: Form -> Form
--- nnf (Prop x) = Prop x
--- nnf (Neg (Prop x)) = Neg (Prop x)
--- nnf (Neg (Neg f)) = nnf f
--- nnf (Cnj fs) = Cnj (map nnf fs)
--- nnf (Dsj fs) = Dsj (map nnf fs)
--- nnf (Neg (Cnj fs)) = Dsj (map (nnf.Neg) fs)
--- nnf (Neg (Dsj fs)) = Cnj (map (nnf.Neg) fs)
+cnf (Cnj [Neg x, Neg y]) = Neg (Cnj [x, y]) -- De morgan law
+cnf (Dsj [ Cnj [x1, y1], Cnj [x2, y2] ]) = Cnj [ Dsj [x1, y1], Dsj [x2, y2] ] -- Distributive property
