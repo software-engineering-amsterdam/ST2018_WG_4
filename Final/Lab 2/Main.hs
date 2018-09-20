@@ -621,4 +621,4 @@ main = do
   putStrLn "\nEuler 38: Pandigital multiples:"
   print largestPandigital
 
-  putStrLn "Done"
+  putStrLn "Done!"

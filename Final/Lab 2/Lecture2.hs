@@ -1,4 +1,3 @@
-
 module Lecture2
 
 where
