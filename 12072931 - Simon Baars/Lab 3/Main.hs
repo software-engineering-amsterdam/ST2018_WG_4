@@ -58,38 +58,61 @@ pAndQ = Cnj[p,q]
 --chooseTreeOption :: (Int -> Form) -> Int -> Property
 --chooseTreeOption function maximumNumber = forAll (resize 1 (abs `fmap` (arbitrary :: Gen Int) `suchThat` (>maximumNumber-2))) (\x -> function (x `mod` maximumNumber))
 
-data TreeState = TreeState {amountOfProperties :: Int, form :: Form}
+data TreeState = TreeState {amountOfProperties :: Int, form :: Form, curRand :: Int}
 
-chooseTreeOption :: Int -> IO Int
-chooseTreeOption maximumNumber = getStdRandom(randomR (0,maximumNumber-1))
+g2 :: Int -> IO [Float]
+g2 maximumNumber = do
+  g <- newStdGen
+  return $ randomRs (0.00,1.00) g
+
+--probs :: Int -> Int -> IO [Int]
+--probs maximumNumber 0 = return []
+--probs maximumNumber n = do
+--               p <- getStdRandom (randomR (0, maximumNumber-1))
+--               ps <- probs (n-1)
+--               return (p:ps)
 
 maxTreeChance = 10 -- This number decides the size of the resulting form.
 
 generateActualForm :: IO Form
-generateActualForm =  generateForm (maxTreeChance-1) (return(TreeState 1 p)) >>= \x -> return (form x);
+generateActualForm = g2 maxTreeChance >>= \x -> return (form (generateForm x (maxTreeChance-1) (TreeState 1 p 0))) -- This number decides the maximum amount of subforms in the resulting form.
 
-generateForm :: Int -> IO TreeState -> IO TreeState
-generateForm leftTreeChance state = chooseTreeOption maxTreeChance >>= \x -> if x < leftTreeChance then chooseRandomSplitForm (leftTreeChance - 1) state else chooseRandomProperty state
+getCurRandNum :: Int -> [Float] -> Int -> Int
+getCurRandNum x randList maxNum = floor ((randList !! x) * fromIntegral maxNum)
 
-chooseRandomSplitForm :: Int -> IO TreeState -> IO TreeState
-chooseRandomSplitForm leftTreeChance state = chooseTreeOption 2 >>= \treeOption -> case treeOption of 0 -> generateFormList leftTreeChance state maxTreeChance [] >>= \x ->
-                                                                                                           chooseTreeOption 2 >>= \leftOption -> if leftOption == 0 then treeStateListToTreeState Cnj x
-                                                                                                                                                                       else treeStateListToTreeState Dsj x
-                                                                                                      _ -> let genForm = generateForm leftTreeChance state in genForm >>= \x ->
-                                                                                                           generateForm leftTreeChance genForm >>= \y ->
-                                                                                                           chooseTreeOption 2 >>= \rightOption -> return (if rightOption == 0 then TreeState (amountOfProperties y) (Impl (form x) (form y))
-                                                                                                                                                                              else TreeState (amountOfProperties y) (Equiv (form x) (form y)))
+getCurRand :: TreeState -> [Float] -> Int -> Int
+getCurRand TreeState{curRand = x} = getCurRandNum x
 
-treeStateListToTreeState :: ([Form] -> Form) -> [IO TreeState] -> IO TreeState
-treeStateListToTreeState f states = sequence states >>= \currentStates -> return(TreeState (amountOfProperties (last currentStates)) (f (map form currentStates)))
+generateForm :: [Float] -> Int -> TreeState -> TreeState
+generateForm randList leftTreeChance state = if randomChoice < leftTreeChance then chooseRandomSplitForm randList (leftTreeChance - 1) newState else chooseRandomProperty randList newState
+  where randomChoice = getCurRand state randList maxTreeChance
+        newState = TreeState (amountOfProperties state) (form state) (curRand state + 1)
 
-generateFormList :: Int -> IO TreeState -> Int -> [IO TreeState] -> IO [IO TreeState]
-generateFormList leftTreeChance state maxListSize currentFormList = chooseTreeOption 2 >>= \chosenOption -> case chosenOption of 0 -> return (generatedState:currentFormList)
-                                                                                                                                 _ -> generateFormList leftTreeChance generatedState (maxListSize-1) currentFormList >>= \genList -> return(generatedState:genList)
-                                                            where generatedState = generateForm leftTreeChance state
+chooseRandomSplitForm :: [Float] -> Int -> TreeState -> TreeState
+chooseRandomSplitForm randList leftTreeChance state = case firstRand of 0 -> let x = generateFormList randList leftTreeChance newState maxTreeChance []
+                                                                             in if secondRand == 0 then treeStateListToTreeState Cnj x
+                                                                                                           else treeStateListToTreeState Dsj x
+                                                                        1 -> let x = generateForm randList leftTreeChance newState
+                                                                                 y = generateForm randList leftTreeChance x
+                                                                             in if secondRand == 0 then TreeState (amountOfProperties y) (Impl (form x) (form y)) (curRand y)
+                                                                                                   else TreeState (amountOfProperties y) (Equiv (form x) (form y)) (curRand y)
+        where firstRand = getCurRand state randList 2
+              secondRand = getCurRandNum (curRand state + 1) randList 2
+              newState = TreeState (amountOfProperties state) (form state) (curRand state + 2)
 
-chooseRandomProperty :: IO TreeState -> IO TreeState
-chooseRandomProperty state = state >>= \currentState -> let props = amountOfProperties currentState in chooseTreeOption (props + 1) >>= \chosenProperty -> return (TreeState (if chosenProperty == props then props + 1 else props) (Prop chosenProperty))
+treeStateListToTreeState :: ([Form] -> Form) -> [TreeState] -> TreeState
+treeStateListToTreeState f states = TreeState (amountOfProperties (last states)) (f (map form states)) (curRand (last states))
+
+generateFormList :: [Float] -> Int -> TreeState -> Int -> [TreeState] -> [TreeState]
+generateFormList randList leftTreeChance state maxListSize currentFormList = case randNum of 0 -> generatedState:currentFormList
+                                                                                             1 -> generatedState:generateFormList randList leftTreeChance generatedState (maxListSize-1) currentFormList
+                                                            where randNum = getCurRand state randList 2
+                                                                  generatedState = generateForm randList leftTreeChance (TreeState (amountOfProperties state) (form state) (curRand state + 1))
+
+chooseRandomProperty :: [Float] -> TreeState -> TreeState
+chooseRandomProperty randList state = TreeState (if chosenProperty == props then props + 1 else props) (Prop chosenProperty) (curRand state + 1)
+  where props = amountOfProperties state
+        chosenProperty = getCurRand state randList (props + 1)
 
 checkTestResult :: Bool -> String
 checkTestResult True  = "\x1b[32mTest succeeded!\x1b[0m"
