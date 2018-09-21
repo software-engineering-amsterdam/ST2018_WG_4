@@ -63,7 +63,7 @@ data TreeState = TreeState {amountOfProperties :: Int, form :: Form}
 chooseTreeOption :: Int -> IO Int
 chooseTreeOption maximumNumber = getStdRandom(randomR (0,maximumNumber-1))
 
-maxTreeChance = 5 -- This number decides the size of the resulting form.
+maxTreeChance = 10 -- This number decides the size of the resulting form.
 
 generateActualForm :: IO Form
 generateActualForm =  generateForm (maxTreeChance-1) (return(TreeState 1 p)) >>= \x -> return (form x);
@@ -115,6 +115,6 @@ main = do
   putStrLn $ "Testing if `p ∧ q` is logically equivalent to `p` (Expected: False): " ++ checkTestResult (not(equiv pAndQ p))
 
   putStrLn "\n== Assignment 2 (Testing the propositional formula parser) =="
-  generateActualForm >>= \form -> putStrLn $ "Random form: " ++ show form
+  print =<< generateActualForm
 
   putStrLn "Done!"

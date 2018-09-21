@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-20 21:14:40.540823605 UTC
+2018-09-20 21:29:44.623427014 UTC
 
 interface main:Main 8043
-  interface hash: 9cc2545c94264f6e3b83f86a2ecd6149
-  ABI hash: 49f1b4baeea19612fcad850bdc549bfd
+  interface hash: 22eb90e15f2eb2fd7ca2d2ebbe19820c
+  ABI hash: 762e8bbc865acdfd7c244dc4a649b23a
   export-list hash: 1df73ee09b507cf89438256706a87199
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 8685d694e67a748160b24bb5044d3233
@@ -77,7 +77,6 @@ import  -/  base-4.11.1.0:Data.Tuple 3af66f3ac61ed95ba8a3a3f68ebc5003
 import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
 import  -/  base-4.11.1.0:GHC.List 1e4357702d8d00cded0703bd293e50e8
 import  -/  base-4.11.1.0:GHC.Num 8e54b26dce4495382dc4b50cf36ab754
-import  -/  base-4.11.1.0:GHC.Show 73be67392447c974f19c3befd83c46c0
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
 import  -/  base-4.11.1.0:System.IO 1c239be44126f7b1ba512ea61300f4dc
 import  -/  base-4.11.1.0:System.IO.Unsafe 0a2eb33ad4988fdd87ebf1fb8b419957
@@ -360,14 +359,14 @@ b77fe9a5372bca405a853fcceb5fbfbe
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: Main.TreeState) ->
                  case ds of wild { Main.TreeState ds1 ds2 -> ds2 }) -}
-245800a3cefdcea49b114b1509bbd1b9
+ca88eb59e9e150f78ed8f3bc396b4227
   generateActualForm :: GHC.Types.IO Lecture3.Form
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.generateActualForm1
                   `cast`
                 (Sym (GHC.Types.N:IO[0] <Lecture3.Form>_R)) -}
-3ed2b669f530e46406f9fdbd39111b13
+96b0c0f3df2f9887663947c89bcaff43
   generateActualForm1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture3.Form #)
@@ -375,14 +374,14 @@ b77fe9a5372bca405a853fcceb5fbfbe
      Unfolding: InlineRule (1, True, False)
                 (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case Main.generateActualForm2
-                        (GHC.Types.I# 4#)
+                        (GHC.Types.I# 9#)
                         (\ (s1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                          (# s1, Main.TreeState (GHC.Types.I# 1#) Lecture3.p #))
                           `cast`
                         (Sym (GHC.Types.N:IO[0] <Main.TreeState>_R))
                         s of ds1 { (#,#) ipv ipv1 ->
                  (# ipv, case ipv1 of wild { Main.TreeState ds ds2 -> ds2 } #) }) -}
-5329905db89707b5b9f72f78c822c094
+0e483441cf77a148fe0f2a68d4349945
   generateActualForm2 ::
     GHC.Types.Int
     -> GHC.Types.IO Main.TreeState
@@ -404,7 +403,7 @@ b77fe9a5372bca405a853fcceb5fbfbe
                         (GHC.Types.I# (GHC.Prim.-# y 1#))
                         state
                         ipv } } } }) -}
-c4d42d245a3eb9955a1aff96d1628019
+a5b419c8ec9ca96e60ee6356a3fa5ee9
   generateForm ::
     GHC.Types.Int
     -> GHC.Types.IO Main.TreeState -> GHC.Types.IO Main.TreeState
@@ -469,9 +468,9 @@ b4f9ae97a091b232a88173a93240314d
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-074d2c70e6a7a794e274b12af08ff830
+edb4904c20347abbdb594edc109f446e
   maxTreeChance :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 5#) -}
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 10#) -}
 c6812a22a9fe00658800d9b0517df883
   none ::
     Data.Foldable.Foldable t =>
