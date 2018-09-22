@@ -54,28 +54,30 @@ pOrQ = Dsj[p,q]
 pAndQ = Cnj[p,q]
 
 -- Assignment 2 (Testing the propositional formula parser)
+-- Time: 60 minutes
+-- This assignment can best be tested
 
---chooseTreeOption :: (Int -> Form) -> Int -> Property
---chooseTreeOption function maximumNumber = forAll (resize 1 (abs `fmap` (arbitrary :: Gen Int) `suchThat` (>maximumNumber-2))) (\x -> function (x `mod` maximumNumber))
+parserTest :: Int -> Int -> IO ()
+parserTest testsExecuted totalTests = if testsExecuted == totalTests then print (show totalTests ++ " tests passed")
+                else generateActualForm >>= \x -> let resultingForm = parse (show x) in if length resultingForm == 1 && equiv x (head resultingForm) then
+                    do print ("pass on: " ++ show x)
+                       parserTest (testsExecuted+1) totalTests
+                  else error ("failed test on: " ++ show x)
 
-data TreeState = TreeState {amountOfProperties :: Int, form :: Form, curRand :: Int}
-
-g2 :: Int -> IO [Float]
-g2 maximumNumber = do
-  g <- newStdGen
-  return $ randomRs (0.00,1.00) g
-
---probs :: Int -> Int -> IO [Int]
---probs maximumNumber 0 = return []
---probs maximumNumber n = do
---               p <- getStdRandom (randomR (0, maximumNumber-1))
---               ps <- probs (n-1)
---               return (p:ps)
+-- Assignment 4
+-- Time: 270 minutes
 
 maxTreeChance = 10 -- This number decides the size of the resulting form.
 
+data TreeState = TreeState {amountOfProperties :: Int, form :: Form, curRand :: Int}
+
+randomNumberStream :: IO [Float]
+randomNumberStream = do
+    g <- newStdGen
+    return $ randomRs (0.00,1.00) g
+
 generateActualForm :: IO Form
-generateActualForm = g2 maxTreeChance >>= \x -> return (form (generateForm x (maxTreeChance-1) (TreeState 1 p 0))) -- This number decides the maximum amount of subforms in the resulting form.
+generateActualForm = randomNumberStream >>= \x -> return (form (generateForm x (maxTreeChance-1) (TreeState 1 p 0))) -- This number decides the maximum amount of subforms in the resulting form.
 
 getCurRandNum :: Int -> [Float] -> Int -> Int
 getCurRandNum x randList maxNum = floor ((randList !! x) * fromIntegral maxNum)
@@ -114,6 +116,7 @@ chooseRandomProperty randList state = TreeState (if chosenProperty == props then
   where props = amountOfProperties state
         chosenProperty = getCurRand state randList (props + 1)
 
+
 checkTestResult :: Bool -> String
 checkTestResult True  = "\x1b[32mTest succeeded!\x1b[0m"
 checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
@@ -138,6 +141,9 @@ main = do
   putStrLn $ "Testing if `p ∧ q` is logically equivalent to `p` (Expected: False): " ++ checkTestResult (not(equiv pAndQ p))
 
   putStrLn "\n== Assignment 2 (Testing the propositional formula parser) =="
+  parserTest 0 100
+
+  putStrLn "\n== Assignment 4 (Creating a random form generator) =="
   print =<< generateActualForm
 
   putStrLn "Done!"
