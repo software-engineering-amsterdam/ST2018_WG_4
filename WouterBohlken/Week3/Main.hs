@@ -84,7 +84,7 @@ checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
 -- cnf (Cnj [p, q])                        = Cnj [p, q]
 
 valuationToClause :: Valuation -> Form
-valuationToClause v = Dsj (map (\x -> if snd x then Prop (fst x) else Neg (Prop (fst x))) v)
+valuationToClause v = Dsj (map (\x -> if snd x then Neg (Prop (fst x)) else Prop (fst x)) v)
 
 falseEvals :: Form -> [Valuation]
 falseEvals f = filter (\x -> not (evl x f)) (allVals f)
