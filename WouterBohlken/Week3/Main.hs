@@ -9,6 +9,9 @@ import Data.Char
 import Data.Maybe
 import Data.String
 
+getRandomInt :: Int -> IO Int
+getRandomInt n = getStdRandom (randomR (0,n))
+
 -- Assignment 1
 -- Time: 1 hour
 
@@ -44,9 +47,9 @@ checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
 
 
 
+
 -- Assignment 3
 -- Time: 3 hours
--- TODO: Include arrowFree and nnf before the rules below
 -- cnf :: Form -> Form
 -- cnf (Prop x)                            = Prop x
 -- cnf (Neg (Prop x))                      = Neg (Prop x)
@@ -93,8 +96,40 @@ cnf :: Form -> Form
 cnf f = Cnj (map valuationToClause (falseEvals f))
 
 
+-- Assignment 4
 
-form4 = Dsj [r, Cnj [p, q]]
+data TreeEnvironment = TreeEnvironment {form :: Form, propertiesCounter :: Int, maxProperties :: Int}
+
+instance Show TreeEnvironment where
+  show (TreeEnvironment form pc mp) = show form
+
+
+getCurRand :: TreeEnvironment -> Int
+getCurRand TreeEnvironment{propertiesCounter = x} = x
+
+getRandomProp :: TreeEnvironment -> Form
+getRandomProp t = Neg (Prop (getCurRand t))
+
+-- randomExpr :: Form
+-- randomExpr
+
+randomForm :: Int -> TreeEnvironment -> Form
+randomForm n te | n `mod` 2 == 0 = Impl (getRandomProp te) (getRandomProp te)
+                | n `mod` 2 == 1 = (Cnj [getRandomProp te, getRandomProp te])
+
+randomRoot :: Int -> Form
+randomRoot n | n `mod` 2 == 0 = Impl (Prop 1) (Prop 2)
+             | n `mod` 2 == 1 = (Cnj [Prop 1, Prop 2])
+
+createTreeEnvironment :: Int -> Form -> TreeEnvironment
+createTreeEnvironment n f = TreeEnvironment f 0 n
+
+generateForm :: Int -> IO TreeEnvironment
+generateForm maxProps = do
+                        te <- getRandomInt maxProps >>= \x -> return (createTreeEnvironment maxProps (randomRoot x))
+
+                        return te
+
 
 
 
