@@ -9,6 +9,7 @@ import Data.Char
 
 -- Assignment 1 (Random floating point numbers)
 -- Time: 190 minutes
+-- About my solution: A lot of people have been struggling with the fact that the `probs` function return an IO datatype, including me. After a while I found that the `>>=` operator could solve this problem. However, using this operator the return value is always an IO datatype. This is fine, except for QuickCheck, as it doesn't accept IO datatype output (a function with `IO Bool` output instead of `Bool`). Because of this, I created 2 tests: a "safe" test and an "unsafe" QuickCheck. The safe test uses a fixed input number (10.000) to test this function. For QuickCheck I have used `unsafePerformIO` from the `System.IO.Unsafe` module to be able to feed this function to QuickCheck. This way I have proven both the application of a safe way to test this function and a way to automate the test process of this function. For the automated way I only test on big (>1000) numbers to get statistically relevant results.
 -- Result: getAmountInQuartile 10000 --> [2454,2486,2523,2537]
 -- Result: testQuartilesSafe 10000 >>= \y -> checkTestResult y --> Test succeeded!
 -- Result: quickCheckResult $ forAll genBigNumbers testQuartiles --> +++ OK, passed 100 tests.
@@ -31,7 +32,6 @@ testQuartilesSafe x = getAmountInQuartile x >>= \y -> return ((x>0) --> all (\z 
 
 genBigNumbers :: Gen Int -- Generator for QuickCheck because it would otherwise pick such big numbers that the program would hang for a long time.
 genBigNumbers = abs `fmap` (arbitrary :: Gen Int) `suchThat` (>1000)
-
 
 -- Assignment 2 (Recognizing triangles)
 -- Time: 50 minutes.
@@ -101,11 +101,10 @@ testTriangle = do
 -- Time: 90 minutes
 -- Result: print $ quicksort properties --> [p1,p3,p4,p5,p2]
 
-p1, p2, p3, p4 :: Int -> Bool
+p1, p2, p3 :: Int -> Bool
 p1 x = even x && x > 3
 p2 x = even x || x > 3
 p3 x = (even x && x > 3) || even x
-p4 x = (even x && x > 3) || even x
 
 domain = [-10..10]
 
@@ -114,10 +113,10 @@ instance Show (Prop a) where show = name
 instance Eq (Prop a) where y == z = name y == name z
 instance Ord (Prop a) where
   compare Prop { propertyFunction = x } Prop { propertyFunction = y }
-    | stronger domain y x = GT
-    | weaker domain y x = LT
+    | stronger domain x y = GT
+    | weaker domain x y = LT
     | otherwise = EQ
-properties = [Prop "p1" p1, Prop "p2" p2, Prop "p3" p3, Prop "p4" p4, Prop "p5" even]
+properties = [Prop "p1" p1, Prop "p2" p2, Prop "p3" p3, Prop "p4" even]
 
 -- Assignment 4 (Recognizing Permutations)
 -- Time: 120 minutes
@@ -343,6 +342,7 @@ testDerangements = do
 --        +++ OK, passed 100 tests.
 --        +++ OK, passed 100 tests.
 --        +++ OK, passed 100 tests.
+--        +++ OK, passed 100 tests.
 
 doRotate :: String -> Char -> Char
 doRotate domain rotatingCharacter = domain!!(((ord rotatingCharacter + 13) - ord (head domain)) `mod` length domain)
@@ -362,19 +362,32 @@ isCharacterLetter decoded = all (\(x,y) -> y `elem` upper || y `elem` lower) (fi
   where upper = ['A'..'Z']
         lower = ['a'..'z']
 
--- Property: All other characters must be the same after rotation.
+-- Property: All non-letter characters must be the same after rotation (rot13 only modifies letters).
 equalNonLetterCharacters :: String -> Bool
 equalNonLetterCharacters decoded = all (uncurry (==)) (filter (\(x,y) -> not(x `elem` upper || x `elem` lower)) (zip decoded (rot13 decoded)))
   where upper = ['A'..'Z']
         lower = ['a'..'z']
 
--- Property: The case of the letters stays the same
+-- Property: The case of the letters stays the same (an uppercase letter should not become a lowercase letter and vice versa).
 equalLetterCase :: String -> Bool
 equalLetterCase decoded = all (\(x,y) -> ((x `elem` upper) --> y `elem` upper) && ((x `elem` lower) --> y `elem` lower)) (zip decoded (rot13 decoded))
   where upper = ['A'..'Z']
         lower = ['a'..'z']
 
+-- Property: When rotated two times rot13 will yield the beginning result (thanks to Samy for pointing this one out).
+doubleRotYieldsBeginResult :: String -> Bool
+doubleRotYieldsBeginResult decoded = decoded == rot13 (rot13 decoded)
+
 -- Assignment 7 (Implementing and testing IBAN validation)
+-- Time: 100 minutes
+-- Result:
+--     Testing valid IBANs: Test succeeded!
+--     Testing invalid IBANs: Test succeeded!
+--
+-- Examplanation of the result:
+-- To test this function, I included an example IBAN for every country, as available on the official IBAN site (https://www.iban.com/structure). This was absolutely necessary, as this was the only way to hit every case of the `ibanLengthTable`. Also, during testing it seemed that I had forgotten an entry in my `ibanLengthTable`, which was found and could thus be fixed because of the extensive tests. To test if invalid would return False for the IBAN checker, I turned all valid emails into invalid ones by incrementing each by one. This was done by incrementing the fourth number, which would become the final number of the `mod` number and would thus always result in an invalid iban. This even tests the final case of the `ibanLengthTable` (the invalid one that returns -1, thus never resulting in a valid IBAN code) as sometimes the fourth number would be '9' which would, incremented by one, become a number of a greater length (10) and thus resulting in a longer IBAN (which would hit the final case of the `ibanLengthTable`).
+-- Automated testing was not done for this case because there are not many definable properties for the `iban` method that would actually proof much (which the manual testing does). For instance, the property `startsWithValidLetters` could have been written, which would basically have to check for everything the `ibanLengthTable` checks for and would thus not proof anything. The testing which is currently done (manual) is optimal to test the validity of the `iban` function.
+
 
 ibanLengthTable :: String -> Int
 ibanLengthTable "AD" = 24
@@ -453,6 +466,7 @@ ibanLengthTable "MU" = 30
 ibanLengthTable "MZ" = 25
 ibanLengthTable "NE" = 28
 ibanLengthTable "NI" = 32
+ibanLengthTable "NO" = 15
 ibanLengthTable "NL" = 18
 ibanLengthTable "PK" = 24
 ibanLengthTable "PL" = 28
@@ -486,6 +500,18 @@ iban inputIBAN
    | otherwise = False
       where letters = ['A'..'Z']
 
+replace :: Int -> Char -> String -> String
+replace pos newVal list = take pos list ++ newVal : drop (pos+1) list
+
+
+-- This list of test ibans contains one valid iban per country.
+testIBANs = ["AL35202111090000000001234567","AD1400080001001234567890","AT483200000012345864","AZ96AZEJ00000000001234567890","BH02CITI00001077181611","BY86AKBB10100000002966000000","BE71096123456769","BA393385804800211234","BR1500000000000010932840814P2","BG18RZBB91550123456789","CR23015108410026012345","HR1723600001101234565","CY21002001950000357001234567","CZ5508000000001234567899","DK9520000123456789","DO22ACAU00000000000123456789","SV43ACAT00000000000000123123","EE471000001020145685","FO9264600123456789","FI1410093000123458","FR7630006000011234567890189","GE60NB0000000123456789","DE91100000000123456789","GI04BARC000001234567890","GR9608100010000001234567890","GL8964710123456789","GT20AGRO00000000001234567890","HU93116000060000000012345676","IS030001121234561234567890","IQ20CBIQ861800101010500","IE64IRCE92050112345678","IL170108000000012612345","IT60X0542811101000000123456","JO71CBJO0000000000001234567890","KZ563190000012344567","XK051212012345678906","KW81CBKU0000000000001234560101","LV97HABA0012345678910","LB92000700000000123123456123","LI7408806123456789012","LT601010012345678901","LU120010001234567891","MK07200002785123453","MT31MALT01100000000000000000123","MR1300020001010000123456753","MU43BOMM0101123456789101000MUR","MD21EX000000000001234567","MC5810096180790123456789085","ME25505000012345678951","NL02ABNA0123456789","NO8330001234567","PK36SCBL0000001123456702","PS92PALS000000000400123456702","PL10105000997603123456789123","PT50002700000001234567833","QA54QNBA000000000000693123456","RO09BCYP0000001234567890","LC14BOSL123456789012345678901234","SM76P0854009812123456789123","ST23000200000289355710148","SA4420000001234567891234","RS35105008123123123173","SC52BAHL01031234567890123456USD","SK8975000000000012345671","SI56192001234567892","ES7921000813610123456789","SE7280000810340009783242","CH5604835012345678009","TL380010012345678910106","TN5904018104004942712345","TR320010009999901234567890","UA903052992990004149123456789","AE460090000000123456789","GB98MIDL07009312345678","VG21PACG0000000123456789"]
+
+ibanCheckTest :: IO ()
+ibanCheckTest = do
+  putStrLn $ "Testing valid IBANs: " ++ checkTestResult (all iban testIBANs)
+  putStrLn $ "Testing invalid IBANs: " ++ checkTestResult (all (not . iban) (map (\x -> replace 3 (head (show (digitToInt (x !! 3) + 1))) x) testIBANs))
+
 checkTestResult :: Bool -> String
 checkTestResult True  = "Test succeeded!"
 checkTestResult False = "Test failed!"
@@ -516,5 +542,9 @@ main = do
   quickCheck isCharacterLetter
   quickCheck equalNonLetterCharacters
   quickCheck equalLetterCase
+  quickCheck doubleRotYieldsBeginResult
+
+  putStrLn "\n== Assignment 7 (Implementing and testing IBAN validation) =="
+  ibanCheckTest
 
   putStrLn "Done"
