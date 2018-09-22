@@ -29,7 +29,7 @@ entails f g = all (\ v -> evl v f --> evl v g) (allVals f)
 
 -- | logical equivalence
 equiv :: Form -> Form -> Bool
-equiv f g = allEvals f == allEvals g
+equiv f g = all (\ v -> evl v f == evl v g) (allVals f)
 
 pOrNotP = Dsj[p,Neg p]
 pAndNotP = Cnj[p,Neg p]
@@ -91,6 +91,12 @@ falseEvals f = filter (\x -> not (evl x f)) (allVals f)
 
 cnf :: Form -> Form
 cnf f = Cnj (map valuationToClause (falseEvals f))
+
+
+
+form4 = Dsj [r, Cnj [p, q]]
+
+
 
 
 main :: IO ()
