@@ -112,9 +112,10 @@ generateFormList randList leftTreeChance state maxListSize currentFormList = cas
                                                                   generatedState = generateForm randList leftTreeChance (TreeState (amountOfProperties state) (form state) (curRand state + 1))
 
 chooseRandomProperty :: [Float] -> TreeState -> TreeState
-chooseRandomProperty randList state = TreeState (if chosenProperty == props then props + 1 else props) (Prop chosenProperty) (curRand state + 1)
+chooseRandomProperty randList state = TreeState (if chosenProperty == props then props + 1 else props) (if doNeg == 0 then Neg (Prop chosenProperty) else Prop chosenProperty) (curRand state + 2)
   where props = amountOfProperties state
         chosenProperty = getCurRand state randList (props + 1)
+        doNeg = getCurRandNum (curRand state + 1) randList 2
 
 
 checkTestResult :: Bool -> String
