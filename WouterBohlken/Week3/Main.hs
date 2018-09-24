@@ -106,10 +106,11 @@ falseEvals f = filter (\x -> not (evl x f)) (allVals f)
 
 cnf :: Form -> Form
 cnf f = Cnj (map valuationToClause (falseEvals f))
+-- Fail on "+(*(((*((3==>2) *(1 4))==>+(5 5 1))<=>(1==>1)) (1<=>5)) *(4 1))"
 
 -- Assignment 4
 
-maxProps = 5
+maxTotalProps = 5
 maxForms = 10
 maxPropertiesInForm = 5
 
@@ -124,11 +125,14 @@ shiftRand n (TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn})
 getRand :: TreeEnvironment -> Int
 getRand (TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn}) = rn!!(rc)
 
-getRands :: TreeEnvironment -> [Int]
-getRands (TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn}) = take ((rn!!rc `mod` (maxPropertiesInForm - 2)) + 2) $ drop rc rn
+getRands :: Int -> [Int] -> [Int]
+getRands n xs = take ((xs!!n `mod` (maxPropertiesInForm - 2)) + 2) $ drop n xs
+
+getRandsForTreeEnv :: TreeEnvironment -> [Int]
+getRandsForTreeEnv (TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn}) = getRands rc rn
 
 getProp :: Int -> Form
-getProp n = Prop (n `mod` maxProps)
+getProp n = Prop ((n `mod` maxTotalProps) + 1)
 
 
 getImpl, getEquiv :: Int -> Int -> Form
@@ -145,20 +149,28 @@ maybeNegate :: Int -> Form -> Form
 maybeNegate n f | n `mod` 2 == 0 = Neg(f)
                 | otherwise = f
 
+maybeFlip :: Int -> (Form, Form) -> (Form, Form)
+maybeFlip n (f) | n `mod` 1 == 0 = (fst f, snd f)
+               | otherwise = (snd f, fst f)
 
-addFormToForm :: Form -> Form -> Form
-addFormToForm f1 f2 = Cnj [f1, f2]
+addFormToForm :: Int -> Int -> Form -> Form -> Form
+addFormToForm neg n f1 f2 = case n `mod` 4 of
+                            0 -> maybeNegate neg (Cnj [ff1, ff2])
+                            1 -> maybeNegate neg (Dsj [ff1, ff2])
+                            2 -> maybeNegate neg (Impl ff1 ff2)
+                            3 -> maybeNegate neg (Equiv ff1 ff2)
+                            where ff1 = fst (maybeFlip(n+1) (f1, f2))
+                                  ff2 = snd (maybeFlip(n+1) (f1, f2))
 
 addToFormEnvironment :: TreeEnvironment -> Form -> TreeEnvironment
-addToFormEnvironment (TreeEnvironment {form = tf, randomCounter = rc, randomNumbers = rn}) nf = TreeEnvironment (addFormToForm tf nf) rc rn
+addToFormEnvironment (TreeEnvironment {form = tf, randomCounter = rc, randomNumbers = rn}) nf = TreeEnvironment (addFormToForm (rn!!rc) (rn!!rc) tf nf) (rc+2) rn
 
 addRandomForm :: TreeEnvironment -> TreeEnvironment
 addRandomForm te = case (getRand te) `mod` 4 of
                     0 -> addToFormEnvironment newEnv (getImpl (getRand (shiftRand 1 te)) (getRand (shiftRand 2 te)))
                     1 -> addToFormEnvironment newEnv (getEquiv (getRand (shiftRand 1 te)) (getRand (shiftRand 2 te)))
-                    2 -> addToFormEnvironment nShiftedEnv (getCnj (map (getProp) (getRands (shiftRand 1 te))))
-                    3 -> addToFormEnvironment nShiftedEnv (getDsj (map (getProp) (getRands (shiftRand 1 te))))
-
+                    2 -> addToFormEnvironment nShiftedEnv (getCnj (map (getProp) (getRandsForTreeEnv (shiftRand 1 te))))
+                    3 -> addToFormEnvironment nShiftedEnv (getDsj (map (getProp) (getRandsForTreeEnv (shiftRand 1 te))))
                     where newEnv = shiftRand 3 te
                           nShiftedEnv = shiftRand (getRand (shiftRand 1 te)) te
 
@@ -166,16 +178,19 @@ addRandomForms :: Int -> TreeEnvironment -> TreeEnvironment
 addRandomForms 0 te = te
 addRandomForms n te = addRandomForms (n-1) (shiftRand 1 (addRandomForm te))
 
-randomRoot :: Int -> Form
-randomRoot n | n `mod` 2 == 0 = Impl (Prop 1) (Prop 2)
-             | n `mod` 2 == 1 = (Cnj [Prop 1, Prop 2])
+randomRoot :: [Int] -> Form
+randomRoot xs = case (xs!!0) `mod` 4 of
+                0 -> getImpl ((xs!!1)) ((xs!!2))
+                1 -> getEquiv ((xs!!1)) ((xs!!2))
+                2 -> getCnj (map (getProp) (getRands 0 xs))
+                3 -> getDsj (map (getProp) (getRands 0 xs))
 
 createTreeEnvironment :: Form -> [Int] -> TreeEnvironment
 createTreeEnvironment f rands = TreeEnvironment f 0 rands
 
 generateForm :: IO TreeEnvironment
 generateForm = do
-                 te <- (getIntL maxPropertiesInForm (maxForms * 30)) >>= \rands -> return (addRandomForms (((rands!!0) `mod` (maxForms - 1)) + 1) (createTreeEnvironment (randomRoot (rands!!1)) rands))
+                 te <- (getIntL maxPropertiesInForm (maxForms * 30)) >>= \rands -> return (addRandomForms (((rands!!0) `mod` (maxForms - 1)) + 1) (createTreeEnvironment (randomRoot rands) (drop 5 rands)))
                  return te
 
 
