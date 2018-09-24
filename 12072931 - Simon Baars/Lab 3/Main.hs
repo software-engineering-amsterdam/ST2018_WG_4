@@ -86,7 +86,7 @@ getCurRand :: TreeState -> [Float] -> Int -> Int
 getCurRand TreeState{curRand = x} = getCurRandNum x
 
 generateForm :: [Float] -> Int -> TreeState -> TreeState
-generateForm randList leftTreeChance state = if randomChoice < leftTreeChance then chooseRandomSplitForm randList (leftTreeChance - 1) newState else chooseRandomProperty randList newState
+generateForm randList leftTreeChance state = if randomChoice < leftTreeChance then doRandomlyNegate randList (chooseRandomSplitForm randList (leftTreeChance - 1) newState) else doRandomlyNegate randList (chooseRandomProperty randList newState)
   where randomChoice = getCurRand state randList maxTreeChance
         newState = TreeState (amountOfProperties state) (form state) (curRand state + 1)
 
@@ -111,11 +111,15 @@ generateFormList randList leftTreeChance state maxListSize currentFormList = cas
                                                             where randNum = getCurRand state randList 2
                                                                   generatedState = generateForm randList leftTreeChance (TreeState (amountOfProperties state) (form state) (curRand state + 1))
 
+
 chooseRandomProperty :: [Float] -> TreeState -> TreeState
-chooseRandomProperty randList state = TreeState (if chosenProperty == props then props + 1 else props) (if doNeg == 0 then Neg (Prop chosenProperty) else Prop chosenProperty) (curRand state + 2)
+chooseRandomProperty randList state = TreeState (if chosenProperty == props then props + 1 else props) (Prop chosenProperty) (curRand state + 1)
   where props = amountOfProperties state
         chosenProperty = getCurRand state randList (props + 1)
-        doNeg = getCurRandNum (curRand state + 1) randList 2
+
+doRandomlyNegate :: [Float] -> TreeState -> TreeState
+doRandomlyNegate randNums state = TreeState (amountOfProperties state) (if doNegate == 0 then Neg (form state) else form state) (curRand state + 1)
+  where doNegate = getCurRand state randNums 2
 
 
 checkTestResult :: Bool -> String
