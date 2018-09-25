@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-25 20:08:34.99950262 UTC
+2018-09-25 20:33:10.955678498 UTC
 
 interface main:Main 8043
-  interface hash: 03b9e08eab1275df993e4f5f3d2c3ce5
-  ABI hash: c924f663f389ddc783e7cf39a7192ebe
-  export-list hash: d5f221c1db986537a0626f3b2e679ec1
+  interface hash: 99eae832964b5a661ad9261acc819005
+  ABI hash: b0648b3b2f30a2bd56b847472aba6c7f
+  export-list hash: cc30ef706cf0bf4bbc35840431c0c3d4
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 8685d694e67a748160b24bb5044d3233
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -25,7 +25,6 @@ exports:
   Main.contradiction
   Main.convertPropToClause
   Main.convertToCNF
-  Main.convertToClauses
   Main.doRandomlyNegate
   Main.entails
   Main.equiv
@@ -59,6 +58,7 @@ exports:
   Main.randomNumberStream
   Main.removeDuplicates
   Main.tautology
+  Main.testFormProperty
   Main.treeStateListToTreeState
   Main.truthTable
   Main.Clause
@@ -392,6 +392,65 @@ ad930c163add7e0da155c7975f72c20e
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 3, Strictness: <S,U><S,U><S,U>, Inline: [0] -}
+36d6e0ecc44208f84faa5fdb51ca6ed5
+  $wtestFormProperty ::
+    (Lecture3.Form -> GHC.Types.Bool)
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 4, Strictness: <L,1*C1(U)><S,U><S,U><S,U>, Inline: [0],
+     Unfolding: (\ (w :: Lecture3.Form -> GHC.Types.Bool)
+                   (ww :: GHC.Prim.Int#)
+                   (ww1 :: GHC.Prim.Int#)
+                   (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case GHC.Prim.==# ww ww1 of lwild {
+                   DEFAULT
+                   -> case System.Random.theStdGen
+                             `cast`
+                           (GHC.IORef.N:IORef[0] <System.Random.StdGen>_N) of wild { GHC.STRef.STRef r# ->
+                      case GHC.Prim.atomicModifyMutVar#
+                             @ GHC.Prim.RealWorld
+                             @ System.Random.StdGen
+                             @ (System.Random.StdGen, System.Random.StdGen)
+                             @ System.Random.StdGen
+                             r#
+                             System.Random.newStdGen2
+                             w1 of ds1 { (#,#) ipv ipv1 ->
+                      case ipv1 of b1 { System.Random.StdGen ipv2 ipv3 ->
+                      let {
+                        ipv4 :: Lecture3.Form
+                        = case Main.$wgenerateForm
+                                 (Main.generateActualForm_go b1)
+                                 6#
+                                 Main.generateActualForm2
+                                 0# of ww2 { (#,,#) ww3 ww4 ww5 ->
+                          ww4 }
+                      } in
+                      case w ipv4 of wild1 {
+                        GHC.Types.False
+                        -> case Main.testFormProperty5 ipv4
+                           ret_ty (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+                           of {}
+                        GHC.Types.True
+                        -> case GHC.IO.Handle.Text.hPutStr2
+                                  GHC.IO.Handle.FD.stdout
+                                  (GHC.CString.unpackAppendCString#
+                                     Main.testFormProperty4
+                                     (Lecture3.$fShowForm_$cshow ipv4))
+                                  GHC.Types.True
+                                  ipv of ds2 { (#,#) ipv5 ipv6 ->
+                           Main.$wparserTest (GHC.Prim.+# ww 1#) ww1 ipv5 } } } } }
+                   1#
+                   -> GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        (case GHC.Show.$wshowSignedInt
+                                0#
+                                ww1
+                                (GHC.Types.[] @ GHC.Types.Char) of ww4 { (#,#) ww5 ww6 ->
+                         GHC.Base.++_$s++ @ GHC.Types.Char Main.testFormProperty2 ww5 ww6 })
+                        GHC.Types.True
+                        w1 }) -}
 88dee24b2abe3bea071ee4cfb5a222ea
   type Clause = [GHC.Types.Int]
 b431ff5bc52d7e80c349ed5d54659373
@@ -461,10 +520,134 @@ b9251b45396175bbb6251f12f87a1598
                         ww1
                         ww5 of ww6 { (#,,#) ww7 ww8 ww9 ->
                  Main.TreeState ww7 ww8 ww9 } } }) -}
-b406d154ccf54883eab6997d3315d105
+9b4fd4c60dd640fa66626ee14db4a0c5
   cnf2cls :: Lecture3.Form -> Main.Clauses
   {- Arity: 1, Strictness: <S,1*U>,
-     Unfolding: InlineRule (0, True, True) Main.convertToClauses -}
+     Unfolding: (\ (ds :: Lecture3.Form) ->
+                 case ds of wild {
+                   DEFAULT
+                   -> GHC.Types.:
+                        @ Main.Clause
+                        (case wild of wild1 {
+                           DEFAULT -> Main.cnf2cls1
+                           Lecture3.Prop name
+                           -> GHC.Types.: @ GHC.Types.Int name (GHC.Types.[] @ GHC.Types.Int)
+                           Lecture3.Neg ds1
+                           -> case ds1 of wild2 {
+                                DEFAULT -> Main.cnf2cls1
+                                Lecture3.Prop name
+                                -> GHC.Types.:
+                                     @ GHC.Types.Int
+                                     (GHC.Num.$fNumInt_$cnegate name)
+                                     (GHC.Types.[] @ GHC.Types.Int) } })
+                        (GHC.Types.[] @ Main.Clause)
+                   Lecture3.Cnj ds1
+                   -> case ds1 of wild1 {
+                        []
+                        -> GHC.Types.:
+                             @ Main.Clause
+                             (Main.cnf2cls_go5 (GHC.Types.[] @ Lecture3.Form))
+                             (GHC.Types.[] @ Main.Clause)
+                        : ds2 ds3
+                        -> let {
+                             fail :: GHC.Prim.Void# -> Main.Clauses
+                               <join 1> {- Arity: 1, Strictness: <L,A> -}
+                             = \ (ds4 :: GHC.Prim.Void#)[OneShot] ->
+                               let {
+                                 fail1 :: GHC.Prim.Void# -> Main.Clauses
+                                   <join 1> {- Arity: 1, Strictness: <L,A> -}
+                                 = \ (ds5 :: GHC.Prim.Void#)[OneShot] ->
+                                   case ds2 of wild2 {
+                                     DEFAULT
+                                     -> GHC.Types.:
+                                          @ Main.Clause
+                                          (Main.cnf2cls_go5 wild1)
+                                          (GHC.Types.[] @ Main.Clause)
+                                     Lecture3.Dsj fs1
+                                     -> case ds3 of wild3 {
+                                          []
+                                          -> GHC.Types.:
+                                               @ Main.Clause
+                                               (Main.cnf2cls_go5 wild1)
+                                               (GHC.Types.[] @ Main.Clause)
+                                          : fs2 ds6
+                                          -> case ds6 of wild4 {
+                                               []
+                                               -> GHC.Types.:
+                                                    @ Main.Clause
+                                                    (Main.cnf2cls_go4 fs1)
+                                                    (GHC.Types.:
+                                                       @ Main.Clause
+                                                       (Main.convertPropToClause fs2)
+                                                       (GHC.Types.[] @ Main.Clause))
+                                               : ipv ipv1
+                                               -> GHC.Types.:
+                                                    @ Main.Clause
+                                                    (Main.cnf2cls_go5 wild1)
+                                                    (GHC.Types.[] @ Main.Clause) } } }
+                               } in
+                               case ds3 of wild2 {
+                                 [] -> fail1 GHC.Prim.void#
+                                 : ds5 ds6
+                                 -> case ds5 of wild3 {
+                                      DEFAULT -> fail1 GHC.Prim.void#
+                                      Lecture3.Dsj fs2
+                                      -> case ds6 of wild4 {
+                                           []
+                                           -> GHC.Types.:
+                                                @ Main.Clause
+                                                (Main.convertPropToClause ds2)
+                                                (GHC.Types.:
+                                                   @ Main.Clause
+                                                   (Main.cnf2cls_go3 fs2)
+                                                   (GHC.Types.[] @ Main.Clause))
+                                           : ipv ipv1 -> fail1 GHC.Prim.void# } } }
+                           } in
+                           case ds2 of wild2 {
+                             DEFAULT -> fail GHC.Prim.void#
+                             Lecture3.Dsj fs1
+                             -> case ds3 of wild3 {
+                                  [] -> fail GHC.Prim.void#
+                                  : ds4 ds5
+                                  -> case ds4 of wild4 {
+                                       DEFAULT -> fail GHC.Prim.void#
+                                       Lecture3.Dsj fs2
+                                       -> case ds5 of wild5 {
+                                            []
+                                            -> GHC.Types.:
+                                                 @ Main.Clause
+                                                 (Main.cnf2cls_go2 fs1)
+                                                 (GHC.Types.:
+                                                    @ Main.Clause
+                                                    (Main.cnf2cls_go1 fs2)
+                                                    (GHC.Types.[] @ Main.Clause))
+                                            : ipv ipv1 -> fail GHC.Prim.void# } } } } }
+                   Lecture3.Dsj fs
+                   -> GHC.Types.:
+                        @ Main.Clause
+                        (Main.cnf2cls_go fs)
+                        (GHC.Types.[] @ Main.Clause) }) -}
+05ec6df99242eedccee80de57c19ba2c
+  cnf2cls1 :: Main.Clause
+  {- Strictness: x -}
+fa54d0c8b84a36df4b0feb0b6a403379
+  cnf2cls_go :: [Lecture3.Form] -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,1*U> -}
+65b57ebafa0d867ced0aa6837dca0b85
+  cnf2cls_go1 :: [Lecture3.Form] -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,1*U> -}
+f280191bb6a89d41d0d13cc8e9d29529
+  cnf2cls_go2 :: [Lecture3.Form] -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,1*U> -}
+462819211df98c13caaafb34e6469761
+  cnf2cls_go3 :: [Lecture3.Form] -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,1*U> -}
+4b309681d2912f001e027ed0e6e5ed69
+  cnf2cls_go4 :: [Lecture3.Form] -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,1*U> -}
+93460923f1167cb1d32c2e965e40d655
+  cnf2cls_go5 :: [Lecture3.Form] -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <S,1*U> -}
 f144ec09d0d7395d742920c89144ee46
   cnfProbe :: GHC.Types.Int -> GHC.Types.Int -> GHC.Types.IO ()
   {- Arity: 3, Strictness: <S(S),1*U(U)><S(S),1*U(U)><S,U>,
@@ -575,119 +758,6 @@ cbb3b1c5ce9af2d4a9a981d5943d8345
 4ecaed62af0c55426904a717aca3cda9
   convertToCNF_go6 :: Lecture3.Form -> Lecture3.Form
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
-60ee2cc3136b94467a37e3fb5eb32691
-  convertToClauses :: Lecture3.Form -> Main.Clauses
-  {- Arity: 1, Strictness: <S,1*U>,
-     Unfolding: (\ (ds :: Lecture3.Form) ->
-                 case ds of wild {
-                   DEFAULT -> Main.convertToClauses1
-                   Lecture3.Cnj ds1
-                   -> case ds1 of wild1 {
-                        []
-                        -> GHC.Types.:
-                             @ Main.Clause
-                             (Main.convertToClauses_go5 (GHC.Types.[] @ Lecture3.Form))
-                             (GHC.Types.[] @ Main.Clause)
-                        : ds2 ds3
-                        -> let {
-                             fail :: GHC.Prim.Void# -> Main.Clauses
-                               <join 1> {- Arity: 1, Strictness: <L,A> -}
-                             = \ (ds4 :: GHC.Prim.Void#)[OneShot] ->
-                               let {
-                                 fail1 :: GHC.Prim.Void# -> Main.Clauses
-                                   <join 1> {- Arity: 1, Strictness: <L,A> -}
-                                 = \ (ds5 :: GHC.Prim.Void#)[OneShot] ->
-                                   case ds2 of wild2 {
-                                     DEFAULT
-                                     -> GHC.Types.:
-                                          @ Main.Clause
-                                          (Main.convertToClauses_go5 wild1)
-                                          (GHC.Types.[] @ Main.Clause)
-                                     Lecture3.Dsj fs1
-                                     -> case ds3 of wild3 {
-                                          []
-                                          -> GHC.Types.:
-                                               @ Main.Clause
-                                               (Main.convertToClauses_go5 wild1)
-                                               (GHC.Types.[] @ Main.Clause)
-                                          : fs2 ds6
-                                          -> case ds6 of wild4 {
-                                               []
-                                               -> GHC.Types.:
-                                                    @ Main.Clause
-                                                    (Main.convertToClauses_go4 fs1)
-                                                    (GHC.Types.:
-                                                       @ Main.Clause
-                                                       (Main.convertPropToClause fs2)
-                                                       (GHC.Types.[] @ Main.Clause))
-                                               : ipv ipv1
-                                               -> GHC.Types.:
-                                                    @ Main.Clause
-                                                    (Main.convertToClauses_go5 wild1)
-                                                    (GHC.Types.[] @ Main.Clause) } } }
-                               } in
-                               case ds3 of wild2 {
-                                 [] -> fail1 GHC.Prim.void#
-                                 : ds5 ds6
-                                 -> case ds5 of wild3 {
-                                      DEFAULT -> fail1 GHC.Prim.void#
-                                      Lecture3.Dsj fs2
-                                      -> case ds6 of wild4 {
-                                           []
-                                           -> GHC.Types.:
-                                                @ Main.Clause
-                                                (Main.convertPropToClause ds2)
-                                                (GHC.Types.:
-                                                   @ Main.Clause
-                                                   (Main.convertToClauses_go3 fs2)
-                                                   (GHC.Types.[] @ Main.Clause))
-                                           : ipv ipv1 -> fail1 GHC.Prim.void# } } }
-                           } in
-                           case ds2 of wild2 {
-                             DEFAULT -> fail GHC.Prim.void#
-                             Lecture3.Dsj fs1
-                             -> case ds3 of wild3 {
-                                  [] -> fail GHC.Prim.void#
-                                  : ds4 ds5
-                                  -> case ds4 of wild4 {
-                                       DEFAULT -> fail GHC.Prim.void#
-                                       Lecture3.Dsj fs2
-                                       -> case ds5 of wild5 {
-                                            []
-                                            -> GHC.Types.:
-                                                 @ Main.Clause
-                                                 (Main.convertToClauses_go2 fs1)
-                                                 (GHC.Types.:
-                                                    @ Main.Clause
-                                                    (Main.convertToClauses_go1 fs2)
-                                                    (GHC.Types.[] @ Main.Clause))
-                                            : ipv ipv1 -> fail GHC.Prim.void# } } } } }
-                   Lecture3.Dsj fs
-                   -> GHC.Types.:
-                        @ Main.Clause
-                        (Main.convertToClauses_go fs)
-                        (GHC.Types.[] @ Main.Clause) }) -}
-f5a9ab831bce6a04708d9d9d91218fda
-  convertToClauses1 :: Main.Clauses
-  {- Strictness: x -}
-428a7a8b67a975a28feffe84f565be5e
-  convertToClauses_go :: [Lecture3.Form] -> [GHC.Types.Int]
-  {- Arity: 1, Strictness: <S,1*U> -}
-ab3867c8bb3fe3601645215148bdd712
-  convertToClauses_go1 :: [Lecture3.Form] -> [GHC.Types.Int]
-  {- Arity: 1, Strictness: <S,1*U> -}
-eb5df79eebfa615f85eb16e0a11cf170
-  convertToClauses_go2 :: [Lecture3.Form] -> [GHC.Types.Int]
-  {- Arity: 1, Strictness: <S,1*U> -}
-dfb89839efe01a5e402e47c6c12c9e3f
-  convertToClauses_go3 :: [Lecture3.Form] -> [GHC.Types.Int]
-  {- Arity: 1, Strictness: <S,1*U> -}
-f17247dec1fd5c399aea92de976547aa
-  convertToClauses_go4 :: [Lecture3.Form] -> [GHC.Types.Int]
-  {- Arity: 1, Strictness: <S,1*U> -}
-e954b6234f2bd1c07b012c3b859a83fa
-  convertToClauses_go5 :: [Lecture3.Form] -> [GHC.Types.Int]
-  {- Arity: 1, Strictness: <S,1*U> -}
 69fb7f569e0fbbf5cbb92276f8765ab1
   curRand :: Main.TreeState -> GHC.Types.Int
   RecSel Left Main.TreeState
@@ -748,12 +818,12 @@ b77fe9a5372bca405a853fcceb5fbfbe
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: Main.TreeState) ->
                  case ds of wild { Main.TreeState ds1 ds2 ds3 -> ds2 }) -}
-f1b7622f5f38144e9580c798c41968fe
+d36623c359be61f287999d087b06f21f
   formToCls :: Lecture3.Form -> Main.Clauses
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
                 (\ (f :: Lecture3.Form) ->
-                 Main.convertToClauses
+                 Main.cnf2cls
                    (Main.applyDistributiveLaw
                       (Main.convertToCNF_go6 (Main.applyDeMorganLaw f)))) -}
 1a029ac3c96d89c6b96ab65d3b223872
@@ -1078,11 +1148,11 @@ c12b88159f85445f5172b7afe79be50e
                  case w of ww { GHC.Types.I# ww1 ->
                  case w1 of ww2 { GHC.Types.I# ww3 ->
                  Main.$wparserTest ww1 ww3 w2 } }) -}
-2f762951bb1e3b0ce1a7000b6d178d5e
+b1e595d6df59ca76044f504c5fa855b2
   propNumAtoms :: Lecture3.Form -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (f :: Lecture3.Form) ->
-                 case Main.convertToClauses
+                 case Main.cnf2cls
                         (Main.applyDistributiveLaw
                            (Main.convertToCNF_go6 (Main.applyDeMorganLaw f))) of wild {
                    []
@@ -1103,11 +1173,11 @@ c12b88159f85445f5172b7afe79be50e
 d01ed083d62ea12257567604c5c71033
   propNumAtoms1 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 0#) -}
-f54c70dfae74a01f0a46f61d7d478141
+a411fc70054a97d8b7ce4c6b2e9bd15a
   propNumNegs :: Lecture3.Form -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (f :: Lecture3.Form) ->
-                 case Main.convertToClauses
+                 case Main.cnf2cls
                         (Main.applyDistributiveLaw
                            (Main.convertToCNF_go6 (Main.applyDeMorganLaw f))) of wild {
                    []
@@ -1212,6 +1282,50 @@ b4764697e44442e2b770115ac4edbfcb
                             @ Lecture3.Name
                             GHC.Classes.eqInt
                             (Lecture3.allVals_pnames f))))) -}
+68cc21a6a7751ba9065a2d3a4d239978
+  testFormProperty ::
+    (Lecture3.Form -> GHC.Types.Bool)
+    -> GHC.Types.Int -> GHC.Types.Int -> GHC.Types.IO ()
+  {- Arity: 4,
+     Strictness: <L,1*C1(U)><S(S),1*U(U)><S(S),1*U(U)><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.testFormProperty1
+                  `cast`
+                (<Lecture3.Form -> GHC.Types.Bool>_R
+                 ->_R <GHC.Types.Int>_R
+                 ->_R <GHC.Types.Int>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
+c14f96d088ead2f036f80a80f211ef1a
+  testFormProperty1 ::
+    (Lecture3.Form -> GHC.Types.Bool)
+    -> GHC.Types.Int
+    -> GHC.Types.Int
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 4,
+     Strictness: <L,1*C1(U)><S(S),1*U(U)><S(S),1*U(U)><S,U>,
+     Inline: [0],
+     Unfolding: InlineRule (4, True, False)
+                (\ (w :: Lecture3.Form -> GHC.Types.Bool)
+                   (w1 :: GHC.Types.Int)
+                   (w2 :: GHC.Types.Int)
+                   (w3 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case w1 of ww { GHC.Types.I# ww1 ->
+                 case w2 of ww2 { GHC.Types.I# ww3 ->
+                 Main.$wtestFormProperty w ww1 ww3 w3 } }) -}
+cab79e6c52e3a5232cf42b32021626d9
+  testFormProperty2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   Main.testFormProperty3) -}
+106351ac036dbf6f351efbe190588823
+  testFormProperty3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: (" tests passed"#) -}
+679a2764ee7386dcef517de43d237372
+  testFormProperty4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("pass on: "#) -}
+5ab7ac94debc650e347b18c99b9c9d24
+  testFormProperty5 :: Lecture3.Form -> GHC.Types.IO ()
+  {- Arity: 1, Strictness: <B,1*U>x -}
 d5c6cb7c72a1415cfc1cee91f50790d3
   treeStateListToTreeState ::
     ([Lecture3.Form] -> Lecture3.Form)

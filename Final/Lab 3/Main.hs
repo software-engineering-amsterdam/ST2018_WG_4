@@ -381,28 +381,25 @@ doRandomlyNegate randNums state = TreeState (amountOfProperties state) (if doNeg
   where doNegate = getCurRand state randNums 2
 
 -- Bonus
--- Time taken: 125 mins (not included automated testing)
+-- Time taken: 150 mins
 
 --Type definitions for clauses
 type Clause  = [Int]
 type Clauses = [Clause]
 
--- Converts a single element (p or Neg p) to a Clause
+-- Converts a literal (p or Neg p) to a Clause
 convertPropToClause :: Form -> Clause
 convertPropToClause (Prop name) = [name]
 convertPropToClause (Neg (Prop name)) = [-name]
 
 -- Converts conjunctions and disjunctions to Clauses
-convertToClauses :: Form -> Clauses
-convertToClauses (Cnj [Dsj fs1, Dsj fs2]) = [concatMap convertPropToClause fs1, concatMap convertPropToClause fs2]
-convertToClauses (Cnj [fs1, Dsj fs2]) = [convertPropToClause fs1, concatMap convertPropToClause fs2]
-convertToClauses (Cnj [Dsj fs1, fs2]) = [concatMap convertPropToClause fs1, convertPropToClause fs2]
-convertToClauses (Cnj fs) = [concatMap convertPropToClause fs]
-convertToClauses (Dsj fs) = [concatMap convertPropToClause fs]
-
--- Convert a form to a Clause format
 cnf2cls :: Form -> Clauses
-cnf2cls = convertToClauses
+cnf2cls (Cnj [Dsj fs1, Dsj fs2]) = [concatMap convertPropToClause fs1, concatMap convertPropToClause fs2]
+cnf2cls (Cnj [fs1, Dsj fs2]) = [convertPropToClause fs1, concatMap convertPropToClause fs2]
+cnf2cls (Cnj [Dsj fs1, fs2]) = [concatMap convertPropToClause fs1, convertPropToClause fs2]
+cnf2cls (Cnj fs) = [concatMap convertPropToClause fs]
+cnf2cls (Dsj fs) = [concatMap convertPropToClause fs]
+cnf2cls atom = [convertPropToClause atom]
 
 -- Convert a form to a CNF to a Clause format
 formToCls :: Form -> Clauses
@@ -411,7 +408,8 @@ formToCls f = cnf2cls(convertToCNF f)
 -- Returns number of negative atoms in a form
 negAtoms :: Form -> Int -> Int
 negAtoms (Prop name) i = i
-negAtoms (Neg f) i = negAtoms f (i+1)
+negAtoms (Neg (Prop f)) i = i+1
+negAtoms (Neg f) i = negAtoms f i
 negAtoms (Cnj fs) i = sum(map (`negAtoms` i) fs)
 negAtoms (Dsj fs) i = sum(map (`negAtoms` i) fs)
 negAtoms (Impl f1 f2) i = sum(map (`negAtoms` i) [f1,f2])
@@ -443,6 +441,14 @@ numAtoms (Equiv f1 f2) i = sum(map (`numAtoms` i) [f1,f2])
 --  Property: Amount of atoms in (CNF) form equal to amount of digits in clause
 propNumAtoms :: Form -> Bool
 propNumAtoms f = numAtoms (convertToCNF f) 0 == numDigs(formToCls f)
+
+testFormProperty :: (Form -> Bool) -> Int -> Int -> IO ()
+testFormProperty formProperty testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+                else generateActualForm >>= \x -> if formProperty x then
+                    do putStrLn ("pass on: " ++ show x)
+                       parserTest (testsExecuted+1) totalTests
+                  else error ("failed test on: " ++ show x)
+
 
 checkTestResult :: Bool -> String
 checkTestResult True  = "\x1b[32mTest succeeded!\x1b[0m"
@@ -478,6 +484,7 @@ main = do
   generateActualForm >>= \x -> putStrLn $ "Example of a random form: " ++ show x
 
   putStrLn "\n== BONUS Assignment 5 (Converting forms to clause format) =="
-
+  testFormProperty propNumNegs 0 10
+  testFormProperty propNumAtoms 0 10
 
   putStrLn "Done!"
