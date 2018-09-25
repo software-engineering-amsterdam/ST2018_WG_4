@@ -58,11 +58,46 @@ pAndQ = Cnj[p,q]
 -- This assignment can best be tested
 
 parserTest :: Int -> Int -> IO ()
-parserTest testsExecuted totalTests = if testsExecuted == totalTests then print (show totalTests ++ " tests passed")
+parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
                 else generateActualForm >>= \x -> let resultingForm = parse (show x) in if length resultingForm == 1 && equiv x (head resultingForm) then
-                    do print ("pass on: " ++ show x)
+                    do putStrLn ("pass on: " ++ show x)
                        parserTest (testsExecuted+1) totalTests
                   else error ("failed test on: " ++ show x)
+
+-- Assignment 3
+convertToCNF :: Form -> Form
+convertToCNF form = applyDistributiveLaw(applyDeMorganLaw form)
+
+-- Remove negations of non atoms in the following way:
+-- ¬(p ∨ q) == ¬p ∧ ¬q
+-- ¬(p ∧ q) == ¬p ∨ ¬q
+-- ¬(p ⇒ q) == p ∧ ¬q
+-- ¬(p ⇔ q) == (¬p ∨ ¬q) ∧ (p ∨ q)
+-- p ⇒ q == ¬p ∨ q
+-- p ⇔ q == (¬p ∨ q) ∧ (p ∨ ¬q)
+applyDeMorganLaw :: Form -> Form
+applyDeMorganLaw (Neg (Cnj formList)) = Dsj (map (applyDeMorganLaw . Neg) formList)
+applyDeMorganLaw (Neg (Dsj formList)) = Cnj (map (applyDeMorganLaw . Neg) formList)
+applyDeMorganLaw (Neg (Impl form1 form2)) = Cnj [applyDeMorganLaw form1,applyDeMorganLaw (Neg form2)]
+applyDeMorganLaw (Neg (Equiv form1 form2)) = Cnj [Dsj [applyDeMorganLaw (Neg form1),applyDeMorganLaw (Neg form2)],Dsj [applyDeMorganLaw form1,applyDeMorganLaw form2]]
+applyDeMorganLaw (Neg (Neg form)) = applyDeMorganLaw form
+applyDeMorganLaw (Neg form) = Neg (applyDeMorganLaw form)
+applyDeMorganLaw (Impl form1 form2) = Dsj [applyDeMorganLaw (Neg form1),applyDeMorganLaw form2]
+applyDeMorganLaw (Equiv form1 form2) = Cnj [Dsj [applyDeMorganLaw (Neg form1),applyDeMorganLaw form2],Dsj [applyDeMorganLaw form1,applyDeMorganLaw (Neg form2)]]
+applyDeMorganLaw (Cnj formList) = Cnj (map applyDeMorganLaw formList)
+applyDeMorganLaw (Dsj formList) = Dsj (map applyDeMorganLaw formList)
+applyDeMorganLaw form = form
+
+applyDistributiveLaw :: Form -> Form
+applyDistributiveLaw (Neg form) = Neg (applyDistributiveLaw form)
+applyDistributiveLaw (Cnj [form]) = applyDistributiveLaw form
+applyDistributiveLaw (Cnj formList) = Cnj (map applyDistributiveLaw formList)
+applyDistributiveLaw (Dsj [form]) = applyDistributiveLaw form
+applyDistributiveLaw (Dsj (Cnj cnjOne: Cnj cnjTwo: xs)) = let conj = Cnj [Dsj [x,y] | x <- map applyDistributiveLaw cnjOne, y <- map applyDistributiveLaw cnjTwo] in if not (null xs) then applyDistributiveLaw (Dsj $ conj:xs) else applyDistributiveLaw conj
+applyDistributiveLaw (Dsj (Cnj cnjOne: cnjTwo : xs)) = let conj = Cnj [Dsj [x,y] | x <- map applyDistributiveLaw cnjOne, y <- [applyDistributiveLaw cnjTwo]] in if not (null xs) then applyDistributiveLaw (Dsj $ conj:xs) else applyDistributiveLaw conj
+applyDistributiveLaw (Dsj (cnjOne: Cnj cnjTwo : xs)) = let conj = Cnj [Dsj [x,y] | x <- [applyDistributiveLaw cnjOne], y <- map applyDistributiveLaw cnjTwo] in if not (null xs) then applyDistributiveLaw (Dsj $ conj:xs) else applyDistributiveLaw conj
+--applyDistributiveLaw (Dsj (form1:form2:xs)) = Dsj (applyDistributiveLaw (Dsj [form1,form2]) : [applyDistributiveLaw (Dsj (form2 : xs)) | not (null xs)])--if length (filter (\x -> x == Cnj) (form1:form2:xs)) == 0 then Dsj (map applyDistributiveLaw (form1:form2:xs)) else Cnj ((Dsj [form1, form2]):(applyDistributiveLaw form2:xs))
+applyDistributiveLaw x = x
 
 -- Assignment 4
 -- Time: 270 minutes

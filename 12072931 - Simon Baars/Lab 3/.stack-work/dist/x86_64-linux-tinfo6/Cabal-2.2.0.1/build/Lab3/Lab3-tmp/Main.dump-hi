@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-24 11:05:11.953816074 UTC
+2018-09-25 09:45:54.34215207 UTC
 
 interface main:Main 8043
-  interface hash: 5eb1f449c23c94a89b850b809506fa83
-  ABI hash: 0017b5a749dc73e199849a1051e68a86
-  export-list hash: 857da9c53050fcfb77001fbf8e3a82a5
+  interface hash: 67ae12c9948e6a6f2618bfeadda89429
+  ABI hash: b9dc92e3cc6c7d920e0c66fc266e2e72
+  export-list hash: 8e2f5f360ac65a11ffb4cb339624fa1c
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 8685d694e67a748160b24bb5044d3233
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -14,10 +14,13 @@ interface main:Main 8043
   used TH splices: False
   where
 exports:
+  Main.applyDeMorganLaw
+  Main.applyDistributiveLaw
   Main.checkTestResult
   Main.chooseRandomProperty
   Main.chooseRandomSplitForm
   Main.contradiction
+  Main.convertToCNF
   Main.doRandomlyNegate
   Main.entails
   Main.equiv
@@ -354,6 +357,12 @@ b64977cf0096bfcbf0ee8522987927ea
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: Main.TreeState) ->
                  case ds of wild { Main.TreeState ds1 ds2 ds3 -> ds1 }) -}
+e903af85078a1b4e3d3afbf228eeca46
+  applyDeMorganLaw :: Lecture3.Form -> Lecture3.Form
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
+cf825d4c185b956a17b96ce9a18980e2
+  applyDistributiveLaw :: Lecture3.Form -> Lecture3.Form
+  {- Arity: 1, Strictness: <S,1*U> -}
 ab87e2bb5ba70cc6754c8e77034b9c63
   checkTestResult :: GHC.Types.Bool -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>,
@@ -424,6 +433,12 @@ b9251b45396175bbb6251f12f87a1598
                             @ Lecture3.Name
                             GHC.Classes.eqInt
                             (Lecture3.allVals_pnames f))))) -}
+60a8dd81ccfb0ff897d3bb2632c64091
+  convertToCNF :: Lecture3.Form -> Lecture3.Form
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (form1 :: Lecture3.Form) ->
+                 Main.applyDistributiveLaw (Main.applyDeMorganLaw form1)) -}
 69fb7f569e0fbbf5cbb92276f8765ab1
   curRand :: Main.TreeState -> GHC.Types.Int
   RecSel Left Main.TreeState
