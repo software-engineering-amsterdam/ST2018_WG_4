@@ -273,9 +273,15 @@ cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn 
 -- should be finite (so not that there is ANY chance that it would be infinite). So that's what I made. 270 minutes later I have a form generator that can generate
 -- every possible Form (which is ideal for random testing purposes because there is no chance that my form generator would not support some form that would fail
 -- for any of the tests). I added comments to every method within this chapter, to explain the functionality of each part of the generator.
+-- Possible result:
+--            Example of a random form: -(-*(1 -*(-2 *(-(-1==>3) 1 -2) +(1) -0 1 +(4 -+(-(-0==>1) 1) *(-4)) -*(-2 2 -(5==>1)) -(1==>1) -4) -*(-(1<=>(-3==>5)) -4) *(4 -(0<=>4) 1 (*(3 -4)<=>(-4<=>(4<=>1))) -*(-1) (5<=>0)))==>+(5))
+--
+-- The assignment said: Use your random testing method to test the correctness of the conversion program from the previous exercise. Formulate a number of relevant properties to test, and carry out the tests, either with your own random formula generator or with QuickCheck.
+-- These properties (equiv and isCnf) and the test method can be observed above.
 
 -- This number, the `maxFormDepth`, is the big reason that this algorithm is actually finite. The algorithm will not create a form with clauses nesting deeper
 -- than the max depth, and when coming closer to the depth the chance actually becomes less that the algorithm will choose a non-atom over an atom.
+-- Note: If you want to see cool things in your console, make this number nice and high (the form is created lazily so a huge random form will be written to your console!).
 maxFormDepth = 7
 
 -- This is the data type that contains the state of creating the Form at any point during the runtime of the algorithm. It contains three fields:
