@@ -62,6 +62,7 @@ checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
 
 -- Testing the parser using the form generator of assignment 4
 -- Use and tweak Simon's parser test, due to time shortage
+-- We test whether the parser gives exactly 1 match for a given generated form, and thus it is not ambiguous, then we test whether the parsed formula is equivalent to it's initial counterpart
 parserTest :: Int -> Int -> IO ()
 parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
                 else generateForm >>= \TreeEnvironment {form = x} -> let resultingForm = parse (show x) in if length resultingForm == 1 && equiv x (head resultingForm) then
@@ -230,7 +231,7 @@ generateForms 0 fs = []
 generateForms n fs = generateForms (n-1) (addForm fs)
 
 
-
+-- We test whether the CNF forms are equivalent to their initial counter part
 cnfTest :: Int -> Int -> IO ()
 cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
                 else generateForm >>= \TreeEnvironment {form = x} -> let cnfForm = cnf x in if equiv x cnfForm then
@@ -238,6 +239,7 @@ cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn 
                   else error ("failed test on: " ++ show x)
 
 
+-- We test whether the CNF forms are equivalent to their initial counter part
 dnfTest :: Int -> Int -> IO ()
 dnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
                 else generateForm >>= \TreeEnvironment {form = x} -> let dnfForm = dnf x in if equiv x dnfForm then
@@ -256,10 +258,10 @@ lexerCls :: String -> [Token]
 lexerCls [] = []
 lexerCls (c:cs) | isSpace c = lexerCls cs
              | isDigit c = lexNumCls (c:cs)
-lexerCls ('[':cs) = TokenOP : lexerCls cs
+lexerCls ('[':cs) = [TokenCnj, TokenOP] ++ lexerCls cs
 lexerCls (']':cs) = TokenCP : lexerCls cs
-lexerCls (',':cs) = TokenCnj : lexerCls cs
-lexerCls ('+':cs) = TokenDsj : lexerCls cs
+-- lexerCls (']':',':'[':cs) = [TokenOP, TokenCnj, TokenCP] ++ lexerCls cs
+lexerCls (',':cs) = [TokenDsj, TokenOP] ++ lexerCls cs ++ [TokenCP]
 lexerCls ('-':cs) = TokenNeg : lexerCls cs
 lexerCls (x:_) = error ("unknown token: " ++ [x])
 
