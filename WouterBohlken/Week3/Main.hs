@@ -233,8 +233,8 @@ testDnf = generateForm >>= (\TreeEnvironment {form = f} -> quickCheck (equiv f (
 type Clause  = [Int]
 type Clauses = [Clause]
 
-
-
+-- cnf2cls :: Form -> Clauses
+-- cnf2cls f =
 
 main :: IO ()
 main = do
@@ -248,16 +248,12 @@ main = do
 
   putStrLn $ "\nTesting if `p` logically entails `p` (Expected: True): " ++ checkTestResult (entails p p)
   putStrLn $ "Testing if `p` is logically equivalent to `p` (Expected: True): " ++ checkTestResult (equiv p p)
-  -- putStrLn $ "Testing if `p` logically entails `p ∨ q` (Expected: True): " ++ checkTestResult (entails p pOrQ)
-  -- putStrLn $ "Testing if `p` is logically equivalent to `p ∨ q` (Expected: False): " ++ checkTestResult (not(equiv p pOrQ))
-  -- putStrLn $ "Testing if `p` logically entails `p ∧ q` (Expected: False): " ++ checkTestResult (not(entails p pAndQ))
-  -- putStrLn $ "Testing if `p` is logically equivalent to `p ∧ q` (Expected: False): " ++ checkTestResult (not(equiv p pAndQ))
   putStrLn $ "Testing if `p ∧ q` logically entails `p` (Expected: True): " ++ checkTestResult (entails pAndQ p)
   putStrLn $ "Testing if `p ∧ q` is logically equivalent to `p` (Expected: False): " ++ checkTestResult (not(equiv pAndQ p))
 
-  putStrLn $ "Testing the parse function (Expected: True): "
+  putStrLn "Testing the parse function (Expected: True): "
   testParser
-  putStrLn $ "Testing the CNF function (Expected: True): "
+  putStrLn "Testing the CNF function (Expected: True): "
   testCnf
-  putStrLn $ "Testing the DNF function (Expected: True): "
+  putStrLn "Testing the DNF function (Expected: True): "
   testDnf
