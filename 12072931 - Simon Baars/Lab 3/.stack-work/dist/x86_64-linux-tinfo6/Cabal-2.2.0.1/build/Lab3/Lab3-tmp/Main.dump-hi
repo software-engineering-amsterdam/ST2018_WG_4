@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-25 13:38:59.01124951 UTC
+2018-09-25 14:14:00.945114093 UTC
 
 interface main:Main 8043
-  interface hash: e8bdb6ccbfe861aa19736ce4d542f874
-  ABI hash: b6a12756c3c0257c4fe9655de55b4010
+  interface hash: e769b41e8de2e98ac637ce9e9be6ceab
+  ABI hash: 698d47b006179ceec88ce0bbf1d925c4
   export-list hash: 266d703907de4039c86b970f90268584
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 8685d694e67a748160b24bb5044d3233
@@ -112,6 +112,7 @@ import  -/  Lecture3 e7aa3775536d61807663859841e34829
   p 54238374b6ad94e59436d9203e9bf31d
   parse 34236f750c6e5fd67c1582e5f1be6eb9
   q ecb1ea6ecdc5b441c9806517ea4f59d9
+  while f56fdf22e21e9458034999fa700f2139
 import  -/  random-1.1:System.Random 31994b60c33f032d578c64a928f735f7
 a541b2ebdb613c6ae2ad5660f975e423
   $tc'TreeState :: GHC.Types.TyCon
@@ -447,21 +448,21 @@ d47b04b9d6afc0f630611b0c6fa89340
                  case w of ww { GHC.Types.I# ww1 ->
                  case w1 of ww2 { GHC.Types.I# ww3 ->
                  Main.$wcnfTest ww1 ww3 w2 } }) -}
-78e72d2185dcf8e0fdc3d02c681ae761
+247331020ba1560e2706204e9464136a
   contradiction :: Lecture3.Form -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (f :: Lecture3.Form) ->
                  letrec {
-                   go14 :: [Lecture3.Valuation] -> GHC.Types.Bool
+                   go15 :: [Lecture3.Valuation] -> GHC.Types.Bool
                      <join 1> {- Arity: 1, Strictness: <S,1*U> -}
                    = \ (ds :: [Lecture3.Valuation]) ->
                      case ds of wild {
                        [] -> GHC.Types.True
                        : y ys
                        -> case Lecture3.evl y f of wild1 {
-                            GHC.Types.False -> go14 ys GHC.Types.True -> GHC.Types.False } }
+                            GHC.Types.False -> go15 ys GHC.Types.True -> GHC.Types.False } }
                  } in
-                 go14
+                 go15
                    (Lecture3.genVals
                       (Data.OldList.sortBy
                          @ Lecture3.Name
@@ -470,12 +471,15 @@ d47b04b9d6afc0f630611b0c6fa89340
                             @ Lecture3.Name
                             GHC.Classes.eqInt
                             (Lecture3.allVals_pnames f))))) -}
-8fb05ea6baf68e7008726220df6aad19
+54f23d85352eaeddda78df7f5f6c0cdb
   convertToCNF :: Lecture3.Form -> Lecture3.Form
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
                 (\ (form1 :: Lecture3.Form) ->
-                 Main.applyDistributiveLaw (Main.applyDeMorganLaw form1)) -}
+                 Main.convertToCNF_go6 (Main.applyDeMorganLaw form1)) -}
+4ecaed62af0c55426904a717aca3cda9
+  convertToCNF_go6 :: Lecture3.Form -> Lecture3.Form
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
 69fb7f569e0fbbf5cbb92276f8765ab1
   curRand :: Main.TreeState -> GHC.Types.Int
   RecSel Left Main.TreeState
@@ -841,19 +845,19 @@ b4bc88eff794168590ce7b59ceba4bf2
                         s of ds1 { (#,#) ipv ipv1 ->
                  case ipv1 of b1 { System.Random.StdGen ipv2 ipv3 ->
                  (# ipv, Main.generateActualForm_go b1 #) } } }) -}
-ddc0dea7b7beb25f9219b38580c68531
+ee1da20f9436dbb8ce2216e406ddd9fe
   tautology :: Lecture3.Form -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.tautology1
                   `cast`
                 (<Lecture3.Form>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
-54fb9877fe13faa90aa228794d431e20
+0aca7d3df0200d1079d5b02e201ac50c
   tautology1 :: Lecture3.Form -> Data.Semigroup.Internal.All
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (f :: Lecture3.Form) ->
                  letrec {
-                   go14 :: [Lecture3.Valuation] -> Data.Semigroup.Internal.All
+                   go15 :: [Lecture3.Valuation] -> Data.Semigroup.Internal.All
                      <join 1> {- Arity: 1, Strictness: <S,1*U> -}
                    = \ (ds :: [Lecture3.Valuation]) ->
                      case ds of wild {
@@ -863,9 +867,9 @@ ddc0dea7b7beb25f9219b38580c68531
                        -> case Lecture3.evl y f of wild1 {
                             GHC.Types.False
                             -> GHC.Types.False `cast` (Sym (Data.Semigroup.Internal.N:All[0]))
-                            GHC.Types.True -> go14 ys } }
+                            GHC.Types.True -> go15 ys } }
                  } in
-                 go14
+                 go15
                    (Lecture3.genVals
                       (Data.OldList.sortBy
                          @ Lecture3.Name
@@ -874,7 +878,7 @@ ddc0dea7b7beb25f9219b38580c68531
                             @ Lecture3.Name
                             GHC.Classes.eqInt
                             (Lecture3.allVals_pnames f))))) -}
-4b4838addf706cb32bf49889f7ab3a8e
+3cadb376b77ce721158947499f854fd5
   treeStateListToTreeState ::
     ([Lecture3.Form] -> Lecture3.Form)
     -> [Main.TreeState] -> Main.TreeState
@@ -884,24 +888,24 @@ ddc0dea7b7beb25f9219b38580c68531
                    (w1 :: [Main.TreeState]) ->
                  Main.TreeState
                    (letrec {
-                      go14 :: [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
+                      go15 :: [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
                         <join 2> {- Arity: 2, Strictness: <S,U><L,U(U,A,A)>m -}
                       = \ (ds :: [Main.TreeState]) (eta :: Main.TreeState) ->
                         case ds of wild {
                           [] -> case eta of wild1 { Main.TreeState ds1 ds2 ds3 -> ds1 }
-                          : y ys -> go14 ys y }
+                          : y ys -> go15 ys y }
                     } in
-                    go14 w1 (GHC.List.lastError @ Main.TreeState))
+                    go15 w1 (GHC.List.lastError @ Main.TreeState))
                    (w (GHC.Base.map @ Main.TreeState @ Lecture3.Form Main.form w1))
                    (letrec {
-                      go14 :: [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
+                      go15 :: [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
                         <join 2> {- Arity: 2, Strictness: <S,U><L,U(A,A,U)>m -}
                       = \ (ds :: [Main.TreeState]) (eta :: Main.TreeState) ->
                         case ds of wild {
                           [] -> case eta of wild1 { Main.TreeState ds1 ds2 ds3 -> ds3 }
-                          : y ys -> go14 ys y }
+                          : y ys -> go15 ys y }
                     } in
-                    go14 w1 (GHC.List.lastError @ Main.TreeState))) -}
+                    go15 w1 (GHC.List.lastError @ Main.TreeState))) -}
 55aed60940ee180a829d4199fe5e56b6
   truthTable ::
     Lecture3.Form

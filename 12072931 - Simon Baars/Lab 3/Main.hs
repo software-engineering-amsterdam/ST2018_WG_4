@@ -72,7 +72,7 @@ parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStr
 
 -- Conversion to cnf is simply applying the De Morgan law and the Distributive law in order.
 convertToCNF :: Form -> Form
-convertToCNF form = applyDistributiveLaw(applyDeMorganLaw form)
+convertToCNF form = while (not . isCnf) convertToCNF (applyDeMorganLaw form)
 
 -- Remove negations of non atoms, implications and equivalences in the following way:
 -- ¬(p ∨ q) == ¬p ∧ ¬q
@@ -101,13 +101,15 @@ applyDeMorganLaw form = form
 -- p ∨ (q ∧ r) == (p ∨ q) ∧ (p ∨ r)
 applyDistributiveLaw :: Form -> Form
 applyDistributiveLaw (Neg form) = Neg (applyDistributiveLaw form)
+applyDistributiveLaw (Cnj [form]) = applyDistributiveLaw form
+applyDistributiveLaw (Dsj [form]) = applyDistributiveLaw form
 applyDistributiveLaw (Cnj formList) = Cnj (foldr (\x acc -> let y = applyDistributiveLaw x in if isConjunction y then getAsList y++acc else y:acc) [] formList)
 applyDistributiveLaw (Dsj formList) = Dsj (foldr (\x acc -> let y = applyDistributiveLaw x in
            if not (null acc) && (isConjunction x || isConjunction (head acc)) then let cnjOne = head acc
                                                                                        cnjTwo = y
                                                                                        conj = Cnj (if isDisjunction cnjOne then map (\ x -> Dsj (x : getAsList cnjOne)) (getAsList cnjTwo)
                                                                                                     else if isDisjunction cnjTwo then map (\ x -> Dsj (x : getAsList cnjTwo)) (getAsList cnjOne)
-                                                                                                    else [Dsj [x,y] | x <- getAsList cnjOne, y <- getAsList cnjTwo]) in conj:acc
+                                                                                                    else [Dsj [x,y] | x <- getAsList cnjOne, y <- getAsList cnjTwo]) in conj: tail acc
            else if isDisjunction y then getAsList y++acc
            else y:acc) [] formList)
 applyDistributiveLaw x = x
