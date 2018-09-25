@@ -270,7 +270,114 @@ cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn 
 -- Assignment 3 ALTERNATIVE SOLUTION
 -- Time: 4 hours
 -- We wanted to also include this alternative solution, as it provides an alternate (more simple) method of solving the CNF problem. This implementation will yield
--- results of lower quality (longer formula's and solved with an unconventional method), but the implementation is much clearer and short.
+-- results of lower quality (longer formula's and solved with an unconventional method), but the implementation is much clearer and short. The way of testing is
+-- the same as for the normal CNF solution, you can look there for the documentation on this way of testing.
+--
+-- Result:
+--            Trying: ((+(-0)==>*(-1))==>-(-*(+(1 -1) -2 -0)<=>(*(-((3<=>0)==>0))<=>-(-0==>3))))
+--            CNF form: *(+(-0 -1 -2 -3) +(-0 -1 -2 3) +(-0 -1 2 -3) +(-0 -1 2 3) +(-0 1 -2 -3) +(-0 1 -2 3) +(-0 1 2 -3) +(-0 1 2 3) +(0 1 -2 -3) +(0 1 -2 3))
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            Trying: -(0<=>+(-+(-1) ((0<=>-0)<=>1)))
+--            CNF form: *(+(-0 -1) +(-0 1))
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            Trying: -(-+(-1 -(-2<=>(-0==>+(0 2))))<=>-*(-+(-+(3))))
+--            CNF form: *(+(-0 -1 -2 -3) +(-0 -1 2 3) +(-0 1 -2 -3) +(-0 1 2 -3) +(0 -1 -2 -3) +(0 -1 2 -3) +(0 1 -2 -3) +(0 1 2 -3))
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            Trying: -+(*(1 -(0<=>2)) (0==>-3))
+--            CNF form: *(+(-0 -1 -2 3) +(-0 -1 2 -3) +(-0 -1 2 3) +(-0 1 -2 3) +(-0 1 2 3) +(0 -1 -2 -3) +(0 -1 -2 3) +(0 -1 2 -3) +(0 -1 2 3) +(0 1 -2 -3) +(0 1 -2 3) +(0 1 2 -3) +(0 1 2 3))
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            Trying: -(-1<=>-(-(-2<=>-3)==>*(-(-*(-4)==>(-3==>-5)))))
+--            CNF form: *(+(-1 -2 -3 -4 -5) +(-1 -2 -3 -4 5) +(-1 -2 -3 4 -5) +(-1 -2 -3 4 5) +(-1 -2 3 -4 -5) +(-1 2 3 -4 -5) +(-1 2 3 -4 5) +(-1 2 3 4 -5) +(-1 2 3 4 5) +(1 -2 3 -4 5) +(1 -2 3 4 -5) +(1 -2 3 4 5) +(1 2 -3 -4 -5) +(1 2 -3 -4 5) +(1 2 -3 4 -5) +(1 2 -3 4 5))
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            Trying: 0
+--            CNF form: *(+(0))
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            Trying: +(-0 -+(1) -*(-((-(2==>0)<=>0)==>-*(-3)) -0 (-+(*(1))<=>-2) (4==>-(4<=>-(-3<=>1))) -*(-5 (-5==>-1) -4 5)) -*(+(-1) 6) (3==>7) -7)
+--            CNF form: *()
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            Trying: *(+(*(1 -*(1 -0)) 2 1))
+--            CNF form: *(+(-0 1 2) +(0 1 2))
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            Trying: (-(-(-(1==>-*(-0))<=>-(1<=>0))==>-(+(-2 (-2<=>-2))==>-1))==>(-+(-0)<=>*(*(-3))))
+--            CNF form: *(+(-0 1 -2 -3) +(-0 1 2 -3))
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            Trying: (*(-(0==>-(-1==>-1)))==>-+(-*((0==>-2) 0 -1 0) *(2 3) 3))
+--            CNF form: *(+(-0 -1 -2 -3) +(-0 -1 -2 3) +(-0 -1 2 -3) +(-0 -1 2 3) +(-0 1 -2 -3) +(-0 1 -2 3) +(-0 1 2 -3))
+--             Equiv: True
+--             isCnf (alt) True
+--
+--            10 times succesfully ran
+--
+-- == Assignment 3 BONUS (DNF with alternate solution method) ==
+--            Trying: (-0==>-1)
+--            CNF form: +(*(0 1) *(0 -1) *(-0 -1))
+--             Equiv: True
+--             isDnf True
+--
+--            Trying: *(-(*(0)==>(-(-1<=>-2)<=>-*(+(0 2) -2 0))) (2<=>3) -0 -(-*(-1)==>(-(-0<=>-0)<=>-2)) -((-(-1==>0)==>1)==>(-1==>-4)))
+--            CNF form: +()
+--             Equiv: True
+--             isDnf True
+--
+--            Trying: -+((0==>*(-1 -1)))
+--            CNF form: +(*(0 1))
+--             Equiv: True
+--             isDnf True
+--
+--            Trying: -(-(*(-+(1))<=>0)<=>(*(1 -(-1==>2))<=>-+(-(-2<=>1) -1 +(2 1 -2 -(1<=>3)) 4 -4)))
+--            CNF form: +(*(0 -1 2 3 4) *(0 -1 2 3 -4) *(0 -1 2 -3 4) *(0 -1 2 -3 -4) *(0 -1 -2 3 4) *(0 -1 -2 3 -4) *(0 -1 -2 -3 4) *(0 -1 -2 -3 -4) *(-0 1 2 3 4) *(-0 1 2 3 -4) *(-0 1 2 -3 4) *(-0 1 2 -3 -4) *(-0 1 -2 3 4) *(-0 1 -2 3 -4) *(-0 1 -2 -3 4) *(-0 1 -2 -3 -4))
+--             Equiv: True
+--             isDnf True
+--
+--            Trying: 0
+--            CNF form: +(*(0))
+--             Equiv: True
+--             isDnf True
+--
+--            Trying: (-(0<=>-1)==>-*((1==>-(-*(-1)==>-(-2<=>-1)))))
+--            CNF form: +(*(0 1 -2) *(0 -1 2) *(0 -1 -2) *(-0 1 2) *(-0 1 -2))
+--             Equiv: True
+--             isDnf True
+--
+--            Trying: +(1)
+--            CNF form: +(*(1))
+--             Equiv: True
+--             isDnf True
+--
+--            Trying: -+(+(-1 *(-2 -3 -+(-*(-3 0)))))
+--            CNF form: +(*(0 1 2 3) *(0 1 2 -3) *(0 1 -2 3) *(-0 1 2 3) *(-0 1 2 -3) *(-0 1 -2 3) *(-0 1 -2 -3))
+--             Equiv: True
+--             isDnf True
+--
+--            Trying: ((-(-(0<=>-+(0))==>-1)==>(-(-0==>-1)<=>2))<=>-(-0<=>-3))
+--            CNF form: +(*(0 1 2 3) *(0 1 -2 -3) *(0 -1 2 -3) *(0 -1 -2 -3) *(-0 1 2 3) *(-0 1 -2 -3) *(-0 -1 2 3) *(-0 -1 -2 3))
+--             Equiv: True
+--             isDnf True
+--
+--            Trying: (0==>*(-*(0 -(*(-0 0)<=>-1)) -(-+(2)<=>-+(-(0==>1))) (0==>-1)))
+--            CNF form: +(*(-0 1 2) *(-0 1 -2) *(-0 -1 2) *(-0 -1 -2))
+--             Equiv: True
+--             isDnf True
+--
+--            10 times succesfully ran
 
 valuationToDsjClause :: Valuation -> Form
 valuationToDsjClause v = Dsj (map (\x -> if snd x then Neg (Prop (fst x)) else Prop (fst x)) v)
@@ -290,6 +397,21 @@ trueEvals f = filter (`evl` f) (allVals f)
 
 dnf :: Form -> Form
 dnf f = Dsj (map valuationToCnjClause (trueEvals f))
+
+isDnf :: Form -> Bool
+isDnf (Dsj formList) = all (\x -> (isConjunction x && isDnf x) || isLiteral x) formList
+isDnf (Cnj formList) = all isLiteral formList
+isDnf form = isLiteral form
+
+altCnfProbe :: Int -> Int -> IO ()
+altCnfProbe testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " times succesfully ran")
+                else generateActualForm >>= \x -> let cnfForm = cnf x in do putStrLn ("Trying: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf (alt) " ++ show (isCnf cnfForm) ++ "\n")
+                                                                            altCnfProbe (testsExecuted+1) totalTests
+
+dnfProbe :: Int -> Int -> IO ()
+dnfProbe testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " times succesfully ran")
+                else generateActualForm >>= \x -> let cnfForm = dnf x in do putStrLn ("Trying: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isDnf " ++ show (isDnf cnfForm) ++ "\n")
+                                                                            dnfProbe (testsExecuted+1) totalTests
 
 -- Assignment 4
 -- Time: 270 minutes
@@ -480,7 +602,7 @@ checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
 
 main :: IO ()
 main = do
-  putStrLn "== Assignment 1 (Definitions of contradiction, tautology, entails and equiv) =="
+  putStrLn "\x1b[36m== Assignment 1 (Definitions of contradiction, tautology, entails and equiv) ==\x1b[0m"
   putStrLn $ "Testing if just a single atom (p) is a tautology (Expected: False): " ++ checkTestResult (not (tautology p))
   putStrLn $ "Testing if just a single atom (p) is a contradiction (Expected: False): " ++ checkTestResult (not (contradiction p))
   putStrLn $ "Testing if `p ∨ ¬p` is a tautology (Expected: True): " ++ checkTestResult (tautology pOrNotP)
@@ -497,17 +619,22 @@ main = do
   putStrLn $ "Testing if `p ∧ q` logically entails `p` (Expected: True): " ++ checkTestResult (entails pAndQ p)
   putStrLn $ "Testing if `p ∧ q` is logically equivalent to `p` (Expected: False): " ++ checkTestResult (not(equiv pAndQ p))
 
-  putStrLn "\n== Assignment 2 (Testing the propositional formula parser) =="
+  putStrLn "\n\x1b[36m== Assignment 2 (Testing the propositional formula parser) ==\x1b[0m"
   parserTest 0 10
 
-  putStrLn "\n== Assignment 3 (Converting forms to CNF) =="
+  putStrLn "\n\x1b[36m== Assignment 3 (Converting forms to CNF) ==\x1b[0m"
   cnfProbe 0 10
   cnfTest 0 10
 
-  putStrLn "\n== Assignment 4 (Creating a random form generator) =="
+  putStrLn "\n\x1b[36m== Assignment 3 ALTERNATIVE SOLUTION (read comment for explanation) ==\x1b[0m"
+  altCnfProbe 0 10
+  putStrLn "\n\x1b[36m== Assignment 3 BONUS (DNF with alternate solution method) ==\x1b[0m"
+  dnfProbe 0 10
+
+  putStrLn "\n\x1b[36m== Assignment 4 (Creating a random form generator) ==\x1b[0m"
   generateActualForm >>= \x -> putStrLn $ "Example of a random form: " ++ show x
 
-  putStrLn "\n== BONUS Assignment 5 (Converting forms to clause format) =="
+  putStrLn "\n\x1b[36m== BONUS Assignment 5 (Converting forms to clause format) ==\x1b[0m"
   testFormProperty propNumNegs 0 10
   testFormProperty propNumAtoms 0 10
 
