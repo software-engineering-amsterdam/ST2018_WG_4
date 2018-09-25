@@ -80,7 +80,7 @@ pAndQ = Cnj[p,q]
 -- to get a more trustworthy test result.
 
 parserTest :: Int -> Int -> IO ()
-parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn ("\x1b[32m" ++ show totalTests ++ " tests passed\x1b[0m")
                 else generateActualForm >>= \x -> let resultingForm = parse (show x) in if length resultingForm == 1 && equiv x (head resultingForm) then
                     do putStrLn ("pass on: " ++ show x)
                        parserTest (testsExecuted+1) totalTests
@@ -261,7 +261,7 @@ cnfProbe testsExecuted totalTests = if testsExecuted == totalTests then putStrLn
 
 -- The test function for the CNF converter, using randomly generated forms from the random form generator of assignment 4.
 cnfTest :: Int -> Int -> IO ()
-cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn ("\x1b[32m" ++ show totalTests ++ " tests passed\x1b[0m")
                 else generateActualForm >>= \x -> let cnfForm = convertToCNF x in if isCnf cnfForm && equiv x cnfForm then
                                                                                       do putStrLn ("pass on: " ++ show x)
                                                                                          cnfTest (testsExecuted+1) totalTests
@@ -589,7 +589,7 @@ propNumAtoms :: Form -> Bool
 propNumAtoms f = numAtoms (convertToCNF f) 0 == numDigs(formToCls f)
 
 testFormProperty :: (Form -> Bool) -> Int -> Int -> IO ()
-testFormProperty formProperty testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+testFormProperty formProperty testsExecuted totalTests = if testsExecuted == totalTests then putStrLn ("\x1b[32m" ++ show totalTests ++ " tests passed\x1b[0m")
                 else generateActualForm >>= \x -> if formProperty x then
                     do putStrLn ("pass on: " ++ show x)
                        parserTest (testsExecuted+1) totalTests

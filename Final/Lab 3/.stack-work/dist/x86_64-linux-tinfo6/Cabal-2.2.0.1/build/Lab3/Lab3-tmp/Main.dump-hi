@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-25 20:52:11.031918794 UTC
+2018-09-25 20:55:30.916922562 UTC
 
 interface main:Main 8043
-  interface hash: e3bbbf44e2ca2468685c7ec810f8e2ea
-  ABI hash: 02c486ea08aabd71d6566aae71b7440d
+  interface hash: d6951185ac885a5a8575246eb5afd033
+  ABI hash: 1ab15653dfe0397b598b6cebc55b03b7
   export-list hash: 9044a7950e0c3f2ce15bc231fb125fe1
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 8685d694e67a748160b24bb5044d3233
@@ -416,7 +416,7 @@ ad930c163add7e0da155c7975f72c20e
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 3, Strictness: <S,U><S,U><S,U>, Inline: [0] -}
-36d6e0ecc44208f84faa5fdb51ca6ed5
+6b8ee49cbea213ccffd6fbb3493eca75
   $wtestFormProperty ::
     (Lecture3.Form -> GHC.Types.Bool)
     -> GHC.Prim.Int#
@@ -453,14 +453,14 @@ ad930c163add7e0da155c7975f72c20e
                       } in
                       case w ipv4 of wild1 {
                         GHC.Types.False
-                        -> case Main.testFormProperty5 ipv4
+                        -> case Main.testFormProperty6 ipv4
                            ret_ty (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
                            of {}
                         GHC.Types.True
                         -> case GHC.IO.Handle.Text.hPutStr2
                                   GHC.IO.Handle.FD.stdout
                                   (GHC.CString.unpackAppendCString#
-                                     Main.testFormProperty4
+                                     Main.testFormProperty5
                                      (Lecture3.$fShowForm_$cshow ipv4))
                                   GHC.Types.True
                                   ipv of ds2 { (#,#) ipv5 ipv6 ->
@@ -468,11 +468,17 @@ ad930c163add7e0da155c7975f72c20e
                    1#
                    -> GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        (case GHC.Show.$wshowSignedInt
-                                0#
-                                ww1
-                                (GHC.Types.[] @ GHC.Types.Char) of ww4 { (#,#) ww5 ww6 ->
-                         GHC.Base.++_$s++ @ GHC.Types.Char Main.testFormProperty2 ww5 ww6 })
+                        (GHC.CString.unpackAppendCString#
+                           Main.testFormProperty4
+                           (case GHC.Show.$wshowSignedInt
+                                   0#
+                                   ww1
+                                   (GHC.Types.[] @ GHC.Types.Char) of ww4 { (#,#) ww5 ww6 ->
+                            GHC.Base.++_$s++
+                              @ GHC.Types.Char
+                              Main.testFormProperty2
+                              ww5
+                              ww6 }))
                         GHC.Types.True
                         w1 }) -}
 88dee24b2abe3bea071ee4cfb5a222ea
@@ -1434,7 +1440,7 @@ b4764697e44442e2b770115ac4edbfcb
                             @ Lecture3.Name
                             GHC.Classes.eqInt
                             (Lecture3.allVals_pnames f))))) -}
-68cc21a6a7751ba9065a2d3a4d239978
+8cb8aa27058c92d36d9488cb312b0937
   testFormProperty ::
     (Lecture3.Form -> GHC.Types.Bool)
     -> GHC.Types.Int -> GHC.Types.Int -> GHC.Types.IO ()
@@ -1447,7 +1453,7 @@ b4764697e44442e2b770115ac4edbfcb
                  ->_R <GHC.Types.Int>_R
                  ->_R <GHC.Types.Int>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-c14f96d088ead2f036f80a80f211ef1a
+957afbc42e506fbfff354cc1eb5adb80
   testFormProperty1 ::
     (Lecture3.Form -> GHC.Types.Bool)
     -> GHC.Types.Int
@@ -1465,18 +1471,21 @@ c14f96d088ead2f036f80a80f211ef1a
                  case w1 of ww { GHC.Types.I# ww1 ->
                  case w2 of ww2 { GHC.Types.I# ww3 ->
                  Main.$wtestFormProperty w ww1 ww3 w3 } }) -}
-cab79e6c52e3a5232cf42b32021626d9
+f53eedf73165c46dfeb1f1a32e7828bd
   testFormProperty2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    Main.testFormProperty3) -}
-106351ac036dbf6f351efbe190588823
+9cb18582b24f78a4ec00a82dfcff1710
   testFormProperty3 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: (" tests passed"#) -}
-679a2764ee7386dcef517de43d237372
+  {- HasNoCafRefs, Unfolding: (" tests passed\ESC[0m"#) -}
+131f2dcb5a324ea6f324e0fda75e0d58
   testFormProperty4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("\ESC[32m"#) -}
+8cc3d6859710e30b81c6e0c54b45674d
+  testFormProperty5 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("pass on: "#) -}
-5ab7ac94debc650e347b18c99b9c9d24
-  testFormProperty5 :: Lecture3.Form -> GHC.Types.IO ()
+e1b5401cfb8aabcd4f92207adc9daa61
+  testFormProperty6 :: Lecture3.Form -> GHC.Types.IO ()
   {- Arity: 1, Strictness: <B,1*U>x -}
 d5c6cb7c72a1415cfc1cee91f50790d3
   treeStateListToTreeState ::
