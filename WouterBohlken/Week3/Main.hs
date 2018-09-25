@@ -61,8 +61,12 @@ checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
 -- Assignment 2
 
 -- Testing the parser using the form generator of assignment 4
-testParser = generateForm >>= (\x -> quickCheck (show x == show (head (parse (show x)))))
-
+-- Use and tweak Simon's parser test, due to time shortage
+parserTest :: Int -> Int -> IO ()
+parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+                else generateForm >>= \TreeEnvironment {form = x} -> let resultingForm = parse (show x) in if length resultingForm == 1 && equiv x (head resultingForm) then
+                       parserTest (testsExecuted+1) totalTests
+                  else error ("failed test on: " ++ show x)
 
 
 -- Assignment 3
@@ -225,16 +229,103 @@ generateForms :: Int -> [IO TreeEnvironment] -> [IO TreeEnvironment]
 generateForms 0 fs = []
 generateForms n fs = generateForms (n-1) (addForm fs)
 
-testCnf = generateForm >>= (\TreeEnvironment {form = f} -> quickCheck (equiv f (cnf f)))
-testDnf = generateForm >>= (\TreeEnvironment {form = f} -> quickCheck (equiv f (dnf f)))
 
 
--- Bonus
+cnfTest :: Int -> Int -> IO ()
+cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+                else generateForm >>= \TreeEnvironment {form = x} -> let cnfForm = cnf x in if equiv x cnfForm then
+                       parserTest (testsExecuted+1) totalTests
+                  else error ("failed test on: " ++ show x)
+
+
+dnfTest :: Int -> Int -> IO ()
+dnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+                else generateForm >>= \TreeEnvironment {form = x} -> let dnfForm = dnf x in if equiv x dnfForm then
+                       parserTest (testsExecuted+1) totalTests
+                  else error ("failed test on: " ++ show x)
+
+
+-- Sanders cnf2cls function, I didn't implement my own, due to time shortage
 type Clause  = [Int]
 type Clauses = [Clause]
 
--- cnf2cls :: Form -> Clauses
--- cnf2cls f =
+lexNumCls cs = TokenInt (read num) : lexerCls rest
+     where (num,rest) = span isDigit cs
+
+lexerCls :: String -> [Token]
+lexerCls [] = []
+lexerCls (c:cs) | isSpace c = lexerCls cs
+             | isDigit c = lexNumCls (c:cs)
+lexerCls ('[':cs) = TokenOP : lexerCls cs
+lexerCls (']':cs) = TokenCP : lexerCls cs
+lexerCls (',':cs) = TokenCnj : lexerCls cs
+lexerCls ('+':cs) = TokenDsj : lexerCls cs
+lexerCls ('-':cs) = TokenNeg : lexerCls cs
+lexerCls (x:_) = error ("unknown token: " ++ [x])
+
+parseCls :: String -> [Form]
+parseCls s = [ f | (f,_) <- parseForm (lexerCls s) ]
+
+convertToCNF :: Form -> Form
+convertToCNF = cnf
+
+-- Converts a single element (p or Neg p) to a Clause
+convertPropToClause :: Form -> Clause
+convertPropToClause (Prop name) = [name]
+convertPropToClause (Neg (Prop name)) = [-name]
+
+-- Converts conjunctions and disjunctions to Clauses
+convertToClauses :: Form -> Clauses
+convertToClauses (Cnj [Dsj fs1, Dsj fs2]) = [concatMap convertPropToClause fs1, concatMap convertPropToClause fs2]
+convertToClauses (Cnj [fs1, Dsj fs2]) = [convertPropToClause fs1, concatMap convertPropToClause fs2]
+convertToClauses (Cnj [Dsj fs1, fs2]) = [concatMap convertPropToClause fs1, convertPropToClause fs2]
+convertToClauses (Cnj fs) = [concatMap convertPropToClause fs]
+convertToClauses (Dsj fs) = [concatMap convertPropToClause fs]
+
+-- Convert a form to a Clause format
+cnf2cls :: Form -> Clauses
+cnf2cls = convertToClauses
+
+-- Convert a form to a CNF to a Clause format
+formToCls :: Form -> Clauses
+formToCls f = cnf2cls(convertToCNF f)
+
+-- Returns number of negative atoms in a form
+negAtoms :: Form -> Int -> Int
+negAtoms (Prop name) i = i
+negAtoms (Neg f) i = negAtoms f (i+1)
+negAtoms (Cnj fs) i = sum(map (`negAtoms` i) fs)
+negAtoms (Dsj fs) i = sum(map (`negAtoms` i) fs)
+negAtoms (Impl f1 f2) i = sum(map (`negAtoms` i) [f1,f2])
+negAtoms (Equiv f1 f2) i = sum(map (`negAtoms` i) [f1,f2])
+
+-- Returns number of negative atoms in a clause
+negDigs :: Clauses -> Int
+negDigs (c:cls) = fromIntegral(length(filter (< 0) c)) + negDigs cls
+negDigs [] = 0
+
+-- Property: Amount of negations in (CNF) form equal to number of negative numbers in clause
+propNumNegs :: Form -> Bool
+propNumNegs f = negAtoms (convertToCNF f) 0 == negDigs(formToCls f)
+
+-- Returns number of numbers in a clause
+numDigs :: Clauses -> Int
+numDigs (c:cls) = fromIntegral(length c) + numDigs cls
+numDigs [] = 0
+
+-- Returns number of atoms in a form
+numAtoms :: Form -> Int -> Int
+numAtoms (Prop name) i = i+1
+numAtoms (Neg f) i = numAtoms f i
+numAtoms (Cnj fs) i = sum(map (`numAtoms` i) fs)
+numAtoms (Dsj fs) i = sum(map (`numAtoms` i) fs)
+numAtoms (Impl f1 f2) i = sum(map (`numAtoms` i) [f1,f2])
+numAtoms (Equiv f1 f2) i = sum(map (`numAtoms` i) [f1,f2])
+
+--  Property: Amount of atoms in (CNF) form equal to amount of digits in clause
+propNumAtoms :: Form -> Bool
+propNumAtoms f = numAtoms (convertToCNF f) 0 == numDigs(formToCls f)
+
 
 main :: IO ()
 main = do
@@ -251,9 +342,9 @@ main = do
   putStrLn $ "Testing if `p ∧ q` logically entails `p` (Expected: True): " ++ checkTestResult (entails pAndQ p)
   putStrLn $ "Testing if `p ∧ q` is logically equivalent to `p` (Expected: False): " ++ checkTestResult (not(equiv pAndQ p))
 
-  putStrLn "Testing the parse function (Expected: True): "
-  testParser
-  putStrLn "Testing the CNF function (Expected: True): "
-  testCnf
-  putStrLn "Testing the DNF function (Expected: True): "
-  testDnf
+  putStrLn "Testing the parse function: "
+  parserTest 0 100
+  putStrLn "Testing the CNF function: "
+  cnfTest 0 100
+  putStrLn "Testing the DNF function: "
+  dnfTest 0 100
