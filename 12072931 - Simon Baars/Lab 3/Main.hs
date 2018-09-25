@@ -1,10 +1,10 @@
 module Main where
-import Lecture3
-import Data.List
-import Data.Char
-import Test.QuickCheck
-import System.IO.Unsafe
-import System.Random
+import           Data.Char
+import           Data.List
+import           Lecture3
+import           System.IO.Unsafe
+import           System.Random
+import           Test.QuickCheck
 
 -- Assignment 1 (Definitions of contradiction, tautology, entails and equiv)
 -- Time: 1.5 hours
@@ -55,7 +55,10 @@ pAndQ = Cnj[p,q]
 
 -- Assignment 2 (Testing the propositional formula parser)
 -- Time: 60 minutes
--- This assignment can best be tested
+-- This assignment can best be tested by using a random form generator, as written for assignment 4. Also, I am applying the custom QuickCheck implementation
+-- as provided in the lecture code of Lecture2. For each random form generated, I use `show` to convert it to a String and then use `parse` to parse it again
+-- to a Form. Please note that this tests both the `show` code for Forms and the `parse` functionality. To check if the parsed form is still correct, I compare
+-- truth tables using the `equiv` function which had to be written for assingnment 2.
 
 parserTest :: Int -> Int -> IO ()
 parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
@@ -65,14 +68,18 @@ parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStr
                   else error ("failed test on: " ++ show x)
 
 -- Assignment 3
+-- Time: 250 minutes
+
+-- Conversion to cnf is simply applying the De Morgan law and the Distributive law in order.
 convertToCNF :: Form -> Form
 convertToCNF form = applyDistributiveLaw(applyDeMorganLaw form)
 
--- Remove negations of non atoms in the following way:
+-- Remove negations of non atoms, implications and equivalences in the following way:
 -- ¬(p ∨ q) == ¬p ∧ ¬q
 -- ¬(p ∧ q) == ¬p ∨ ¬q
 -- ¬(p ⇒ q) == p ∧ ¬q
 -- ¬(p ⇔ q) == (¬p ∨ ¬q) ∧ (p ∨ q)
+-- ¬(¬p) == p
 -- p ⇒ q == ¬p ∨ q
 -- p ⇔ q == (¬p ∨ q) ∧ (p ∨ ¬q)
 applyDeMorganLaw :: Form -> Form
@@ -88,16 +95,50 @@ applyDeMorganLaw (Cnj formList) = Cnj (map applyDeMorganLaw formList)
 applyDeMorganLaw (Dsj formList) = Dsj (map applyDeMorganLaw formList)
 applyDeMorganLaw form = form
 
+-- Distribute in the following way:
+-- (p ∧ q) ∨ (r ∧ t) == (p ∨ r) ∧ (p ∨ t) ∧ (q ∨ r) ∧ (q ∨ t)
+-- (p ∧ q) ∨ r == (p ∨ r) ∧ (q ∨ r)
+-- p ∨ (q ∧ r) == (p ∨ q) ∧ (p ∨ r)
 applyDistributiveLaw :: Form -> Form
 applyDistributiveLaw (Neg form) = Neg (applyDistributiveLaw form)
-applyDistributiveLaw (Cnj [form]) = applyDistributiveLaw form
-applyDistributiveLaw (Cnj formList) = Cnj (map applyDistributiveLaw formList)
-applyDistributiveLaw (Dsj [form]) = applyDistributiveLaw form
-applyDistributiveLaw (Dsj (Cnj cnjOne: Cnj cnjTwo: xs)) = let conj = Cnj [Dsj [x,y] | x <- map applyDistributiveLaw cnjOne, y <- map applyDistributiveLaw cnjTwo] in if not (null xs) then applyDistributiveLaw (Dsj $ conj:xs) else applyDistributiveLaw conj
-applyDistributiveLaw (Dsj (Cnj cnjOne: cnjTwo : xs)) = let conj = Cnj [Dsj [x,y] | x <- map applyDistributiveLaw cnjOne, y <- [applyDistributiveLaw cnjTwo]] in if not (null xs) then applyDistributiveLaw (Dsj $ conj:xs) else applyDistributiveLaw conj
-applyDistributiveLaw (Dsj (cnjOne: Cnj cnjTwo : xs)) = let conj = Cnj [Dsj [x,y] | x <- [applyDistributiveLaw cnjOne], y <- map applyDistributiveLaw cnjTwo] in if not (null xs) then applyDistributiveLaw (Dsj $ conj:xs) else applyDistributiveLaw conj
---applyDistributiveLaw (Dsj (form1:form2:xs)) = Dsj (applyDistributiveLaw (Dsj [form1,form2]) : [applyDistributiveLaw (Dsj (form2 : xs)) | not (null xs)])--if length (filter (\x -> x == Cnj) (form1:form2:xs)) == 0 then Dsj (map applyDistributiveLaw (form1:form2:xs)) else Cnj ((Dsj [form1, form2]):(applyDistributiveLaw form2:xs))
+applyDistributiveLaw (Cnj formList) = Cnj (foldr (\x acc -> let y = applyDistributiveLaw x in if isConjunction y then getAsList y++acc else y:acc) [] formList)
+applyDistributiveLaw (Dsj (cnjOne: cnjTwo: xs))
+        | isConjunction cnjOne || isConjunction cnjTwo = let conj = Cnj (if isDisjunction cnjOne then map (\ x -> Dsj (x : getAsList cnjOne)) (getAsList cnjTwo)
+                                                                         else if isDisjunction cnjTwo then map (\ x -> Dsj (x : getAsList cnjTwo)) (getAsList cnjOne)
+                                                                         else [Dsj [x,y] | x <- getAsList cnjOne, y <- getAsList cnjTwo])
+                                                         in if not (null xs) then applyDistributiveLaw (Dsj $ conj:xs) else applyDistributiveLaw conj
+        | otherwise = Dsj (foldr (\x acc -> let y = applyDistributiveLaw x in if isDisjunction y then getAsList y++acc else y:acc) [] (cnjOne: cnjTwo: xs))
 applyDistributiveLaw x = x
+
+isDisjunction :: Form -> Bool
+isDisjunction (Dsj x) = True
+isDisjunction x = False
+
+isConjunction :: Form -> Bool
+isConjunction (Cnj x) = True
+isConjunction x = False
+
+isLiteral :: Form -> Bool
+isLiteral (Prop x) = True
+isLiteral (Neg (Prop x)) = True
+isLiteral x = False
+
+getAsList :: Form -> [Form]
+getAsList (Dsj x) = x
+getAsList (Cnj x) = x
+getAsList x = [x]
+
+isCnf :: Form -> Bool
+isCnf (Cnj formList) = all (\x -> isDisjunction x && all isLiteral (getAsList x)) formList
+isCnf form = False
+
+cnfTest :: Int -> Int -> IO ()
+cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+                else generateActualForm >>= \x -> let cnfForm = convertToCNF x in if isCnf cnfForm && equiv x cnfForm then
+                                                                                      do putStrLn ("pass on: " ++ show x)
+                                                                                         cnfTest (testsExecuted+1) totalTests
+                                                                                  else do putStrLn ("failed test on: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm))
+                                                                                          cnfTest (testsExecuted+1) totalTests
 
 -- Assignment 4
 -- Time: 270 minutes
@@ -182,6 +223,9 @@ main = do
 
   putStrLn "\n== Assignment 2 (Testing the propositional formula parser) =="
   parserTest 0 100
+
+  putStrLn "\n== Assignment 3 (Converting forms to CNF) =="
+  cnfTest 0 100
 
   putStrLn "\n== Assignment 4 (Creating a random form generator) =="
   print =<< generateActualForm
