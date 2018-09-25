@@ -528,6 +528,37 @@ doRandomlyNegate randNums state = TreeState (amountOfProperties state) (if doNeg
 
 -- Bonus
 -- Time taken: 200 mins
+-- This bonus assignment has been tested using the random form generator of assignment 4, in combinations with two properties we defined. These properties are:
+-- 1. The number of integers in the clauses should stay equal to the number of atoms in the original form.
+-- 2. The number of negated atoms should be equal to the number of negative numbers in the converted clauses.
+-- The results of the automated tests of these properties are documented below.
+--
+-- Result:
+--            Property number of negative atoms/clauses:
+--            pass on: -((+(-0)==>(1==>-*(*(*(1)))))<=>((-2==>-2)==>*((-0<=>2))))
+--            pass on: -1
+--            pass on: (-1==>-0)
+--            pass on: -+(-1)
+--            pass on: (1==>-0)
+--            pass on: -*(1)
+--            pass on: -*(-*(-0 0) *((-1<=>-2) -(-0<=>*(-3))) (1<=>-((-0==>0)==>-+(-0 (+(-3)==>(2<=>-4)) -0 5 -3))))
+--            pass on: +(+((-0==>*(-1 -*(2) -+(-(-1==>-1) 1 (-2<=>0)))) -2 +(-3 (-(-2<=>-0)==>-2))) -(-0<=>4))
+--            pass on: -(-0<=>-1)
+--            pass on: -0
+--            10 tests passed
+--
+--            Property number of atoms:
+--            pass on: -((+(+(-1 2 +(-*(-0 1 -2 -0) 2 0 -3 -2)))==>-4)==>-2)
+--            pass on: -0
+--            pass on: -1
+--            pass on: *((-(-0<=>-1)<=>-0))
+--            pass on: -0
+--            pass on: *(*(-1 0 2 -0))
+--            pass on: -(-(-0<=>*(-*(-(-*(0)==>1)) 2 -1))<=>0)
+--            pass on: +(-1)
+--            pass on: -(-+(+(+(+(1 1 1 -1 -2) *(-3)) 1 -4 -1 2))==>-*(*(-3) +(-0 +(-*(0 -2) -2 4 1 4 3) -3) -(-*(-4)==>2) -(-0<=>-2) 3 2 -(1<=>-5)))
+--            pass on: +(1 -(-(1==>-(1==>-0))==>1) (-(-*((-(-1<=>-0)<=>-2) (-3==>2))==>-1)==>*(-0)))
+--            10 tests passed
 
 --Type definitions for clauses
 type Clause  = [Int]
@@ -633,7 +664,9 @@ main = do
   generateActualForm >>= \x -> putStrLn $ "Example of a random form: " ++ show x
 
   putStrLn "\n\x1b[36m== BONUS Assignment 5 (Converting forms to clause format) ==\x1b[0m"
+  putStrLn "Property number of negative atoms/clauses:"
   testFormProperty propNumNegs 0 10
+  putStrLn "\nProperty number of atoms:"
   testFormProperty propNumAtoms 0 10
 
   putStrLn "Done!"
