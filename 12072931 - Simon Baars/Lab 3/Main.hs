@@ -110,12 +110,14 @@ applyDistributiveLaw (Dsj formList) = Dsj (foldr (\x acc -> let y = applyDistrib
                                                                                        conj = Cnj (if isDisjunction cnjOne then map (\ x -> Dsj (x : getAsList cnjOne)) (getAsList cnjTwo)
                                                                                                     else if isDisjunction cnjTwo then map (\ x -> Dsj (x : getAsList cnjTwo)) (getAsList cnjOne)
                                                                                                     else [Dsj [x,y] | x <- getAsList cnjOne, y <- getAsList cnjTwo]) in conj: tail acc
-           else if isDisjunction y then removeDuplicates (getAsList y++acc)
+           else if isDisjunction y then getAsList y++acc
            else y:acc) [] formList)
 applyDistributiveLaw x = x
 
 optimizeOR :: [Form] -> [Form]
-optimizeOR (x:list) = let disjList = getAsList x in if isDisjunction x && any (\y -> any (\x -> x == negateLiteral y) disjList) disjList then optimizeOR list else x:optimizeOR list
+optimizeOR (x:list) = let disjList = getAsList x in if isDisjunction x && any (\y -> any (\x -> x == negateLiteral y) disjList) disjList then optimizeOR list
+                                                    else if isDisjunction x then Dsj (removeDuplicates disjList):optimizeOR list
+                                                    else x:optimizeOR list
 optimizeOR [] = []
 
 negateLiteral :: Form -> Form

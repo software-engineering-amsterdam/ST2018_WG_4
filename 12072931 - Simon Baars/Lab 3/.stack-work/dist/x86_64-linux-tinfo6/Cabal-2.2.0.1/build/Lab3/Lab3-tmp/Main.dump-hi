@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-25 17:53:37.514225459 UTC
+2018-09-25 18:03:06.343428084 UTC
 
 interface main:Main 8043
-  interface hash: 7ed77b5820b15f31ba40ff9e0a743bad
-  ABI hash: 81ee724d76885c232fc523da2d5219f1
+  interface hash: 55bc30be1596a1e61c320eb9ce0be3ce
+  ABI hash: cf93b120a6dce64fc26633c52a0d3fc1
   export-list hash: bbf2670a640ff957da77d188a5df7df4
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 8685d694e67a748160b24bb5044d3233
@@ -483,21 +483,21 @@ d47b04b9d6afc0f630611b0c6fa89340
                  case w of ww { GHC.Types.I# ww1 ->
                  case w1 of ww2 { GHC.Types.I# ww3 ->
                  Main.$wcnfTest ww1 ww3 w2 } }) -}
-78e72d2185dcf8e0fdc3d02c681ae761
+f3f8a36c84c316fce5f42dd44d3781ed
   contradiction :: Lecture3.Form -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (f :: Lecture3.Form) ->
                  letrec {
-                   go14 :: [Lecture3.Valuation] -> GHC.Types.Bool
+                   go13 :: [Lecture3.Valuation] -> GHC.Types.Bool
                      <join 1> {- Arity: 1, Strictness: <S,1*U> -}
                    = \ (ds :: [Lecture3.Valuation]) ->
                      case ds of wild {
                        [] -> GHC.Types.True
                        : y ys
                        -> case Lecture3.evl y f of wild1 {
-                            GHC.Types.False -> go14 ys GHC.Types.True -> GHC.Types.False } }
+                            GHC.Types.False -> go13 ys GHC.Types.True -> GHC.Types.False } }
                  } in
-                 go14
+                 go13
                    (Lecture3.genVals
                       (Data.OldList.sortBy
                          @ Lecture3.Name
@@ -896,12 +896,12 @@ b4bc88eff794168590ce7b59ceba4bf2
                         s of ds1 { (#,#) ipv ipv1 ->
                  case ipv1 of b1 { System.Random.StdGen ipv2 ipv3 ->
                  (# ipv, Main.generateActualForm_go b1 #) } } }) -}
-975567b9fdbb3254ce1537e3db56effc
+ce5701b5aaa448eb77f3d454b7bb59fb
   removeDuplicates :: GHC.Classes.Eq a => [a] -> [a]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,1*U>,
      Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (eta :: [a]) ->
                  letrec {
-                   go14 :: [a] -> [a] -> [a]
+                   go13 :: [a] -> [a] -> [a]
                      <join 2> {- Arity: 2, Strictness: <S,1*U><S,U> -}
                    = \ (ds :: [a]) (eta1 :: [a]) ->
                      case ds of wild {
@@ -909,25 +909,35 @@ b4bc88eff794168590ce7b59ceba4bf2
                        : y ys
                        -> case GHC.List.elem @ a $dEq y eta1 of wild1 {
                             GHC.Types.False
-                            -> go14
+                            -> go13
                                  ys
                                  (GHC.Base.++ @ a eta1 (GHC.Types.: @ a y (GHC.Types.[] @ a)))
-                            GHC.Types.True -> go14 ys eta1 } }
+                            GHC.Types.True -> go13 ys eta1 } }
                  } in
-                 go14 eta (GHC.Types.[] @ a)) -}
-ddc0dea7b7beb25f9219b38580c68531
+                 go13 eta (GHC.Types.[] @ a)) -}
+1bff900559c7c5a32cc3adc7c09ab865
+  removeDuplicates_$sremoveDuplicates ::
+    [Lecture3.Form] -> [Lecture3.Form]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
+     Unfolding: (\ (eta :: [Lecture3.Form]) ->
+                 Main.removeDuplicates_go eta (GHC.Types.[] @ Lecture3.Form)) -}
+b4764697e44442e2b770115ac4edbfcb
+  removeDuplicates_go ::
+    [Lecture3.Form] -> [Lecture3.Form] -> [Lecture3.Form]
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,U> -}
+8306d65e82ee3a9cf29eb1bcbd767e0c
   tautology :: Lecture3.Form -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.tautology1
                   `cast`
                 (<Lecture3.Form>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
-54fb9877fe13faa90aa228794d431e20
+54d9286f47f3a535adea18016d3e8170
   tautology1 :: Lecture3.Form -> Data.Semigroup.Internal.All
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (f :: Lecture3.Form) ->
                  letrec {
-                   go14 :: [Lecture3.Valuation] -> Data.Semigroup.Internal.All
+                   go13 :: [Lecture3.Valuation] -> Data.Semigroup.Internal.All
                      <join 1> {- Arity: 1, Strictness: <S,1*U> -}
                    = \ (ds :: [Lecture3.Valuation]) ->
                      case ds of wild {
@@ -937,9 +947,9 @@ ddc0dea7b7beb25f9219b38580c68531
                        -> case Lecture3.evl y f of wild1 {
                             GHC.Types.False
                             -> GHC.Types.False `cast` (Sym (Data.Semigroup.Internal.N:All[0]))
-                            GHC.Types.True -> go14 ys } }
+                            GHC.Types.True -> go13 ys } }
                  } in
-                 go14
+                 go13
                    (Lecture3.genVals
                       (Data.OldList.sortBy
                          @ Lecture3.Name
@@ -948,7 +958,7 @@ ddc0dea7b7beb25f9219b38580c68531
                             @ Lecture3.Name
                             GHC.Classes.eqInt
                             (Lecture3.allVals_pnames f))))) -}
-4b4838addf706cb32bf49889f7ab3a8e
+d5c6cb7c72a1415cfc1cee91f50790d3
   treeStateListToTreeState ::
     ([Lecture3.Form] -> Lecture3.Form)
     -> [Main.TreeState] -> Main.TreeState
@@ -958,29 +968,33 @@ ddc0dea7b7beb25f9219b38580c68531
                    (w1 :: [Main.TreeState]) ->
                  Main.TreeState
                    (letrec {
-                      go14 :: [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
+                      go13 :: [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
                         <join 2> {- Arity: 2, Strictness: <S,U><L,U(U,A,A)>m -}
                       = \ (ds :: [Main.TreeState]) (eta :: Main.TreeState) ->
                         case ds of wild {
                           [] -> case eta of wild1 { Main.TreeState ds1 ds2 ds3 -> ds1 }
-                          : y ys -> go14 ys y }
+                          : y ys -> go13 ys y }
                     } in
-                    go14 w1 (GHC.List.lastError @ Main.TreeState))
+                    go13 w1 (GHC.List.lastError @ Main.TreeState))
                    (w (GHC.Base.map @ Main.TreeState @ Lecture3.Form Main.form w1))
                    (letrec {
-                      go14 :: [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
+                      go13 :: [Main.TreeState] -> Main.TreeState -> GHC.Types.Int
                         <join 2> {- Arity: 2, Strictness: <S,U><L,U(A,A,U)>m -}
                       = \ (ds :: [Main.TreeState]) (eta :: Main.TreeState) ->
                         case ds of wild {
                           [] -> case eta of wild1 { Main.TreeState ds1 ds2 ds3 -> ds3 }
-                          : y ys -> go14 ys y }
+                          : y ys -> go13 ys y }
                     } in
-                    go14 w1 (GHC.List.lastError @ Main.TreeState))) -}
+                    go13 w1 (GHC.List.lastError @ Main.TreeState))) -}
 55aed60940ee180a829d4199fe5e56b6
   truthTable ::
     Lecture3.Form
     -> Lecture3.Form -> [(GHC.Types.Bool, GHC.Types.Bool)]
   {- Arity: 2, Strictness: <S,U><S,U> -}
+"SPEC removeDuplicates @ Form" forall ($dEq :: GHC.Classes.Eq
+                                                 Lecture3.Form)
+  Main.removeDuplicates @ Lecture3.Form $dEq
+  = Main.removeDuplicates_$sremoveDuplicates
 vectorised variables:
 vectorised tycons:
 vectorised reused tycons:
