@@ -121,7 +121,7 @@ repeatNTimes n =
 -- cnf (Cnj [p, q])                        = Cnj [p, q]
 
 valuationToClause :: Valuation -> Form
-valuationToClause v = Dsj (map (\x -> if snd x then Neg (getProp (fst x)) else getProp (fst x)) v)
+valuationToClause v = Dsj (map (\x -> if snd x then Neg (Prop (fst x)) else Prop (fst x)) v)
 
 falseEvals :: Form -> [Valuation]
 falseEvals f = filter (\x -> not (evl x f)) (allVals f)
@@ -129,6 +129,9 @@ falseEvals f = filter (\x -> not (evl x f)) (allVals f)
 cnf :: Form -> Form
 cnf f = Cnj (map valuationToClause (falseEvals f))
 -- Fail on "+(*(((*((3==>2) *(1 4))==>+(5 5 1))<=>(1==>1)) (1<=>5)) *(4 1))"
+-- [[(1,True),(2,True),(3,True),(4,False),(5,False)],[(1,True),(2,True),(3,False),(4,False),(5,False)],[(1,True),(2,False),(3,True),(4,False),(5,False)],[(1,True),(2,False),(3,False),(4,False),(5,False)],[(1,False),(2,True),(3,True),(4,True),(5,True)],[(1,False),(2,True),(3,True),(4,False),(5,True)],[(1,False),(2,True),(3,False),(4,True),(5,True)],[(1,False),(2,True),(3,False),(4,False),(5,True)],[(1,False),(2,False),(3,True),(4,True),(5,True)],[(1,False),(2,False),(3,True),(4,False),(5,True)],[(1,False),(2,False),(3,False),(4,True),(5,True)],[(1,False),(2,False),(3,False),(4,False),(5,True)]]
+
+
 
 -- Assignment 4
 
@@ -231,6 +234,7 @@ generateForm = getIntL maxPropertiesInForm (maxForms * 30) >>= \rands -> return 
 --                         until (n == 0) (generateForm)
 
 
+testCnf = generateForm >>= (\TreeEnvironment {form = f} -> quickCheck (equiv f (cnf f)))
 
 
 
