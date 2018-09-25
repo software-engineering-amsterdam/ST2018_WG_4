@@ -380,6 +380,69 @@ doRandomlyNegate :: [Float] -> TreeState -> TreeState
 doRandomlyNegate randNums state = TreeState (amountOfProperties state) (if doNegate == 0 then Neg (form state) else form state) (curRand state + 1)
   where doNegate = getCurRand state randNums 2
 
+-- Bonus
+-- Time taken: 125 mins (not included automated testing)
+
+--Type definitions for clauses
+type Clause  = [Int]
+type Clauses = [Clause]
+
+-- Converts a single element (p or Neg p) to a Clause
+convertPropToClause :: Form -> Clause
+convertPropToClause (Prop name) = [name]
+convertPropToClause (Neg (Prop name)) = [-name]
+
+-- Converts conjunctions and disjunctions to Clauses
+convertToClauses :: Form -> Clauses
+convertToClauses (Cnj [Dsj fs1, Dsj fs2]) = [concatMap convertPropToClause fs1, concatMap convertPropToClause fs2]
+convertToClauses (Cnj [fs1, Dsj fs2]) = [convertPropToClause fs1, concatMap convertPropToClause fs2]
+convertToClauses (Cnj [Dsj fs1, fs2]) = [concatMap convertPropToClause fs1, convertPropToClause fs2]
+convertToClauses (Cnj fs) = [concatMap convertPropToClause fs]
+convertToClauses (Dsj fs) = [concatMap convertPropToClause fs]
+
+-- Convert a form to a Clause format
+cnf2cls :: Form -> Clauses
+cnf2cls = convertToClauses
+
+-- Convert a form to a CNF to a Clause format
+formToCls :: Form -> Clauses
+formToCls f = cnf2cls(convertToCNF f)
+
+-- Returns number of negative atoms in a form
+negAtoms :: Form -> Int -> Int
+negAtoms (Prop name) i = i
+negAtoms (Neg f) i = negAtoms f (i+1)
+negAtoms (Cnj fs) i = sum(map (`negAtoms` i) fs)
+negAtoms (Dsj fs) i = sum(map (`negAtoms` i) fs)
+negAtoms (Impl f1 f2) i = sum(map (`negAtoms` i) [f1,f2])
+negAtoms (Equiv f1 f2) i = sum(map (`negAtoms` i) [f1,f2])
+
+-- Returns number of negative atoms in a clause
+negDigs :: Clauses -> Int
+negDigs (c:cls) = foldr ((+) . fromIntegral . length . filter (< 0)) 0 cls
+negDigs [] = 0
+
+-- Property: Amount of negations in (CNF) form equal to number of negative numbers in clause
+propNumNegs :: Form -> Bool
+propNumNegs f = negAtoms (convertToCNF f) 0 == negDigs(formToCls f)
+
+-- Returns number of numbers in a clause
+numDigs :: Clauses -> Int
+numDigs (c:cls) = foldr ((+) . fromIntegral . length) 0 cls
+numDigs [] = 0
+
+-- Returns number of atoms in a form
+numAtoms :: Form -> Int -> Int
+numAtoms (Prop name) i = i+1
+numAtoms (Neg f) i = numAtoms f i
+numAtoms (Cnj fs) i = sum(map (`numAtoms` i) fs)
+numAtoms (Dsj fs) i = sum(map (`numAtoms` i) fs)
+numAtoms (Impl f1 f2) i = sum(map (`numAtoms` i) [f1,f2])
+numAtoms (Equiv f1 f2) i = sum(map (`numAtoms` i) [f1,f2])
+
+--  Property: Amount of atoms in (CNF) form equal to amount of digits in clause
+propNumAtoms :: Form -> Bool
+propNumAtoms f = numAtoms (convertToCNF f) 0 == numDigs(formToCls f)
 
 checkTestResult :: Bool -> String
 checkTestResult True  = "\x1b[32mTest succeeded!\x1b[0m"
@@ -413,5 +476,8 @@ main = do
 
   putStrLn "\n== Assignment 4 (Creating a random form generator) =="
   generateActualForm >>= \x -> putStrLn $ "Example of a random form: " ++ show x
+
+  putStrLn "\n== BONUS Assignment 5 (Converting forms to clause format) =="
+
 
   putStrLn "Done!"
