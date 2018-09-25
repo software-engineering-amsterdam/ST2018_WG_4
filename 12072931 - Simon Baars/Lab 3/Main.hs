@@ -88,6 +88,80 @@ parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStr
 
 -- Assignment 3
 -- Time: 610 minutes
+-- This assignment took quite long because I wanted to try to do the most conventional method to convert to CNF: first applying the De Morgan law and
+-- then distributing till we have a CNF form. Esoecially the distributive law seemed to be much more complex than I initially would've guessed, and
+-- it took a lot of debugging and optimizing to come to an end result that can convert ANY formula to CNF. I have written the general rules the
+-- methods enforce above the methods. I have tested this solution with my random form generator of assignment 4.
+--
+-- Result:
+--            pass on: -1
+--            pass on: -(-*(-(0<=>0))==>-(-*(1 -2 3 (-*(-1)<=>-2) 0)<=>-*(((2<=>-1)<=>-0) 3)))
+--            pass on: -+(+(-(+(*(-1))==>-(0<=>-0))))
+--            pass on: +(*(-((0<=>-((0==>1)<=>(-1<=>-1)))==>-(1<=>1)) 1 -1 *(-0) -1 -0) +(-*(2)))
+--            pass on: -((-0<=>-1)==>(-*(-(+(1 -1 +(2 -2 1 -1) -(0==>3))<=>-4) -2)<=>2))
+--            pass on: *(1 -2 1)
+--            pass on: -+(1)
+--            pass on: +(-+(-(0<=>1)))
+--            pass on: +(-(0==>(-1==>1)) 1)
+--            pass on: +(*(-*(-0 0 +(1) 1)))
+--            10 tests passed
+--
+-- I also created a `cnfProbe` function which actually shows the conversion process and the properties for which it is tested. This is the result of that:
+--
+--            Trying: (+(-((-0==>-1)<=>-2))==>1)
+--            CNF form: *(+(-2 -0 1) +(-2 1))
+--             Equiv: True
+--             isCnf True
+--
+--            Trying: -*(+(+(-(1==>0))))
+--            CNF form: +(-1 0)
+--             Equiv: True
+--             isCnf True
+--
+--            Trying: -*(-+(0) +(-1 -+(-0 -*(-1) -(-(+(2)==>0)<=>1) -2 (1==>-1) 3)))
+--            CNF form: +(1 0)
+--             Equiv: True
+--             isCnf True
+--
+--            Trying: 0
+--            CNF form: 0
+--             Equiv: True
+--             isCnf True
+--
+--            Trying: -(0==>-(-(+(1)==>*(-2 -+(2 2 0) -+(2 0) 2 (-2==>1)))==>(-+(3)<=>-3)))
+--            CNF form: 0
+--             Equiv: True
+--             isCnf True
+--
+--            Trying: -+((-*(*(-+(0) -+(-1 (-2==>2))))<=>-2) -1 -3 -+(-3 +(-3 (-*(0 4 1 2)==>-1) -4 1)) -+(3) (-4==>-0))
+--            CNF form: *(+(2 -0) +(2 1) 1 3 -4 0)
+--             Equiv: True
+--             isCnf True
+--
+--            Trying: 0
+--            CNF form: 0
+--             Equiv: True
+--             isCnf True
+--
+--            Trying: *(0)
+--            CNF form: 0
+--             Equiv: True
+--             isCnf True
+--
+--            Trying: *(((-(1==>-2)==>-0)<=>-(-1==>-+(-*(-0 -1 3 -3)))) -(4<=>(5==>-+(-(-4==>-0) 4 -5))))
+--            CNF form: *(+(-1 2) +(-1 0) +(5 -4) +(4 -0 -5))
+--             Equiv: True
+--             isCnf True
+--
+--            Trying: -0
+--            CNF form: -0
+--             Equiv: True
+--             isCnf True
+--
+--            10 times succesfully ran
+--
+-- For this example I tested just 10 times not to spam the console, but this number (10) can easily be replaced by higher numbers (for instance 100 like QuickCheck)
+-- to get a more trustworthy test result.
 
 -- Conversion to cnf is simply applying the De Morgan law and the Distributive law in order.
 convertToCNF :: Form -> Form
@@ -181,8 +255,8 @@ isCnf form = isLiteral form
 
 -- A debugging oriented function showing all results of every executed test for the CNF converter.
 cnfProbe :: Int -> Int -> IO ()
-cnfProbe testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
-                else generateActualForm >>= \x -> let cnfForm = convertToCNF x in do putStrLn ("Trying: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm))
+cnfProbe testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " times succesfully ran")
+                else generateActualForm >>= \x -> let cnfForm = convertToCNF x in do putStrLn ("Trying: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm) ++ "\n")
                                                                                      cnfProbe (testsExecuted+1) totalTests
 
 -- The test function for the CNF converter, using randomly generated forms from the random form generator of assignment 4.
@@ -193,10 +267,9 @@ cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn 
                                                                                          cnfTest (testsExecuted+1) totalTests
                                                                                   else error ("failed test on: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm))
 
-
-
 -- Assignment 4
 -- Time: 270 minutes
+--
 
 maxTreeChance = 7 -- This number decides the size of the resulting form.
 
@@ -280,6 +353,7 @@ main = do
   parserTest 0 10
 
   putStrLn "\n== Assignment 3 (Converting forms to CNF) =="
+  cnfProbe 0 10
   cnfTest 0 10
 
   putStrLn "\n== Assignment 4 (Creating a random form generator) =="
