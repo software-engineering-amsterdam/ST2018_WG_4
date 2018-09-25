@@ -29,10 +29,13 @@ import           Test.QuickCheck
 none :: Foldable t => (a -> Bool) -> t a -> Bool
 none x y = not (any x y)
 
+-- Compares the truth tables of two formulas. When the two forms have different amounts of atoms, the most extensive truth table will be used to test values from.
 truthTable :: Form -> Form -> [(Bool,Bool)]
-truthTable x y = take (max (length valsX) (length valsY)) (map (\(i,j) -> (evl i x, evl j y)) (zip (cycle valsX) (cycle valsY)))
+truthTable x y = take maxList (map (\i -> (evl i x, evl i y)) longestList)
                  where valsX = allVals x
                        valsY = allVals y
+                       maxList = max (length valsX) (length valsY)
+                       longestList = if length valsX == maxList then valsX else valsY
 
 contradiction :: Form -> Bool
 contradiction f = none (`evl` f) (allVals f)
@@ -59,6 +62,22 @@ pAndQ = Cnj[p,q]
 -- as provided in the lecture code of Lecture2. For each random form generated, I use `show` to convert it to a String and then use `parse` to parse it again
 -- to a Form. Please note that this tests both the `show` code for Forms and the `parse` functionality. To check if the parsed form is still correct, I compare
 -- truth tables using the `equiv` function which had to be written for assingnment 2.
+--
+-- Result:
+--            pass on: -*(+(-(-1==>(-(-2==>-+(-2))==>*(-0 -2 -+(2 3) -0))) 4) -*(-5))
+--            pass on: +(-1 -(2<=>+(*(-+(-2) 2 1) (-2==>-1))))
+--            pass on: -(-*(-1)==>1)
+--            pass on: -+((0==>1))
+--            pass on: +(*(-+(0 -(-1<=>-(-0<=>(1<=>1)))) 0) (-+(*((-1==>1) -2 2))==>-(-1==>(0==>-1))))
+--            pass on: -(1<=>-+(+((1<=>-(2<=>1)) *(-0)) -2 ((-3==>-*(-3))<=>-*(0))))
+--            pass on: (+(-(-1==>*((1<=>-0))))==>2)
+--            pass on: +(-*(-(-((-0<=>1)==>-(-+(1 1)<=>(-2==>3)))<=>(-4<=>5)) 0 -(-0<=>0) -+((-2==>+(0)))))
+--            pass on: *((-*(*(1 0 -2) -3 -+(*(2) 3 0 -1 -2) -2)==>(3<=>-(-2<=>-*((0==>-0))))) (-3<=>+(3)) -0 -+(*(*(1 2) 1) -*(1)))
+--            pass on: (*(-+(+(-(0==>1))))<=>+(1 -0 0))
+--            10 tests passed
+--
+-- For this example I tested just 10 times not to spam the console, but this number (10) can easily be replaced by higher numbers (for instance 100 like QuickCheck)
+-- to get a more trustworthy test result.
 
 parserTest :: Int -> Int -> IO ()
 parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
@@ -114,47 +133,59 @@ applyDistributiveLaw (Dsj formList) = Dsj (foldr (\x acc -> let y = applyDistrib
            else y:acc) [] formList)
 applyDistributiveLaw x = x
 
+-- Removes all clauses containing `p ∧ ¬p` as they are always true.
 optimizeOR :: [Form] -> [Form]
 optimizeOR (x:list) = let disjList = getAsList x in if isDisjunction x && any (\y -> any (\x -> x == negateLiteral y) disjList) disjList then optimizeOR list
                                                     else if isDisjunction x then Dsj (removeDuplicates disjList):optimizeOR list
                                                     else x:optimizeOR list
 optimizeOR [] = []
 
+-- Negates a form or literal
 negateLiteral :: Form -> Form
 negateLiteral (Neg x) = x
 negateLiteral x = Neg x
 
+-- Removes all duplicates from a list
 removeDuplicates :: Eq a => [a] -> [a]
 removeDuplicates = foldl (\y x -> if x `elem` y then y else y++ [x]) []
 
+-- Checks if a form is a disjunction
 isDisjunction :: Form -> Bool
 isDisjunction (Dsj x) = True
 isDisjunction x = False
 
+-- Checks if a form is a conjunction
 isConjunction :: Form -> Bool
 isConjunction (Cnj x) = True
 isConjunction x = False
 
+-- Checks if a form is a literal (an atom or a negation of an atom)
 isLiteral :: Form -> Bool
 isLiteral (Prop x) = True
 isLiteral (Neg (Prop x)) = True
 isLiteral x = False
 
+-- Returns the list if the given form is a discunction or conjunction, or creates a list if it's not.
 getAsList :: Form -> [Form]
 getAsList (Dsj x) = x
 getAsList (Cnj x) = x
 getAsList x = [x]
 
+-- Checks if a given formula is CNF. If the Form is a disjunction, all formulas in it's list must be literals.
+-- If the Form is a conjunction, all formulas in it's list must either be literals or disjunctions consisting of literals.
+-- This is a property (actually consisting of multiple properties) of cnf converted forms.
 isCnf :: Form -> Bool
-isCnf (Cnj formList) = all (\x -> (isDisjunction x && all isLiteral (getAsList x)) || isLiteral x) formList
+isCnf (Cnj formList) = all (\x -> (isDisjunction x && isCnf x) || isLiteral x) formList
 isCnf (Dsj formList) = all isLiteral formList
 isCnf form = isLiteral form
 
+-- A debugging oriented function showing all results of every executed test for the CNF converter.
 cnfProbe :: Int -> Int -> IO ()
 cnfProbe testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
                 else generateActualForm >>= \x -> let cnfForm = convertToCNF x in do putStrLn ("Trying: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm))
                                                                                      cnfProbe (testsExecuted+1) totalTests
 
+-- The test function for the CNF converter, using randomly generated forms from the random form generator of assignment 4.
 cnfTest :: Int -> Int -> IO ()
 cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
                 else generateActualForm >>= \x -> let cnfForm = convertToCNF x in if isCnf cnfForm && equiv x cnfForm then
@@ -252,6 +283,6 @@ main = do
   cnfTest 0 10
 
   putStrLn "\n== Assignment 4 (Creating a random form generator) =="
-  print =<< generateActualForm
+  generateActualForm >>= \x -> putStrLn $ "Example of a random form: " ++ show x
 
   putStrLn "Done!"
