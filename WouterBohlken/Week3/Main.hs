@@ -27,11 +27,6 @@ getIntL k n = do
 -- Assignment 1
 -- Time: 1 hour
 
-truthTable :: Form -> Form -> [(Bool,Bool)]
-truthTable x y = take (max (length valsX) (length valsY)) (map (\(i,j) -> (evl i x, evl j y)) (zip (cycle valsX) (cycle valsY)))
-                 where valsX = allVals x
-                       valsY = allVals y
-
 contradiction :: Form -> Bool
 contradiction f = not $ satisfiable f
 
@@ -42,23 +37,15 @@ allEvals :: Form -> [Bool]
 allEvals f = map (`evl` f) (allVals f)
 
 -- | logical entailment
--- entails :: Form -> Form -> Bool
--- entails f g = all (\ v -> evl v f --> evl v g) (allVals f)
--- -- First compare the length of both forms, return false if the lengths differ, in that case they cannot entail because the amount of props are different
--- -- Then use a lambda to loop though all values of f and an implies to g
---
--- -- | logical equivalence
--- equiv :: Form -> Form -> Bool
--- equiv f g = all (\ v -> evl v f == evl v g) (allVals f)
-
-
--- | logical entailment
 entails :: Form -> Form -> Bool
-entails f g = all (uncurry (-->)) (truthTable f g)
+entails f g = all (\ v -> evl v f --> evl v g) (allVals f)
+-- First compare the length of both forms, return false if the lengths differ, in that case they cannot entail because the amount of props are different
+-- Then use a lambda to loop though all values of f and an implies to g
 
 -- | logical equivalence
 equiv :: Form -> Form -> Bool
-equiv f g = all (uncurry (==)) (truthTable f g)
+equiv f g = all (\ v -> evl v f == evl v g) (allVals f)
+
 
 pOrNotP = Dsj[p,Neg p]
 pAndNotP = Cnj[p,Neg p]
@@ -120,14 +107,26 @@ repeatNTimes n =
 -- -- Leaf
 -- cnf (Cnj [p, q])                        = Cnj [p, q]
 
-valuationToClause :: Valuation -> Form
-valuationToClause v = Dsj (map (\x -> if snd x then Neg (Prop (fst x)) else Prop (fst x)) v)
+valuationToDsjClause :: Valuation -> Form
+valuationToDsjClause v = Dsj (map (\x -> if snd x then Neg (Prop (fst x)) else Prop (fst x)) v)
 
 falseEvals :: Form -> [Valuation]
 falseEvals f = filter (\x -> not (evl x f)) (allVals f)
 
 cnf :: Form -> Form
-cnf f = Cnj (map valuationToClause (falseEvals f))
+cnf f = Cnj (map valuationToDsjClause (falseEvals f))
+
+
+-- Bonus: DNF
+valuationToCnjClause :: Valuation -> Form
+valuationToCnjClause v = Cnj (map (\x -> if snd x then Prop (fst x) else Neg (Prop (fst x))) v)
+
+trueEvals :: Form -> [Valuation]
+trueEvals f = filter (`evl` f) (allVals f)
+
+dnf :: Form -> Form
+dnf f = Dsj (map valuationToCnjClause (trueEvals f))
+
 -- Fail on "+(*(((*((3==>2) *(1 4))==>+(5 5 1))<=>(1==>1)) (1<=>5)) *(4 1))"
 -- [[(1,True),(2,True),(3,True),(4,False),(5,False)],[(1,True),(2,True),(3,False),(4,False),(5,False)],[(1,True),(2,False),(3,True),(4,False),(5,False)],[(1,True),(2,False),(3,False),(4,False),(5,False)],[(1,False),(2,True),(3,True),(4,True),(5,True)],[(1,False),(2,True),(3,True),(4,False),(5,True)],[(1,False),(2,True),(3,False),(4,True),(5,True)],[(1,False),(2,True),(3,False),(4,False),(5,True)],[(1,False),(2,False),(3,True),(4,True),(5,True)],[(1,False),(2,False),(3,True),(4,False),(5,True)],[(1,False),(2,False),(3,False),(4,True),(5,True)],[(1,False),(2,False),(3,False),(4,False),(5,True)]]
 
