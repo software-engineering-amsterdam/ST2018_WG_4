@@ -1,7 +1,7 @@
 # ST2018_WG_4
 
 Students:
-Samy Boussa -  
+Samy Boussa - 11026847  
 Simon Baars - 12072931  
 Wouter Bohlken - 10915540  
 Sander Meester - 11014822  

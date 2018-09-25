@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-18 11:30:28.292775021 UTC
+2018-09-18 18:15:41.177920463 UTC
 
 interface main:Main 8043
-  interface hash: 1b1e56d3b11836ab5fae77ea6a00072a
-  ABI hash: e2f03091f6e258268f9017b4458c0e83
-  export-list hash: e4d5bfe8de29a234726a0ae22a242bb5
+  interface hash: f73fe38210c6bb9e751059be30dc6382
+  ABI hash: f0a3bc6af4b55da254311ccee5ac8f30
+  export-list hash: 8cf1d984b4977cdd565b841425a9bd9c
   orphan hash: b1956613db98ad335f0dfdc7bcc95333
   flag hash: 8e9ed84417c9432185130cd9861fe2b6
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -24,12 +24,16 @@ exports:
   Main.derangementTestListTwo
   Main.doRotate
   Main.domain
+  Main.doubleRotYieldsBeginResult
   Main.equalLetterCase
   Main.equalNonLetterCharacters
   Main.evenListSizeReverse
   Main.evenListSizeSwapped
   Main.genBigNumbers
   Main.getAmountInQuartile
+  Main.iban
+  Main.ibanCheckTest
+  Main.ibanLengthTable
   Main.isCharacterLetter
   Main.isDerangement
   Main.isPermutation
@@ -41,7 +45,6 @@ exports:
   Main.p1
   Main.p2
   Main.p3
-  Main.p4
   Main.permutationProperties
   Main.permutationTestList
   Main.propAllDeranRotations
@@ -63,10 +66,12 @@ exports:
   Main.propSmaller
   Main.propSwapped
   Main.properties
+  Main.replace
   Main.rot13
   Main.rotate
   Main.swapAt
   Main.testDerangements
+  Main.testIBANs
   Main.testPermutations
   Main.testPropAllDeranSmaller
   Main.testPropDeranBigger
@@ -131,6 +136,7 @@ import  -/  base-4.11.1.0:GHC.Show 73be67392447c974f19c3befd83c46c0
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
 import  -/  base-4.11.1.0:System.IO 1c239be44126f7b1ba512ea61300f4dc
 import  -/  base-4.11.1.0:System.IO.Unsafe 0a2eb33ad4988fdd87ebf1fb8b419957
+import  -/  base-4.11.1.0:Text.Read 6c02630607b565ffcb34e8127673989b
 import  -/  ghc-prim-0.5.2.0:GHC.Classes 122abfcd7450c6c11602933c9ca5f80d
 import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
 import  -/  integer-gmp-1.0.2.0:GHC.Integer.Type f3d5169c3d3830854b19f6565b265403
@@ -150,7 +156,7 @@ import  -/  Lecture2 217d1f81d64de0e9de04f332a47a0619
   stronger 4c551e650a6fdcd24b6d9e1bd56e5b42
   weaker 2278bf5f4b4bd82946015a679a84790a
 import  -/  random-1.1:System.Random 31994b60c33f032d578c64a928f735f7
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fEqProp :: GHC.Classes.Eq (Main.Prop a)
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -158,7 +164,7 @@ b54fc46995c11ea29c858432669f8509
                   @ (Main.Prop a)
                   (Main.$fEqProp_$c== @ a)
                   (Main.$fEqProp_$c/= @ a) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fEqProp_$c/= :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs,
      Strictness: <S(SL),1*U(1*U,A)><S(SL),1*U(1*U,A)>,
@@ -170,7 +176,7 @@ b54fc46995c11ea29c858432669f8509
                  case GHC.Base.eqString ds ds2 of wild2 {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False } } }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fEqProp_$c== :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs,
      Strictness: <S(SL),1*U(1*U,A)><S(SL),1*U(1*U,A)>,
@@ -179,7 +185,7 @@ b54fc46995c11ea29c858432669f8509
                  case y of wild { Main.Prop ds ds1 ->
                  case z of wild1 { Main.Prop ds2 ds3 ->
                  GHC.Base.eqString ds ds2 } }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fOrdProp :: GHC.Classes.Ord (Main.Prop a)
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -193,35 +199,35 @@ b54fc46995c11ea29c858432669f8509
                   (Main.$fOrdProp_$c>= @ a)
                   (Main.$fOrdProp_$cmax @ a)
                   (Main.$fOrdProp_$cmin @ a) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fOrdProp_$c< :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> GHC.Types.False GHC.Types.LT -> GHC.Types.True }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fOrdProp_$c<= :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> GHC.Types.True GHC.Types.GT -> GHC.Types.False }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fOrdProp_$c> :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> GHC.Types.False GHC.Types.GT -> GHC.Types.True }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fOrdProp_$c>= :: Main.Prop a -> Main.Prop a -> GHC.Types.Bool
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> GHC.Types.True GHC.Types.LT -> GHC.Types.False }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fOrdProp_$ccompare ::
     Main.Prop a -> Main.Prop a -> GHC.Types.Ordering
   {- Arity: 2, Strictness: <S,1*U(A,C(U))><S,1*U(A,C(U))>,
@@ -231,21 +237,21 @@ b54fc46995c11ea29c858432669f8509
                  case w of ww { Main.Prop ww1 ww2 ->
                  case w1 of ww3 { Main.Prop ww4 ww5 ->
                  Main.$w$ccompare @ a ww2 ww5 } }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fOrdProp_$cmax :: Main.Prop a -> Main.Prop a -> Main.Prop a
   {- Arity: 2, Strictness: <S,1*U(U,U)><S,1*U(U,U)>m,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> y GHC.Types.GT -> x }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fOrdProp_$cmin :: Main.Prop a -> Main.Prop a -> Main.Prop a
   {- Arity: 2, Strictness: <S,1*U(U,U)><S,1*U(U,U)>m,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (x :: Main.Prop a) (y :: Main.Prop a) ->
                  case Main.$fOrdProp_$ccompare @ a x y of wild {
                    DEFAULT -> x GHC.Types.GT -> y }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fShowProp :: GHC.Show.Show (Main.Prop a)
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -254,7 +260,7 @@ b54fc46995c11ea29c858432669f8509
                   (Main.$fShowProp_$cshowsPrec @ a)
                   (Main.name @ a)
                   (Main.$fShowProp_$cshowList @ a) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fShowProp1 :: Main.Prop a -> GHC.Base.String -> [GHC.Types.Char]
   {- Arity: 2, HasNoCafRefs, Strictness: <S(SL),1*U(1*U,A)><L,1*U>,
      Unfolding: InlineRule (2, True, False)
@@ -267,13 +273,13 @@ b54fc46995c11ea29c858432669f8509
                       (n :: b)[OneShot] ->
                     GHC.Base.foldr @ GHC.Types.Char @ b c n ds)
                    s }) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fShowProp_$cshowList :: [Main.Prop a] -> GHC.Show.ShowS
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,U>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a (ls :: [Main.Prop a]) (s :: GHC.Base.String) ->
                  GHC.Show.showList__ @ (Main.Prop a) (Main.$fShowProp1 @ a) ls s) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   $fShowProp_$cshowsPrec ::
     GHC.Types.Int -> Main.Prop a -> GHC.Show.ShowS
   {- Arity: 3, HasNoCafRefs,
@@ -448,7 +454,7 @@ e5875966b74dad2d29772660b8a75e33
 d026be77cb9ced20e35a61514e0458aa
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("main"#) -}
-b6204f68714a5784cbcd53962008d007
+398a8740476c16fcb39de5fa084a1c20
   $w$ccompare ::
     (GHC.Types.Int -> GHC.Types.Bool)
     -> (GHC.Types.Int -> GHC.Types.Bool) -> GHC.Types.Ordering
@@ -456,11 +462,11 @@ b6204f68714a5784cbcd53962008d007
      Unfolding: (\ @ a
                    (ww :: GHC.Types.Int -> GHC.Types.Bool)
                    (ww1 :: GHC.Types.Int -> GHC.Types.Bool) ->
-                 case (Lecture2.compar9 @ GHC.Types.Int Main.domain ww1 ww)
+                 case (Lecture2.compar9 @ GHC.Types.Int Main.domain ww ww1)
                         `cast`
                       (Data.Semigroup.Internal.N:All[0]) of wild {
                    GHC.Types.False
-                   -> case (Lecture2.compar9 @ GHC.Types.Int Main.domain ww ww1)
+                   -> case (Lecture2.compar9 @ GHC.Types.Int Main.domain ww1 ww)
                              `cast`
                            (Data.Semigroup.Internal.N:All[0]) of wild1 {
                         GHC.Types.False -> GHC.Types.EQ GHC.Types.True -> GHC.Types.LT }
@@ -533,7 +539,7 @@ b6204f68714a5784cbcd53962008d007
                    ww2
                    ww3
                    w1) -}
-af38b0c6a66ced497b2064f15e68d22d
+a3564ac6b6e3f78e8319ac4c59e72e78
   $wderangementProperties :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -547,7 +553,7 @@ af38b0c6a66ced497b2064f15e68d22d
                       @ GHC.Types.Int
                       Main.derangementProperties8
                       origList)) -}
-c5fb44fd243641f9a431c757f299ffa2
+ea26597f7d94a1fb468f10d704ddac2e
   $wderangementProperties1 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -560,7 +566,7 @@ c5fb44fd243641f9a431c757f299ffa2
                       @ GHC.Types.Int
                       Main.derangementProperties13
                       origList)) -}
-5f633829d91a13bd28f0a0eb1f71b7b0
+1f232083236eee94d02a2d3a5c53e70c
   $wderangementProperties2 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -601,13 +607,19 @@ c5fb44fd243641f9a431c757f299ffa2
                    ww2
                    ww3
                    ww4) -}
-7b4508a1d6c66093374439b08a9fef83
-  $wp4 :: GHC.Prim.Int# -> GHC.Types.Bool
+6268d1e69ac60efee874ca4e86740837
+  $wgo :: [GHC.Types.Char] -> GHC.Prim.Int# -> [GHC.Types.Char]
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0] -}
+ceb02596fde198e1fc37dea3b6819691
+  $wibanLengthTable :: GHC.Base.String -> GHC.Prim.Int#
+  {- Arity: 1, Strictness: <S,U>, Inline: [0] -}
+171e0e363b6443ce9c178d6b2a89760d
+  $wp3 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
                  case GHC.Prim.remInt# ww 2# of wild {
                    DEFAULT -> GHC.Types.False 0# -> GHC.Types.True }) -}
-925d439c31129cb1dfee6057ea85c514
+0f01aff83b39807713ca5d1f2092f621
   $wpermutationProperties :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -621,7 +633,7 @@ c5fb44fd243641f9a431c757f299ffa2
                       @ GHC.Types.Int
                       Main.derangementProperties8
                       origList)) -}
-12b29e9f38ce7ea0ffd716e9a35a8c55
+5b2edc602495a90a5d4b5328306c052d
   $wpermutationProperties1 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -634,7 +646,7 @@ c5fb44fd243641f9a431c757f299ffa2
                       @ GHC.Types.Int
                       Main.derangementProperties13
                       origList)) -}
-b19966a07726b293603b710afa7b81a3
+d197402d5bedca28525df30feeda14ac
   $wpermutationProperties2 :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -647,7 +659,7 @@ b19966a07726b293603b710afa7b81a3
                       @ GHC.Types.Int
                       origList
                       (GHC.Types.[] @ GHC.Types.Int))) -}
-11b08cb3ba19f92eba7d1ff84f98a69b
+d6418dbfd0a89d20352c3efa3cdee7aa
   $wpropDeranIncreased ::
     GHC.Prim.Int# -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,U>, Inline: [0],
@@ -664,7 +676,7 @@ b19966a07726b293603b710afa7b81a3
                             GHC.Types.I# (GHC.Prim.+# x wild) })
                            w)
                    0# -> GHC.Types.True }) -}
-ee94015eee46a504b45b6c16f76bce01
+300d2616f9a79f6229ebb233b52f6377
   $wpropDeranSmaller ::
     GHC.Prim.Int# -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><S,U>, Inline: [0],
@@ -675,7 +687,7 @@ ee94015eee46a504b45b6c16f76bce01
                    -> Main.isDerangement
                         w
                         (GHC.List.$wunsafeTake @ GHC.Types.Int ww w) }) -}
-ae360eed13c9e7d7f7a64010de4a6eae
+1c14ebe150a9ba6b4161757f90ed3801
   $wpropSmaller ::
     GHC.Classes.Eq a => GHC.Prim.Int# -> [a] -> GHC.Types.Bool
   {- Arity: 3, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,U><S,U>,
@@ -692,7 +704,43 @@ ae360eed13c9e7d7f7a64010de4a6eae
                         w
                         w1
                         (GHC.List.$wunsafeTake @ a ww w1) }) -}
-9dd4910d2fe75ef70d20d9b3db1edd88
+428e9e490721aa9d2b5848e1e2253367
+  $wreplace ::
+    GHC.Prim.Int#
+    -> GHC.Types.Char -> GHC.Base.String -> [GHC.Types.Char]
+  {- Arity: 3, HasNoCafRefs, Strictness: <S,U><L,U><L,U>,
+     Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#)
+                   (w :: GHC.Types.Char)
+                   (w1 :: GHC.Base.String) ->
+                 let {
+                   n :: [GHC.Types.Char]
+                   = let {
+                       x :: GHC.Prim.Int# = GHC.Prim.+# ww 1#
+                     } in
+                     case GHC.Prim.<=# x 0# of lwild {
+                       DEFAULT -> Main.$wunsafeDrop @ GHC.Types.Char x w1 1# -> w1 }
+                 } in
+                 let {
+                   n1 :: [GHC.Types.Char] = GHC.Types.: @ GHC.Types.Char w n
+                 } in
+                 case GHC.Prim.<# 0# ww of lwild {
+                   DEFAULT -> n1
+                   1#
+                   -> letrec {
+                        $wgo1 :: [GHC.Types.Char] -> GHC.Prim.Int# -> [GHC.Types.Char]
+                          {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0] -}
+                        = \ (w2 :: [GHC.Types.Char]) (ww1 :: GHC.Prim.Int#) ->
+                          case w2 of wild {
+                            [] -> n1
+                            : y ys
+                            -> case ww1 of ds1 {
+                                 DEFAULT
+                                 -> GHC.Types.: @ GHC.Types.Char y ($wgo1 ys (GHC.Prim.-# ds1 1#))
+                                 1# -> GHC.Types.: @ GHC.Types.Char y n1 } }
+                      } in
+                      $wgo1 w1 ww }) -}
+b60ccf795840fabaa74f136fddf18554
   $wswapAt :: GHC.Prim.Int# -> [a] -> [a]
   {- Arity: 2, Strictness: <S,U><L,U>, Inline: [0],
      Unfolding: (\ @ a (ww :: GHC.Prim.Int#) (w :: [a]) ->
@@ -728,18 +776,18 @@ ae360eed13c9e7d7f7a64010de4a6eae
                    DEFAULT -> n4
                    1#
                    -> letrec {
-                        $wgo :: [a] -> GHC.Prim.Int# -> [a]
+                        $wgo1 :: [a] -> GHC.Prim.Int# -> [a]
                           {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0] -}
                         = \ (w1 :: [a]) (ww1 :: GHC.Prim.Int#) ->
                           case w1 of wild {
                             [] -> n4
                             : y ys
                             -> case ww1 of ds1 {
-                                 DEFAULT -> GHC.Types.: @ a y ($wgo ys (GHC.Prim.-# ds1 1#))
+                                 DEFAULT -> GHC.Types.: @ a y ($wgo1 ys (GHC.Prim.-# ds1 1#))
                                  1# -> GHC.Types.: @ a y n4 } }
                       } in
-                      $wgo w ww }) -}
-9245046bb51a39a13b87ebcb751f1fdf
+                      $wgo1 w ww }) -}
+fdee09d6a1790d9c001f6131fe8bdf86
   $wtestPropDeranIncreased ::
     GHC.Prim.Int# -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U>, Inline: [0],
@@ -761,7 +809,7 @@ ae360eed13c9e7d7f7a64010de4a6eae
                              GHC.Types.False -> GHC.Types.True
                              GHC.Types.True -> GHC.Types.False } }
                    0# -> GHC.Types.True }) -}
-2a6b269d5f9cddc05ed716a4615ef51c
+00d5f4cc9343a222a34eabf6787eb55e
   $wtestQuartiles :: GHC.Prim.Int# -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
@@ -782,11 +830,11 @@ ae360eed13c9e7d7f7a64010de4a6eae
                                    ipv1
                                    Main.getAmountInQuartile2 #) } }) of ds { (#,#) ipv ipv1 ->
                       let {
-                        lvl51 :: GHC.Prim.Int# = GHC.Prim.uncheckedIShiftRA# ww 2#
+                        lvl257 :: GHC.Prim.Int# = GHC.Prim.uncheckedIShiftRA# ww 2#
                       } in
                       let {
-                        lvl52 :: GHC.Types.Int
-                        = case GHC.Classes.divInt# lvl51 100# of v { DEFAULT ->
+                        lvl258 :: GHC.Types.Int
+                        = case GHC.Classes.divInt# lvl257 100# of v { DEFAULT ->
                           GHC.Types.I# v }
                       } in
                       letrec {
@@ -796,23 +844,23 @@ ae360eed13c9e7d7f7a64010de4a6eae
                           case ds1 of wild {
                             [] -> GHC.Types.True
                             : y ys
-                            -> case lvl52 of v { GHC.Types.I# v1 ->
+                            -> case lvl258 of v { GHC.Types.I# v1 ->
                                case y of wild1 { GHC.Types.I# x ->
                                let {
                                  y1 :: GHC.Prim.Int# = GHC.Prim.*# v1 25#
                                } in
                                case GHC.Prim.>=#
                                       x
-                                      (GHC.Prim.-# (GHC.Prim.-# lvl51 y1) 1#) of lwild1 {
+                                      (GHC.Prim.-# (GHC.Prim.-# lvl257 y1) 1#) of lwild1 {
                                  DEFAULT -> GHC.Types.False
                                  1#
                                  -> case GHC.Prim.<=#
                                            x
-                                           (GHC.Prim.+# (GHC.Prim.+# lvl51 y1) 1#) of lwild2 {
+                                           (GHC.Prim.+# (GHC.Prim.+# lvl257 y1) 1#) of lwild2 {
                                       DEFAULT -> GHC.Types.False 1# -> go ys } } } } }
                       } in
                       go ipv1 } }) -}
-8bedfb1e4e9f3b7895934edb3f95cc70
+c5ef8b608afa9803077844cbe7656559
   $wtestQuartilesSafe ::
     GHC.Prim.Int#
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -826,11 +874,11 @@ ae360eed13c9e7d7f7a64010de4a6eae
                       DEFAULT -> GHC.Types.True
                       1#
                       -> let {
-                           lvl51 :: GHC.Prim.Int# = GHC.Prim.uncheckedIShiftRA# ww 2#
+                           lvl257 :: GHC.Prim.Int# = GHC.Prim.uncheckedIShiftRA# ww 2#
                          } in
                          let {
-                           lvl52 :: GHC.Types.Int
-                           = case GHC.Classes.divInt# lvl51 100# of v { DEFAULT ->
+                           lvl258 :: GHC.Types.Int
+                           = case GHC.Classes.divInt# lvl257 100# of v { DEFAULT ->
                              GHC.Types.I# v }
                          } in
                          letrec {
@@ -840,19 +888,19 @@ ae360eed13c9e7d7f7a64010de4a6eae
                              case ds of wild {
                                [] -> GHC.Types.True
                                : y ys
-                               -> case lvl52 of v { GHC.Types.I# v1 ->
+                               -> case lvl258 of v { GHC.Types.I# v1 ->
                                   case y of wild1 { GHC.Types.I# x ->
                                   let {
                                     y1 :: GHC.Prim.Int# = GHC.Prim.*# v1 10#
                                   } in
                                   case GHC.Prim.>=#
                                          x
-                                         (GHC.Prim.-# (GHC.Prim.-# lvl51 y1) 1#) of lwild1 {
+                                         (GHC.Prim.-# (GHC.Prim.-# lvl257 y1) 1#) of lwild1 {
                                     DEFAULT -> GHC.Types.False
                                     1#
                                     -> case GHC.Prim.<=#
                                               x
-                                              (GHC.Prim.+# (GHC.Prim.+# lvl51 y1) 1#) of lwild2 {
+                                              (GHC.Prim.+# (GHC.Prim.+# lvl257 y1) 1#) of lwild2 {
                                          DEFAULT -> GHC.Types.False 1# -> go ys } } } } }
                          } in
                          go (Main.calcQuartile ipv1 Main.getAmountInQuartile2) } #) }) -}
@@ -919,7 +967,7 @@ ae360eed13c9e7d7f7a64010de4a6eae
   $wunsafeDrop :: GHC.Prim.Int# -> [a1] -> [a1]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U><S,1*U>,
      Inline: [0] -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   type role Prop phantom
   data Prop a
     = Prop {name :: GHC.Base.String,
@@ -962,7 +1010,7 @@ f259455213a5f5374054d0926c228555
     -> Lab2.Shape
     -> GHC.Types.IO ()
   {- Arity: 4, Strictness: <S,U><S,U><S,U><S,U> -}
-2e872b82f2885c649a22599630368fa2
+f95b8f0e9698b05c8bfc07d19c1c5396
   deran :: [GHC.Types.Int] -> [[GHC.Types.Int]]
   {- Arity: 1, HasNoCafRefs, Strictness: <L,U>,
      Unfolding: (\ (x :: [GHC.Types.Int]) ->
@@ -976,7 +1024,7 @@ f259455213a5f5374054d0926c228555
                          @ GHC.Types.Int
                          x
                          (GHC.Types.[] @ GHC.Types.Int)))) -}
-562642273d00af51e3acc6cf4a7a7579
+f4a7070374a31c6ca5740e1e3f7bdab8
   derangementProperties :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -984,7 +1032,7 @@ f259455213a5f5374054d0926c228555
                    @ (Main.Prop a)
                    (Main.derangementProperties28 @ a)
                    (Main.derangementProperties1 @ a)) -}
-99baae99956af35dabe01e8fbedccca9
+3d4465c6642c5e4b2bbd9317122523d9
   derangementProperties1 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -995,7 +1043,7 @@ f259455213a5f5374054d0926c228555
 2e1280c05b63317631bc03bfdeab7679
   derangementProperties10 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Increased"#) -}
-590e1647d568f6f52d9cdc533564b807
+6f735b8229ce3f2eb4f521b7339d1e6f
   derangementProperties11 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1003,7 +1051,7 @@ f259455213a5f5374054d0926c228555
                    @ a
                    Main.derangementProperties14
                    Main.derangementProperties12) -}
-00622aea0db2b9a149c97e1850357e90
+1c5027710d3fccdcca854bd2cf8e5993
   derangementProperties12 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
@@ -1020,7 +1068,7 @@ f259455213a5f5374054d0926c228555
 e4ae6758d107faf94e8987957d1d2ee9
   derangementProperties15 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Bigger"#) -}
-50307b8b90bd0300cb6c5bae1139bd16
+43124dae54586f08b6a5b371e004973a
   derangementProperties16 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1028,7 +1076,7 @@ e4ae6758d107faf94e8987957d1d2ee9
                    @ a
                    Main.derangementProperties18
                    Main.derangementProperties17) -}
-832d5464561938553e5155d4b8b7b191
+5ff2d9eccf0beef436a158b1e4c95fc1
   derangementProperties17 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1046,7 +1094,7 @@ e4ae6758d107faf94e8987957d1d2ee9
 cf12cc512499f16cb17f83a022b126a6
   derangementProperties19 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Smaller"#) -}
-fce45fc5f61970e8047cee839c6347e7
+be77f4cd4550b81ae99136960db38149
   derangementProperties2 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1054,7 +1102,7 @@ fce45fc5f61970e8047cee839c6347e7
                    @ (Main.Prop a)
                    (Main.derangementProperties20 @ a)
                    (Main.derangementProperties3 @ a)) -}
-1c216e8a2672993ae0af810b8251d48e
+50a2bb4d99fdbf8532478fbe098e2bd6
   derangementProperties20 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1062,7 +1110,7 @@ fce45fc5f61970e8047cee839c6347e7
                    @ a
                    Main.derangementProperties22
                    Main.derangementProperties21) -}
-6c196419f36aec997f8601b5dc7f40f0
+79ec9bce5c1340b772e34922b05954c1
   derangementProperties21 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1080,7 +1128,7 @@ fce45fc5f61970e8047cee839c6347e7
 488fe437cdfa728cd5956f269a460e04
   derangementProperties23 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Swapped"#) -}
-120ba6a9139de52e9d49f516b1b7609a
+d606150e6b78c5b3382bd3d4bde74b24
   derangementProperties24 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1088,7 +1136,7 @@ fce45fc5f61970e8047cee839c6347e7
                    @ a
                    Main.derangementProperties26
                    Main.derangementProperties25) -}
-e61b179d6b6734bf94d6c9adfcf09536
+a64e0e97c402f082c2ae7b246dfee04d
   derangementProperties25 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1106,7 +1154,7 @@ e61b179d6b6734bf94d6c9adfcf09536
 ddd9025ff828b57e2db59c11de942248
   derangementProperties27 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Rotated"#) -}
-ebf6bec975ceb76d79ecafa0a31962f5
+3d4fdd31e1b359a1634b9664d48e9849
   derangementProperties28 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1114,14 +1162,14 @@ ebf6bec975ceb76d79ecafa0a31962f5
                    @ a
                    Main.derangementProperties30
                    Main.derangementProperties29) -}
-c84ee9932b860bf58525ab30f8702db9
+cb36c5731f9efb2dc6aaf2e54615ce11
   derangementProperties29 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wderangementProperties2 ww1 }) -}
-2ffd533acfdf38beab71ad53f0c452ca
+a8ed9f03eac52d600be33c4328bb189f
   derangementProperties3 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1136,7 +1184,7 @@ c84ee9932b860bf58525ab30f8702db9
 59592e7ad12c7a995eafbfe03b2d281a
   derangementProperties31 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Reversed"#) -}
-b1ec4934d39cfbca49df3c218effc1ca
+474264d883d0a1db4829c6d685404839
   derangementProperties4 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1144,7 +1192,7 @@ b1ec4934d39cfbca49df3c218effc1ca
                    @ (Main.Prop a)
                    (Main.derangementProperties11 @ a)
                    (Main.derangementProperties5 @ a)) -}
-b4b3d25f86236c0e1b356a3f94f776bf
+67eacdd6ab4d8fa8243b31208b58832b
   derangementProperties5 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1152,7 +1200,7 @@ b4b3d25f86236c0e1b356a3f94f776bf
                    @ (Main.Prop a)
                    (Main.derangementProperties6 @ a)
                    (GHC.Types.[] @ (Main.Prop a))) -}
-dc0a1904bf228b0c7ceaf1e073fd9a62
+73321b37f9a39aeef9d1bf9f0a2f8e27
   derangementProperties6 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1160,7 +1208,7 @@ dc0a1904bf228b0c7ceaf1e073fd9a62
                    @ a
                    Main.derangementProperties9
                    Main.derangementProperties7) -}
-ad1ddbcfba90973aebc57eb61e81e65d
+860d06b0fb508a3b5b3eea5cc7bf01d3
   derangementProperties7 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
@@ -1234,6 +1282,11 @@ d456de089548a60cd847d85ea6c88e0d
 439f87fde0c0bced6c431bff02576bf5
   domain :: [GHC.Types.Int]
   {- Unfolding: (GHC.Enum.eftInt -10# 10#) -}
+66ffbebe864602c3dcc4aff0d628f742
+  doubleRotYieldsBeginResult :: GHC.Base.String -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (decoded :: GHC.Base.String) ->
+                 GHC.Base.eqString decoded (Main.rot13 (Main.rot13 decoded))) -}
 0cef90d80bab19481a10b7cec254a38b
   equalLetterCase :: GHC.Base.String -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
@@ -1267,14 +1320,14 @@ d6a4e46e91c0dc1e792ac78a140b6840
   equalNonLetterCharacters_go2 ::
     [GHC.Types.Char] -> [GHC.Types.Char] -> Data.Semigroup.Internal.All
   {- Arity: 2, Strictness: <S,1*U><L,1*U> -}
-b9139cd1adb7180bc759f6df268eb581
+05c9b7f851a2895bd1180e7f056d75c1
   evenListSizeReverse :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
                  case GHC.List.$wlenAcc @ GHC.Types.Int list 0# of ww2 { DEFAULT ->
                  case GHC.Prim.remInt# ww2 2# of wild {
                    DEFAULT -> GHC.Types.True 0# -> Main.propDeranReversed list } }) -}
-7dbea7ccb11d50d26bda54481bfa9ae9
+6075f2c7017754d092bbb7689f6970e5
   evenListSizeSwapped :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
@@ -1367,6 +1420,155 @@ a8ab5a6afd23d27eef1dc8226e21731e
 e26b34f29ce2f7068141f7d6d6850d3e
   getAmountInQuartile5 :: GHC.Types.Float
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.F# 0.0#) -}
+4444cb4b1c46c69ace37da8351e54418
+  iban :: GHC.Base.String -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (inputIBAN :: GHC.Base.String) ->
+                 case Main.$wibanLengthTable
+                        (GHC.List.$wunsafeTake
+                           @ GHC.Types.Char
+                           2#
+                           inputIBAN) of ww { DEFAULT ->
+                 case GHC.List.$wlenAcc
+                        @ GHC.Types.Char
+                        inputIBAN
+                        0# of ww2 { DEFAULT ->
+                 case GHC.Prim.==# ww ww2 of lwild {
+                   DEFAULT -> GHC.Types.False
+                   1#
+                   -> case Text.Read.readEither8
+                             @ GHC.Integer.Type.Integer
+                             (Text.ParserCombinators.ReadP.run
+                                @ GHC.Integer.Type.Integer
+                                Main.iban6
+                                (let {
+                                   z :: [GHC.Types.Char] = Main.$wgo inputIBAN 4#
+                                 } in
+                                 letrec {
+                                   go :: [GHC.Types.Char] -> [GHC.Types.Char]
+                                     {- Arity: 1, Strictness: <S,1*U> -}
+                                   = \ (ds :: [GHC.Types.Char]) ->
+                                     case ds of wild {
+                                       [] -> z
+                                       : y ys
+                                       -> case GHC.List.elem
+                                                 @ GHC.Types.Char
+                                                 GHC.Classes.$fEqChar
+                                                 y
+                                                 Main.iban_letters of wild1 {
+                                            GHC.Types.False
+                                            -> GHC.Types.: @ GHC.Types.Char y (go ys)
+                                            GHC.Types.True
+                                            -> case y of wild2 { GHC.Types.C# c# ->
+                                               case Main.iban5 of wild3 { GHC.Types.C# c#1 ->
+                                               case GHC.Show.$wshowSignedInt
+                                                      0#
+                                                      (GHC.Prim.+#
+                                                         (GHC.Prim.-#
+                                                            (GHC.Prim.ord# c#)
+                                                            (GHC.Prim.ord# c#1))
+                                                         10#)
+                                                      (GHC.Types.[]
+                                                         @ GHC.Types.Char) of ww4 { (#,#) ww5 ww6 ->
+                                               GHC.Base.++_$s++
+                                                 @ GHC.Types.Char
+                                                 (go ys)
+                                                 ww5
+                                                 ww6 } } } } }
+                                 } in
+                                 go (Main.$wunsafeDrop @ GHC.Types.Char 4# inputIBAN))) of wild {
+                        [] -> case Main.iban4 ret_ty GHC.Types.Bool of {}
+                        : x ds
+                        -> case ds of wild1 {
+                             []
+                             -> case GHC.Integer.Type.eqInteger#
+                                       (GHC.Integer.Type.modInteger x Main.iban3)
+                                       Main.iban2 of wild2 { DEFAULT ->
+                                GHC.Prim.tagToEnum# @ GHC.Types.Bool wild2 }
+                             : ipv ipv1
+                             -> case Main.iban1 ret_ty GHC.Types.Bool of {} } } } } }) -}
+613a277ce8f383cdc758691a46582f8c
+  iban1 :: GHC.Integer.Type.Integer
+  {- Strictness: x -}
+b5b80b75712021f835d235eddc7f4422
+  iban2 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (1) -}
+b44565d705ab1921a88c60cab7b7a5e0
+  iban3 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (97) -}
+2584fff3fea28891f1664498a99c0692
+  iban4 :: GHC.Integer.Type.Integer
+  {- Strictness: x -}
+b3d987966e253e441dceca0155fd34f1
+  iban5 :: GHC.Types.Char
+  {- Unfolding: (case Main.iban_letters of wild {
+                   [] -> GHC.List.badHead @ GHC.Types.Char : x ds1 -> x }) -}
+2a8a81e24e71096ade4436902c420d13
+  iban6 :: Text.ParserCombinators.ReadP.P GHC.Integer.Type.Integer
+  {- Unfolding: (GHC.Read.$fReadInteger_$sreadNumber
+                   GHC.Read.$fReadInteger2
+                   Text.ParserCombinators.ReadPrec.minPrec
+                   @ GHC.Integer.Type.Integer
+                   (Text.Read.readEither7 @ GHC.Integer.Type.Integer)) -}
+c388b674b4f8da916c1ff254aee69495
+  ibanCheckTest :: GHC.Types.IO ()
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.ibanCheckTest1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
+0aca39900076ba5a22e1f4f602cc2595
+  ibanCheckTest1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.ibanCheckTest5
+                        GHC.Types.True
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 GHC.IO.Handle.Text.hPutStr2
+                   GHC.IO.Handle.FD.stdout
+                   Main.ibanCheckTest2
+                   GHC.Types.True
+                   ipv }) -}
+afdcd8b0d888323990b4de262304f926
+  ibanCheckTest2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackAppendCString#
+                   Main.ibanCheckTest4
+                   Main.ibanCheckTest3) -}
+3492b02226936ce0200e18a59bd6e29d
+  ibanCheckTest3 :: [GHC.Types.Char]
+  {- Unfolding: (Main.ibanCheckTest_go Main.testIBANs) -}
+848a68e5bb16c8540a544f6d4975405d
+  ibanCheckTest4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Testing invalid IBANs: "#) -}
+bf4eefc937d43c4a793bdc7226a0bef3
+  ibanCheckTest5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackAppendCString#
+                   Main.ibanCheckTest7
+                   Main.ibanCheckTest6) -}
+e7cae5488bee9db89b3531e8520c33f0
+  ibanCheckTest6 :: [GHC.Types.Char]
+  {- Unfolding: (Main.ibanCheckTest_go1 Main.testIBANs) -}
+bb6e0c44d8e1d3f26ad687b67177dd7b
+  ibanCheckTest7 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Testing valid IBANs: "#) -}
+f41c14064bb7007c626f6d512e5188f6
+  ibanCheckTest_go :: [[GHC.Types.Char]] -> [GHC.Types.Char]
+  {- Arity: 1, Strictness: <S,1*U> -}
+3f8f841425abf9c01af4cf79c080ad17
+  ibanCheckTest_go1 :: [GHC.Base.String] -> [GHC.Types.Char]
+  {- Arity: 1, Strictness: <S,1*U> -}
+1ffdc5756804b46cd4b3dc1cbc5504e6
+  ibanLengthTable :: GHC.Base.String -> GHC.Types.Int
+  {- Arity: 1, Strictness: <S,U>m, Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: GHC.Base.String) ->
+                 case Main.$wibanLengthTable w of ww { DEFAULT ->
+                 GHC.Types.I# ww }) -}
+9b5d59c65a1f9209741f44bf46842784
+  iban_letters :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Enum.eftChar 65# 90#) -}
 46cf01ff52536d598023ea9ecbf8bae0
   isCharacterLetter :: GHC.Base.String -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
@@ -1384,7 +1586,7 @@ e26b34f29ce2f7068141f7d6d6850d3e
   isCharacterLetter_go2 ::
     [GHC.Types.Char] -> [GHC.Types.Char] -> Data.Semigroup.Internal.All
   {- Arity: 2, Strictness: <S,1*U><L,1*U> -}
-4e5d19095bf308aec56acd0c2a93ec74
+9173178e8ae5dc9e75ed5b1eb8ca6c67
   isDerangement ::
     [GHC.Types.Int] -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><S,U>,
@@ -1397,7 +1599,7 @@ e26b34f29ce2f7068141f7d6d6850d3e
                    -> case Main.isDerangement_$sisPermutation x y of wild {
                         GHC.Types.False -> GHC.Types.False
                         GHC.Types.True -> Main.isDerangement_go2 x y } } } }) -}
-2de2796310b329d72a584142a67175e9
+a08f9d4a35bdf02235c14a6d16be3ed4
   isDerangement_$sisPermutation ::
     [GHC.Types.Int] -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><S,U>,
@@ -1415,7 +1617,7 @@ e26b34f29ce2f7068141f7d6d6850d3e
                             [] -> GHC.Types.True
                             : y1 ys
                             -> letrec {
-                                 $wgo :: [GHC.Types.Int] -> GHC.Prim.Int# -> GHC.Prim.Int#
+                                 $wgo1 :: [GHC.Types.Int] -> GHC.Prim.Int# -> GHC.Prim.Int#
                                    {- Arity: 2, Strictness: <S,1*U><S,U>, Inline: [0] -}
                                  = \ (w :: [GHC.Types.Int]) (ww :: GHC.Prim.Int#) ->
                                    case w of wild1 {
@@ -1424,11 +1626,11 @@ e26b34f29ce2f7068141f7d6d6850d3e
                                      -> case y2 of wild2 { GHC.Types.I# x1 ->
                                         case y1 of wild3 { GHC.Types.I# y3 ->
                                         case GHC.Prim.==# x1 y3 of lwild1 {
-                                          DEFAULT -> $wgo ys1 ww
-                                          1# -> $wgo ys1 (GHC.Prim.+# ww 1#) } } } }
+                                          DEFAULT -> $wgo1 ys1 ww
+                                          1# -> $wgo1 ys1 (GHC.Prim.+# ww 1#) } } } }
                                } in
-                               case $wgo x 0# of ww { DEFAULT ->
-                               case $wgo y 0# of ww3 { DEFAULT ->
+                               case $wgo1 x 0# of ww { DEFAULT ->
+                               case $wgo1 y 0# of ww3 { DEFAULT ->
                                case GHC.Prim.==# ww ww3 of lwild1 {
                                  DEFAULT -> GHC.Types.False 1# -> go ys } } } }
                       } in
@@ -1437,7 +1639,7 @@ e26b34f29ce2f7068141f7d6d6850d3e
   isDerangement_go2 ::
     [GHC.Types.Int] -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U> -}
-785885d193f2e97d68bdef50ffb89bfc
+70dafccb32f56a6d59ac8cb36f6c6a5e
   isPermutation :: GHC.Classes.Eq a => [a] -> [a] -> GHC.Types.Bool
   {- Arity: 3, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,U><S,U>,
      Unfolding: (\ @ a
@@ -1457,18 +1659,18 @@ e26b34f29ce2f7068141f7d6d6850d3e
                             [] -> GHC.Types.True
                             : y1 ys
                             -> letrec {
-                                 $wgo :: [a] -> GHC.Prim.Int# -> GHC.Prim.Int#
+                                 $wgo1 :: [a] -> GHC.Prim.Int# -> GHC.Prim.Int#
                                    {- Arity: 2, Strictness: <S,1*U><S,U>, Inline: [0] -}
                                  = \ (w :: [a]) (ww :: GHC.Prim.Int#) ->
                                    case w of wild1 {
                                      [] -> ww
                                      : y2 ys1
                                      -> case GHC.Classes.== @ a $dEq y2 y1 of wild2 {
-                                          GHC.Types.False -> $wgo ys1 ww
-                                          GHC.Types.True -> $wgo ys1 (GHC.Prim.+# ww 1#) } }
+                                          GHC.Types.False -> $wgo1 ys1 ww
+                                          GHC.Types.True -> $wgo1 ys1 (GHC.Prim.+# ww 1#) } }
                                } in
-                               case $wgo x 0# of ww { DEFAULT ->
-                               case $wgo y 0# of ww3 { DEFAULT ->
+                               case $wgo1 x 0# of ww { DEFAULT ->
+                               case $wgo1 y 0# of ww3 { DEFAULT ->
                                case GHC.Prim.==# ww ww3 of lwild1 {
                                  DEFAULT -> GHC.Types.False 1# -> go ys } } } }
                       } in
@@ -1520,14 +1722,14 @@ b4f9ae97a091b232a88173a93240314d
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-b54fc46995c11ea29c858432669f8509
+ede75935349030b8682e7de44f5871b1
   name :: Main.Prop a -> GHC.Base.String
   RecSel Left Main.Prop
   {- Arity: 1, HasNoCafRefs, Strictness: <S(SL),1*U(1*U,A)>,
      Unfolding: InlineRule (1, True, False)
                 (\ @ a (ds :: Main.Prop a) ->
                  case ds of wild { Main.Prop ds1 ds2 -> ds1 }) -}
-65032c09ddd2c8b1f98a09489dcff781
+4545a5bdc6a13666460cbea4d17d47e9
   oddListSizeReverse :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
@@ -1546,7 +1748,7 @@ b54fc46995c11ea29c858432669f8509
                              GHC.Types.False -> GHC.Types.True
                              GHC.Types.True -> GHC.Types.False } }
                    0# -> GHC.Types.True } }) -}
-af257bdf9c61c78b972f402459be4d01
+de9bab3dde9526f6261f8a3cd541ec3e
   oddListSizeSwapped :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
@@ -1579,19 +1781,13 @@ b2eb3d6a977e7471f5fcdee2e23cbdb2
                  case GHC.Prim.remInt# x1 2# of wild {
                    DEFAULT -> GHC.Prim.tagToEnum# @ GHC.Types.Bool (GHC.Prim.># x1 3#)
                    0# -> GHC.Types.True } }) -}
-cdf918deacfd39faecb9d35ceae5a503
+a9c6984e1896a02ce6e6ede5b4bd0f67
   p3 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
-                 case w of ww { GHC.Types.I# ww1 -> Main.$wp4 ww1 }) -}
-80c913a5e0c249579c515ebbea12b751
-  p4 :: GHC.Types.Int -> GHC.Types.Bool
-  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
-     Unfolding: InlineRule (1, True, False)
-                (\ (w :: GHC.Types.Int) ->
-                 case w of ww { GHC.Types.I# ww1 -> Main.$wp4 ww1 }) -}
-d7abe2b0fc099599dabf531dfd246bbd
+                 case w of ww { GHC.Types.I# ww1 -> Main.$wp3 ww1 }) -}
+c11dc2672186bde93185c39bfab67101
   permutationProperties :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1599,7 +1795,7 @@ d7abe2b0fc099599dabf531dfd246bbd
                    @ (Main.Prop a)
                    (Main.permutationProperties16 @ a)
                    (Main.permutationProperties1 @ a)) -}
-cd8699ef22c8a3fbb6a6b9a3237a3ede
+c6306fdaca1d5659b88364113140f1d7
   permutationProperties1 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1607,7 +1803,7 @@ cd8699ef22c8a3fbb6a6b9a3237a3ede
                    @ (Main.Prop a)
                    (Main.permutationProperties14 @ a)
                    (Main.permutationProperties2 @ a)) -}
-8994f22dad6deb1c46ffba180b80a175
+611d14ac6de846bee86775fa5b131a58
   permutationProperties10 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1615,7 +1811,7 @@ cd8699ef22c8a3fbb6a6b9a3237a3ede
                    @ a
                    Main.derangementProperties18
                    Main.permutationProperties11) -}
-3fd2c5b5b649a1993fd03318e9a2f3a0
+49c7a731abe7c8db49b50d60e63916b3
   permutationProperties11 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1626,7 +1822,7 @@ cd8699ef22c8a3fbb6a6b9a3237a3ede
                       @ GHC.Types.Int
                       (\ @ b (c :: GHC.Types.Int -> b -> b)[OneShot] (n :: b)[OneShot] ->
                        GHC.Enum.eftIntFB @ b c n 1# y)) }) -}
-07682306088760a6d2db5029d041ab4d
+9e61267e2ba75adf29405abc7690a280
   permutationProperties12 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1634,7 +1830,7 @@ cd8699ef22c8a3fbb6a6b9a3237a3ede
                    @ a
                    Main.derangementProperties22
                    Main.permutationProperties13) -}
-f9b9a6501b17f55e255bf61d215062e6
+797fbe309b3ea7b3a39fee2aa77c0efd
   permutationProperties13 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1645,7 +1841,7 @@ f9b9a6501b17f55e255bf61d215062e6
                       @ GHC.Types.Int
                       (\ @ b (c :: GHC.Types.Int -> b -> b)[OneShot] (n :: b)[OneShot] ->
                        GHC.Enum.eftIntFB @ b c n 1# y)) }) -}
-23aca9e16e3937d8318f6543cb80e7c6
+04405a384efb699e3ccf130dddfa1ccc
   permutationProperties14 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1653,7 +1849,7 @@ f9b9a6501b17f55e255bf61d215062e6
                    @ a
                    Main.derangementProperties26
                    Main.permutationProperties15) -}
-202a2624d212c710d8dccc9fb15fcce0
+496998d543c484f25c92112aefc8c1cf
   permutationProperties15 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1664,7 +1860,7 @@ f9b9a6501b17f55e255bf61d215062e6
                       @ GHC.Types.Int
                       (\ @ b (c :: GHC.Types.Int -> b -> b)[OneShot] (n :: b)[OneShot] ->
                        GHC.Enum.eftIntFB @ b c n 1# y)) }) -}
-a353cfd908f1d61c56bff3e81cc4a241
+60fe444244555af684ef03e3646a1413
   permutationProperties16 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1672,14 +1868,14 @@ a353cfd908f1d61c56bff3e81cc4a241
                    @ a
                    Main.derangementProperties30
                    Main.permutationProperties17) -}
-6ad2c1e8e6dede8820306fa9b77e6435
+160fe725148868057415e9cb8930a224
   permutationProperties17 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpermutationProperties2 ww1 }) -}
-195928a67c7670863ab5641a1b158ed1
+2f5a263c12c5d883719225359a6acf5e
   permutationProperties2 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1687,7 +1883,7 @@ a353cfd908f1d61c56bff3e81cc4a241
                    @ (Main.Prop a)
                    (Main.permutationProperties12 @ a)
                    (Main.permutationProperties3 @ a)) -}
-c76a4109f13f555ee2a8025549214cf0
+a3acf2386ef1c31cf8418a0d8f014f4b
   permutationProperties3 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1695,7 +1891,7 @@ c76a4109f13f555ee2a8025549214cf0
                    @ (Main.Prop a)
                    (Main.permutationProperties10 @ a)
                    (Main.permutationProperties4 @ a)) -}
-1c5bb87f00f75e5893b1b998a1f20acb
+1947473f5f607b616646a7927b005af2
   permutationProperties4 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1703,7 +1899,7 @@ c76a4109f13f555ee2a8025549214cf0
                    @ (Main.Prop a)
                    (Main.permutationProperties8 @ a)
                    (Main.permutationProperties5 @ a)) -}
-af84d1907292e1eaab6b364af83d8939
+e75dad3b9181b0459f9c2d2b587e29d5
   permutationProperties5 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
@@ -1711,7 +1907,7 @@ af84d1907292e1eaab6b364af83d8939
                    @ (Main.Prop a)
                    (Main.permutationProperties6 @ a)
                    (GHC.Types.[] @ (Main.Prop a))) -}
-a83101577ece145eed062f5dfdfb6b9c
+00854d4c1f1b0b483fa91e8ada5e6130
   permutationProperties6 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1719,14 +1915,14 @@ a83101577ece145eed062f5dfdfb6b9c
                    @ a
                    Main.derangementProperties9
                    Main.permutationProperties7) -}
-cb8a1c20cfe010f399e4a0d8a050d716
+69c4991bbf15ac9c805bcefb795ffefb
   permutationProperties7 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpermutationProperties ww1 }) -}
-4064047bcf05bf40fb9d9a4ae53243e9
+238a209695630cbfc036035a0b073408
   permutationProperties8 :: Main.Prop a
   {- Strictness: m,
      Unfolding: (\ @ a ->
@@ -1734,14 +1930,14 @@ cb8a1c20cfe010f399e4a0d8a050d716
                    @ a
                    Main.derangementProperties14
                    Main.permutationProperties9) -}
-1dded8e99ed2d08ea35f0d338fb5f396
+53673dbc58436ee7ed55882cb90e6814
   permutationProperties9 :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpermutationProperties1 ww1 }) -}
-96d653d01f2320a91e2003b4db56e321
+a72192937a89f850817c687e0eb09a56
   permutationProperties_$spropAllRotations ::
     [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
@@ -1772,7 +1968,7 @@ cb8a1c20cfe010f399e4a0d8a050d716
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-d800c1582b8c1c93af0f78f4e38b3740
+4309d6edce2257544b221578c3985028
   permutationProperties_$spropAllSmaller ::
     [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
@@ -1790,7 +1986,7 @@ d800c1582b8c1c93af0f78f4e38b3740
                       case GHC.Prim.># 1# y of lwild {
                         DEFAULT
                         -> let {
-                             lvl51 :: GHC.Types.Bool
+                             lvl257 :: GHC.Types.Bool
                              = Main.isDerangement_$sisPermutation
                                  wild
                                  (GHC.Types.[] @ GHC.Types.Int)
@@ -1801,7 +1997,7 @@ d800c1582b8c1c93af0f78f4e38b3740
                              = \ (x :: GHC.Prim.Int#) ->
                                case GHC.Prim.<# 0# x of lwild1 {
                                  DEFAULT
-                                 -> case lvl51 of wild1 {
+                                 -> case lvl257 of wild1 {
                                       GHC.Types.False -> GHC.Types.False
                                       GHC.Types.True
                                       -> case GHC.Prim.==# x y of lwild2 {
@@ -1818,7 +2014,7 @@ d800c1582b8c1c93af0f78f4e38b3740
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-d341dc584555e7a9e35a630ba0b47d5f
+8f79b917d3171b775e3e353da367472c
   permutationProperties_$spropAllSwapped ::
     [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
@@ -1879,7 +2075,7 @@ f71fa97651f4d6b0e64e69ca52ac985a
 87cbe41af0f1f1eea8aca8a80952bc3d
   permutationTestList5 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 1#) -}
-5edc6882111bb0e7c8ef306e05bcbc34
+1814c8c84affa989cc753c71b330ccc9
   propAllDeranRotations :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
@@ -1915,7 +2111,7 @@ f71fa97651f4d6b0e64e69ca52ac985a
                                 } in
                                 go 1#
                              1# -> GHC.Types.True } } } }) -}
-18933858b1adc9b0335a95a4eca0b8c3
+814241dd23beda93735dd306b6be69ac
   propAllDeranSmaller :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
@@ -1932,7 +2128,7 @@ f71fa97651f4d6b0e64e69ca52ac985a
                       case GHC.Prim.># 1# y of lwild {
                         DEFAULT
                         -> let {
-                             lvl51 :: GHC.Types.Bool
+                             lvl257 :: GHC.Types.Bool
                              = Main.isDerangement wild (GHC.Types.[] @ GHC.Types.Int)
                            } in
                            letrec {
@@ -1941,7 +2137,7 @@ f71fa97651f4d6b0e64e69ca52ac985a
                              = \ (x :: GHC.Prim.Int#) ->
                                case GHC.Prim.<# 0# x of lwild1 {
                                  DEFAULT
-                                 -> case lvl51 of wild1 {
+                                 -> case lvl257 of wild1 {
                                       GHC.Types.False -> GHC.Types.False
                                       GHC.Types.True
                                       -> case GHC.Prim.==# x y of lwild2 {
@@ -1958,7 +2154,7 @@ f71fa97651f4d6b0e64e69ca52ac985a
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-fc99a11549f69c1873767413b70340bd
+a39776a5c8da0e73b2999ed6daf06f14
   propAllRotations :: GHC.Classes.Eq a => [a] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,1*U>,
      Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (origList :: [a]) ->
@@ -1987,7 +2183,7 @@ fc99a11549f69c1873767413b70340bd
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-7eef2c600fd2e2cb062f551c959fe46e
+11058616484b397c39c3c646ec7c06ee
   propAllSmaller :: GHC.Classes.Eq a => [a] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,1*U>,
      Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (origList :: [a]) ->
@@ -2001,7 +2197,7 @@ fc99a11549f69c1873767413b70340bd
                       case GHC.Prim.># 1# y of lwild {
                         DEFAULT
                         -> let {
-                             lvl51 :: GHC.Types.Bool
+                             lvl257 :: GHC.Types.Bool
                              = Main.isPermutation @ a $dEq wild (GHC.Types.[] @ a)
                            } in
                            letrec {
@@ -2010,7 +2206,7 @@ fc99a11549f69c1873767413b70340bd
                              = \ (x :: GHC.Prim.Int#) ->
                                case GHC.Prim.<# 0# x of lwild1 {
                                  DEFAULT
-                                 -> case lvl51 of wild1 {
+                                 -> case lvl257 of wild1 {
                                       GHC.Types.False -> GHC.Types.False
                                       GHC.Types.True
                                       -> case GHC.Prim.==# x y of lwild2 {
@@ -2029,7 +2225,7 @@ fc99a11549f69c1873767413b70340bd
                            } in
                            go 1#
                         1# -> GHC.Types.True } } }) -}
-42b2dac9a4bd5f1f9ac0fb6fec15990a
+eb06675981ee8662dac463057c53298b
   propAllSwapped :: GHC.Classes.Eq a => [a] -> GHC.Types.Bool
   {- Arity: 2, Strictness: <L,U(C(C1(U)),A)><S,U>,
      Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (origList :: [a]) ->
@@ -2058,7 +2254,7 @@ fc99a11549f69c1873767413b70340bd
                            } in
                            go 0#
                         1# -> GHC.Types.True } } }) -}
-dda0832bf74df6ebdb2a21de84843cfa
+5aa13f098d3c3c7e22fe6949eaee8e5a
   propBigger :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
@@ -2069,7 +2265,7 @@ dda0832bf74df6ebdb2a21de84843cfa
                       @ GHC.Types.Int
                       Main.derangementProperties13
                       origList)) -}
-73eed2d74bb2a06270260b8e5ee41731
+b4f52f12b3ff42a624021828c8d78740
   propDeranBigger :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
@@ -2080,7 +2276,7 @@ dda0832bf74df6ebdb2a21de84843cfa
                       @ GHC.Types.Int
                       Main.derangementProperties13
                       origList)) -}
-7d4d536f526d99f42bbe77dd623e2076
+11cda879c723d818689890d8a74ce2c3
   propDeranIncreased ::
     GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S(S),1*U(1*U)><L,U>,
@@ -2089,7 +2285,7 @@ dda0832bf74df6ebdb2a21de84843cfa
                 (\ (w :: GHC.Types.Int) (w1 :: [GHC.Types.Int]) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpropDeranIncreased ww1 w1 }) -}
-981d4c6395b5298a3f2b67d65dc2e06c
+8f8727b48d129c340fc2d33249a6c86f
   propDeranReversed :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
@@ -2102,7 +2298,7 @@ dda0832bf74df6ebdb2a21de84843cfa
                            @ GHC.Types.Int
                            origList
                            (GHC.Types.[] @ GHC.Types.Int)) }) -}
-f70d98c2063760a798f42ca9777b583e
+7ba6dc12854bb5d3c69e282da917c80c
   propDeranRotated ::
     GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U(U)><S,U>,
@@ -2111,7 +2307,7 @@ f70d98c2063760a798f42ca9777b583e
                  Main.isDerangement
                    origList
                    (Main.rotate @ GHC.Types.Int rotation origList)) -}
-c53e250e101d90b7be0b7a20ee008f87
+5e6b766ae4de136d30e93887175c7e43
   propDeranSmaller ::
     GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S(S),1*U(U)><S,U>,
@@ -2120,7 +2316,7 @@ c53e250e101d90b7be0b7a20ee008f87
                 (\ (w :: GHC.Types.Int) (w1 :: [GHC.Types.Int]) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wpropDeranSmaller ww1 w1 }) -}
-187ea8c80988e897b0995fd12e76eb87
+88ec2e9705da243a081cc38cb454b1db
   propDeranSwapped :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (origList :: [GHC.Types.Int]) ->
@@ -2161,7 +2357,7 @@ c53e250e101d90b7be0b7a20ee008f87
                                   origList
                                   (Main.$wswapAt @ GHC.Types.Int 0# origList)
                              1# -> Main.isDerangement origList origList } } } }) -}
-4c26d7e46aaac1abe1e845f9d2df4e76
+e08d654aa3ab7917adb3bdaf98b29348
   propIncreased :: GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(U)><S,U>,
      Unfolding: (\ (amount :: GHC.Types.Int)
@@ -2187,7 +2383,7 @@ c53e250e101d90b7be0b7a20ee008f87
                       @ GHC.Types.Int
                       (\ @ b (c :: GHC.Types.Int -> b -> b)[OneShot] (n :: b)[OneShot] ->
                        GHC.Enum.eftIntFB @ b c n 1# y) })) -}
-d2d19710df02f327cd1de024d34fb09d
+63fbba2853e2424364f249b9c2cc5623
   propReversed :: GHC.Classes.Eq a => [a] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,U>,
      Unfolding: InlineRule (2, True, False)
@@ -2197,7 +2393,7 @@ d2d19710df02f327cd1de024d34fb09d
                    $dEq
                    origList
                    (GHC.List.reverse1 @ a origList (GHC.Types.[] @ a))) -}
-2f217d741b6b2f31363a30bff00ae2f4
+e37be0a7b031f0c2a5a449ad4f9a7757
   propRotated ::
     GHC.Classes.Eq a => GHC.Types.Int -> [a] -> GHC.Types.Bool
   {- Arity: 3, HasNoCafRefs,
@@ -2212,7 +2408,7 @@ d2d19710df02f327cd1de024d34fb09d
                    $dEq
                    origList
                    (Main.rotate @ a rotation origList)) -}
-325d11e473bc86166b5c639cd28fa13e
+3d40cd8b0209bfc2fc26c148879f3588
   propSmaller ::
     GHC.Classes.Eq a => GHC.Types.Int -> [a] -> GHC.Types.Bool
   {- Arity: 3, HasNoCafRefs,
@@ -2221,7 +2417,7 @@ d2d19710df02f327cd1de024d34fb09d
                 (\ @ a (w :: GHC.Classes.Eq a) (w1 :: GHC.Types.Int) (w2 :: [a]) ->
                  case w1 of ww { GHC.Types.I# ww1 ->
                  Main.$wpropSmaller @ a w ww1 w2 }) -}
-bc04f0b15e641b532d4baba3f6337a9b
+2f446251760bbd6894a40161a46bce6b
   propSwapped ::
     GHC.Classes.Eq a => GHC.Types.Int -> [a] -> GHC.Types.Bool
   {- Arity: 3, Strictness: <L,U(C(C1(U)),A)><S(S),1*U(U)><S,U>,
@@ -2235,103 +2431,96 @@ bc04f0b15e641b532d4baba3f6337a9b
                    $dEq
                    origList
                    (Main.swapAt @ a index origList)) -}
-0782db639333caacb357b9a5e46529db
+f466586228116ec18502e7309419635b
   properties :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
                  GHC.Types.:
                    @ (Main.Prop a)
-                   (Main.properties17 @ a)
+                   (Main.properties13 @ a)
                    (Main.properties1 @ a)) -}
-49440fddd6dc637d72d34fbd65ca8bc0
+339b20e54725e07bba51d3919c1a5cd8
   properties1 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
                  GHC.Types.:
                    @ (Main.Prop a)
-                   (Main.properties14 @ a)
+                   (Main.properties10 @ a)
                    (Main.properties2 @ a)) -}
-0b2064bb66cbba054292b78e39753c93
-  properties10 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("p4"#) -}
-e0b99ea16bf6cef8b946f1d7adaed17f
-  properties11 :: Main.Prop a
+8180b28ba954a13a9f4f1625024a9243
+  properties10 :: Main.Prop a
   {- Strictness: m,
-     Unfolding: (\ @ a -> Main.Prop @ a Main.properties12 Main.p4) -}
-38b648ccf1d5feee920e5eededddf345
-  properties12 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.properties13) -}
-81a0d671928693e18b0cc495c48b4e8a
-  properties13 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("p3"#) -}
-84b74c07ddb34fbbc56f86124f6398c8
-  properties14 :: Main.Prop a
-  {- Strictness: m,
-     Unfolding: (\ @ a -> Main.Prop @ a Main.properties15 Main.p2) -}
-d90078e430d1e7a0218ea20e39763ff7
-  properties15 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.properties16) -}
-cfe7539edc111c27f1ce4a136164816f
-  properties16 :: GHC.Prim.Addr#
+     Unfolding: (\ @ a -> Main.Prop @ a Main.properties11 Main.p2) -}
+07a48ef262ad122a8e57e16009af65ee
+  properties11 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.properties12) -}
+b85ebdcd95c7b80a164307c73c4d212e
+  properties12 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("p2"#) -}
-f8deceb661829b57e48017aea87c0489
-  properties17 :: Main.Prop a
+4647516c3fcf0dcc372a808179683188
+  properties13 :: Main.Prop a
   {- Strictness: m,
-     Unfolding: (\ @ a -> Main.Prop @ a Main.properties18 Main.p1) -}
-95c5937877e8aedc7e5380ddbd9efbd1
-  properties18 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.properties19) -}
-1d4f846fbf607bf97155f3ee62f2cf82
-  properties19 :: GHC.Prim.Addr#
+     Unfolding: (\ @ a -> Main.Prop @ a Main.properties14 Main.p1) -}
+c5fce8efef0caa3c782d6125872b97f2
+  properties14 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.properties15) -}
+b3d1c2186816a4b2ec753c0481d706ed
+  properties15 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("p1"#) -}
-58f18374f9de8be8955e20f89bf0bc44
+03d3c7fbe151ccce0e9a2cd50e48250a
   properties2 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
                  GHC.Types.:
                    @ (Main.Prop a)
-                   (Main.properties11 @ a)
+                   (Main.properties7 @ a)
                    (Main.properties3 @ a)) -}
-a8575ff988eabe6481a5a3fabaed908a
+ef130b2d694e2e592d1c6f98b68bcc58
   properties3 :: [Main.Prop a]
   {- Strictness: m2,
      Unfolding: (\ @ a ->
                  GHC.Types.:
                    @ (Main.Prop a)
-                   (Main.properties8 @ a)
-                   (Main.properties4 @ a)) -}
-5959686cf4a42fec72c2b1b3838366b2
-  properties4 :: [Main.Prop a]
-  {- Strictness: m2,
-     Unfolding: (\ @ a ->
-                 GHC.Types.:
-                   @ (Main.Prop a)
-                   (Main.properties5 @ a)
+                   (Main.properties4 @ a)
                    (GHC.Types.[] @ (Main.Prop a))) -}
-79c7dc67bb6779f767434ef503b9c323
-  properties5 :: Main.Prop a
+9cbe78cad923a84836ec422077d3e015
+  properties4 :: Main.Prop a
   {- Strictness: m,
-     Unfolding: (\ @ a -> Main.Prop @ a Main.properties6 Main.$seven) -}
-608519e9431fd60cf273bb9bfd945d52
-  properties6 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.properties7) -}
-46a3e61e2ccec3609a264f1163b27d10
-  properties7 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("p5"#) -}
-f8ba5c1b3f70d3df6bcd4d3ad9bf2aa0
-  properties8 :: Main.Prop a
+     Unfolding: (\ @ a -> Main.Prop @ a Main.properties5 Main.$seven) -}
+3f1816a38f31f9c453363706786aa606
+  properties5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.properties6) -}
+abc94d0332716324e6f551b90ffd48c0
+  properties6 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("p4"#) -}
+fd94fd9c716ee682b5ecd0e45cf71915
+  properties7 :: Main.Prop a
   {- Strictness: m,
-     Unfolding: (\ @ a -> Main.Prop @ a Main.properties9 Main.p4) -}
-3925dafaf54ff6c7287aeda8c82a5144
-  properties9 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.properties10) -}
-b54fc46995c11ea29c858432669f8509
+     Unfolding: (\ @ a -> Main.Prop @ a Main.properties8 Main.p3) -}
+02f5baa4e9a56801d2d9548e37b8400c
+  properties8 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.properties9) -}
+e5d3de7dc60267969334a0b96dfeaeef
+  properties9 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("p3"#) -}
+ede75935349030b8682e7de44f5871b1
   propertyFunction :: Main.Prop a -> GHC.Types.Int -> GHC.Types.Bool
   RecSel Left Main.Prop
   {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(A,1*U)>,
      Unfolding: InlineRule (1, True, False)
                 (\ @ a (ds :: Main.Prop a) ->
                  case ds of wild { Main.Prop ds1 ds2 -> ds2 }) -}
+1ee85fc3aab158de3ef99d6e332b7b44
+  replace ::
+    GHC.Types.Int
+    -> GHC.Types.Char -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 3, HasNoCafRefs, Strictness: <S(S),1*U(U)><L,U><L,U>,
+     Inline: [0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: GHC.Types.Char)
+                   (w2 :: GHC.Base.String) ->
+                 case w of ww { GHC.Types.I# ww1 -> Main.$wreplace ww1 w1 w2 }) -}
 22c9bd79da59be5f98207fbd09624d8b
   rot13 :: GHC.Base.String -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U> -}
@@ -2352,7 +2541,7 @@ c600f45d19a1a9afe90d8e559eaa11fb
 480efeb0636ffa66ba7a5a09b9d7b291
   rotate1 :: [a] -> [a] -> [a]
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U> -}
-afa5087ad4582569d3148406ed390bff
+d1e09aa9197686a40fc40172ef201c4e
   swapAt :: GHC.Types.Int -> [a] -> [a]
   {- Arity: 2, Strictness: <S(S),1*U(U)><L,U>, Inline: [0],
      Unfolding: InlineRule (2, True, False)
@@ -2368,12 +2557,988 @@ d12239c32a4b31b65bc5cc2c6311076b
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U> -}
-1edf6abbd07b484769a409148678ffe9
+63a1ae3a9c6a31a45dbbb1b10e81816b
+  testIBANs :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs223
+                   Main.testIBANs1) -}
+bf3662c163ec3a0de0ee3ada9f6daf52
+  testIBANs1 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs221
+                   Main.testIBANs2) -}
+560c9249c2d7ef9bc0ecf124840f8097
+  testIBANs10 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs203
+                   Main.testIBANs11) -}
+b0f9dbb801c0bb6ec1b21a40eb5844a3
+  testIBANs100 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SC52BAHL01031234567890123456USD"#) -}
+4876d4422435820e654d7f8bf7e0920e
+  testIBANs101 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs102) -}
+5b6cef198ec47004de42933a8fa47351
+  testIBANs102 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("RS35105008123123123173"#) -}
+4b5f75fc52760bc05b169d9c1814e74f
+  testIBANs103 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs104) -}
+d5924afce8c309f7e3d617ccb0580644
+  testIBANs104 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SA4420000001234567891234"#) -}
+d8c25e4eda8f13a2a14727eeaed173c8
+  testIBANs105 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs106) -}
+a5818a6a933c65ad90e4a9fe67943e47
+  testIBANs106 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("ST23000200000289355710148"#) -}
+79c9acfb1cc36746c6548488bac7b223
+  testIBANs107 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs108) -}
+871a4f04338011b3e6e4c1dedabde5fe
+  testIBANs108 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SM76P0854009812123456789123"#) -}
+77ca5cbf71dfede91303e3dbb5d00a21
+  testIBANs109 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs110) -}
+c8dffc0cec802f7f4b05584b6850d942
+  testIBANs11 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs201
+                   Main.testIBANs12) -}
+49c3ba965e4024dfa9520b4ce9dc00cc
+  testIBANs110 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("LC14BOSL123456789012345678901234"#) -}
+db6abfbc3d0c85a5495c82b9a2afbb6b
+  testIBANs111 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs112) -}
+7e8e774f9efcd8b1b625fff0e9a4814d
+  testIBANs112 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("RO09BCYP0000001234567890"#) -}
+f681d4705cae31e5986782bc943f90c3
+  testIBANs113 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs114) -}
+b9b2d792b9408341bf7f1c48fc39fc0d
+  testIBANs114 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("QA54QNBA000000000000693123456"#) -}
+d8cc19d378ffefb4298f29adbcf5ee36
+  testIBANs115 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs116) -}
+59c29886d4f9b2a842242289a12bec85
+  testIBANs116 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("PT50002700000001234567833"#) -}
+4263c70f20acdcbf8438c060553715f4
+  testIBANs117 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs118) -}
+b4b4fefa4fc227728279a779602c0e9a
+  testIBANs118 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("PL10105000997603123456789123"#) -}
+28ad065aba2ae55f85a39a4bbcbd6ac5
+  testIBANs119 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs120) -}
+7025d1c22a8b7c180e4d86e1d71dfa33
+  testIBANs12 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs199
+                   Main.testIBANs13) -}
+0a4f4f3bff2560dec1c32bfe8f96abbb
+  testIBANs120 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("PS92PALS000000000400123456702"#) -}
+19b78a422da36028da3c64fa4c9bd1ed
+  testIBANs121 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs122) -}
+e60328099652981c065857b699a1c7a1
+  testIBANs122 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("PK36SCBL0000001123456702"#) -}
+d7ea7bbff58f89afbc4d31b02bad14e2
+  testIBANs123 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs124) -}
+c3b2fbf7e076562f9253ff7f0f575651
+  testIBANs124 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("NO8330001234567"#) -}
+9e1428972e5697c832a79bdcab80d5a2
+  testIBANs125 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs126) -}
+e5ef00c7b7702540c4f8448a680976b0
+  testIBANs126 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("NL02ABNA0123456789"#) -}
+462b5e58675bc8b3ae2434e8855f84ab
+  testIBANs127 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs128) -}
+b62ed71b14971e5793483d2d3aae892d
+  testIBANs128 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("ME25505000012345678951"#) -}
+b5f6749949b194e7634f0e5ad534e992
+  testIBANs129 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs130) -}
+356c1e9006b5c35cd7ff85f1b59b382d
+  testIBANs13 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs197
+                   Main.testIBANs14) -}
+ba5cf1fbb8c8ee2893e5c7e80e278347
+  testIBANs130 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("MC5810096180790123456789085"#) -}
+b2b60d75c9dcbe9249e2fe8362946122
+  testIBANs131 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs132) -}
+374307774b6732f14a1b21458b95f68f
+  testIBANs132 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("MD21EX000000000001234567"#) -}
+c2a6e783ec515f99654e1e4f1d8241ec
+  testIBANs133 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs134) -}
+1e35396bd1b36b1e31c8e0a4ba08b129
+  testIBANs134 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("MU43BOMM0101123456789101000MUR"#) -}
+04c86d2293e193ceb11766f537749825
+  testIBANs135 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs136) -}
+aed07fb7bd904b55d012c4e6dcd2e506
+  testIBANs136 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("MR1300020001010000123456753"#) -}
+44ba978cc2147cd8471fc58177a5e477
+  testIBANs137 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs138) -}
+9a64e7d911fb6ccf0236f8a244d9c0df
+  testIBANs138 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("MT31MALT01100000000000000000123"#) -}
+0fd6f631c0d6bc3604e365244aa6f3cd
+  testIBANs139 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs140) -}
+31b6bc638aab59c3d9e24caee2f0d046
+  testIBANs14 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs195
+                   Main.testIBANs15) -}
+36aea34af800931546b8e34661738ae6
+  testIBANs140 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("MK07200002785123453"#) -}
+48f6b5dd12733a6bf58e9de5208eee86
+  testIBANs141 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs142) -}
+fa472c96b7ef51365cd2e69759df7aae
+  testIBANs142 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("LU120010001234567891"#) -}
+e992f76103edec9c2a9b3928121685e1
+  testIBANs143 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs144) -}
+80b9163114b327f41723e53d2f35b996
+  testIBANs144 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("LT601010012345678901"#) -}
+c2aa1e322d5f5570169c70358f2df53b
+  testIBANs145 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs146) -}
+86a4fae04f8427214e5e1843217a2619
+  testIBANs146 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("LI7408806123456789012"#) -}
+59f6c62543607e802719f7be0d3e6311
+  testIBANs147 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs148) -}
+f54674dbc24ae55dd8b1a9f833c819c9
+  testIBANs148 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("LB92000700000000123123456123"#) -}
+bdd8bdf5bf47ea5c531282cda9a5ab29
+  testIBANs149 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs150) -}
+d2fc75b6ee959f7e2dd841ec38ae0a21
+  testIBANs15 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs193
+                   Main.testIBANs16) -}
+fab2f42c01d7fe3abec5d4d75555d0c6
+  testIBANs150 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("LV97HABA0012345678910"#) -}
+9c7698ee77b55aa0f13f82ecb9435918
+  testIBANs151 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs152) -}
+f5fc309a363b22c112151412b2fef2f1
+  testIBANs152 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("KW81CBKU0000000000001234560101"#) -}
+2562595ce8c1f104236e4900b8a2e908
+  testIBANs153 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs154) -}
+699281b58c5213706db0e9a762b50129
+  testIBANs154 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("XK051212012345678906"#) -}
+309e29971f6acf2ca366b1afb88fec74
+  testIBANs155 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs156) -}
+7733e8df51b783b68fd7798db7d7b897
+  testIBANs156 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("KZ563190000012344567"#) -}
+bab661efc8b74ee82d204ec285104189
+  testIBANs157 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs158) -}
+b2f3344b0f22d115077a33ce57f29c00
+  testIBANs158 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("JO71CBJO0000000000001234567890"#) -}
+66b98d94888161cb8c5825ed1e7d2865
+  testIBANs159 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs160) -}
+b175ea7e4901effa49b7b9da67008b8b
+  testIBANs16 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs191
+                   Main.testIBANs17) -}
+864268e683ed85db198b95a59e77fbfa
+  testIBANs160 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("IT60X0542811101000000123456"#) -}
+a9d5e08369ae3b4fbcb02765b3eebc47
+  testIBANs161 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs162) -}
+12fb48d2d78b1ea21d6158a8db401c31
+  testIBANs162 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("IL170108000000012612345"#) -}
+f1cc182d09bd1d08b15fd4cf1a0386a0
+  testIBANs163 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs164) -}
+3eb8b49d58867bc211991b0064114525
+  testIBANs164 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("IE64IRCE92050112345678"#) -}
+0bfdcb593b04e4199817b56afd98de4f
+  testIBANs165 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs166) -}
+b6cad80370c4535d0b529b902c80eca6
+  testIBANs166 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("IQ20CBIQ861800101010500"#) -}
+5a31140eb1fdaad6625b4257711452d9
+  testIBANs167 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs168) -}
+654498ab1f0b2023b0194b7c14dbb086
+  testIBANs168 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("IS030001121234561234567890"#) -}
+66def0f36c42fff5f77b75b9c1b340f4
+  testIBANs169 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs170) -}
+285fb2bf6c2f24f5df3a4114b01fad64
+  testIBANs17 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs189
+                   Main.testIBANs18) -}
+ff8cf637984633cfedb63087911900ca
+  testIBANs170 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("HU93116000060000000012345676"#) -}
+575644c34a729ffa95f5f2a9cc096f30
+  testIBANs171 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs172) -}
+08bd4e3c13f5c2d2f450f7300ab3cef0
+  testIBANs172 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("GT20AGRO00000000001234567890"#) -}
+3b3a476303312e6b3a7b70a78f9ee05d
+  testIBANs173 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs174) -}
+fec2a83505a9e3cbb9de0dc9ddbb9ade
+  testIBANs174 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("GL8964710123456789"#) -}
+f0c9203f7cf236f8ef44bfe9a8383046
+  testIBANs175 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs176) -}
+d4faf75d6cf5f106699efc9a9d3c28cc
+  testIBANs176 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("GR9608100010000001234567890"#) -}
+3da057dc25571998af5387f0a0ab04ad
+  testIBANs177 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs178) -}
+9399f8606db40b55460416716050528c
+  testIBANs178 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("GI04BARC000001234567890"#) -}
+52eb7c92c09cfdadd10830049be60bfe
+  testIBANs179 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs180) -}
+b7058d202c9189aa44b286edf1dd853e
+  testIBANs18 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs187
+                   Main.testIBANs19) -}
+652f6cd22ea9b530f4a136fd8366e4ed
+  testIBANs180 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("DE91100000000123456789"#) -}
+747033173f4657d07b6411586c9682e6
+  testIBANs181 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs182) -}
+af6cfd4aa2ff75ee89c858e9b3bdcdc4
+  testIBANs182 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("GE60NB0000000123456789"#) -}
+16334f6516bf8d17194e1d4ecada72aa
+  testIBANs183 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs184) -}
+37e502d373b5c614be8dfe36d069620d
+  testIBANs184 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("FR7630006000011234567890189"#) -}
+bf21312e8824770024f0817e8f25d06e
+  testIBANs185 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs186) -}
+975d778a891d2b327a209fbda4c3619d
+  testIBANs186 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("FI1410093000123458"#) -}
+b53910ce7026d82d9c3192009b863e93
+  testIBANs187 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs188) -}
+2f1973dbabdd29bc3d92939d3318c264
+  testIBANs188 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("FO9264600123456789"#) -}
+7f3f137ddc1d8f0ab502d77f5fdcf767
+  testIBANs189 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs190) -}
+2b67d4ca984a4f4c115115ac7a7e9d4e
+  testIBANs19 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs185
+                   Main.testIBANs20) -}
+860cc93eafe03267b7f46c6fec3fff2d
+  testIBANs190 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("EE471000001020145685"#) -}
+be70d1b6fce998d996d1460665f07129
+  testIBANs191 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs192) -}
+42caca4ace0dd932182372e618733dad
+  testIBANs192 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SV43ACAT00000000000000123123"#) -}
+a7f19843a34473f6b107eff2d1193227
+  testIBANs193 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs194) -}
+661e55d0c5d6550e08f70d9f66841fed
+  testIBANs194 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("DO22ACAU00000000000123456789"#) -}
+4eeb7b33210d97fd945142bbc3ba6971
+  testIBANs195 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs196) -}
+85a9877d757c0c7285367713940037b6
+  testIBANs196 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("DK9520000123456789"#) -}
+a7cb380f9fd692cbb8ef32995997558f
+  testIBANs197 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs198) -}
+967b672bb0efd012dc89a4252d253330
+  testIBANs198 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("CZ5508000000001234567899"#) -}
+b429827cb69766be7f992063c2840cd0
+  testIBANs199 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs200) -}
+06666f8b6c49046dbc59edf423dd1ef5
+  testIBANs2 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs219
+                   Main.testIBANs3) -}
+d8a30d043388b87fa68326159a837fa6
+  testIBANs20 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs183
+                   Main.testIBANs21) -}
+c28358c9f155a68e30904c7ac51809a9
+  testIBANs200 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("CY21002001950000357001234567"#) -}
+047de3d7054f39629fc6c0be14becb1b
+  testIBANs201 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs202) -}
+762979bb853405850c17308704073b95
+  testIBANs202 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("HR1723600001101234565"#) -}
+a53a9fd5cea14c5e09fa4b0546c77681
+  testIBANs203 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs204) -}
+bc3790f6c9bdba9c006c3bba070d7535
+  testIBANs204 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("CR23015108410026012345"#) -}
+617ffbdd90ce41078892be19c41f175b
+  testIBANs205 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs206) -}
+f1e276b7b4d0014c6ed8de53efb19e05
+  testIBANs206 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("BG18RZBB91550123456789"#) -}
+bdcf8335e10f2dbf24befb31d677e9a3
+  testIBANs207 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs208) -}
+d84aef576abee0993d120818dbb8a1a3
+  testIBANs208 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("BR1500000000000010932840814P2"#) -}
+52a429307b9a7d020f81db6149171b50
+  testIBANs209 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs210) -}
+5219e9f36ce4760c1562b14bcacca03e
+  testIBANs21 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs181
+                   Main.testIBANs22) -}
+973280123b9fc96e31647ac2c8e9b8f4
+  testIBANs210 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("BA393385804800211234"#) -}
+0b92b162d62bc250e1c825dcf1fb4012
+  testIBANs211 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs212) -}
+e7d5e56151a921b6e57d6425159590f6
+  testIBANs212 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("BE71096123456769"#) -}
+7cbefb2db8c1d3256043e966fe1d3961
+  testIBANs213 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs214) -}
+598a2ddf670059e225311c540ce40619
+  testIBANs214 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("BY86AKBB10100000002966000000"#) -}
+a24e33eff06fe4e4c4f075b548a2c2c6
+  testIBANs215 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs216) -}
+5306689e3d7ef0a232ee0288a4d86826
+  testIBANs216 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("BH02CITI00001077181611"#) -}
+50d850b8d8798c36180bf188d6eb1bd1
+  testIBANs217 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs218) -}
+03acc0df8c654529ed8069907fda502e
+  testIBANs218 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("AZ96AZEJ00000000001234567890"#) -}
+20e20f05c2d643040ce624d645c8335a
+  testIBANs219 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs220) -}
+7e8272ec4ba3eeb748adab81e40ceb12
+  testIBANs22 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs179
+                   Main.testIBANs23) -}
+6ab17cbd3e1f918c2e545a53926f3c20
+  testIBANs220 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("AT483200000012345864"#) -}
+0469abf973a96e35b0f44ecfbcc7e6d4
+  testIBANs221 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs222) -}
+74a2b4c81c0f7d3081f1fff9220b574f
+  testIBANs222 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("AD1400080001001234567890"#) -}
+f17a0a57e8a9e46ce66d09544dddda4b
+  testIBANs223 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs224) -}
+578c0d8755883896da60ca5bec579027
+  testIBANs224 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("AL35202111090000000001234567"#) -}
+984ecf5dd88b7af8fb611f7407463bdc
+  testIBANs23 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs177
+                   Main.testIBANs24) -}
+4a40fea1cef9678fe5a66fbff8c8ae12
+  testIBANs24 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs175
+                   Main.testIBANs25) -}
+7c0233de5981b4504fb85f12241ce012
+  testIBANs25 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs173
+                   Main.testIBANs26) -}
+2a75567649af648381f64e9a0560393c
+  testIBANs26 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs171
+                   Main.testIBANs27) -}
+291043d7bede2194e7abdcb5bbe129b1
+  testIBANs27 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs169
+                   Main.testIBANs28) -}
+cba0e71c23413d44bfd57a32fbcfa2fb
+  testIBANs28 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs167
+                   Main.testIBANs29) -}
+e38c75a16255fc62faaf8e83d721b4a1
+  testIBANs29 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs165
+                   Main.testIBANs30) -}
+0c98387bb0d461e0a3a29013534e3f26
+  testIBANs3 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs217
+                   Main.testIBANs4) -}
+3d27f42a3cac0251b90b837c501eb40b
+  testIBANs30 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs163
+                   Main.testIBANs31) -}
+fff577f5e612d52820b9964972eaed9d
+  testIBANs31 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs161
+                   Main.testIBANs32) -}
+1e8f1ef2806ebf4b55ade6ddefc07321
+  testIBANs32 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs159
+                   Main.testIBANs33) -}
+4d9bf4d940313c90fe197c1b1d9ce67d
+  testIBANs33 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs157
+                   Main.testIBANs34) -}
+aaecf539c4e522d8e03f94788e4172c0
+  testIBANs34 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs155
+                   Main.testIBANs35) -}
+777ccc96b9fdfa159b02809e57492c56
+  testIBANs35 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs153
+                   Main.testIBANs36) -}
+b676fc7465c0827a2336413ba356b8cf
+  testIBANs36 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs151
+                   Main.testIBANs37) -}
+532c6733e5381a17015dbe5c7d833403
+  testIBANs37 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs149
+                   Main.testIBANs38) -}
+68e7eb49690d9ace4394a59a21e0456b
+  testIBANs38 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs147
+                   Main.testIBANs39) -}
+c291f1d57f88c92966f22a414238cf7b
+  testIBANs39 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs145
+                   Main.testIBANs40) -}
+483b43a35a81746ca165479733f24ca0
+  testIBANs4 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs215
+                   Main.testIBANs5) -}
+b315c59770482da1c300a9c7457d7f8a
+  testIBANs40 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs143
+                   Main.testIBANs41) -}
+2da282d716aa68a3010daaecef12a63f
+  testIBANs41 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs141
+                   Main.testIBANs42) -}
+1bedc7f4d6cef9df9aa1f63e4769101f
+  testIBANs42 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs139
+                   Main.testIBANs43) -}
+a448838a697824c096d2eb29e6ccbebe
+  testIBANs43 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs137
+                   Main.testIBANs44) -}
+e1d5ad1078cc7838d97bf381fb3634e4
+  testIBANs44 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs135
+                   Main.testIBANs45) -}
+4331483910f26e989b9d802aa3115586
+  testIBANs45 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs133
+                   Main.testIBANs46) -}
+55866ee492c192b7f23832d9954faae3
+  testIBANs46 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs131
+                   Main.testIBANs47) -}
+468b8c9626e3230f03de91a92f595fe0
+  testIBANs47 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs129
+                   Main.testIBANs48) -}
+521713fa4d6965eeefbef6b2bd8428a1
+  testIBANs48 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs127
+                   Main.testIBANs49) -}
+097c9552b9f31c4e63ce586216d752f2
+  testIBANs49 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs125
+                   Main.testIBANs50) -}
+a9ff05bb0d3930919e6bbac7213c0578
+  testIBANs5 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs213
+                   Main.testIBANs6) -}
+9768e5c66ad6ba9cef7dc96dc32524fb
+  testIBANs50 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs123
+                   Main.testIBANs51) -}
+52d9744738461047a8ece11dd5096114
+  testIBANs51 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs121
+                   Main.testIBANs52) -}
+0352f88ac2c541d510681d9d586ed294
+  testIBANs52 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs119
+                   Main.testIBANs53) -}
+9dd28861d0631d64ff43f2d68cb09027
+  testIBANs53 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs117
+                   Main.testIBANs54) -}
+f8f3cbab70d01b723c3a7772c19b3ae5
+  testIBANs54 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs115
+                   Main.testIBANs55) -}
+b697082a6abaa212dbab928657e62b00
+  testIBANs55 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs113
+                   Main.testIBANs56) -}
+1593d70a2dfd1db417f2c6dd49b9aa71
+  testIBANs56 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs111
+                   Main.testIBANs57) -}
+059171f637221c53ede671bbc7cd1460
+  testIBANs57 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs109
+                   Main.testIBANs58) -}
+71b7bfb93171821f963efd93055bcb30
+  testIBANs58 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs107
+                   Main.testIBANs59) -}
+ff9be2624e1a085c879f9718893563ae
+  testIBANs59 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs105
+                   Main.testIBANs60) -}
+fdcc8a6a668bb4cf014e91b361a58017
+  testIBANs6 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs211
+                   Main.testIBANs7) -}
+2521f034e27478650e6c28a451fa22f5
+  testIBANs60 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs103
+                   Main.testIBANs61) -}
+c8b068b6a2be25eba86ec4123422796c
+  testIBANs61 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs101
+                   Main.testIBANs62) -}
+799f4bcf52b5b175b73417d7379bc4a4
+  testIBANs62 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs99
+                   Main.testIBANs63) -}
+97ecd0f96f76fcf67ed5474d8d005b52
+  testIBANs63 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs97
+                   Main.testIBANs64) -}
+444ac4e74c2482215f269246d3c1002a
+  testIBANs64 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs95
+                   Main.testIBANs65) -}
+935a6011f7fc95562cae4767c9db7308
+  testIBANs65 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs93
+                   Main.testIBANs66) -}
+bb382f40f7b861e59330a95faa27da6a
+  testIBANs66 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs91
+                   Main.testIBANs67) -}
+e12ed8033921984dfb29b982365f8a22
+  testIBANs67 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs89
+                   Main.testIBANs68) -}
+3afe74fc9da91e0c81b2a7226438a7fc
+  testIBANs68 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs87
+                   Main.testIBANs69) -}
+08a3ad3a20c19886df4583cc257b807d
+  testIBANs69 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs85
+                   Main.testIBANs70) -}
+ec3d5bbde3f0130af9a89e7aa7090d34
+  testIBANs7 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs209
+                   Main.testIBANs8) -}
+b23df2f03b9635dcce7be7a45fe350ea
+  testIBANs70 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs83
+                   Main.testIBANs71) -}
+9dfaf43afb2774ebbb37c5942e8421f1
+  testIBANs71 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs81
+                   Main.testIBANs72) -}
+bc9b0d6e2944524fde85a0bb1d9f3141
+  testIBANs72 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs79
+                   Main.testIBANs73) -}
+cfe97a590b2647a84b8898d2c161acd0
+  testIBANs73 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs77
+                   Main.testIBANs74) -}
+00e9cd9ac1e985a214a0115a00130b9a
+  testIBANs74 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs75
+                   (GHC.Types.[] @ [GHC.Types.Char])) -}
+7474257032d20f61a5cff5c6cdb83dfd
+  testIBANs75 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs76) -}
+10476c9a2e6a2657272508c4c19c8bbd
+  testIBANs76 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("VG21PACG0000000123456789"#) -}
+a6c1a8143c99c2a0b9db779f7065e5de
+  testIBANs77 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs78) -}
+04cd4e4446cbc342e84f8087cbe55732
+  testIBANs78 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("GB98MIDL07009312345678"#) -}
+eaac147261085fd9ce36e8fed3070f97
+  testIBANs79 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs80) -}
+71b3a67737b5d520b017fcb2beb9af1c
+  testIBANs8 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs207
+                   Main.testIBANs9) -}
+3268a03470bdb3fedf60c55fcbb6e9fc
+  testIBANs80 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("AE460090000000123456789"#) -}
+f1990d6ecc3352ddfa239984a65bdc91
+  testIBANs81 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs82) -}
+6bbd7fa544f7da6746ce2af2c2891dc4
+  testIBANs82 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("UA903052992990004149123456789"#) -}
+574f74aca536f9ff312325152015e539
+  testIBANs83 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs84) -}
+fe925033d04e6fa55b49c870901c80d3
+  testIBANs84 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("TR320010009999901234567890"#) -}
+0faad542dedf06e1acae4f047fadcae8
+  testIBANs85 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs86) -}
+c36702146c55ddbb9d6579994177ab70
+  testIBANs86 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("TN5904018104004942712345"#) -}
+3dfb517c1b1785f0c50dfcda0a1ca2bd
+  testIBANs87 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs88) -}
+1ed9c3eb69fbb5a2eb84a8ea47f1234a
+  testIBANs88 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("TL380010012345678910106"#) -}
+d0c3f9d03781c1a4bbc8d2a7ddf0036f
+  testIBANs89 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs90) -}
+9254ec34667679d329f9713e396f8ace
+  testIBANs9 :: [[GHC.Types.Char]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Char]
+                   Main.testIBANs205
+                   Main.testIBANs10) -}
+68cdfa3514e4ac947536c272caae3745
+  testIBANs90 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("CH5604835012345678009"#) -}
+cedb7d9f79f02fb28cfa8752f766a829
+  testIBANs91 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs92) -}
+b7aaaf0f194b88dda20b12eec54ae4e4
+  testIBANs92 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SE7280000810340009783242"#) -}
+7920893299b8d0e9bde3a9f0a7a8300f
+  testIBANs93 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs94) -}
+99f3ec533c3b69252437a680442f140a
+  testIBANs94 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("ES7921000813610123456789"#) -}
+209f8a68e6af8f7c739c3f71486520ba
+  testIBANs95 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs96) -}
+46b24ffc45b3fd31cf2b3759de937cdf
+  testIBANs96 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SI56192001234567892"#) -}
+3ee90f394d2b293aba277fc014221a15
+  testIBANs97 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs98) -}
+adb85dc9b12449f74ff6a3e30eeb5c71
+  testIBANs98 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SK8975000000000012345671"#) -}
+adc98e672e31a5d342b38e78864562ea
+  testIBANs99 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.testIBANs100) -}
+9c4ef982c9cf7a7314c4ad6165b23f25
   testPermutations :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.testPermutations1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-538ec57fc49052e55521e1c704fafbdc
+7a8aec76053b6239a246259b5598c422
   testPermutations1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -2414,7 +3579,7 @@ d12239c32a4b31b65bc5cc2c6311076b
                    Main.testPermutations2
                    GHC.Types.True
                    ipv10 } } } } } }) -}
-5baef5263c46ff81e1a8b42190041114
+714d49561b80629b4e7724718a8be195
   testPermutations10 :: [GHC.Types.Char]
   {- Unfolding: (case Main.permutationProperties_$spropAllSmaller
                         Main.permutationTestList of wild {
@@ -2423,12 +3588,12 @@ d12239c32a4b31b65bc5cc2c6311076b
 f4c975f573a4f3f00c3b8c21b9f7329f
   testPermutations11 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing all smaller lists: "#) -}
-32137af2cee0860fb1eb354a26e7f5ba
+1614d4e0319b3d6940902b957b4cf6b2
   testPermutations12 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations14
                    Main.testPermutations13) -}
-72359e319ba5ada99c06f7b0d71c5ea2
+b04dc554f97d4603d2a7f06e05908848
   testPermutations13 :: [GHC.Types.Char]
   {- Unfolding: (case Main.permutationProperties_$spropAllSwapped
                         Main.permutationTestList of wild {
@@ -2437,12 +3602,12 @@ f4c975f573a4f3f00c3b8c21b9f7329f
 2dbbb734330bd7296f4fd53d6b4f6670
   testPermutations14 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing all swapped lists: "#) -}
-45cce43bc9464bf9525b293d436c8940
+34ebd07f048dc6b9a9f8044a1389253d
   testPermutations15 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations17
                    Main.testPermutations16) -}
-55a0ceb42053f2d0046212b54fbee7cd
+4de5b9f062ac842d8674fee76ec246b9
   testPermutations16 :: [GHC.Types.Char]
   {- Unfolding: (case Main.isDerangement_$sisPermutation
                         Main.permutationTestList
@@ -2455,18 +3620,18 @@ f4c975f573a4f3f00c3b8c21b9f7329f
 e993608182ca2652c863d17f60f69736
   testPermutations17 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing reversed list: "#) -}
-c5fa3c4822ed58e17d4223b9000e1508
+51c56d404085046d7ef35dd5a7701f3a
   testPermutations18 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations20
                    Main.testPermutations19) -}
-cbbb2a32d17b7233c6008c12fdfb8700
+8fee23e5f4cec19c4c91938cd35f1df4
   testPermutations19 :: [GHC.Types.Char]
   {- Unfolding: (case Main.permutationProperties_$spropAllRotations
                         Main.permutationTestList of wild {
                    GHC.Types.False -> Main.checkTestResult3
                    GHC.Types.True -> Main.checkTestResult1 }) -}
-7f27221143a96e8da14e7ea74f87a770
+e3f6d8e74ba7739a14c08748bf8d2000
   testPermutations2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations4
@@ -2474,12 +3639,12 @@ cbbb2a32d17b7233c6008c12fdfb8700
 1fffa2aeed651117c2b92f98a7281a97
   testPermutations20 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing all rotated lists: "#) -}
-381047701f7d4a8d6d19fe51870e344a
+48c6c80ae8ffc40619030e379a6833d3
   testPermutations21 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations23
                    Main.testPermutations22) -}
-f336594834603c7da5ef0ef501ddc465
+ffb727bc9531700d656977900f5c1495
   testPermutations22 :: [GHC.Types.Char]
   {- Unfolding: (case Main.isDerangement_$sisPermutation
                         Main.permutationTestList
@@ -2489,7 +3654,7 @@ f336594834603c7da5ef0ef501ddc465
 2b4f62792a84a1906ceae2b76937be7c
   testPermutations23 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing same list: "#) -}
-121172c3d4a7b1341ed223a0172c0c00
+59344b3c0b40f1217b9bd3a6037a8370
   testPermutations3 :: [GHC.Types.Char]
   {- Unfolding: (case Main.propIncreased
                         Main.permutationTestList5
@@ -2499,12 +3664,12 @@ f336594834603c7da5ef0ef501ddc465
 6cde21d5c55140ddae787ddf29ba6f5c
   testPermutations4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing increased list: "#) -}
-0796efd67d4e8a5c5c1afa311adaa9e6
+9b8f742eeed4bb3e6b10fba7d4c5f5b5
   testPermutations5 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations8
                    Main.testPermutations6) -}
-d8aeef8aec4930bbacafb9d04c8febc5
+ddea3c85d4c972868d8865eb9cbf939f
   testPermutations6 :: [GHC.Types.Char]
   {- Unfolding: (case Main.isDerangement_$sisPermutation
                         Main.permutationTestList
@@ -2521,12 +3686,12 @@ d8aeef8aec4930bbacafb9d04c8febc5
 2812dd0077871a18365e6266306f74ab
   testPermutations8 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Testing all bigger lists: "#) -}
-39c1f53343a179ecf1fc18fc8668535e
+aa98eb3f9fb5a0b522653b5e8c0352bc
   testPermutations9 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackAppendCString#
                    Main.testPermutations11
                    Main.testPermutations10) -}
-c979a6f342f378fe521cb86118eafc75
+c690f8716b3c9f95bc4250979ec9e9c7
   testPropAllDeranSmaller :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: (\ (list :: [GHC.Types.Int]) ->
@@ -2537,7 +3702,7 @@ c979a6f342f378fe521cb86118eafc75
                    -> case Main.propAllDeranSmaller list of wild {
                         GHC.Types.False -> GHC.Types.True
                         GHC.Types.True -> GHC.Types.False } } }) -}
-ac55dc39663767160eb4f9c2109ed25b
+a0e58e0933e3e9a6d3876b32a31481fc
   testPropDeranBigger :: [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
@@ -2550,7 +3715,7 @@ ac55dc39663767160eb4f9c2109ed25b
                            list) of wild {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False }) -}
-f7ecaa36790e14fdc8b7360edc388e37
+53002a840fa9a5f5233f2d7692d991f0
   testPropDeranIncreased ::
     GHC.Types.Int -> [GHC.Types.Int] -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S(S),1*U(1*U)><L,1*U>,
@@ -2559,13 +3724,13 @@ f7ecaa36790e14fdc8b7360edc388e37
                 (\ (w :: GHC.Types.Int) (w1 :: [GHC.Types.Int]) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Main.$wtestPropDeranIncreased ww1 w1 }) -}
-1ee2272c6045d62f87b6328dfab8c986
+ba200e6387cf9d90b2a74a42d58c8c67
   testQuartiles :: GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S(S),1*U(U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Types.Int) ->
                  case w of ww { GHC.Types.I# ww1 -> Main.$wtestQuartiles ww1 }) -}
-685024dde35ca55caca007e0f7d3e15f
+06774c81cfc30f84f75d14b07a34648f
   testQuartilesSafe :: GHC.Types.Int -> GHC.Types.IO GHC.Types.Bool
   {- Arity: 2, Strictness: <S(S),1*U(U)><S,U>,
      Unfolding: InlineRule (0, True, True)
@@ -2573,7 +3738,7 @@ f7ecaa36790e14fdc8b7360edc388e37
                   `cast`
                 (<GHC.Types.Int>_R
                  ->_R Sym (GHC.Types.N:IO[0] <GHC.Types.Bool>_R)) -}
-8d4f27c218465c3d9f070ae706609b3e
+8640d12a96ab7ef139c35760bab3d4ac
   testQuartilesSafe1 ::
     GHC.Types.Int
     -> GHC.Prim.State# GHC.Prim.RealWorld
