@@ -68,11 +68,11 @@ parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStr
                   else error ("failed test on: " ++ show x)
 
 -- Assignment 3
--- Time: 250 minutes
+-- Time: 610 minutes
 
 -- Conversion to cnf is simply applying the De Morgan law and the Distributive law in order.
 convertToCNF :: Form -> Form
-convertToCNF form = while (not . isCnf) applyDistributiveLaw (applyDeMorganLaw form)
+convertToCNF form = applyDistributiveLaw $ while (not . isCnf) applyDistributiveLaw (applyDeMorganLaw form)
 
 -- Remove negations of non atoms, implications and equivalences in the following way:
 -- ¬(p ∨ q) == ¬p ∧ ¬q
@@ -103,16 +103,27 @@ applyDistributiveLaw :: Form -> Form
 applyDistributiveLaw (Neg form) = Neg (applyDistributiveLaw form)
 applyDistributiveLaw (Cnj [form]) = applyDistributiveLaw form
 applyDistributiveLaw (Dsj [form]) = applyDistributiveLaw form
-applyDistributiveLaw (Cnj formList) = Cnj (foldr (\x acc -> let y = applyDistributiveLaw x in if isConjunction y then getAsList y++acc else y:acc) [] formList)
+applyDistributiveLaw (Cnj formList) = Cnj (removeDuplicates $ optimizeOR(foldr (\x acc -> let y = applyDistributiveLaw x in if isConjunction y then getAsList y++acc else y:acc) [] formList))
 applyDistributiveLaw (Dsj formList) = Dsj (foldr (\x acc -> let y = applyDistributiveLaw x in
            if not (null acc) && (isConjunction x || isConjunction (head acc)) then let cnjOne = head acc
                                                                                        cnjTwo = y
                                                                                        conj = Cnj (if isDisjunction cnjOne then map (\ x -> Dsj (x : getAsList cnjOne)) (getAsList cnjTwo)
                                                                                                     else if isDisjunction cnjTwo then map (\ x -> Dsj (x : getAsList cnjTwo)) (getAsList cnjOne)
                                                                                                     else [Dsj [x,y] | x <- getAsList cnjOne, y <- getAsList cnjTwo]) in conj: tail acc
-           else if isDisjunction y then getAsList y++acc
+           else if isDisjunction y then removeDuplicates (getAsList y++acc)
            else y:acc) [] formList)
 applyDistributiveLaw x = x
+
+optimizeOR :: [Form] -> [Form]
+optimizeOR (x:list) = let disjList = getAsList x in if isDisjunction x && any (\y -> any (\x -> x == negateLiteral y) disjList) disjList then optimizeOR list else x:optimizeOR list
+optimizeOR [] = []
+
+negateLiteral :: Form -> Form
+negateLiteral (Neg x) = x
+negateLiteral x = Neg x
+
+removeDuplicates :: Eq a => [a] -> [a]
+removeDuplicates = foldl (\y x -> if x `elem` y then y else y++ [x]) []
 
 isDisjunction :: Form -> Bool
 isDisjunction (Dsj x) = True
@@ -134,20 +145,27 @@ getAsList x = [x]
 
 isCnf :: Form -> Bool
 isCnf (Cnj formList) = all (\x -> (isDisjunction x && all isLiteral (getAsList x)) || isLiteral x) formList
-isCnf form = False
+isCnf (Dsj formList) = all isLiteral formList
+isCnf form = isLiteral form
+
+cnfProbe :: Int -> Int -> IO ()
+cnfProbe testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+                else generateActualForm >>= \x -> let cnfForm = convertToCNF x in do putStrLn ("Trying: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm))
+                                                                                     cnfProbe (testsExecuted+1) totalTests
 
 cnfTest :: Int -> Int -> IO ()
 cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
                 else generateActualForm >>= \x -> let cnfForm = convertToCNF x in if isCnf cnfForm && equiv x cnfForm then
                                                                                       do putStrLn ("pass on: " ++ show x)
                                                                                          cnfTest (testsExecuted+1) totalTests
-                                                                                  else do putStrLn ("failed test on: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm))
-                                                                                          cnfTest (testsExecuted+1) totalTests
+                                                                                  else error ("failed test on: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm))
+
+
 
 -- Assignment 4
 -- Time: 270 minutes
 
-maxTreeChance = 10 -- This number decides the size of the resulting form.
+maxTreeChance = 7 -- This number decides the size of the resulting form.
 
 data TreeState = TreeState {amountOfProperties :: Int, form :: Form, curRand :: Int}
 
@@ -226,10 +244,10 @@ main = do
   putStrLn $ "Testing if `p ∧ q` is logically equivalent to `p` (Expected: False): " ++ checkTestResult (not(equiv pAndQ p))
 
   putStrLn "\n== Assignment 2 (Testing the propositional formula parser) =="
-  parserTest 0 100
+  parserTest 0 10
 
   putStrLn "\n== Assignment 3 (Converting forms to CNF) =="
-  cnfTest 0 100
+  cnfTest 0 10
 
   putStrLn "\n== Assignment 4 (Creating a random form generator) =="
   print =<< generateActualForm
