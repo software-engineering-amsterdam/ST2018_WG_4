@@ -269,33 +269,78 @@ cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn 
 
 -- Assignment 4
 -- Time: 270 minutes
---
+-- I wanted to create a form generator that could generate EVERY FORM POSSIBLE. I made a design for it, and discussing it with Ana we decided that the generator
+-- should be finite (so not that there is ANY chance that it would be infinite). So that's what I made. 270 minutes later I have a form generator that can generate
+-- every possible Form (which is ideal for random testing purposes because there is no chance that my form generator would not support some form that would fail
+-- for any of the tests). I added comments to every method within this chapter, to explain the functionality of each part of the generator.
 
-maxTreeChance = 7 -- This number decides the size of the resulting form.
+-- This number, the `maxFormDepth`, is the big reason that this algorithm is actually finite. The algorithm will not create a form with clauses nesting deeper
+-- than the max depth, and when coming closer to the depth the chance actually becomes less that the algorithm will choose a non-atom over an atom.
+maxFormDepth = 7
 
+-- This is the data type that contains the state of creating the Form at any point during the runtime of the algorithm. It contains three fields:
+--            amountOfProperties: The current amount of different types of atoms that have been added to the form (for instance, a form `p ∧ ¬q` would contain two atoms: p and q).
+--            form: The current state of the formula.
+--            curRand: The current index that will be fetched from the random number list (more on this later).
 data TreeState = TreeState {amountOfProperties :: Int, form :: Form, curRand :: Int}
 
+-- This method generates an infinite list of random floating-point numbers between 0 and 1. These numbers are generated in advance, so I can unwrap the monad
+-- they're in and don't have to further bother any IO monads till the algorithm is over. The `curRand` field of the `TreeState` datatype holds the current
+-- index that will be fetched from this list.
 randomNumberStream :: IO [Float]
 randomNumberStream = do
     g <- newStdGen
     return $ randomRs (0.00,1.00) g
 
+-- Generates a random formula and returns it as an `IO Form`.
 generateActualForm :: IO Form
-generateActualForm = randomNumberStream >>= \x -> return (form (generateForm x (maxTreeChance-1) (TreeState 1 p 0))) -- This number decides the maximum amount of subforms in the resulting form.
+generateActualForm = randomNumberStream >>= \x -> return (form (generateForm x (maxFormDepth-1) (TreeState 1 p 0)))
 
+-- Retrieves the random number at the given index from the infinite random number list. Multiplies the random number so it is in between 0 and a given maximum,
+-- then converts it to an integer by using the `floor` function.
 getCurRandNum :: Int -> [Float] -> Int -> Int
 getCurRandNum x randList maxNum = floor ((randList !! x) * fromIntegral maxNum)
 
+-- Gives the current random number for a given treestate.
 getCurRand :: TreeState -> [Float] -> Int -> Int
 getCurRand TreeState{curRand = x} = getCurRandNum x
 
+-- Randomly chooses whether to add an atom or a non-atom to the formula. This is done by generating a random chace based on the current depth. For instance,
+-- if the depth is 2 and the `maxFormDepth` constant was set to 7, the chance that an atom will be generated is 2 and the chance that a non-atom will be generated
+-- is 7 - 2 = 5.
 generateForm :: [Float] -> Int -> TreeState -> TreeState
 generateForm randList leftTreeChance state = if randomChoice < leftTreeChance then doRandomlyNegate randList (chooseRandomSplitForm randList (leftTreeChance - 1) newState) else doRandomlyNegate randList (chooseRandomProperty randList newState)
-  where randomChoice = getCurRand state randList maxTreeChance
+  where randomChoice = getCurRand state randList maxFormDepth
         newState = TreeState (amountOfProperties state) (form state) (curRand state + 1)
 
+-- Randomly chooses a non-atom to be added to the formula. Two random numbers will be generated, which is shown in this tree:
+--
+--                    <-- firstRand -->
+--                           /\
+--                          /  \
+--                         /    \
+--                        /      \
+--                       /        \
+--                      /          \
+--                     /            \
+--                    /              \
+--                   /                \
+--                  /                  \
+--                 /                    \
+--                /                      \
+--       <-- secondRand -->       <-- secondRand -->
+--              /\                         /
+--             /  \                       / \
+--            /    \                     /   \
+--           /      \                   /     \
+--          /        \                 /       \
+--         -          -               -         -
+--  Conjunction   Disjunction   Implication  Equivalence
+--
+-- As visible in the tree, the second random number chooses (Conjunction or Disjunction) OR (Implication or Equivalence). The implication and equivalence call
+-- the `generateForm` method again twice to generate two new atoms or non-atoms. The Conjunction and Disjunction generate a list of a random size of random forms.
 chooseRandomSplitForm :: [Float] -> Int -> TreeState -> TreeState
-chooseRandomSplitForm randList leftTreeChance state = case firstRand of 0 -> let x = generateFormList randList leftTreeChance newState maxTreeChance []
+chooseRandomSplitForm randList leftTreeChance state = case firstRand of 0 -> let x = generateFormList randList leftTreeChance newState maxFormDepth []
                                                                              in if secondRand == 0 then treeStateListToTreeState Cnj x
                                                                                                            else treeStateListToTreeState Dsj x
                                                                         1 -> let x = generateForm randList leftTreeChance newState
@@ -306,21 +351,25 @@ chooseRandomSplitForm randList leftTreeChance state = case firstRand of 0 -> let
               secondRand = getCurRandNum (curRand state + 1) randList 2
               newState = TreeState (amountOfProperties state) (form state) (curRand state + 2)
 
+-- Converts a list of TreeStates (as retrieved when calling the `generateForm` for every item of the form list of a Conjunction or Disjunction) to a single treestate
+-- (which is a Conjunction or Disjunction respectively).
 treeStateListToTreeState :: ([Form] -> Form) -> [TreeState] -> TreeState
 treeStateListToTreeState f states = TreeState (amountOfProperties (last states)) (f (map form states)) (curRand (last states))
 
+-- Generates a random sized list of random forms for Conjunctions and Disjunctions.
 generateFormList :: [Float] -> Int -> TreeState -> Int -> [TreeState] -> [TreeState]
 generateFormList randList leftTreeChance state maxListSize currentFormList = case randNum of 0 -> generatedState:currentFormList
                                                                                              1 -> generatedState:generateFormList randList leftTreeChance generatedState (maxListSize-1) currentFormList
                                                             where randNum = getCurRand state randList 2
                                                                   generatedState = generateForm randList leftTreeChance (TreeState (amountOfProperties state) (form state) (curRand state + 1))
 
-
+-- Generates a random atom.
 chooseRandomProperty :: [Float] -> TreeState -> TreeState
 chooseRandomProperty randList state = TreeState (if chosenProperty == props then props + 1 else props) (Prop chosenProperty) (curRand state + 1)
   where props = amountOfProperties state
         chosenProperty = getCurRand state randList (props + 1)
 
+-- Randomly negates a TreeState.
 doRandomlyNegate :: [Float] -> TreeState -> TreeState
 doRandomlyNegate randNums state = TreeState (amountOfProperties state) (if doNegate == 0 then Neg (form state) else form state) (curRand state + 1)
   where doNegate = getCurRand state randNums 2
