@@ -72,7 +72,7 @@ parserTest testsExecuted totalTests = if testsExecuted == totalTests then putStr
 
 -- Conversion to cnf is simply applying the De Morgan law and the Distributive law in order.
 convertToCNF :: Form -> Form
-convertToCNF form = while (not . isCnf) convertToCNF (applyDeMorganLaw form)
+convertToCNF form = while (not . isCnf) applyDistributiveLaw (applyDeMorganLaw form)
 
 -- Remove negations of non atoms, implications and equivalences in the following way:
 -- ¬(p ∨ q) == ¬p ∧ ¬q
@@ -133,7 +133,7 @@ getAsList (Cnj x) = x
 getAsList x = [x]
 
 isCnf :: Form -> Bool
-isCnf (Cnj formList) = all (\x -> isDisjunction x && all isLiteral (getAsList x)) formList
+isCnf (Cnj formList) = all (\x -> (isDisjunction x && all isLiteral (getAsList x)) || isLiteral x) formList
 isCnf form = False
 
 cnfTest :: Int -> Int -> IO ()
