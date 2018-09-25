@@ -1,0 +1,728 @@
+
+==================== FINAL INTERFACE ====================
+2018-09-20 09:43:21.071660573 UTC
+
+interface main:Main 8043
+  interface hash: d4a7806cd6d032e6f318310b4e52a3fd
+  ABI hash: c383fccc8a42caf12b100800f73b17c1
+  export-list hash: 0577ff07091051ca92654557c8837756
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 5407408f5e7b7ece8a08c862d2a9f2a5
+  opt_hash: 14e536840aca4e889cad654e6f9b79c1
+  hpc_hash: 93b885adfe0da089cdf634904fd59f71
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Main.allEvals
+  Main.checkTestResult
+  Main.cnf
+  Main.contradiction
+  Main.entails
+  Main.equiv
+  Main.main
+  Main.pAndNotP
+  Main.pAndQ
+  Main.pOrNotP
+  Main.pOrQ
+  Main.tautology
+module dependencies: Lecture3
+package dependencies: QuickCheck-2.11.3 array-0.5.2.0
+                      base-4.11.1.0* containers-0.5.11.0 deepseq-1.4.3.0
+                      ghc-boot-th-8.4.3 ghc-prim-0.5.2.0 integer-gmp-1.0.2.0
+                      pretty-1.1.3.6 primitive-0.6.3.0 random-1.1*
+                      template-haskell-2.13.0.0 tf-random-0.5 time-1.8.0.2
+                      transformers-0.5.5.0
+orphans: transformers-0.5.5.0:Control.Monad.Trans.Error
+         time-1.8.0.2:Data.Time.Format.Parse
+         time-1.8.0.2:Data.Time.LocalTime.Internal.ZonedTime
+         time-1.8.0.2:Data.Time.LocalTime.Internal.LocalTime
+         time-1.8.0.2:Data.Time.Calendar.Gregorian base-4.11.1.0:GHC.Float
+         base-4.11.1.0:GHC.Base
+family instance modules: base-4.11.1.0:Control.Applicative
+                         base-4.11.1.0:Data.Complex base-4.11.1.0:Data.Functor.Compose
+                         base-4.11.1.0:Data.Functor.Const
+                         base-4.11.1.0:Data.Functor.Identity
+                         base-4.11.1.0:Data.Functor.Product base-4.11.1.0:Data.Functor.Sum
+                         base-4.11.1.0:Data.Monoid base-4.11.1.0:Data.Semigroup
+                         base-4.11.1.0:Data.Semigroup.Internal base-4.11.1.0:Data.Version
+                         base-4.11.1.0:Data.Void base-4.11.1.0:GHC.Exts
+                         base-4.11.1.0:GHC.Generics base-4.11.1.0:GHC.IO.Exception
+                         containers-0.5.11.0:Data.IntMap.Internal
+                         containers-0.5.11.0:Data.IntSet.Internal
+                         containers-0.5.11.0:Data.Map.Internal
+                         containers-0.5.11.0:Data.Sequence.Internal
+                         containers-0.5.11.0:Data.Set.Internal
+                         ghc-boot-th-8.4.3:GHC.ForeignSrcLang.Type
+                         ghc-boot-th-8.4.3:GHC.LanguageExtensions.Type
+                         pretty-1.1.3.6:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.6:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.3.0:Control.Monad.Primitive
+                         primitive-0.6.3.0:Data.Primitive.ByteArray
+                         template-haskell-2.13.0.0:Language.Haskell.TH.Syntax
+import  -/  QuickCheck-2.11.3:Test.QuickCheck e00d138ee3234e83a31cc3113c8c8ffb
+import  -/  base-4.11.1.0:Data.Char 3e89818e2b8ef1a2cc5393163484da72
+import  -/  base-4.11.1.0:Data.Foldable 8ed35c38958063956af33c935ea03444
+import  -/  base-4.11.1.0:Data.List 83dc843e47bfc0c5af51e19c6f3476d5
+import  -/  base-4.11.1.0:Data.Maybe 409c3da2b142470b68be39ce1d97a9f7
+import  -/  base-4.11.1.0:Data.String 1b97cff5f9627e73898d75997a9ccf7f
+import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
+import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
+import  -/  base-4.11.1.0:System.IO 1c239be44126f7b1ba512ea61300f4dc
+import  -/  ghc-prim-0.5.2.0:GHC.Classes 122abfcd7450c6c11602933c9ca5f80d
+import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
+import  -/  Lecture3 e7aa3775536d61807663859841e34829
+  exports: 9ddcc891a5d1fbc8e3c36d7ebeeced72
+  --> 9d8f2d04dcda7a24feb588679ecfebe1
+  Cnj 9c2c481db6e2ec045ea868407cbb0ca4
+  Dsj b4099d33bb7b2192fe92514d26bd459f
+  Form f1017ddd98abe9802319d139ccdb1a45
+  Neg 4ef3569eac125224ca98a9b34751ca1e
+  Prop b39bfa9279852cfcff515dde39a0396b
+  allVals 07371b0b3f53190327a90111c6d431c1
+  evl aea88ee9570620816adf506e66a1d266
+  p 54238374b6ad94e59436d9203e9bf31d
+  q ecb1ea6ecdc5b441c9806517ea4f59d9
+  satisfiable 6fdf2e1eed164a35cd204a5be2c9d0a6
+import  -/  random-1.1:System.Random 31994b60c33f032d578c64a928f735f7
+be86c9d078d3acbf19ba91fe74a24273
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module Main.$trModule3 Main.$trModule1) -}
+b09d86f2c49dd5176b544d8d13ddb6c5
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Main.$trModule2) -}
+e5875966b74dad2d29772660b8a75e33
+  $trModule2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Main"#) -}
+23b03bd7d075a00f5ad1ee10e6add7b8
+  $trModule3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Main.$trModule4) -}
+d026be77cb9ced20e35a61514e0458aa
+  $trModule4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("main"#) -}
+3e1d015d2fff6d5932ea6f8cefc4ac4d
+  allEvals :: Lecture3.Form -> [GHC.Types.Bool]
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (f :: Lecture3.Form) ->
+                 GHC.Base.map
+                   @ [(Lecture3.Name, GHC.Types.Bool)]
+                   @ GHC.Types.Bool
+                   (\ (ds :: Lecture3.Valuation) -> Lecture3.evl ds f)
+                   (Lecture3.genVals
+                      (Data.OldList.sortBy
+                         @ Lecture3.Name
+                         GHC.Classes.compareInt
+                         (Data.OldList.nubBy
+                            @ Lecture3.Name
+                            GHC.Classes.eqInt
+                            (Lecture3.allVals_pnames f))))) -}
+ab87e2bb5ba70cc6754c8e77034b9c63
+  checkTestResult :: GHC.Types.Bool -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: GHC.Types.Bool) ->
+                 case ds of wild {
+                   GHC.Types.False -> Main.checkTestResult3
+                   GHC.Types.True -> Main.checkTestResult1 }) -}
+ba02eb31bc683fefc3af5b3b0d6755f2
+  checkTestResult1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.checkTestResult2) -}
+434443e4fa09b62f21dec719380f87f1
+  checkTestResult2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("\ESC[32mTest succeeded!\ESC[0m"#) -}
+ef9ca2e7c68c30e1a7f88aac6829fc90
+  checkTestResult3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.checkTestResult4) -}
+4510ad5bdc66b32f0bbaa0b64274861f
+  checkTestResult4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("\ESC[31mTest failed!\ESC[0m"#) -}
+58f6af1be81dacc9eea98ede54be0378
+  cnf :: Lecture3.Form -> Lecture3.Form
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds :: Lecture3.Form) ->
+                 case ds of wild {
+                   DEFAULT -> Main.cnf1
+                   Lecture3.Prop x -> wild
+                   Lecture3.Neg ds1
+                   -> case ds1 of wild1 {
+                        DEFAULT -> Main.cnf1 Lecture3.Prop x -> wild }
+                   Lecture3.Cnj ds1
+                   -> case ds1 of wild1 {
+                        [] -> Main.cnf1
+                        : ds2 ds3
+                        -> case ds2 of wild2 {
+                             DEFAULT -> Main.cnf1
+                             Lecture3.Neg x
+                             -> case ds3 of wild3 {
+                                  [] -> Main.cnf1
+                                  : ds4 ds5
+                                  -> case ds4 of wild4 {
+                                       DEFAULT -> Main.cnf1
+                                       Lecture3.Neg y
+                                       -> case ds5 of wild5 {
+                                            []
+                                            -> Lecture3.Neg
+                                                 (Lecture3.Cnj
+                                                    (GHC.Types.:
+                                                       @ Lecture3.Form
+                                                       x
+                                                       (GHC.Types.:
+                                                          @ Lecture3.Form
+                                                          y
+                                                          (GHC.Types.[] @ Lecture3.Form))))
+                                            : ipv ipv1 -> Main.cnf1 } } } } }
+                   Lecture3.Dsj ds1
+                   -> case ds1 of wild1 {
+                        [] -> Main.cnf1
+                        : ds2 ds3
+                        -> case ds2 of wild2 {
+                             DEFAULT -> Main.cnf1
+                             Lecture3.Cnj ds4
+                             -> case ds4 of wild3 {
+                                  [] -> Main.cnf1
+                                  : x1 ds5
+                                  -> case ds5 of wild4 {
+                                       [] -> Main.cnf1
+                                       : y1 ds6
+                                       -> case ds6 of wild5 {
+                                            []
+                                            -> case ds3 of wild6 {
+                                                 [] -> Main.cnf1
+                                                 : ds7 ds8
+                                                 -> case ds7 of wild7 {
+                                                      DEFAULT -> Main.cnf1
+                                                      Lecture3.Cnj ds9
+                                                      -> case ds9 of wild8 {
+                                                           [] -> Main.cnf1
+                                                           : x2 ds10
+                                                           -> case ds10 of wild9 {
+                                                                [] -> Main.cnf1
+                                                                : y2 ds11
+                                                                -> case ds11 of wild10 {
+                                                                     []
+                                                                     -> case ds8 of wild11 {
+                                                                          []
+                                                                          -> Lecture3.Cnj
+                                                                               (GHC.Types.:
+                                                                                  @ Lecture3.Form
+                                                                                  (Lecture3.Dsj
+                                                                                     (GHC.Types.:
+                                                                                        @ Lecture3.Form
+                                                                                        x1
+                                                                                        (GHC.Types.:
+                                                                                           @ Lecture3.Form
+                                                                                           y1
+                                                                                           (GHC.Types.[]
+                                                                                              @ Lecture3.Form))))
+                                                                                  (GHC.Types.:
+                                                                                     @ Lecture3.Form
+                                                                                     (Lecture3.Dsj
+                                                                                        (GHC.Types.:
+                                                                                           @ Lecture3.Form
+                                                                                           x2
+                                                                                           (GHC.Types.:
+                                                                                              @ Lecture3.Form
+                                                                                              y2
+                                                                                              (GHC.Types.[]
+                                                                                                 @ Lecture3.Form))))
+                                                                                     (GHC.Types.[]
+                                                                                        @ Lecture3.Form)))
+                                                                          : ipv ipv1 -> Main.cnf1 }
+                                                                     : ipv ipv1
+                                                                     -> Main.cnf1 } } } } }
+                                            : ipv ipv1 -> Main.cnf1 } } } } } }) -}
+604025dcf7c3b884e73d03ee060c748b
+  cnf1 :: Lecture3.Form
+  {- Strictness: x -}
+324c9a8bf71773859040baa1d913b5f3
+  contradiction :: Lecture3.Form -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (f :: Lecture3.Form) ->
+                 case (Lecture3.satisfiable1 f)
+                        `cast`
+                      (Data.Semigroup.Internal.N:Any[0]) of wild {
+                   GHC.Types.False -> GHC.Types.True
+                   GHC.Types.True -> GHC.Types.False }) -}
+5dd889520576426832d0a5b67bd9ae3b
+  entails :: Lecture3.Form -> Lecture3.Form -> GHC.Types.Bool
+  {- Arity: 2, Strictness: <S,U><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.entails1
+                  `cast`
+                (<Lecture3.Form>_R
+                 ->_R <Lecture3.Form>_R
+                 ->_R Data.Semigroup.Internal.N:All[0]) -}
+eaa6431d3062d0081f3bf696683ef1c4
+  entails1 ::
+    Lecture3.Form -> Lecture3.Form -> Data.Semigroup.Internal.All
+  {- Arity: 2, Strictness: <S,U><L,U>,
+     Unfolding: (\ (f :: Lecture3.Form) (g :: Lecture3.Form) ->
+                 letrec {
+                   go :: [Lecture3.Valuation] -> Data.Semigroup.Internal.All
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [Lecture3.Valuation]) ->
+                     case ds of wild {
+                       []
+                       -> GHC.Types.True `cast` (Sym (Data.Semigroup.Internal.N:All[0]))
+                       : y ys
+                       -> case Lecture3.evl y f of wild1 {
+                            GHC.Types.False -> go ys
+                            GHC.Types.True
+                            -> case Lecture3.evl y g of wild2 {
+                                 GHC.Types.False
+                                 -> GHC.Types.False `cast` (Sym (Data.Semigroup.Internal.N:All[0]))
+                                 GHC.Types.True -> go ys } } }
+                 } in
+                 go
+                   (Lecture3.genVals
+                      (Data.OldList.sortBy
+                         @ Lecture3.Name
+                         GHC.Classes.compareInt
+                         (Data.OldList.nubBy
+                            @ Lecture3.Name
+                            GHC.Classes.eqInt
+                            (Lecture3.allVals_pnames f))))) -}
+b60e03df94054a316f741d85e62a65a1
+  equiv :: Lecture3.Form -> Lecture3.Form -> GHC.Types.Bool
+  {- Arity: 2, Strictness: <S,U><S,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (f :: Lecture3.Form) (g :: Lecture3.Form) ->
+                 GHC.Classes.$fEq[]_$c==
+                   @ GHC.Types.Bool
+                   GHC.Classes.$fEqBool
+                   (Main.allEvals f)
+                   (Main.allEvals g)) -}
+bdcb67d3b0d0983efb4388362be3389e
+  main :: GHC.Types.IO ()
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
+23a9bcc33aa73b4404cc894a773c24ca
+  main1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main45
+                        GHC.Types.True
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main42
+                        GHC.Types.True
+                        ipv of ds2 { (#,#) ipv2 ipv3 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main39
+                        GHC.Types.True
+                        ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main36
+                        GHC.Types.True
+                        ipv4 of ds4 { (#,#) ipv6 ipv7 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main33
+                        GHC.Types.True
+                        ipv6 of ds5 { (#,#) ipv8 ipv9 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main29
+                        GHC.Types.True
+                        ipv8 of ds6 { (#,#) ipv10 ipv11 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main26
+                        GHC.Types.True
+                        ipv10 of ds7 { (#,#) ipv12 ipv13 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main23
+                        GHC.Types.True
+                        ipv12 of ds8 { (#,#) ipv14 ipv15 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main20
+                        GHC.Types.True
+                        ipv14 of ds9 { (#,#) ipv16 ipv17 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main17
+                        GHC.Types.True
+                        ipv16 of ds10 { (#,#) ipv18 ipv19 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main14
+                        GHC.Types.True
+                        ipv18 of ds11 { (#,#) ipv20 ipv21 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main11
+                        GHC.Types.True
+                        ipv20 of ds12 { (#,#) ipv22 ipv23 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main8
+                        GHC.Types.True
+                        ipv22 of ds13 { (#,#) ipv24 ipv25 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main5
+                        GHC.Types.True
+                        ipv24 of ds14 { (#,#) ipv26 ipv27 ->
+                 GHC.IO.Handle.Text.hPutStr2
+                   GHC.IO.Handle.FD.stdout
+                   Main.main2
+                   GHC.Types.True
+                   ipv26 } } } } } } } } } } } } } }) -}
+7cfe3acf9d12af5525aafc266f070bfc
+  main10 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p` is logically equivalent to `p \\226\\136\\167 q` (Expected: False): "#) -}
+8c2b262f2cf360e3b44e4a0bbb6c9c1f
+  main11 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main13)
+                   Main.main12) -}
+2f1b870a10fad90446dcf0530ffd7bbc
+  main12 :: [GHC.Types.Char]
+  {- Unfolding: (case (Main.entails1 Lecture3.p Main.pAndQ)
+                        `cast`
+                      (Data.Semigroup.Internal.N:All[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult1
+                   GHC.Types.True -> Main.checkTestResult3 }) -}
+255d248d8a088f6cbcefd670cbfa2e38
+  main13 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p` logically entails `p \\226\\136\\167 q` (Expected: False): "#) -}
+a1d13ae9b86984be2c59f0fe5f1eb53f
+  main14 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main16)
+                   Main.main15) -}
+37cb34a476cef3d1a9bb6f7a4bec8979
+  main15 :: [GHC.Types.Char]
+  {- Unfolding: (case GHC.Classes.$fEq[]_$c==
+                        @ GHC.Types.Bool
+                        GHC.Classes.$fEqBool
+                        (Main.allEvals Lecture3.p)
+                        (Main.allEvals Main.pOrQ) of wild {
+                   GHC.Types.False -> Main.checkTestResult1
+                   GHC.Types.True -> Main.checkTestResult3 }) -}
+0ebad499d6c7244dd5131718a1346420
+  main16 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p` is logically equivalent to `p \\226\\136\\168 q` (Expected: False): "#) -}
+335b30842af6b89510f5eb7ecf7bc434
+  main17 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main19)
+                   Main.main18) -}
+9dd6d5da066befefcbd6a65543bdec95
+  main18 :: [GHC.Types.Char]
+  {- Unfolding: (case (Main.entails1 Lecture3.p Main.pOrQ)
+                        `cast`
+                      (Data.Semigroup.Internal.N:All[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult3
+                   GHC.Types.True -> Main.checkTestResult1 }) -}
+6dcd4247b4013a82a4ea1b38d282187d
+  main19 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p` logically entails `p \\226\\136\\168 q` (Expected: True): "#) -}
+0953349dc0fa31164350ace15bd11413
+  main2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main4)
+                   Main.main3) -}
+783435766bec09c0800d834e1e5b9be2
+  main20 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackAppendCString#
+                   Main.main22
+                   Main.main21) -}
+9bbb371b8c77ee35cb936d429d630f90
+  main21 :: [GHC.Types.Char]
+  {- Unfolding: (case GHC.Classes.$fEq[]_$c==
+                        @ GHC.Types.Bool
+                        GHC.Classes.$fEqBool
+                        (Main.allEvals Lecture3.p)
+                        (Main.allEvals Lecture3.p) of wild {
+                   GHC.Types.False -> Main.checkTestResult3
+                   GHC.Types.True -> Main.checkTestResult1 }) -}
+91ee95689dac2c31a03749017a1ca859
+  main22 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p` is logically equivalent to `p` (Expected: True): "#) -}
+15e4fbf7ac8e05cfc808b3b463350154
+  main23 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackAppendCString#
+                   Main.main25
+                   Main.main24) -}
+93a4b7646705a55e685fca6e4a10fa66
+  main24 :: [GHC.Types.Char]
+  {- Unfolding: (case (Main.entails1 Lecture3.p Lecture3.p)
+                        `cast`
+                      (Data.Semigroup.Internal.N:All[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult3
+                   GHC.Types.True -> Main.checkTestResult1 }) -}
+f63ff9452f6c6aab4957076b866e3c65
+  main25 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("\n\
+                 \Testing if `p` logically entails `p` (Expected: True): "#) -}
+5e712c7decfbeb51afc206f7b6a431fc
+  main26 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main28)
+                   Main.main27) -}
+4ab1ce7b2ab94510a86b31ca3a8a2083
+  main27 :: [GHC.Types.Char]
+  {- Unfolding: (case (Lecture3.satisfiable1 Main.pAndNotP)
+                        `cast`
+                      (Data.Semigroup.Internal.N:Any[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult1
+                   GHC.Types.True -> Main.checkTestResult3 }) -}
+df9c7dfd81c0ae72f0bfeb2d902cdba1
+  main28 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p \\226\\136\\167 \\194\\172p` is a contradiction (Expected: True): "#) -}
+5bd69b1048a6d0c3c781d721bbabccb3
+  main29 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main32)
+                   Main.main30) -}
+35b71a28cee8fd937ae5796e3b5a56bc
+  main3 :: [GHC.Types.Char]
+  {- Unfolding: (case GHC.Classes.$fEq[]_$c==
+                        @ GHC.Types.Bool
+                        GHC.Classes.$fEqBool
+                        (Main.allEvals Main.pAndQ)
+                        (Main.allEvals Lecture3.p) of wild {
+                   GHC.Types.False -> Main.checkTestResult1
+                   GHC.Types.True -> Main.checkTestResult3 }) -}
+ae4c8880ec4e63928e08a97b68eebeb4
+  main30 :: [GHC.Types.Char]
+  {- Unfolding: (case (Main.main31 Main.pAndNotP)
+                        `cast`
+                      (Data.Semigroup.Internal.N:All[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult1
+                   GHC.Types.True -> Main.checkTestResult3 }) -}
+3a37176ef5bdfe658f1b7b067d523a95
+  main31 :: Lecture3.Form -> Data.Semigroup.Internal.All
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (f :: Lecture3.Form) ->
+                 letrec {
+                   go :: [Lecture3.Valuation] -> Data.Semigroup.Internal.All
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [Lecture3.Valuation]) ->
+                     case ds of wild {
+                       []
+                       -> GHC.Types.True `cast` (Sym (Data.Semigroup.Internal.N:All[0]))
+                       : y ys
+                       -> case Lecture3.evl y f of wild1 {
+                            GHC.Types.False
+                            -> GHC.Types.False `cast` (Sym (Data.Semigroup.Internal.N:All[0]))
+                            GHC.Types.True -> go ys } }
+                 } in
+                 go
+                   (Lecture3.genVals
+                      (Data.OldList.sortBy
+                         @ Lecture3.Name
+                         GHC.Classes.compareInt
+                         (Data.OldList.nubBy
+                            @ Lecture3.Name
+                            GHC.Classes.eqInt
+                            (Lecture3.allVals_pnames f))))) -}
+c5125e40a7fe309fe024dee3c33147a0
+  main32 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p \\226\\136\\167 \\194\\172p` is a tautology (Expected: False): "#) -}
+753e9f63921267840ae42386512ea501
+  main33 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main35)
+                   Main.main34) -}
+400e49191be66b40fa1807d9dae2a7bf
+  main34 :: [GHC.Types.Char]
+  {- Unfolding: (case (Lecture3.satisfiable1 Main.pOrNotP)
+                        `cast`
+                      (Data.Semigroup.Internal.N:Any[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult3
+                   GHC.Types.True -> Main.checkTestResult1 }) -}
+18d941975885336107f9b62a2e0f7ea8
+  main35 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p \\226\\136\\168 \\194\\172p` is a contradiction (Expected: False): "#) -}
+50cf570a28c3306e0d176c4980c47fd6
+  main36 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main38)
+                   Main.main37) -}
+a667c367edf23de3adf5e22b2d88c77d
+  main37 :: [GHC.Types.Char]
+  {- Unfolding: (case (Main.main31 Main.pOrNotP)
+                        `cast`
+                      (Data.Semigroup.Internal.N:All[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult3
+                   GHC.Types.True -> Main.checkTestResult1 }) -}
+faab44a415ab6c621afa04d979543caa
+  main38 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p \\226\\136\\168 \\194\\172p` is a tautology (Expected: True): "#) -}
+119b9bad4a997919aa9d4179173b8b90
+  main39 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackAppendCString#
+                   Main.main41
+                   Main.main40) -}
+a000bcb42cc1db3118b158f5ccd0f11d
+  main4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p \\226\\136\\167 q` is logically equivalent to `p` (Expected: False): "#) -}
+533a8a972b78756ddf507d9ebb02898c
+  main40 :: [GHC.Types.Char]
+  {- Unfolding: (case (Lecture3.satisfiable1 Lecture3.p)
+                        `cast`
+                      (Data.Semigroup.Internal.N:Any[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult3
+                   GHC.Types.True -> Main.checkTestResult1 }) -}
+9b35e98cc8e95596978e5d31aa48f2ff
+  main41 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if just a single atom (p) is a contradiction (Expected: False): "#) -}
+0a157b0db0b34709750a59ec99ed656a
+  main42 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackAppendCString#
+                   Main.main44
+                   Main.main43) -}
+b260126c141c9cf2ae50bcc4723bfdfb
+  main43 :: [GHC.Types.Char]
+  {- Unfolding: (case (Main.main31 Lecture3.p)
+                        `cast`
+                      (Data.Semigroup.Internal.N:All[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult1
+                   GHC.Types.True -> Main.checkTestResult3 }) -}
+a5cf311824c93c71ee743f94565daa1f
+  main44 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if just a single atom (p) is a tautology (Expected: False): "#) -}
+6e73ba5ed66a36a12f591693f3c24f3c
+  main45 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main46) -}
+14294413c7e0dabf8bef96027a3adbe5
+  main46 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("== Assignment 1 (Definitions of contradiction, tautology, entails and equiv) =="#) -}
+c7c94c322fb631707edea88777176ec1
+  main47 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1,
+     Unfolding: (GHC.TopHandler.runMainIO1
+                   @ ()
+                   Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+d65174a228548bca05b67775d7685f3b
+  main5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main7)
+                   Main.main6) -}
+604972aa07b0148809f873347e04c74e
+  main6 :: [GHC.Types.Char]
+  {- Unfolding: (case (Main.entails1 Main.pAndQ Lecture3.p)
+                        `cast`
+                      (Data.Semigroup.Internal.N:All[0]) of wild {
+                   GHC.Types.False -> Main.checkTestResult3
+                   GHC.Types.True -> Main.checkTestResult1 }) -}
+3e63df62f112fe342e7483cec6146f45
+  main7 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Testing if `p \\226\\136\\167 q` logically entails `p` (Expected: True): "#) -}
+b30c22afde468dd0dc15443acf5c6ac7
+  main8 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.CString.unpackCStringUtf8# Main.main10)
+                   Main.main9) -}
+9365dbd59937233c950dcec774ade3c4
+  main9 :: [GHC.Types.Char]
+  {- Unfolding: (case GHC.Classes.$fEq[]_$c==
+                        @ GHC.Types.Bool
+                        GHC.Classes.$fEqBool
+                        (Main.allEvals Lecture3.p)
+                        (Main.allEvals Main.pAndQ) of wild {
+                   GHC.Types.False -> Main.checkTestResult1
+                   GHC.Types.True -> Main.checkTestResult3 }) -}
+23c47b134e4d0f4ea5cad106b9badef6
+  pAndNotP :: Lecture3.Form
+  {- HasNoCafRefs, Strictness: m3,
+     Unfolding: (Lecture3.Cnj Main.pAndNotP1) -}
+eb57f168fbb08062df93590278fa17d8
+  pAndNotP1 :: [Lecture3.Form]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture3.Form
+                   Lecture3.p
+                   Main.pAndNotP2) -}
+c080d76f89dd0beb91da6f8a42f6d80f
+  pAndNotP2 :: [Lecture3.Form]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture3.Form
+                   Main.pAndNotP3
+                   (GHC.Types.[] @ Lecture3.Form)) -}
+cd24027d6c401232ddad085f4aeb0008
+  pAndNotP3 :: Lecture3.Form
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (Lecture3.Neg Lecture3.p) -}
+b9224f84b735e4905cc0ed15e73ac5d4
+  pAndQ :: Lecture3.Form
+  {- HasNoCafRefs, Strictness: m3,
+     Unfolding: (Lecture3.Cnj Main.pAndQ1) -}
+ef558d97f6e86cce45427fda1e78028b
+  pAndQ1 :: [Lecture3.Form]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.: @ Lecture3.Form Lecture3.p Main.pAndQ2) -}
+c2071a06c61b5524933e9ff54fffd3fc
+  pAndQ2 :: [Lecture3.Form]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture3.Form
+                   Lecture3.q
+                   (GHC.Types.[] @ Lecture3.Form)) -}
+4e84d7cc2e1eb7b468ab5fd7bb6dbb10
+  pOrNotP :: Lecture3.Form
+  {- HasNoCafRefs, Strictness: m4,
+     Unfolding: (Lecture3.Dsj Main.pAndNotP1) -}
+69c24542eb180428957103e10acfac5e
+  pOrQ :: Lecture3.Form
+  {- HasNoCafRefs, Strictness: m4,
+     Unfolding: (Lecture3.Dsj Main.pAndQ1) -}
+7a8e3fbd1b482bb6b8be7892fe955609
+  tautology :: Lecture3.Form -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.main31
+                  `cast`
+                (<Lecture3.Form>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: safe
+require own pkg trusted: False
+
