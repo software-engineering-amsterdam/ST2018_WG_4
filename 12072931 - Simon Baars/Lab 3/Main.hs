@@ -102,12 +102,14 @@ applyDeMorganLaw form = form
 applyDistributiveLaw :: Form -> Form
 applyDistributiveLaw (Neg form) = Neg (applyDistributiveLaw form)
 applyDistributiveLaw (Cnj formList) = Cnj (foldr (\x acc -> let y = applyDistributiveLaw x in if isConjunction y then getAsList y++acc else y:acc) [] formList)
-applyDistributiveLaw (Dsj (cnjOne: cnjTwo: xs))
-        | isConjunction cnjOne || isConjunction cnjTwo = let conj = Cnj (if isDisjunction cnjOne then map (\ x -> Dsj (x : getAsList cnjOne)) (getAsList cnjTwo)
-                                                                         else if isDisjunction cnjTwo then map (\ x -> Dsj (x : getAsList cnjTwo)) (getAsList cnjOne)
-                                                                         else [Dsj [x,y] | x <- getAsList cnjOne, y <- getAsList cnjTwo])
-                                                         in if not (null xs) then applyDistributiveLaw (Dsj $ conj:xs) else applyDistributiveLaw conj
-        | otherwise = Dsj (foldr (\x acc -> let y = applyDistributiveLaw x in if isDisjunction y then getAsList y++acc else y:acc) [] (cnjOne: cnjTwo: xs))
+applyDistributiveLaw (Dsj formList) = Dsj (foldr (\x acc -> let y = applyDistributiveLaw x in
+           if not (null acc) && (isConjunction x || isConjunction (head acc)) then let cnjOne = head acc
+                                                                                       cnjTwo = y
+                                                                                       conj = Cnj (if isDisjunction cnjOne then map (\ x -> Dsj (x : getAsList cnjOne)) (getAsList cnjTwo)
+                                                                                                    else if isDisjunction cnjTwo then map (\ x -> Dsj (x : getAsList cnjTwo)) (getAsList cnjOne)
+                                                                                                    else [Dsj [x,y] | x <- getAsList cnjOne, y <- getAsList cnjTwo]) in conj:acc
+           else if isDisjunction y then getAsList y++acc
+           else y:acc) [] formList)
 applyDistributiveLaw x = x
 
 isDisjunction :: Form -> Bool
