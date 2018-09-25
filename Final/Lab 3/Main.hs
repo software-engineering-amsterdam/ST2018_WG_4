@@ -268,7 +268,7 @@ cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn 
                                                                                   else error ("failed test on: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm))
 
 -- Assignment 3 ALTERNATIVE SOLUTION
--- Time: 4 hours
+-- Time: 4.5 hours
 -- We wanted to also include this alternative solution, as it provides an alternate (more simple) method of solving the CNF problem. This implementation will yield
 -- results of lower quality (longer formula's and solved with an unconventional method), but the implementation is much clearer and short. The way of testing is
 -- the same as for the normal CNF solution, you can look there for the documentation on this way of testing.
@@ -527,7 +527,7 @@ doRandomlyNegate randNums state = TreeState (amountOfProperties state) (if doNeg
   where doNegate = getCurRand state randNums 2
 
 -- Bonus
--- Time taken: 150 mins
+-- Time taken: 200 mins
 
 --Type definitions for clauses
 type Clause  = [Int]
@@ -535,15 +535,15 @@ type Clauses = [Clause]
 
 -- Converts a literal (p or Neg p) to a Clause
 convertPropToClause :: Form -> Clause
+convertPropToClause (Prop 0) = [maxBound :: Int]
+convertPropToClause (Neg (Prop 0)) = [-maxBound :: Int]
 convertPropToClause (Prop name) = [name]
 convertPropToClause (Neg (Prop name)) = [-name]
+convertPropToClause x = []
 
 -- Converts conjunctions and disjunctions to Clauses
 cnf2cls :: Form -> Clauses
-cnf2cls (Cnj [Dsj fs1, Dsj fs2]) = [concatMap convertPropToClause fs1, concatMap convertPropToClause fs2]
-cnf2cls (Cnj [fs1, Dsj fs2]) = [convertPropToClause fs1, concatMap convertPropToClause fs2]
-cnf2cls (Cnj [Dsj fs1, fs2]) = [concatMap convertPropToClause fs1, convertPropToClause fs2]
-cnf2cls (Cnj fs) = [concatMap convertPropToClause fs]
+cnf2cls (Cnj fs) =  map (concatMap convertPropToClause . getAsList) fs
 cnf2cls (Dsj fs) = [concatMap convertPropToClause fs]
 cnf2cls atom = [convertPropToClause atom]
 
@@ -563,8 +563,7 @@ negAtoms (Equiv f1 f2) i = sum(map (`negAtoms` i) [f1,f2])
 
 -- Returns number of negative atoms in a clause
 negDigs :: Clauses -> Int
-negDigs (c:cls) = foldr ((+) . fromIntegral . length . filter (< 0)) 0 cls
-negDigs [] = 0
+negDigs = foldr ((+) . fromIntegral . length . filter (< 0)) 0
 
 -- Property: Amount of negations in (CNF) form equal to number of negative numbers in clause
 propNumNegs :: Form -> Bool
@@ -572,8 +571,7 @@ propNumNegs f = negAtoms (convertToCNF f) 0 == negDigs(formToCls f)
 
 -- Returns number of numbers in a clause
 numDigs :: Clauses -> Int
-numDigs (c:cls) = foldr ((+) . fromIntegral . length) 0 cls
-numDigs [] = 0
+numDigs = foldr ((+) . fromIntegral . length) 0
 
 -- Returns number of atoms in a form
 numAtoms :: Form -> Int -> Int
