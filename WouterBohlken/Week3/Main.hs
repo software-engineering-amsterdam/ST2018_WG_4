@@ -27,6 +27,11 @@ getIntL k n = do
 -- Assignment 1
 -- Time: 1 hour
 
+truthTable :: Form -> Form -> [(Bool,Bool)]
+truthTable x y = take (max (length valsX) (length valsY)) (map (\(i,j) -> (evl i x, evl j y)) (zip (cycle valsX) (cycle valsY)))
+                 where valsX = allVals x
+                       valsY = allVals y
+
 contradiction :: Form -> Bool
 contradiction f = not $ satisfiable f
 
@@ -37,14 +42,23 @@ allEvals :: Form -> [Bool]
 allEvals f = map (`evl` f) (allVals f)
 
 -- | logical entailment
+-- entails :: Form -> Form -> Bool
+-- entails f g = all (\ v -> evl v f --> evl v g) (allVals f)
+-- -- First compare the length of both forms, return false if the lengths differ, in that case they cannot entail because the amount of props are different
+-- -- Then use a lambda to loop though all values of f and an implies to g
+--
+-- -- | logical equivalence
+-- equiv :: Form -> Form -> Bool
+-- equiv f g = all (\ v -> evl v f == evl v g) (allVals f)
+
+
+-- | logical entailment
 entails :: Form -> Form -> Bool
-entails f g = all (\ v -> evl v f --> evl v g) (allVals f)
--- First compare the length of both forms, return false if the lengths differ, in that case they cannot entail because the amount of props are different
--- Then use a lambda to loop though all values of f and an implies to g
+entails f g = all (uncurry (-->)) (truthTable f g)
 
 -- | logical equivalence
 equiv :: Form -> Form -> Bool
-equiv f g = all (\ v -> evl v f == evl v g) (allVals f)
+equiv f g = all (uncurry (==)) (truthTable f g)
 
 pOrNotP = Dsj[p,Neg p]
 pAndNotP = Cnj[p,Neg p]
@@ -58,7 +72,7 @@ checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
 -- Assignment 2
 
 -- Testing the parser using the form generator of assignment 4
-testParser = generateForm >>= (\x -> quickCheck (show x == show (parse (show x)!!0)))
+testParser = generateForm >>= (\x -> quickCheck (show x == show (head (parse (show x)))))
 
 repeatNTimes 0 = return ()
 repeatNTimes n =
@@ -128,16 +142,16 @@ instance Show TreeEnvironment where
   show (TreeEnvironment form rc rn) = show form
 
 shiftRand :: Int -> TreeEnvironment -> TreeEnvironment
-shiftRand n (TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn}) = TreeEnvironment f (rc+n) rn
+shiftRand n TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn} = TreeEnvironment f (rc+n) rn
 
 getRand :: TreeEnvironment -> Int
-getRand (TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn}) = rn!!(rc)
+getRand TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn} = rn!!rc
 
 getRands :: Int -> [Int] -> [Int]
 getRands n xs = take ((xs!!n `mod` (maxPropertiesInForm - 2)) + 2) $ drop n xs
 
 getRandsForTreeEnv :: TreeEnvironment -> [Int]
-getRandsForTreeEnv (TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn}) = getRands rc rn
+getRandsForTreeEnv TreeEnvironment {form = f, randomCounter = rc, randomNumbers = rn} = getRands rc rn
 
 getProp :: Int -> Form
 getProp n = Prop ((n `mod` maxTotalProps) + 1)
@@ -149,16 +163,16 @@ getImpl p1 p2 = Impl (getProp p1) (getProp p2)
 getEquiv p1 p2 = Equiv (getProp p1) (getProp p2)
 
 getCnj, getDsj :: [Form] -> Form
-getCnj props = Cnj (props)
+getCnj = Cnj
 
-getDsj props = Dsj (props)
+getDsj = Dsj
 
 maybeNegate :: Int -> Form -> Form
-maybeNegate n f | n `mod` 3 == 0 = Neg(f)
+maybeNegate n f | n `mod` 3 == 0 = Neg f
                 | otherwise = f
 
 maybeFlip :: Int -> (Form, Form) -> (Form, Form)
-maybeFlip n (f) | n `mod` 3 /= 0 = (fst f, snd f)
+maybeFlip n f | n `mod` 3 /= 0 = f
                | otherwise = (snd f, fst f)
 
 addFormToForm :: Int -> Int -> Form -> Form -> Form
@@ -168,12 +182,12 @@ addFormToForm neg n f1 f2 = case n `mod` 4 of
                             2 -> maybeNegate neg (Impl ff1 ff2)
                             3 -> maybeNegate neg (Equiv ff1 ff2)
                             where
-                                form = (maybeFlip(n+1) (maybeNegate (neg+n) f1, maybeNegate (neg+n+1) f2))
+                                form = maybeFlip(n+1) (maybeNegate (neg+n) f1, maybeNegate (neg+n+1) f2)
                                 ff1 = fst form
                                 ff2 = snd form
 
 addToFormEnvironment :: TreeEnvironment -> Form -> TreeEnvironment
-addToFormEnvironment (TreeEnvironment {form = tf, randomCounter = rc, randomNumbers = rn}) nf = TreeEnvironment (addFormToForm (rn!!rc) (rn!!rc) tf nf) (rc+2) rn
+addToFormEnvironment TreeEnvironment {form = tf, randomCounter = rc, randomNumbers = rn} nf = TreeEnvironment (addFormToForm (rn!!rc) (rn!!rc) tf nf) (rc+2) rn
 
 maybeAddRandomForm :: TreeEnvironment -> TreeEnvironment
 maybeAddRandomForm te   | getRand te `mod` 2 == 0 = addRandomForm newForm
@@ -181,7 +195,7 @@ maybeAddRandomForm te   | getRand te `mod` 2 == 0 = addRandomForm newForm
                         where newForm = shiftRand 1 te
 
 addRandomForm :: TreeEnvironment -> TreeEnvironment
-addRandomForm te = case (getRand te) `mod` 4 of
+addRandomForm te = case getRand te `mod` 4 of
                     0 -> addToFormEnvironment newEnv (maybeNegate fstRand (getImpl sndRand trdRand))
                     1 -> addToFormEnvironment newEnv (maybeNegate fstRand (getEquiv sndRand trdRand))
                     2 -> addToFormEnvironment nShiftedEnv (getCnj mappedProps)
@@ -190,7 +204,7 @@ addRandomForm te = case (getRand te) `mod` 4 of
                         fstRand = getRand (shiftRand 1 te)
                         sndRand = getRand (shiftRand 2 te)
                         trdRand = getRand (shiftRand 3 te)
-                        mappedProps = (map (getProp) (getRandsForTreeEnv (shiftRand 1 te)))
+                        mappedProps = map getProp (getRandsForTreeEnv (shiftRand 1 te))
                         newEnv = maybeAddRandomForm (shiftRand 4 te)
                         nShiftedEnv = shiftRand (getRand (shiftRand 1 te)) te
 
@@ -199,19 +213,17 @@ addRandomForms 0 te = te
 addRandomForms n te = addRandomForms (n-1) (shiftRand 1 (addRandomForm te))
 
 randomRoot :: [Int] -> Form
-randomRoot xs = case (xs!!0) `mod` 4 of
-                0 -> getImpl ((xs!!1)) ((xs!!2))
-                1 -> getEquiv ((xs!!1)) ((xs!!2))
-                2 -> getCnj (map (getProp) (getRands 0 xs))
-                3 -> getDsj (map (getProp) (getRands 0 xs))
+randomRoot xs = case head xs `mod` 4 of
+                0 -> getImpl (xs!!1) (xs!!2)
+                1 -> getEquiv (xs!!1) (xs!!2)
+                2 -> getCnj (map getProp (getRands 0 xs))
+                3 -> getDsj (map getProp (getRands 0 xs))
 
 createTreeEnvironment :: Form -> [Int] -> TreeEnvironment
-createTreeEnvironment f rands = TreeEnvironment f 0 rands
+createTreeEnvironment f = TreeEnvironment f 0
 
 generateForm :: IO TreeEnvironment
-generateForm = do
-                 te <- (getIntL maxPropertiesInForm (maxForms * 30)) >>= \rands -> return (addRandomForms (((rands!!0) `mod` (maxForms - 1)) + 1) (createTreeEnvironment (randomRoot rands) (drop 5 rands)))
-                 return te
+generateForm = getIntL maxPropertiesInForm (maxForms * 30) >>= \rands -> return (addRandomForms ((head rands `mod` (maxForms - 1)) + 1) (createTreeEnvironment (randomRoot rands) (drop 5 rands)))
 
 -- generateForms :: Int -> [TreeEnvironment] -> IO [TreeEnvironment]
 -- generateForms 0 fs = []
