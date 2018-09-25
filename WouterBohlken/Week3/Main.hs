@@ -56,21 +56,17 @@ checkTestResult :: Bool -> String
 checkTestResult True  = "\x1b[32mTest succeeded!\x1b[0m"
 checkTestResult False = "\x1b[31mTest failed!\x1b[0m"
 
+
+
 -- Assignment 2
 
 -- Testing the parser using the form generator of assignment 4
 testParser = generateForm >>= (\x -> quickCheck (show x == show (head (parse (show x)))))
 
-repeatNTimes 0 = return ()
-repeatNTimes n =
- do
-  testParser
-  repeatNTimes (n-1)
-
 
 
 -- Assignment 3
--- Time: 3 hours
+-- Time: 4 hours
 -- cnf :: Form -> Form
 -- cnf (Prop x)                            = Prop x
 -- cnf (Neg (Prop x))                      = Neg (Prop x)
@@ -127,12 +123,10 @@ trueEvals f = filter (`evl` f) (allVals f)
 dnf :: Form -> Form
 dnf f = Dsj (map valuationToCnjClause (trueEvals f))
 
--- Fail on "+(*(((*((3==>2) *(1 4))==>+(5 5 1))<=>(1==>1)) (1<=>5)) *(4 1))"
--- [[(1,True),(2,True),(3,True),(4,False),(5,False)],[(1,True),(2,True),(3,False),(4,False),(5,False)],[(1,True),(2,False),(3,True),(4,False),(5,False)],[(1,True),(2,False),(3,False),(4,False),(5,False)],[(1,False),(2,True),(3,True),(4,True),(5,True)],[(1,False),(2,True),(3,True),(4,False),(5,True)],[(1,False),(2,True),(3,False),(4,True),(5,True)],[(1,False),(2,True),(3,False),(4,False),(5,True)],[(1,False),(2,False),(3,True),(4,True),(5,True)],[(1,False),(2,False),(3,True),(4,False),(5,True)],[(1,False),(2,False),(3,False),(4,True),(5,True)],[(1,False),(2,False),(3,False),(4,False),(5,True)]]
-
 
 
 -- Assignment 4
+-- Time: 4 hours
 
 maxTotalProps = 5
 maxForms = 10
@@ -158,15 +152,12 @@ getRandsForTreeEnv TreeEnvironment {form = f, randomCounter = rc, randomNumbers 
 getProp :: Int -> Form
 getProp n = Prop ((n `mod` maxTotalProps) + 1)
 
-
 getImpl, getEquiv :: Int -> Int -> Form
-
 getImpl p1 p2 = Impl (getProp p1) (getProp p2)
 getEquiv p1 p2 = Equiv (getProp p1) (getProp p2)
 
 getCnj, getDsj :: [Form] -> Form
 getCnj = Cnj
-
 getDsj = Dsj
 
 maybeNegate :: Int -> Form -> Form
@@ -227,15 +218,20 @@ createTreeEnvironment f = TreeEnvironment f 0
 generateForm :: IO TreeEnvironment
 generateForm = getIntL maxPropertiesInForm (maxForms * 30) >>= \rands -> return (addRandomForms ((head rands `mod` (maxForms - 1)) + 1) (createTreeEnvironment (randomRoot rands) (drop 5 rands)))
 
--- generateForms :: Int -> [TreeEnvironment] -> IO [TreeEnvironment]
--- generateForms 0 fs = []
--- generateForms n fs = do
---                         until (n == 0) (generateForm)
+addForm :: [IO TreeEnvironment] -> [IO TreeEnvironment]
+addForm tes = tes ++ [generateForm]
 
+generateForms :: Int -> [IO TreeEnvironment] -> [IO TreeEnvironment]
+generateForms 0 fs = []
+generateForms n fs = generateForms (n-1) (addForm fs)
 
 testCnf = generateForm >>= (\TreeEnvironment {form = f} -> quickCheck (equiv f (cnf f)))
+testDnf = generateForm >>= (\TreeEnvironment {form = f} -> quickCheck (equiv f (dnf f)))
 
 
+-- Bonus
+type Clause  = [Int]
+type Clauses = [Clause]
 
 
 
@@ -251,10 +247,17 @@ main = do
   putStrLn $ "Testing if `p ∧ ¬p` is a contradiction (Expected: True): " ++ checkTestResult (contradiction pAndNotP)
 
   putStrLn $ "\nTesting if `p` logically entails `p` (Expected: True): " ++ checkTestResult (entails p p)
---   putStrLn $ "Testing if `p` is logically equivalent to `p` (Expected: True): " ++ checkTestResult (equiv p p)
-  putStrLn $ "Testing if `p` logically entails `p ∨ q` (Expected: True): " ++ checkTestResult (entails p pOrQ)
---   putStrLn $ "Testing if `p` is logically equivalent to `p ∨ q` (Expected: False): " ++ checkTestResult (not(equiv p pOrQ))
---   putStrLn $ "Testing if `p` logically entails `p ∧ q` (Expected: False): " ++ checkTestResult (not(entails p pAndQ))
---   putStrLn $ "Testing if `p` is logically equivalent to `p ∧ q` (Expected: False): " ++ checkTestResult (not(equiv p pAndQ))
+  putStrLn $ "Testing if `p` is logically equivalent to `p` (Expected: True): " ++ checkTestResult (equiv p p)
+  -- putStrLn $ "Testing if `p` logically entails `p ∨ q` (Expected: True): " ++ checkTestResult (entails p pOrQ)
+  -- putStrLn $ "Testing if `p` is logically equivalent to `p ∨ q` (Expected: False): " ++ checkTestResult (not(equiv p pOrQ))
+  -- putStrLn $ "Testing if `p` logically entails `p ∧ q` (Expected: False): " ++ checkTestResult (not(entails p pAndQ))
+  -- putStrLn $ "Testing if `p` is logically equivalent to `p ∧ q` (Expected: False): " ++ checkTestResult (not(equiv p pAndQ))
   putStrLn $ "Testing if `p ∧ q` logically entails `p` (Expected: True): " ++ checkTestResult (entails pAndQ p)
   putStrLn $ "Testing if `p ∧ q` is logically equivalent to `p` (Expected: False): " ++ checkTestResult (not(equiv pAndQ p))
+
+  putStrLn $ "Testing the parse function (Expected: True): "
+  testParser
+  putStrLn $ "Testing the CNF function (Expected: True): "
+  testCnf
+  putStrLn $ "Testing the DNF function (Expected: True): "
+  testDnf
