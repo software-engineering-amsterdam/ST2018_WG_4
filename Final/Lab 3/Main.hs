@@ -267,6 +267,30 @@ cnfTest testsExecuted totalTests = if testsExecuted == totalTests then putStrLn 
                                                                                          cnfTest (testsExecuted+1) totalTests
                                                                                   else error ("failed test on: " ++ show x ++ "\nCNF form: " ++ show cnfForm ++ "\n Equiv: " ++ show (equiv x cnfForm) ++ "\n isCnf " ++ show (isCnf cnfForm))
 
+-- Assignment 3 ALTERNATIVE SOLUTION
+-- Time: 4 hours
+-- We wanted to also include this alternative solution, as it provides an alternate (more simple) method of solving the CNF problem. This implementation will yield
+-- results of lower quality (longer formula's and solved with an unconventional method), but the implementation is much clearer and short.
+
+valuationToDsjClause :: Valuation -> Form
+valuationToDsjClause v = Dsj (map (\x -> if snd x then Neg (Prop (fst x)) else Prop (fst x)) v)
+
+falseEvals :: Form -> [Valuation]
+falseEvals f = filter (\x -> not (evl x f)) (allVals f)
+
+cnf :: Form -> Form
+cnf f = Cnj (map valuationToDsjClause (falseEvals f))
+
+-- Bonus: DNF
+valuationToCnjClause :: Valuation -> Form
+valuationToCnjClause v = Cnj (map (\x -> if snd x then Prop (fst x) else Neg (Prop (fst x))) v)
+
+trueEvals :: Form -> [Valuation]
+trueEvals f = filter (`evl` f) (allVals f)
+
+dnf :: Form -> Form
+dnf f = Dsj (map valuationToCnjClause (trueEvals f))
+
 -- Assignment 4
 -- Time: 270 minutes
 -- I wanted to create a form generator that could generate EVERY FORM POSSIBLE. I made a design for it, and discussing it with Ana we decided that the generator
