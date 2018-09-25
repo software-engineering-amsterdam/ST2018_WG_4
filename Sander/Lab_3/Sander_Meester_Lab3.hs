@@ -12,7 +12,7 @@ where
 import Lecture3
 
 --Exercise 1
--- time:  mins
+-- time: 120 mins
 
 ttable :: Form  -> [Bool]
 ttable f = map (`evl` f) (allVals f)
@@ -41,13 +41,9 @@ equiv f1 f2
      | length(allVals f1) /= length(allVals f2) = False
      | otherwise = all (\ v -> evl v f1 == evl v f2) (allVals f1)
 
-
---Exercise 2
--- time: mins
-
-  --Exercise 3
-  -- time: 30 mins on final solution, 180 mins on other attempt done using pattern matching which did not work.
-  -- Works only for non-tautology Formulas
+--Exercise 3
+-- time: 30 mins on final solution, 300 mins on other attempt done using pattern matching which did not work.
+-- Works only for non-tautology Formulas
 getTTable :: Form -> [([Bool], Bool)]
 getTTable f = zip (unpackAllVals f) (ttable f)
 
@@ -70,34 +66,20 @@ convToForm is = map digToForm (filter (not . null) is)
 convertToCNF :: Form -> Form
 convertToCNF f = Cnj (convToForm(map getBin (getTTable f)))
 
--- conjoDing :: Form -> [Form] -> [Form]
--- conjoDing f1 (f:fs) = Dsj (f1:[f]) : conjoDing f1 fs
--- conjoDing f1 [] = []--[Dsj (f1:[f])]
---
--- standardizeVars :: Form -> Form
--- standardizeVars (Cnj [f1, Dsj(f:fs)]) = Cnj (Dsj (f1:[f]) : conjoDing f1 fs)
--- standardizeVars (Dsj [Cnj [f1, f2], Cnj [g1, g2]]) = standardizeVars (Cnj [Cnj [Dsj [f1, g1], Dsj [f1, g2]], Cnj [Dsj [g1, f1], Dsj [g1, f2]]])
--- standardizeVars f = f
-
-
--- disj = + = V
--- conj = x = ^
--- testest :: Form -> [Bool]
--- testest f = zip (map (\[xs] -> xs) (unpackAllVals f)) (ttable f)
-
--- convertToCNF :: Form -> Form
--- convertToCNF f = standardizeVars(nnf(arrowfree f))
-
-
 
 -- Bonus
+-- Time taken: 125 mins (not included automated testing)
+
+--Type definitions for clauses
 type Clause  = [Int]
 type Clauses = [Clause]
 
+-- Converts a single element (p or Neg p) to a Clause
 convertPropToClause :: Form -> Clause
 convertPropToClause (Prop name) = [name]
 convertPropToClause (Neg (Prop name)) = [-name]
 
+-- Converts conjunctions and disjunctions to Clauses
 convertToClauses :: Form -> Clauses
 convertToClauses (Cnj [Dsj fs1, Dsj fs2]) = [concatMap convertPropToClause fs1, concatMap convertPropToClause fs2]
 convertToClauses (Cnj [fs1, Dsj fs2]) = [convertPropToClause fs1, concatMap convertPropToClause fs2]
@@ -105,29 +87,46 @@ convertToClauses (Cnj [Dsj fs1, fs2]) = [concatMap convertPropToClause fs1, conv
 convertToClauses (Cnj fs) = [concatMap convertPropToClause fs]
 convertToClauses (Dsj fs) = [concatMap convertPropToClause fs]
 
+-- Convert a form to a Clause format
 cnf2cls :: Form -> Clauses
 cnf2cls = convertToClauses
 
+-- Convert a form to a CNF to a Clause format
 formToCls :: Form -> Clauses
 formToCls f = cnf2cls(convertToCNF f)
 
 -- Returns number of negative atoms in a form
-negProps :: Form -> Int -> Int
-negProps (Prop name) i = i
-negProps (Neg f) i = negProps f i+1
-negProps (Cnj fs) i = sum(map (`negProps` i) fs)
-negProps (Dsj fs) i = sum(map (`negProps` i) fs)
-negProps (Impl f1 f2) i = sum(map (`negProps` i) [f1,f2])
-negProps (Equiv f1 f2) i = sum(map (`negProps` i) [f1,f2])
+negAtoms :: Form -> Int -> Int
+negAtoms (Prop name) i = i
+negAtoms (Neg f) i = negAtoms f (i+1)
+negAtoms (Cnj fs) i = sum(map (`negAtoms` i) fs)
+negAtoms (Dsj fs) i = sum(map (`negAtoms` i) fs)
+negAtoms (Impl f1 f2) i = sum(map (`negAtoms` i) [f1,f2])
+negAtoms (Equiv f1 f2) i = sum(map (`negAtoms` i) [f1,f2])
 
+-- Returns number of negative atoms in a clause
 negDigs :: Clauses -> Int
 negDigs (c:cls) = fromIntegral(length(filter (< 0) c)) + negDigs cls
 negDigs [] = 0
 
--- Number of negations in form equal to number of negative numbers in clause
--- propNumNegs :: Form -> Bool
--- propNumNegs f = negProps f == negDigs(formToCls f)
+-- Property: Amount of negations in (CNF) form equal to number of negative numbers in clause
+propNumNegs :: Form -> Bool
+propNumNegs f = negAtoms (convertToCNF f) 0 == negDigs(formToCls f)
 
--- Use automated testing to check whether your translation is correct, employing some appropriate properties to check.
---
--- Deliverables: Conversion program, test generator, test properties, documentation of the automated testing process. Also, give an indication of time spent.
+-- Returns number of numbers in a clause
+numDigs :: Clauses -> Int
+numDigs (c:cls) = fromIntegral(length c) + numDigs cls
+numDigs [] = 0
+
+-- Returns number of atoms in a form
+numAtoms :: Form -> Int -> Int
+numAtoms (Prop name) i = i+1
+numAtoms (Neg f) i = numAtoms f i
+numAtoms (Cnj fs) i = sum(map (`numAtoms` i) fs)
+numAtoms (Dsj fs) i = sum(map (`numAtoms` i) fs)
+numAtoms (Impl f1 f2) i = sum(map (`numAtoms` i) [f1,f2])
+numAtoms (Equiv f1 f2) i = sum(map (`numAtoms` i) [f1,f2])
+
+--  Property: Amount of atoms in (CNF) form equal to amount of digits in clause
+propNumAtoms :: Form -> Bool
+propNumAtoms f = numAtoms (convertToCNF f) 0 == numDigs(formToCls f)
