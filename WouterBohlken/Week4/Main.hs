@@ -17,6 +17,7 @@ import Data.String
 
 
 -- Assignment 2
+-- time: 1:30 hours
 
 getRandomInt :: Int -> IO Int
 getRandomInt n = getStdRandom (randomR (0,n))
@@ -41,26 +42,36 @@ maxSetSize = 50
 rmdups :: (Ord a) => [a] -> [a]
 rmdups = map head . group . sort
 
-createSet :: [Int] -> Set Int
+createSet :: (Ord a) => [a] -> Set a
 createSet xs = Set (rmdups xs)
 
 generateSet :: IO (Set Int)
 generateSet = getIntL maxSetSize maxSetSize >>= \xs -> return (createSet (take (head xs) (drop 1 xs)))
 
+arbitrarySet :: (Arbitrary a, Ord a) => Gen (Set a)
+arbitrarySet = do
+                t <- arbitrary
+                return (list2set t)
+
+instance (Arbitrary a, Ord a) => Arbitrary (Set a) where
+  arbitrary = arbitrarySet
 
 
 -- Assignment 3
+
+intersectionSet :: (Ord a) => Set a -> Set a -> Set a
+intersectionSet (Set []) set2 = Set []
+intersectionSet (Set set1) (Set set2) = Set (filter (\x -> inSet x (Set set1)) set2)
+
+-- Assignment 4
 
 -- Read chapter 5
 
 
 
--- Assignment 4
-
-
-
-
 -- Assignment 5
+-- Time: 30 minutes
+
 
 type Rel a = [(a,a)]
 
@@ -71,22 +82,28 @@ hasInverse :: Eq a => Rel a -> (a,a) -> Bool
 hasInverse r t = inverseTuple t `elem` r
 
 symClos :: Ord a => Rel a -> Rel a
-symClos a = sort $ a ++ map inverseTuple (filter (not . hasInverse a) a)
+symClos r = sort $ r ++ map inverseTuple (filter (not . hasInverse r) r)
 
 
 -- Assignment 6
 
--- infixr 5 @@
---
--- (@@) :: Eq a => Rel a -> Rel a -> Rel a
--- r @@ s =
---  nub [ (x,z) | (x,y) <- r, (w,z) <- s, y == w ]
---
---trClos :: Ord a => Rel a -> Rel a
+
+infixr 5 @@
+
+(@@) :: Eq a => Rel a -> Rel a -> Rel a
+r @@ s =
+ nub [ (x,z) | (x,y) <- r, (w,z) <- s, y == w ]
+
+-- trClos :: Ord a => Rel a -> Rel a
 
 
 
 -- Assignment 7
+
+isSym :: Eq a => Rel a -> Bool
+isSym r = all (hasInverse r) r
+
+-- testSym = quickCheck(isSym generateSet)
 
 -- tests
 
