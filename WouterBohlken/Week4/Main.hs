@@ -61,7 +61,11 @@ instance (Arbitrary a, Ord a) => Arbitrary (Set a) where
 
 intersectionSet :: (Ord a) => Set a -> Set a -> Set a
 intersectionSet (Set []) set2 = Set []
-intersectionSet (Set set1) (Set set2) = Set (filter (\x -> inSet x (Set set1)) set2)
+intersectionSet (Set set1) (Set set2) = createSet (filter (\x -> inSet x (Set set1)) set2)
+
+differenceSet :: (Ord a) => Set a -> Set a -> Set a
+differenceSet (Set []) set2 = Set []
+differenceSet (Set set1) (Set set2) = createSet ((set1 \\ set2) ++ (set2 \\ set1))
 
 -- Assignment 4
 
