@@ -35,7 +35,7 @@ getIntL k n = do
 
 
 
-maxSetSize = 50 :: Int
+maxSetSize = 50
 
 -- Found on https://stackoverflow.com/questions/16108714/removing-duplicates-from-a-list-in-haskell
 rmdups :: (Ord a) => [a] -> [a]
@@ -62,9 +62,16 @@ generateSet = getIntL maxSetSize maxSetSize >>= \xs -> return (createSet (take (
 
 -- Assignment 5
 
--- type Rel a = [(a,a)]
--- symClos :: Ord a => Rel a -> Rel a
--- symClos a b =
+type Rel a = [(a,a)]
+
+inverseTuple :: (a,a) -> (a,a)
+inverseTuple a = (snd a, fst a)
+
+hasInverse :: Eq a => Rel a -> (a,a) -> Bool
+hasInverse r t = inverseTuple t `elem` r
+
+symClos :: Ord a => Rel a -> Rel a
+symClos a = sort $ a ++ map inverseTuple (filter (not . hasInverse a) a)
 
 
 -- Assignment 6
