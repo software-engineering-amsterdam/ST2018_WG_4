@@ -18,7 +18,7 @@ import SetOrd
 
 
 -- Assignment 2
--- time: 1:30 hours
+-- time: 2 hours
 
 getRandomInt :: Int -> IO Int
 getRandomInt n = getStdRandom (randomR (0,n))
@@ -57,7 +57,7 @@ instance (Arbitrary a, Ord a) => Arbitrary (Set a) where
 
 
 -- Assignment 3
-
+-- Time: 30 minutes
 -- intersectionSet1ElemNotContainedInSet2
 
 intersectionSet :: (Ord a) => Set a -> Set a -> Set a
@@ -68,6 +68,8 @@ differenceSet :: (Ord a) => Set a -> Set a -> Set a
 differenceSet (Set []) set2 = Set []
 differenceSet (Set set1) (Set set2) = list2set ((set1 \\ set2) ++ (set2 \\ set1))
 
+-- Tests
+
 
 
 -- Assignment 4
@@ -77,7 +79,7 @@ differenceSet (Set set1) (Set set2) = list2set ((set1 \\ set2) ++ (set2 \\ set1)
 
 
 -- Assignment 5
--- Time: 30 minutes
+-- Time: 1 hour
 
 type Rel a = [(a,a)]
 
@@ -108,6 +110,7 @@ trClos closure  | subSet (list2set (closure @@ closure)) (list2set closure) = cl
 
 
 -- Assignment 7
+-- Time: 1 hour
 
 hasAllTr :: Ord a => Rel a -> Rel a -> Bool
 hasAllTr e r = subSet (list2set (e @@ r)) (list2set r)
@@ -121,7 +124,10 @@ isTr r = all (\x -> hasAllTr [x] r) r
 testSymClos = quickCheck ((isSym . symClos) :: Rel (Int, Int) -> Bool)
 testTrClos = quickCheck ((isTr . trClos) :: Rel (Int, Int) -> Bool)
 
+
+
 -- Assignment 8
+-- Time: 30 minutes
 
 counterExample = [(0,1)]
 testTrSymIsSymTr = quickCheck(symClos (trClos counterExample) /= trClos (symClos counterExample))
