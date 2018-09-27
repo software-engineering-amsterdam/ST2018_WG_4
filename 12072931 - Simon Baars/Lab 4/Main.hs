@@ -14,10 +14,10 @@ import Data.List
 
 -- Assignment 2 (Random data generator for Set Int)
 -- Time: 90 minutes
-randomNumberStream :: IO [Int]
-randomNumberStream = do
+randomNumberStream :: Int -> Int -> IO [Int]
+randomNumberStream minB maxB = do
     g <- newStdGen
-    return $ randomRs (minBound :: Int, maxBound :: Int) g
+    return $ randomRs (minB, maxB) g
 
 randomNumber :: Int -> Int -> IO Int
 randomNumber minB maxB = do
@@ -29,7 +29,7 @@ removeDuplicates :: Eq a => [a] -> [a]
 removeDuplicates = foldl (\y x -> if x `elem` y then y else y++ [x]) []
 
 generateRandomSetInt :: IO (Set Int)
-generateRandomSetInt = randomNumberStream >>= \x -> randomNumber 0 100 >>= \y -> return (list2set (take y x))
+generateRandomSetInt = randomNumber 0 100 >>= \y -> randomNumberStream (-y) y >>= \x -> return (list2set (take y x))
 
 randomSetGenerator :: (Ord a, Arbitrary a) => Int -> Gen (Set a)
 randomSetGenerator size = replicateM size arbitrary >>= \x -> return (list2set x)
@@ -38,9 +38,11 @@ instance (Ord a, Arbitrary a) => Arbitrary (Set a) where
     arbitrary = sized randomSetGenerator
 
 setPrinter :: Set Int -> Bool
-setPrinter x = trace ("Input set = " ++ show x) True
+setPrinter x = trace ("QuickCheck random set = " ++ show x) True
 
 -- Assignment 3
+-- Time: 120 minutes
+
 setIntersection :: Ord a => Set a -> Set a -> Set a
 setIntersection (Set x) (Set y) = list2set (x `intersect` y)
 
@@ -113,6 +115,7 @@ testDifference :: Set Int -> Set Int -> Bool
 testDifference = checkProperties [propOnlyInLeftSet, propNotOnlyNotInLeftSet, propNotOnlyNotInRightSet, propNotInBothSets] setDifference
 
 -- Assignment 5
+-- Time: 10 minutes
 
 type Rel a = [(a,a)]
 
@@ -120,6 +123,7 @@ symClos :: Ord a => Rel a -> Rel a
 symClos a = sort $ a `union` [(y,x) | (x,y) <- a, (y,x) `notElem` a]
 
 -- Assignment 6
+-- Time: 30 minutes
 
 infixr 5 @@
 
@@ -133,6 +137,7 @@ trClos closure
   where closureUntilNow = nub $ closure ++ (closure @@ closure)
 
 -- Assignment 7
+-- Time: 45 minutes
 
 propAllReversed :: Ord a => (Rel a -> Rel a) -> Rel a -> Bool
 propAllReversed relFunction rel = let applied = relFunction rel in all (\(x,y) -> (y,x) `elem` applied) rel
@@ -153,6 +158,7 @@ testTransitiveClosure :: Rel Int -> Bool
 testTransitiveClosure x = propAllOriginal trClos x && propFirstClosure trClos x && propSecondClosure trClos x
 
 -- Assignment 8
+-- Time: 30 minutes
 
 -- So, for this example I created the following function to make QuickCheck come up with a counterexample:
 testSymmetricTransitiveClosure :: Rel Int -> Bool
@@ -165,24 +171,24 @@ testSymmetricTransitiveClosure x = symClos (trClos x) == trClos (symClos x)
 
 main :: IO ()
 main = do
-  putStrLn "== Assignment 2 (Random data generator for Set Int) =="
-  print =<< generateRandomSetInt
-  quickCheck setPrinter
+  putStrLn "\x1b[36m== Assignment 2 (Random data generator for Set Int) ==\x1b[0m"
+  generateRandomSetInt >>= \x -> putStrLn $ "My random list: " ++ show x
+  quickCheck (withMaxSuccess 10 setPrinter)
 
-  putStrLn "== Assignment 3 (Union, Intersect and Differerce on sets) =="
+  putStrLn "\x1b[36m== Assignment 3 (Union, Intersect and Differerce on sets) ==\x1b[0m"
   quickCheck testIntersection
   quickCheck testUnion
   quickCheck testDifference
 
-  putStrLn "== Assignment 5 (Symmetric Closure) =="
+  putStrLn "\x1b[36m== Assignment 5 (Symmetric Closure) ==\x1b[0m"
   print $ symClos [(1,2),(2,3),(3,4)]
 
-  putStrLn "== Assignment 6 (Transitive Closure) =="
+  putStrLn "\x1b[36m== Assignment 6 (Transitive Closure) ==\x1b[0m"
   print $ trClos [(1,2),(2,3),(3,4)]
 
-  putStrLn "== Assignment 7 (Testing Symmetric Closure & Transitive Closure) =="
+  putStrLn "\x1b[36m== Assignment 7 (Testing Symmetric Closure & Transitive Closure) ==\x1b[0m"
   quickCheck testSymmetricClosure
   quickCheck testTransitiveClosure
 
-  putStrLn "== Assignment 8 (Please note that quickcheck failure is intended here!) =="
+  putStrLn "\x1b[36m== Assignment 8 (Please note that quickcheck failure is intended here!) ==\x1b[0m"
   quickCheck testSymmetricTransitiveClosure

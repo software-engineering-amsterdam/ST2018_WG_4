@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-27 13:34:42.906612666 UTC
+2018-09-27 14:09:53.897821372 UTC
 
 interface main:Main [orphan module] 8043
-  interface hash: f0a061850d887a60dd8de804c9147f98
-  ABI hash: 8bb880896f4c86d1b91a553328d3a2bd
+  interface hash: e98ccd778c9b49100b60cba340eb418b
+  ABI hash: 379c61ccb172b6745c5bceaed0838395
   export-list hash: da08acbfadad675e7b1d416e10f57f4f
   orphan hash: 0543c94f393dc87a43597417b6a99364
   flag hash: 3621c4a3db1e69fa9ee0458d5de78495
@@ -87,6 +87,7 @@ family instance modules: base-4.11.1.0:Control.Applicative
 import  -/  QuickCheck-2.11.3:Test.QuickCheck e00d138ee3234e83a31cc3113c8c8ffb
 import  -/  QuickCheck-2.11.3:Test.QuickCheck.Arbitrary 749c030890709ce50a65277c8ad56400
 import  -/  QuickCheck-2.11.3:Test.QuickCheck.Gen 18d7f741d47ea7234320fe42d69d1321
+import  -/  QuickCheck-2.11.3:Test.QuickCheck.Property 2a2442debcbf309292a12478b176466b
 import  -/  QuickCheck-2.11.3:Test.QuickCheck.Test 5c80e8a0569651177c75db83b77c7ff4
 import  -/  base-4.11.1.0:Control.Monad c5f960c67d822497578bffbd3e4c01cf
 import  -/  base-4.11.1.0:Data.Foldable 8ed35c38958063956af33c935ea03444
@@ -95,7 +96,6 @@ import  -/  base-4.11.1.0:Data.OldList 1b35aa3c6805ff7c8887a35a866fe006
 import  -/  base-4.11.1.0:Data.Tuple 3af66f3ac61ed95ba8a3a3f68ebc5003
 import  -/  base-4.11.1.0:Debug.Trace 7d99b5cfd8ae9f4b50938e4fedeaadef
 import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
-import  -/  base-4.11.1.0:GHC.Enum 8824828888f5a89ecc9e7c73f05f3151
 import  -/  base-4.11.1.0:GHC.List 1e4357702d8d00cded0703bd293e50e8
 import  -/  base-4.11.1.0:GHC.Show 73be67392447c974f19c3befd83c46c0
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
@@ -347,8 +347,8 @@ af93e93765b55589078e4ee4a27e04ca
      Unfolding: InlineRule (1, True, True)
                 (\ (ds :: SetOrd.Set GHC.Types.Int) ->
                  GHC.Types.[] @ (SetOrd.Set GHC.Types.Int)) -}
-3d286c51eb3490870cff9880e9d505cf
-  $squickCheck3 ::
+969795b2fe1760812a38a3cbf2fe5c52
+  $squickCheck1 ::
     (SetOrd.Set GHC.Types.Int
      -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool)
     -> Test.QuickCheck.Random.QCGen
@@ -366,8 +366,8 @@ af93e93765b55589078e4ee4a27e04ca
                         `cast`
                       (Test.QuickCheck.Random.N:QCGen[0]) of ww { System.Random.TF.Gen.TFGen ww1 ww2 ww3 ww4 ww5 ww6 ->
                  Main.$w$dTestable1 w ww1 ww2 ww3 ww4 w2 }) -}
-b9babc82e229c53f62abe38f5c905ffc
-  $squickCheck5 ::
+51f714e1d496c460933a0fb53ee70f74
+  $squickCheck4 ::
     ([(GHC.Types.Int, GHC.Types.Int)] -> GHC.Types.Bool)
     -> Test.QuickCheck.Random.QCGen
     -> GHC.Types.Int
@@ -383,8 +383,8 @@ b9babc82e229c53f62abe38f5c905ffc
                         `cast`
                       (Test.QuickCheck.Random.N:QCGen[0]) of ww { System.Random.TF.Gen.TFGen ww1 ww2 ww3 ww4 ww5 ww6 ->
                  Main.$w$dTestable2 w ww1 ww2 ww3 ww4 w2 }) -}
-3999b1b226c4da1d79ecd43c7cf06e90
-  $squickCheck6 ::
+6f1da6593a1bd9a0edf9479ebac485b2
+  $squickCheck5 ::
     [(GHC.Types.Int, GHC.Types.Int)]
     -> [[(GHC.Types.Int, GHC.Types.Int)]]
   {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
@@ -392,10 +392,10 @@ b9babc82e229c53f62abe38f5c905ffc
                 (\ (eta :: [(GHC.Types.Int, GHC.Types.Int)]) ->
                  Test.QuickCheck.Arbitrary.shrinkList
                    @ (GHC.Types.Int, GHC.Types.Int)
-                   Main.$squickCheck7
+                   Main.$squickCheck6
                    eta) -}
-dcb8ea34c8e45c7ad09fb3c60300b2fd
-  $squickCheck7 ::
+80af2231f045936234f19ed0f0c35045
+  $squickCheck6 ::
     (GHC.Types.Int, GHC.Types.Int) -> [(GHC.Types.Int, GHC.Types.Int)]
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S(S)L),1*U(1*U(U),U(U))>,
      Inline: [0],
@@ -403,8 +403,8 @@ dcb8ea34c8e45c7ad09fb3c60300b2fd
                 (\ (w :: (GHC.Types.Int, GHC.Types.Int)) ->
                  case w of ww { (,) ww1 ww2 ->
                  case ww1 of ww3 { GHC.Types.I# ww4 -> Main.$wlvl ww4 ww2 } }) -}
-c78905df84635e9e9d13b2763d5f7cb5
-  $squickCheck8 ::
+ccc4d96c46d4d52c2271f7f747179199
+  $squickCheck7 ::
     Test.QuickCheck.Random.QCGen
     -> GHC.Types.Int -> [(GHC.Types.Int, GHC.Types.Int)]
   {- Arity: 2,
@@ -572,7 +572,7 @@ e3f777b366e23914d3d34cdc29a0775e
                    ww2
                    ww3
                    w1) -}
-53c1fea9f3109999232735bfa1de382d
+e997ae72ea70371502ee2765af96a930
   $w$dTestable2 ::
     ([(GHC.Types.Int, GHC.Types.Int)] -> GHC.Types.Bool)
     -> GHC.Prim.ByteArray#
@@ -597,11 +597,11 @@ e3f777b366e23914d3d34cdc29a0775e
                    Test.QuickCheck.Property.$fTestableBool_$cproperty
                      `cast`
                    (Sym (Test.QuickCheck.Property.N:Testable[0] <GHC.Types.Bool>_N))
-                   Main.$squickCheck8
+                   Main.$squickCheck7
                      `cast`
                    (Sym (Test.QuickCheck.Gen.N:Gen[0]
                              <[(GHC.Types.Int, GHC.Types.Int)]>_R))
-                   Main.$squickCheck6
+                   Main.$squickCheck5
                    w
                    ww
                    ww1
@@ -1044,14 +1044,14 @@ be7ea31d52dc893b7ff056fc563df355
                             GHC.Types.True -> go ys } }
                  } in
                  go a1) -}
-14068417332138f388547438e758f10d
+4afdf1b79cd5776cabfef026a30a14ac
   generateRandomSetInt :: GHC.Types.IO (SetOrd.Set GHC.Types.Int)
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.generateRandomSetInt1
                   `cast`
                 (Sym (GHC.Types.N:IO[0] <SetOrd.Set GHC.Types.Int>_R)) -}
-573d15a1a890c4ff417e03e3a5e70ced
+34383a320d8312f267737106f5daf681
   generateRandomSetInt1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld,
@@ -1070,25 +1070,25 @@ be7ea31d52dc893b7ff056fc563df355
                         System.Random.newStdGen2
                         s of ds1 { (#,#) ipv ipv1 ->
                  case ipv1 of b1 { System.Random.StdGen ipv2 ipv3 ->
-                 case GHC.Prim.atomicModifyMutVar#
-                        @ GHC.Prim.RealWorld
-                        @ System.Random.StdGen
-                        @ (System.Random.StdGen, System.Random.StdGen)
-                        @ System.Random.StdGen
-                        r#
-                        System.Random.newStdGen2
-                        ipv of ds2 { (#,#) ipv4 ipv5 ->
-                 case ipv5 of b2 { System.Random.StdGen ipv6 ipv7 ->
-                 (# ipv4,
-                    case System.Random.$wrandomIvalInteger
-                           @ System.Random.StdGen
-                           @ GHC.Types.Int
-                           System.Random.$fRandomGenStdGen
-                           GHC.Num.$fNumInt
-                           Main.generateRandomSetInt3
-                           Main.generateRandomSetInt2
-                           b2 of ww2 { (#,#) ww3 ww4 ->
-                    case ww3 of wild1 { GHC.Types.I# y ->
+                 let {
+                   ipv4 :: GHC.Types.Int
+                   = case System.Random.$wrandomIvalInteger
+                            @ System.Random.StdGen
+                            @ GHC.Types.Int
+                            System.Random.$fRandomGenStdGen
+                            GHC.Num.$fNumInt
+                            Main.generateRandomSetInt4
+                            Main.generateRandomSetInt3
+                            b1 of ww2 { (#,#) ww3 ww4 ->
+                     ww3 }
+                 } in
+                 case Main.generateRandomSetInt2
+                        (case ipv4 of wild1 { GHC.Types.I# x ->
+                         GHC.Types.I# (GHC.Prim.negateInt# x) })
+                        ipv4
+                        ipv of ds2 { (#,#) ipv5 ipv6 ->
+                 (# ipv5,
+                    case ipv4 of wild1 { GHC.Types.I# y ->
                     case GHC.Prim.<# 0# y of lwild {
                       DEFAULT
                       -> SetOrd.list2set
@@ -1099,19 +1099,58 @@ be7ea31d52dc893b7ff056fc563df355
                       -> SetOrd.list2set
                            @ GHC.Types.Int
                            GHC.Classes.$fOrdInt
-                           (GHC.List.$wunsafeTake
-                              @ GHC.Types.Int
-                              y
-                              (Main.generateRandomSetInt_go b1)) } } } #) } } } } }) -}
-b493b2860883f34db59091f86cf07d7d
-  generateRandomSetInt2 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (100) -}
-147cd41ea4eac8d4a93675231ce9d080
+                           (GHC.List.$wunsafeTake @ GHC.Types.Int y ipv6) } } #) } } } }) -}
+acb510fe417a5f98ca444123444e6770
+  generateRandomSetInt2 ::
+    GHC.Types.Int
+    -> GHC.Types.Int
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [GHC.Types.Int] #)
+  {- Arity: 3, Strictness: <L,1*U(U)><L,1*U(U)><S,U>,
+     Unfolding: (\ (minB :: GHC.Types.Int)
+                   (maxB :: GHC.Types.Int)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case System.Random.theStdGen
+                        `cast`
+                      (GHC.IORef.N:IORef[0] <System.Random.StdGen>_N) of wild { GHC.STRef.STRef r# ->
+                 case GHC.Prim.atomicModifyMutVar#
+                        @ GHC.Prim.RealWorld
+                        @ System.Random.StdGen
+                        @ (System.Random.StdGen, System.Random.StdGen)
+                        @ System.Random.StdGen
+                        r#
+                        System.Random.newStdGen2
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 case ipv1 of b1 { System.Random.StdGen ipv2 ipv3 ->
+                 (# ipv,
+                    case maxB of wild1 { GHC.Types.I# i ->
+                    case minB of wild2 { GHC.Types.I# i1 ->
+                    let {
+                      rand :: GHC.Integer.Type.Integer = GHC.Integer.Type.smallInteger i1
+                    } in
+                    let {
+                      rand1 :: GHC.Integer.Type.Integer = GHC.Integer.Type.smallInteger i
+                    } in
+                    letrec {
+                      go :: System.Random.StdGen -> [GHC.Types.Int]
+                        {- Arity: 1, Strictness: <L,U(U,U)> -}
+                      = \ (g2 :: System.Random.StdGen) ->
+                        case System.Random.$w$srandomIvalInteger
+                               @ GHC.Types.Int
+                               GHC.Num.$fNumInt
+                               rand
+                               rand1
+                               g2 of ww3 { (#,#) ww4 ww5 ->
+                        case ww4 of x1 { GHC.Types.I# ipv4 ->
+                        GHC.Types.: @ GHC.Types.Int x1 (go ww5) } }
+                    } in
+                    go b1 } } #) } } }) -}
+ad6e43c7e0f7cbdce4e0590f6686f6a8
   generateRandomSetInt3 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (100) -}
+6f7b0581b0e7dd4094933474ed81663b
+  generateRandomSetInt4 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (0) -}
-79b243c581582bb1f20e5a6f8a65bdc8
-  generateRandomSetInt_go :: System.Random.StdGen -> [GHC.Types.Int]
-  {- Arity: 1, Strictness: <L,U(U,U)>m2 -}
 b4f9ae97a091b232a88173a93240314d
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
@@ -2172,32 +2211,16 @@ bcc9d53bbab8734fbd3bd6be8e25d24e
                            (GHC.Integer.Type.smallInteger i1)
                            b1 of ww2 { (#,#) ww3 ww4 ->
                     ww3 } } } #) } } }) -}
-5e4eddf5104dfa9580f1ad32b401c221
-  randomNumberStream :: GHC.Types.IO [GHC.Types.Int]
-  {- Arity: 1, Strictness: <S,U>,
+baa017c2c0ba483c0c1cdf3f74e72ff6
+  randomNumberStream ::
+    GHC.Types.Int -> GHC.Types.Int -> GHC.Types.IO [GHC.Types.Int]
+  {- Arity: 3, Strictness: <L,1*U(U)><L,1*U(U)><S,U>,
      Unfolding: InlineRule (0, True, True)
-                Main.randomNumberStream1
+                Main.generateRandomSetInt2
                   `cast`
-                (Sym (GHC.Types.N:IO[0] <[GHC.Types.Int]>_R)) -}
-57e875d392dffe52a2ac5ff9ff55ac14
-  randomNumberStream1 ::
-    GHC.Prim.State# GHC.Prim.RealWorld
-    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [GHC.Types.Int] #)
-  {- Arity: 1, Strictness: <S,U>,
-     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 case System.Random.theStdGen
-                        `cast`
-                      (GHC.IORef.N:IORef[0] <System.Random.StdGen>_N) of wild { GHC.STRef.STRef r# ->
-                 case GHC.Prim.atomicModifyMutVar#
-                        @ GHC.Prim.RealWorld
-                        @ System.Random.StdGen
-                        @ (System.Random.StdGen, System.Random.StdGen)
-                        @ System.Random.StdGen
-                        r#
-                        System.Random.newStdGen2
-                        s of ds1 { (#,#) ipv ipv1 ->
-                 case ipv1 of b1 { System.Random.StdGen ipv2 ipv3 ->
-                 (# ipv, Main.generateRandomSetInt_go b1 #) } } }) -}
+                (<GHC.Types.Int>_R
+                 ->_R <GHC.Types.Int>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <[GHC.Types.Int]>_R)) -}
 d54e982cebd9970076d414a0256d7cd4
   randomSetGenerator ::
     (GHC.Classes.Ord a, Test.QuickCheck.Arbitrary.Arbitrary a) =>
@@ -2266,7 +2289,7 @@ d8b7eaa25538121b7abe21adedc5e6ba
   {- Arity: 2, HasNoCafRefs, Strictness: <L,A><S,1*U>,
      Unfolding: InlineRule (2, True, True)
                 (\ @ a ($dOrd :: GHC.Classes.Ord a) (ds :: SetOrd.Set a) -> ds) -}
-0653ddc002ea3f9a4bbf64e1c4625c1a
+e3a0d6c83d3b97c80a639fc4f289f83a
   setDifference ::
     GHC.Classes.Ord a => SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a
   {- Arity: 3, HasNoCafRefs,
@@ -2279,7 +2302,7 @@ d8b7eaa25538121b7abe21adedc5e6ba
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   lvl37 :: a -> a -> GHC.Types.Bool = GHC.Classes.== @ a $dEq
+                   lvl42 :: a -> a -> GHC.Types.Bool = GHC.Classes.== @ a $dEq
                  } in
                  let {
                    exit :: [a] -> SetOrd.Set a
@@ -2292,7 +2315,7 @@ d8b7eaa25538121b7abe21adedc5e6ba
                    = \ (ds :: [a]) (eta2 :: [a]) ->
                      case ds of wild {
                        [] -> exit eta2
-                       : y ys -> go ys (Data.OldList.deleteBy @ a lvl37 y eta2) }
+                       : y ys -> go ys (Data.OldList.deleteBy @ a lvl42 y eta2) }
                  } in
                  go
                    eta1 `cast` (SetOrd.N:Set[0] <a>_N)
@@ -2314,7 +2337,7 @@ c5a06c546f2e54434d9734a176593d9b
                       (GHC.Classes.== @ a (GHC.Classes.$p1Ord @ a $dOrd))
                       eta `cast` (SetOrd.N:Set[0] <a>_N)
                       eta1 `cast` (SetOrd.N:Set[0] <a>_N))) -}
-6948930a90d9216b479c022f00b339cc
+09bfb0d43dcda42c1be32483f04e7bb0
   setPrinter :: SetOrd.Set GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, Strictness: <L,1*U>,
      Unfolding: (\ (x :: SetOrd.Set GHC.Types.Int) ->
@@ -2328,9 +2351,9 @@ c5a06c546f2e54434d9734a176593d9b
                          x
                          (GHC.Types.[] @ GHC.Types.Char)))
                    GHC.Types.True) -}
-8fe105f96fb94ab3c7cb4e40ecd9fdcc
+928a011726837398ed52c2381bd91009
   setPrinter1 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("Input set = "#) -}
+  {- HasNoCafRefs, Unfolding: ("QuickCheck random set = "#) -}
 3956197f93e24e48d38346946d23a3eb
   setUnion ::
     GHC.Classes.Ord a => SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a
@@ -2348,20 +2371,20 @@ c5a06c546f2e54434d9734a176593d9b
                       (GHC.Classes.== @ a (GHC.Classes.$p1Ord @ a $dOrd))
                       eta `cast` (SetOrd.N:Set[0] <a>_N)
                       eta1 `cast` (SetOrd.N:Set[0] <a>_N))) -}
-852a3c6cae6e0c2d7a0a44af8399933e
+a660938288ab3d0cb6f9e5f271c4c9ba
   symClos :: GHC.Classes.Ord a => Main.Rel a -> Main.Rel a
   {- Arity: 1, HasNoCafRefs,
      Strictness: <L,U(1*U(C(C1(U)),A),C(C1(U)),A,A,A,A,A,A)>,
      Unfolding: (\ @ a ($dOrd :: GHC.Classes.Ord a) ->
                  let {
-                   lvl37 :: (a, a) -> (a, a) -> GHC.Types.Ordering {- Arity: 2 -}
+                   lvl42 :: (a, a) -> (a, a) -> GHC.Types.Ordering {- Arity: 2 -}
                    = GHC.Classes.$fOrd(,)_$ccompare @ a @ a $dOrd $dOrd
                  } in
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   lvl38 :: (a, a) -> (a, a) -> GHC.Types.Bool {- Arity: 2 -}
+                   lvl43 :: (a, a) -> (a, a) -> GHC.Types.Bool {- Arity: 2 -}
                    = GHC.Classes.$fEq(,)_$c== @ a @ a $dEq $dEq
                  } in
                  let {
@@ -2371,10 +2394,10 @@ c5a06c546f2e54434d9734a176593d9b
                  \ (a1 :: Main.Rel a) ->
                  Data.OldList.sortBy
                    @ (a, a)
-                   lvl37
+                   lvl42
                    (Data.OldList.unionBy
                       @ (a, a)
-                      lvl38
+                      lvl43
                       a1
                       (letrec {
                          go :: [(a, a)] -> [(a, a)] {- Arity: 1, Strictness: <S,1*U> -}
