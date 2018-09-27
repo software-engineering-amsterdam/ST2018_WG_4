@@ -111,13 +111,40 @@ testDifference l r = propOnlyInLeftSet setDifference l r && propNotOnlyNotInLeft
 
 -- Assignment 5
 
+type Rel a = [(a,a)]
+
+symClos :: Ord a => Rel a -> Rel a
+symClos a = sort $ a `union` [(y,x) | (x,y) <- a, (y,x) `notElem` a]
+
+-- Assignment 6
+
+infixr 5 @@
+
+(@@) :: Eq a => Rel a -> Rel a -> Rel a
+r @@ s = nub [ (x,z) | (x,y) <- r, (w,z) <- s, y == w ]
+
+trClos :: Ord a => Rel a -> Rel a
+trClos closure
+  | closure == closureUntilNow = sort closure
+  | otherwise                  = trClos closureUntilNow
+  where closureUntilNow = nub $ closure ++ (closure @@ closure)
+
+-- Assignment 7
+
+
 main :: IO ()
 main = do
   putStrLn "== Assignment 2 (Random data generator for Set Int) =="
   print =<< generateRandomSetInt
   quickCheck setPrinter
 
-  putStrLn "== Assignment 3 (Random data generator for Set Int) =="
+  putStrLn "== Assignment 3 (Union, Intersect and Differerce on sets) =="
   quickCheck testIntersection
   quickCheck testUnion
   quickCheck testDifference
+
+  putStrLn "== Assignment 5 (Symmetric Closure) =="
+  print $ symClos [(1,2),(2,3),(3,4)]
+
+  putStrLn "== Assignment 6 (Transitive Closure) =="
+  print $ trClos [(1,2),(2,3),(3,4)]

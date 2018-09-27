@@ -1,12 +1,12 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-27 11:29:33.769112264 UTC
+2018-09-27 12:01:26.904628996 UTC
 
 interface main:Main [orphan module] 8043
-  interface hash: 0a301fa4bd0b1b663744641ef0a0a4df
-  ABI hash: 831ec4155574a5cac2e07a4ce0b9fde2
-  export-list hash: c5f1b1ec58d592f2fa6c4c561f18d566
-  orphan hash: 4e73a579b9fb3aa856dab98fb7c78dd3
+  interface hash: ae756d7a9e7fbefc192f11bf363cc8e2
+  ABI hash: 47cc77299489c109c4a9948cdf19b2a8
+  export-list hash: 402ea032f6b651afef0c1111d18c7de4
+  orphan hash: fe855798f963c1fa9b2a3dd7e16ad32a
   flag hash: 3621c4a3db1e69fa9ee0458d5de78495
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
   hpc_hash: 93b885adfe0da089cdf634904fd59f71
@@ -15,6 +15,7 @@ interface main:Main [orphan module] 8043
   where
 exports:
   Main.-->
+  Main.@@
   Main.generateRandomSetInt
   Main.main
   Main.propInBothSets
@@ -36,9 +37,12 @@ exports:
   Main.setIntersection
   Main.setPrinter
   Main.setUnion
+  Main.symClos
   Main.testDifference
   Main.testIntersection
   Main.testUnion
+  Main.trClos
+  Main.Rel
 module dependencies: SetOrd
 package dependencies: QuickCheck-2.11.3 array-0.5.2.0 base-4.11.1.0
                       containers-0.5.11.0 deepseq-1.4.3.0 ghc-boot-th-8.4.3
@@ -96,7 +100,7 @@ import  -/  SetOrd 20d6f0f41725706843d2ab2f20e545d8
   Set 55dc3292b9803e1d32b9c4b5d42bfa6e
   list2set 3ebf2dc6bb92bb4670e51c5779791240
 import  -/  random-1.1:System.Random 31994b60c33f032d578c64a928f735f7
-fixities infix 1 -->
+fixities infix 1 -->, infixr 5 @@
 db5d21f5695a78abf11fd812cbf353d5
   $fArbitrarySet ::
     (GHC.Classes.Ord a, Test.QuickCheck.Arbitrary.Arbitrary a) =>
@@ -144,6 +148,22 @@ db5d21f5695a78abf11fd812cbf353d5
                       (Test.QuickCheck.Random.N:QCGen[0]) of ww { System.Random.TF.Gen.TFGen ww1 ww2 ww3 ww4 ww5 ww6 ->
                  case w1 of ww7 { GHC.Types.I# ww8 ->
                  Main.$w$s$carbitrary ww1 ww2 ww3 ww4 ww8 } }) -}
+aa6f16babe3570bae76e3058668676b3
+  $s$fEq(,) ::
+    GHC.Classes.Eq (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+  {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                  (GHC.Classes.$fEq(,)_$c==
+                     @ GHC.Integer.Type.Integer
+                     @ GHC.Integer.Type.Integer
+                     GHC.Integer.Type.$fEqInteger
+                     GHC.Integer.Type.$fEqInteger)
+                  (GHC.Classes.$fEq(,)_$c/=
+                     @ GHC.Integer.Type.Integer
+                     @ GHC.Integer.Type.Integer
+                     GHC.Integer.Type.$fEqInteger
+                     GHC.Integer.Type.$fEqInteger) -}
 82d2ed0dab5665ef8d5ae18aab5f68b1
   $s$fShowSet :: GHC.Show.Show (SetOrd.Set GHC.Types.Int)
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -399,6 +419,39 @@ c2a4231caf4f6d26161706dc240896f8
                     (Test.QuickCheck.Gen.N:Gen[0] <[GHC.Types.Int]>_R)
                       ww8 `cast` (Sym (Test.QuickCheck.Random.N:QCGen[0]))
                       (GHC.Types.I# ww4)) }) -}
+78c3237c45c3a58bb19b6a891cc07b38
+  $wlvl ::
+    GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Types.Bool
+  {- Arity: 4, HasNoCafRefs,
+     Strictness: <S,1*U><L,1*U><S,1*U><L,1*U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Integer.Type.Integer)
+                   (ww1 :: GHC.Integer.Type.Integer)
+                   (ww2 :: GHC.Integer.Type.Integer)
+                   (ww3 :: GHC.Integer.Type.Integer) ->
+                 case GHC.Integer.Type.eqInteger# ww ww2 of wild {
+                   DEFAULT -> GHC.Types.False
+                   1# -> GHC.Integer.Type.eqInteger ww1 ww3 }) -}
+92699dbe128216dd05c5cdf6793d2619
+  $wlvl1 ::
+    GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Types.Ordering
+  {- Arity: 4, HasNoCafRefs,
+     Strictness: <S,1*U><L,1*U><S,1*U><L,1*U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Integer.Type.Integer)
+                   (ww1 :: GHC.Integer.Type.Integer)
+                   (ww2 :: GHC.Integer.Type.Integer)
+                   (ww3 :: GHC.Integer.Type.Integer) ->
+                 case GHC.Integer.Type.compareInteger ww ww2 of wild {
+                   GHC.Types.LT -> GHC.Types.LT
+                   GHC.Types.EQ -> GHC.Integer.Type.compareInteger ww1 ww3
+                   GHC.Types.GT -> GHC.Types.GT }) -}
 04d6b9c98bc8a3c0743ca223308d822c
   $wrandomSetGenerator ::
     (GHC.Classes.Ord a, Test.QuickCheck.Arbitrary.Arbitrary a) =>
@@ -471,6 +524,102 @@ c2a4231caf4f6d26161706dc240896f8
                 (\ (p :: GHC.Types.Bool) (q :: GHC.Types.Bool) ->
                  case p of wild {
                    GHC.Types.False -> GHC.Types.True GHC.Types.True -> q }) -}
+54ab5c955291efabc8dd04133ef8e29a
+  (@@) :: GHC.Classes.Eq a => Main.Rel a -> Main.Rel a -> Main.Rel a
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(C(C1(U)),A)><S,1*U><L,U>,
+     Unfolding: (\ @ a
+                   ($dEq :: GHC.Classes.Eq a)
+                   (r :: Main.Rel a)
+                   (s :: Main.Rel a) ->
+                 letrec {
+                   go :: [(a, a)] -> [(a, a)] {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [(a, a)]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.[] @ (a, a)
+                       : y ys
+                       -> case y of wild1 { (,) x y1 ->
+                          let {
+                            z :: [(a, a)] = go ys
+                          } in
+                          letrec {
+                            go1 :: [(a, a)] -> [(a, a)] {- Arity: 1, Strictness: <S,1*U> -}
+                            = \ (ds1 :: [(a, a)]) ->
+                              case ds1 of wild2 {
+                                [] -> z
+                                : y2 ys1
+                                -> case y2 of wild3 { (,) w z1 ->
+                                   case GHC.Classes.== @ a $dEq y1 w of wild4 {
+                                     GHC.Types.False -> go1 ys1
+                                     GHC.Types.True -> GHC.Types.: @ (a, a) (x, z1) (go1 ys1) } } }
+                          } in
+                          go1 s } }
+                 } in
+                 Data.OldList.nubBy
+                   @ (a, a)
+                   (GHC.Classes.$fEq(,)_$c== @ a @ a $dEq $dEq)
+                   (go r)) -}
+26c6be8dab371e013465e1c162abedfc
+  @@1 ::
+    (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+    -> (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+    -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(SL),1*U(1*U,1*U)><S(SL),1*U(1*U,1*U)>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer))
+                   (w1 :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)) ->
+                 case w of ww { (,) ww1 ww2 ->
+                 case w1 of ww3 { (,) ww4 ww5 -> Main.$wlvl ww1 ww2 ww4 ww5 } }) -}
+9d53b268f17d807edc6fe714c8b7d9b0
+  @@_$s@@ ::
+    Main.Rel GHC.Integer.Type.Integer
+    -> Main.Rel GHC.Integer.Type.Integer
+    -> Main.Rel GHC.Integer.Type.Integer
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,U>,
+     Unfolding: (\ (r :: Main.Rel GHC.Integer.Type.Integer)
+                   (s :: Main.Rel GHC.Integer.Type.Integer) ->
+                 letrec {
+                   go :: [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+                         -> [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+                     {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [(GHC.Integer.Type.Integer,
+                                GHC.Integer.Type.Integer)]) ->
+                     case ds of wild {
+                       []
+                       -> GHC.Types.[]
+                            @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                       : y ys
+                       -> case y of wild1 { (,) x y1 ->
+                          let {
+                            z :: [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)] = go ys
+                          } in
+                          letrec {
+                            go1 :: [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+                                   -> [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+                              {- Arity: 1, Strictness: <S,1*U> -}
+                            = \ (ds1 :: [(GHC.Integer.Type.Integer,
+                                          GHC.Integer.Type.Integer)]) ->
+                              case ds1 of wild2 {
+                                [] -> z
+                                : y2 ys1
+                                -> case y2 of wild3 { (,) w z1 ->
+                                   case GHC.Integer.Type.eqInteger# y1 w of wild4 {
+                                     DEFAULT -> go1 ys1
+                                     1#
+                                     -> GHC.Types.:
+                                          @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                                          (x, z1)
+                                          (go1 ys1) } } }
+                          } in
+                          go1 s } }
+                 } in
+                 Data.OldList.nubBy
+                   @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                   Main.@@1
+                   (go r)) -}
+6db2207de780f3b107b58c494658c540
+  type Rel a = [(a, a)]
 14068417332138f388547438e758f10d
   generateRandomSetInt :: GHC.Types.IO (SetOrd.Set GHC.Types.Int)
   {- Arity: 1, Strictness: <S,U>,
@@ -539,145 +688,25 @@ b493b2860883f34db59091f86cf07d7d
 79b243c581582bb1f20e5a6f8a65bdc8
   generateRandomSetInt_go :: System.Random.StdGen -> [GHC.Types.Int]
   {- Arity: 1, Strictness: <L,U(U,U)>m2 -}
-7f1e8be6eaba9c74a85065476833e4f4
+b4f9ae97a091b232a88173a93240314d
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-06529b1ba56d0bcaa7fc588c47a82dcf
+529073e95d7e97cca9b9c5c633464b51
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
-  {- Arity: 1, Strictness: <S,U>,
-     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 case GHC.IO.Handle.Text.hPutStr2
-                        GHC.IO.Handle.FD.stdout
-                        Main.main4
-                        GHC.Types.True
-                        s of ds1 { (#,#) ipv ipv1 ->
-                 case Main.generateRandomSetInt1 ipv of ds2 { (#,#) ipv2 ipv3 ->
-                 case GHC.IO.Handle.Text.hPutStr2
-                        GHC.IO.Handle.FD.stdout
-                        (SetOrd.$w$cshowsPrec
-                           @ GHC.Types.Int
-                           GHC.Show.$fShowInt
-                           ipv3
-                           (GHC.Types.[] @ GHC.Types.Char))
-                        GHC.Types.True
-                        ipv2 of ds3 { (#,#) ipv4 ipv5 ->
-                 case Test.QuickCheck.Test.$wquickCheckWithResult
-                        @ (SetOrd.Set GHC.Types.Int -> GHC.Types.Bool)
-                        Main.$s$fTestable(->)3
-                          `cast`
-                        ((<SetOrd.Set GHC.Types.Int -> GHC.Types.Bool>_R
-                          ->_R Sym (Test.QuickCheck.Gen.N:Gen[0]
-                                        (Test.QuickCheck.Property.N:Prop[0])) ; Sym (Test.QuickCheck.Property.N:Property[0])) ; Sym (Test.QuickCheck.Property.N:Testable[0]
-                                                                                                                                         <SetOrd.Set
-                                                                                                                                            GHC.Types.Int
-                                                                                                                                          -> GHC.Types.Bool>_N))
-                        (GHC.Base.Nothing @ (Test.QuickCheck.Random.QCGen, GHC.Types.Int))
-                        Test.QuickCheck.Test.stdArgs2
-                        Test.QuickCheck.Test.stdArgs1
-                        Test.QuickCheck.Test.stdArgs2
-                        GHC.Types.True
-                        GHC.Base.maxInt
-                        Main.setPrinter
-                        ipv4 of ds4 { (#,#) ipv6 ipv7 ->
-                 case GHC.IO.Handle.Text.hPutStr2
-                        GHC.IO.Handle.FD.stdout
-                        Main.main2
-                        GHC.Types.True
-                        ipv6 of ds5 { (#,#) ipv8 ipv9 ->
-                 case Test.QuickCheck.Test.$wquickCheckWithResult
-                        @ (SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool)
-                        Main.$squickCheck3
-                          `cast`
-                        ((<SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool>_R
-                          ->_R Sym (Test.QuickCheck.Gen.N:Gen[0]
-                                        (Test.QuickCheck.Property.N:Prop[0])) ; Sym (Test.QuickCheck.Property.N:Property[0])) ; Sym (Test.QuickCheck.Property.N:Testable[0]
-                                                                                                                                         <SetOrd.Set
-                                                                                                                                            GHC.Types.Int
-                                                                                                                                          -> SetOrd.Set
-                                                                                                                                               GHC.Types.Int
-                                                                                                                                          -> GHC.Types.Bool>_N))
-                        (GHC.Base.Nothing @ (Test.QuickCheck.Random.QCGen, GHC.Types.Int))
-                        Test.QuickCheck.Test.stdArgs2
-                        Test.QuickCheck.Test.stdArgs1
-                        Test.QuickCheck.Test.stdArgs2
-                        GHC.Types.True
-                        GHC.Base.maxInt
-                        Main.testIntersection
-                        ipv8 of ds6 { (#,#) ipv10 ipv11 ->
-                 case Test.QuickCheck.Test.$wquickCheckWithResult
-                        @ (SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool)
-                        Main.$squickCheck3
-                          `cast`
-                        ((<SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool>_R
-                          ->_R Sym (Test.QuickCheck.Gen.N:Gen[0]
-                                        (Test.QuickCheck.Property.N:Prop[0])) ; Sym (Test.QuickCheck.Property.N:Property[0])) ; Sym (Test.QuickCheck.Property.N:Testable[0]
-                                                                                                                                         <SetOrd.Set
-                                                                                                                                            GHC.Types.Int
-                                                                                                                                          -> SetOrd.Set
-                                                                                                                                               GHC.Types.Int
-                                                                                                                                          -> GHC.Types.Bool>_N))
-                        (GHC.Base.Nothing @ (Test.QuickCheck.Random.QCGen, GHC.Types.Int))
-                        Test.QuickCheck.Test.stdArgs2
-                        Test.QuickCheck.Test.stdArgs1
-                        Test.QuickCheck.Test.stdArgs2
-                        GHC.Types.True
-                        GHC.Base.maxInt
-                        Main.testUnion
-                        ipv10 of ds7 { (#,#) ipv12 ipv13 ->
-                 case Test.QuickCheck.Test.$wquickCheckWithResult
-                        @ (SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool)
-                        Main.$squickCheck3
-                          `cast`
-                        ((<SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool>_R
-                          ->_R Sym (Test.QuickCheck.Gen.N:Gen[0]
-                                        (Test.QuickCheck.Property.N:Prop[0])) ; Sym (Test.QuickCheck.Property.N:Property[0])) ; Sym (Test.QuickCheck.Property.N:Testable[0]
-                                                                                                                                         <SetOrd.Set
-                                                                                                                                            GHC.Types.Int
-                                                                                                                                          -> SetOrd.Set
-                                                                                                                                               GHC.Types.Int
-                                                                                                                                          -> GHC.Types.Bool>_N))
-                        (GHC.Base.Nothing @ (Test.QuickCheck.Random.QCGen, GHC.Types.Int))
-                        Test.QuickCheck.Test.stdArgs2
-                        Test.QuickCheck.Test.stdArgs1
-                        Test.QuickCheck.Test.stdArgs2
-                        GHC.Types.True
-                        GHC.Base.maxInt
-                        Main.testDifference
-                        ipv12 of ds8 { (#,#) ipv14 ipv15 ->
-                 (# ipv14, GHC.Tuple.() #) } } } } } } } }) -}
-74f1504bab2b844acaf0e6c15ecc3c87
-  main2 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.main3) -}
-a92360005156ff30eee326fea46f0c8e
-  main3 :: GHC.Prim.Addr#
-  {- HasNoCafRefs,
-     Unfolding: ("== Assignment 3 (Random data generator for Set Int) =="#) -}
-66cd5acaa37e640f618ce567e1d7a34b
-  main4 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.main5) -}
-6c3f34e8a2d2024f1ae983e9810dea90
-  main5 :: GHC.Prim.Addr#
-  {- HasNoCafRefs,
-     Unfolding: ("== Assignment 2 (Random data generator for Set Int) =="#) -}
-0a00e4625c76f6d8a622793f4842f065
-  main6 ::
+  {- Arity: 1, Strictness: <S,U> -}
+2ae627898cff160a4ab35ad5461925fa
+  main2 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1,
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-35a89c7a436dbb2238e37b6085a5ded2
+01e0df18776db86c8f1bef9223fc27dd
   propInBothSets ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -686,14 +715,14 @@ a92360005156ff30eee326fea46f0c8e
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><S,U><S,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  let {
                    $j :: GHC.Types.Bool <join 0>
@@ -708,7 +737,7 @@ a92360005156ff30eee326fea46f0c8e
                                      @ a
                                      $dEq
                                      y
-                                     eta1 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                     eta11 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                                 GHC.Types.False -> go ys
                                 GHC.Types.True
                                 -> case GHC.List.elem
@@ -719,7 +748,7 @@ a92360005156ff30eee326fea46f0c8e
                                      GHC.Types.False -> GHC.Types.False
                                      GHC.Types.True -> go ys } } }
                      } in
-                     go eta2 `cast` (SetOrd.N:Set[0] <a>_N)
+                     go eta12 `cast` (SetOrd.N:Set[0] <a>_N)
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -732,7 +761,7 @@ a92360005156ff30eee326fea46f0c8e
                                  @ a
                                  $dEq
                                  y
-                                 eta2 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta12 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False -> go ys
                             GHC.Types.True
                             -> case GHC.List.elem
@@ -742,8 +771,73 @@ a92360005156ff30eee326fea46f0c8e
                                       newSet `cast` (SetOrd.N:Set[0] <a>_N) of wild2 {
                                  GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys } } }
                  } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <a>_N)) -}
-0139c991d76d477d4aecf9397a82dcd8
+                 go eta11 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+66b87e74cb83ba3468c7fdd13c86ab6f
+  propInBothSets_$spropInBothSets ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><S,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 let {
+                   $j :: GHC.Types.Bool <join 0>
+                   = letrec {
+                       go :: [GHC.Types.Int] -> GHC.Types.Bool
+                         <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                       = \ (ds :: [GHC.Types.Int]) ->
+                         case ds of wild {
+                           [] -> GHC.Types.True
+                           : y ys
+                           -> case GHC.List.elem
+                                     @ GHC.Types.Int
+                                     GHC.Classes.$fEqInt
+                                     y
+                                     eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                                GHC.Types.False -> go ys
+                                GHC.Types.True
+                                -> case GHC.List.elem
+                                          @ GHC.Types.Int
+                                          GHC.Classes.$fEqInt
+                                          y
+                                          newSet
+                                            `cast`
+                                          (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                     GHC.Types.False -> GHC.Types.False
+                                     GHC.Types.True -> go ys } } }
+                     } in
+                     go eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> $j
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False -> go ys
+                            GHC.Types.True
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys } } }
+                 } in
+                 go eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+ce6268a31a1d87abb0c2cc4b7ce21287
   propNotInBothSets ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -752,14 +846,14 @@ a92360005156ff30eee326fea46f0c8e
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><S,U><S,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  let {
                    $j :: GHC.Types.Bool <join 0>
@@ -774,7 +868,7 @@ a92360005156ff30eee326fea46f0c8e
                                      @ a
                                      $dEq
                                      y
-                                     eta1 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                     eta11 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                                 GHC.Types.False -> go ys
                                 GHC.Types.True
                                 -> case GHC.List.elem
@@ -785,7 +879,7 @@ a92360005156ff30eee326fea46f0c8e
                                      GHC.Types.False -> go ys
                                      GHC.Types.True -> GHC.Types.False } } }
                      } in
-                     go eta2 `cast` (SetOrd.N:Set[0] <a>_N)
+                     go eta12 `cast` (SetOrd.N:Set[0] <a>_N)
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -798,7 +892,7 @@ a92360005156ff30eee326fea46f0c8e
                                  @ a
                                  $dEq
                                  y
-                                 eta2 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta12 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False -> go ys
                             GHC.Types.True
                             -> case GHC.List.elem
@@ -808,8 +902,73 @@ a92360005156ff30eee326fea46f0c8e
                                       newSet `cast` (SetOrd.N:Set[0] <a>_N) of wild2 {
                                  GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False } } }
                  } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <a>_N)) -}
-64d32ab63406fa5fd32a5f067608e3ec
+                 go eta11 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+5bb29cd058ac985f40648b33a051fce1
+  propNotInBothSets_$spropNotInBothSets ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><S,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 let {
+                   $j :: GHC.Types.Bool <join 0>
+                   = letrec {
+                       go :: [GHC.Types.Int] -> GHC.Types.Bool
+                         <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                       = \ (ds :: [GHC.Types.Int]) ->
+                         case ds of wild {
+                           [] -> GHC.Types.True
+                           : y ys
+                           -> case GHC.List.elem
+                                     @ GHC.Types.Int
+                                     GHC.Classes.$fEqInt
+                                     y
+                                     eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                                GHC.Types.False -> go ys
+                                GHC.Types.True
+                                -> case GHC.List.elem
+                                          @ GHC.Types.Int
+                                          GHC.Classes.$fEqInt
+                                          y
+                                          newSet
+                                            `cast`
+                                          (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                     GHC.Types.False -> go ys
+                                     GHC.Types.True -> GHC.Types.False } } }
+                     } in
+                     go eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> $j
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False -> go ys
+                            GHC.Types.True
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False } } }
+                 } in
+                 go eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+6a9958b3b2ffc4bca9f0a60b3951f83f
   propNotOnlyInLeftSet ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -818,14 +977,14 @@ a92360005156ff30eee326fea46f0c8e
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><S,U><L,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -838,7 +997,7 @@ a92360005156ff30eee326fea46f0c8e
                                  @ a
                                  $dEq
                                  y
-                                 eta2 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta12 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False
                             -> case GHC.List.elem
                                       @ a
@@ -848,8 +1007,45 @@ a92360005156ff30eee326fea46f0c8e
                                  GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False }
                             GHC.Types.True -> go ys } }
                  } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <a>_N)) -}
-7457845b7f612a23c25db2b7f1eeb4c0
+                 go eta11 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+2e795ea591c07eea3fa93935ce172859
+  propNotOnlyInLeftSet_$spropNotOnlyInLeftSet ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><L,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.True
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False }
+                            GHC.Types.True -> go ys } }
+                 } in
+                 go eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+a177f37005d407e01f7f864d12ce5c26
   propNotOnlyInRightSet ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -858,14 +1054,14 @@ a92360005156ff30eee326fea46f0c8e
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><L,U><S,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -878,7 +1074,7 @@ a92360005156ff30eee326fea46f0c8e
                                  @ a
                                  $dEq
                                  y
-                                 eta1 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta11 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False
                             -> case GHC.List.elem
                                       @ a
@@ -888,8 +1084,45 @@ a92360005156ff30eee326fea46f0c8e
                                  GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False }
                             GHC.Types.True -> go ys } }
                  } in
-                 go eta2 `cast` (SetOrd.N:Set[0] <a>_N)) -}
-926cc5343bb0bc08e38836b60a1cca78
+                 go eta12 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+57f811ca9c5d8d7ed2c16139d7bcb1f3
+  propNotOnlyInRightSet_$spropNotOnlyInRightSet ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><L,U><S,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.True
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False }
+                            GHC.Types.True -> go ys } }
+                 } in
+                 go eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+105bab764cba767e8b6fa1122305fd15
   propNotOnlyNotInLeftSet ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -898,14 +1131,14 @@ a92360005156ff30eee326fea46f0c8e
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><S,U><L,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -918,7 +1151,7 @@ a92360005156ff30eee326fea46f0c8e
                                  @ a
                                  $dEq
                                  y
-                                 eta2 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta12 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False -> go ys
                             GHC.Types.True
                             -> case GHC.List.elem
@@ -928,8 +1161,45 @@ a92360005156ff30eee326fea46f0c8e
                                       newSet `cast` (SetOrd.N:Set[0] <a>_N) of wild2 {
                                  GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False } } }
                  } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <a>_N)) -}
-3c884f65ff079f28c739b0ed111fd331
+                 go eta11 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+ae8c88ede99fcd181779e1f78a33789a
+  propNotOnlyNotInLeftSet_$spropNotOnlyNotInLeftSet ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><L,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.True
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False -> go ys
+                            GHC.Types.True
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False } } }
+                 } in
+                 go eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+2b101ebef30e1da8458a3fbc918f6da8
   propNotOnlyNotInRightSet ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -938,14 +1208,14 @@ a92360005156ff30eee326fea46f0c8e
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><L,U><S,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -958,7 +1228,7 @@ a92360005156ff30eee326fea46f0c8e
                                  @ a
                                  $dEq
                                  y
-                                 eta1 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta11 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False -> go ys
                             GHC.Types.True
                             -> case GHC.List.elem
@@ -968,8 +1238,45 @@ a92360005156ff30eee326fea46f0c8e
                                       newSet `cast` (SetOrd.N:Set[0] <a>_N) of wild2 {
                                  GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False } } }
                  } in
-                 go eta2 `cast` (SetOrd.N:Set[0] <a>_N)) -}
-dc6ad93d4751d0cf8eda33648470a7c1
+                 go eta12 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+2faa78162ea98141309cc06eff1766b2
+  propNotOnlyNotInRightSet_$spropNotOnlyNotInRightSet ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><L,U><S,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.True
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False -> go ys
+                            GHC.Types.True
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False } } }
+                 } in
+                 go eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+c990ae115ca6b272312faf41fd922bf7
   propOnlyInLeftSet ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -978,14 +1285,14 @@ dc6ad93d4751d0cf8eda33648470a7c1
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><S,U><L,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -998,7 +1305,7 @@ dc6ad93d4751d0cf8eda33648470a7c1
                                  @ a
                                  $dEq
                                  y
-                                 eta2 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta12 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False
                             -> case GHC.List.elem
                                       @ a
@@ -1008,8 +1315,45 @@ dc6ad93d4751d0cf8eda33648470a7c1
                                  GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys }
                             GHC.Types.True -> go ys } }
                  } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <a>_N)) -}
-70f358d2159c36f90a794111846b4fb4
+                 go eta11 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+9bc43f14bae06112446dbf19c721ec9c
+  propOnlyInLeftSet_$spropOnlyInLeftSet ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><L,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.True
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys }
+                            GHC.Types.True -> go ys } }
+                 } in
+                 go eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+fe967dadbf5e43193e79fa3c228c0bda
   propOnlyInRightSet ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -1018,14 +1362,14 @@ dc6ad93d4751d0cf8eda33648470a7c1
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><L,U><S,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -1038,7 +1382,7 @@ dc6ad93d4751d0cf8eda33648470a7c1
                                  @ a
                                  $dEq
                                  y
-                                 eta1 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta11 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False
                             -> case GHC.List.elem
                                       @ a
@@ -1048,8 +1392,45 @@ dc6ad93d4751d0cf8eda33648470a7c1
                                  GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys }
                             GHC.Types.True -> go ys } }
                  } in
-                 go eta2 `cast` (SetOrd.N:Set[0] <a>_N)) -}
-4f2d43c89092a592fc6f0d91be58a458
+                 go eta12 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+572417c5eae650fda28b998062da038d
+  propOnlyInRightSet_$spropOnlyInRightSet ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><L,U><S,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.True
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys }
+                            GHC.Types.True -> go ys } }
+                 } in
+                 go eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+42aaba36ab35b37f213f1009841e666c
   propOnlyNotInLeftSet ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -1058,14 +1439,14 @@ dc6ad93d4751d0cf8eda33648470a7c1
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><S,U><L,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -1078,7 +1459,7 @@ dc6ad93d4751d0cf8eda33648470a7c1
                                  @ a
                                  $dEq
                                  y
-                                 eta2 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta12 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False -> go ys
                             GHC.Types.True
                             -> case GHC.List.elem
@@ -1088,8 +1469,45 @@ dc6ad93d4751d0cf8eda33648470a7c1
                                       newSet `cast` (SetOrd.N:Set[0] <a>_N) of wild2 {
                                  GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys } } }
                  } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <a>_N)) -}
-8c2721423b22441b80987506ac034447
+                 go eta11 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+e8728b89db89e3f3ab164b15df39330a
+  propOnlyNotInLeftSet_$spropOnlyNotInLeftSet ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><L,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.True
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False -> go ys
+                            GHC.Types.True
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys } } }
+                 } in
+                 go eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+7903a7bf486568be43eed595eaeeab18
   propOnlyNotInRightSet ::
     GHC.Classes.Ord a =>
     (SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
@@ -1098,14 +1516,14 @@ dc6ad93d4751d0cf8eda33648470a7c1
      Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><L,1*C1(C1(U))><L,U><S,U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a)
-                   (eta2 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a)
+                   (eta12 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   newSet :: SetOrd.Set a = eta eta1 eta2
+                   newSet :: SetOrd.Set a = eta10 eta11 eta12
                  } in
                  letrec {
                    go :: [a] -> GHC.Types.Bool
@@ -1118,7 +1536,7 @@ dc6ad93d4751d0cf8eda33648470a7c1
                                  @ a
                                  $dEq
                                  y
-                                 eta1 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
+                                 eta11 `cast` (SetOrd.N:Set[0] <a>_N) of wild1 {
                             GHC.Types.False -> go ys
                             GHC.Types.True
                             -> case GHC.List.elem
@@ -1128,7 +1546,44 @@ dc6ad93d4751d0cf8eda33648470a7c1
                                       newSet `cast` (SetOrd.N:Set[0] <a>_N) of wild2 {
                                  GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys } } }
                  } in
-                 go eta2 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+                 go eta12 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+87e3386f5fbe3a7ed3864fb654d615a3
+  propOnlyNotInRightSet_$spropOnlyNotInRightSet ::
+    (SetOrd.Set GHC.Types.Int
+     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+    -> SetOrd.Set GHC.Types.Int
+    -> SetOrd.Set GHC.Types.Int
+    -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><L,U><S,U>,
+     Unfolding: (\ (eta10 :: SetOrd.Set GHC.Types.Int
+                             -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int)
+                   (eta12 :: SetOrd.Set GHC.Types.Int) ->
+                 let {
+                   newSet :: SetOrd.Set GHC.Types.Int = eta10 eta11 eta12
+                 } in
+                 letrec {
+                   go :: [GHC.Types.Int] -> GHC.Types.Bool
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.True
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 y
+                                 eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
+                            GHC.Types.False -> go ys
+                            GHC.Types.True
+                            -> case GHC.List.elem
+                                      @ GHC.Types.Int
+                                      GHC.Classes.$fEqInt
+                                      y
+                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
+                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys } } }
+                 } in
+                 go eta12 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
 d3b33043bcf6f82177c8009919edc530
   randomNumber ::
     GHC.Types.Int -> GHC.Types.Int -> GHC.Types.IO GHC.Types.Int
@@ -1233,25 +1688,25 @@ d54e982cebd9970076d414a0256d7cd4
                         `cast`
                       (Test.QuickCheck.Random.N:QCGen[0]) of ww2 { System.Random.TF.Gen.TFGen ww3 ww4 ww5 ww6 ww7 ww8 ->
                  Main.$wrandomSetGenerator @ a w w1 ww1 ww3 ww4 ww5 ww6 w4 } }) -}
-9d2d68163dd05a06379e8754fd323a06
+d0669d86dc70c2e45013ac596d512fd1
   removeDuplicates :: GHC.Classes.Eq a => [a] -> [a]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,1*U>,
-     Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (eta :: [a]) ->
+     Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (eta10 :: [a]) ->
                  letrec {
                    go :: [a] -> [a] -> [a]
                      <join 2> {- Arity: 2, Strictness: <S,1*U><S,U> -}
-                   = \ (ds :: [a]) (eta1 :: [a]) ->
+                   = \ (ds :: [a]) (eta11 :: [a]) ->
                      case ds of wild {
-                       [] -> eta1
+                       [] -> eta11
                        : y ys
-                       -> case GHC.List.elem @ a $dEq y eta1 of wild1 {
+                       -> case GHC.List.elem @ a $dEq y eta11 of wild1 {
                             GHC.Types.False
                             -> go
                                  ys
-                                 (GHC.Base.++ @ a eta1 (GHC.Types.: @ a y (GHC.Types.[] @ a)))
-                            GHC.Types.True -> go ys eta1 } }
+                                 (GHC.Base.++ @ a eta11 (GHC.Types.: @ a y (GHC.Types.[] @ a)))
+                            GHC.Types.True -> go ys eta11 } }
                  } in
-                 go eta (GHC.Types.[] @ a)) -}
+                 go eta10 (GHC.Types.[] @ a)) -}
 d8b7eaa25538121b7abe21adedc5e6ba
   set2list :: GHC.Classes.Ord a => SetOrd.Set a -> [a]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,A><S,1*U>,
@@ -1267,54 +1722,54 @@ d8b7eaa25538121b7abe21adedc5e6ba
   {- Arity: 2, HasNoCafRefs, Strictness: <L,A><S,1*U>,
      Unfolding: InlineRule (2, True, True)
                 (\ @ a ($dOrd :: GHC.Classes.Ord a) (ds :: SetOrd.Set a) -> ds) -}
-b68e7975b8cab8b7d859210d795dfdfb
+eaa1ebb6b0e71e4794870dba2fa67822
   setDifference ::
     GHC.Classes.Ord a => SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a
   {- Arity: 3, HasNoCafRefs,
      Strictness: <L,U(1*U(1*C(C1(U)),A),C(C1(U)),A,A,A,A,A,A)><S,1*U><S,1*U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a) ->
                  let {
                    $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
                  let {
-                   lvl5 :: a -> a -> GHC.Types.Bool = GHC.Classes.== @ a $dEq
+                   lvl18 :: a -> a -> GHC.Types.Bool = GHC.Classes.== @ a $dEq
                  } in
                  let {
                    exit :: [a] -> SetOrd.Set a
                      <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (eta2 :: [a])[OneShot] -> SetOrd.list2set @ a $dOrd eta2
+                   = \ (eta12 :: [a])[OneShot] -> SetOrd.list2set @ a $dOrd eta12
                  } in
                  letrec {
                    go :: [a] -> [a] -> SetOrd.Set a
                      <join 2> {- Arity: 2, Strictness: <S,1*U><S,1*U> -}
-                   = \ (ds :: [a]) (eta2 :: [a]) ->
+                   = \ (ds :: [a]) (eta12 :: [a]) ->
                      case ds of wild {
-                       [] -> exit eta2
-                       : y ys -> go ys (Data.OldList.deleteBy @ a lvl5 y eta2) }
+                       [] -> exit eta12
+                       : y ys -> go ys (Data.OldList.deleteBy @ a lvl18 y eta12) }
                  } in
                  go
-                   eta1 `cast` (SetOrd.N:Set[0] <a>_N)
-                   eta `cast` (SetOrd.N:Set[0] <a>_N)) -}
-c5a06c546f2e54434d9734a176593d9b
+                   eta11 `cast` (SetOrd.N:Set[0] <a>_N)
+                   eta10 `cast` (SetOrd.N:Set[0] <a>_N)) -}
+67dd9d79c11a453ba5d64cc5d7c8dc39
   setIntersection ::
     GHC.Classes.Ord a => SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a
   {- Arity: 3, HasNoCafRefs,
      Strictness: <L,U(1*U(1*C(C(U)),A),C(C1(U)),A,A,A,A,A,A)><S,1*U><L,1*U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a) ->
                  SetOrd.list2set
                    @ a
                    $dOrd
                    (Data.OldList.intersectBy
                       @ a
                       (GHC.Classes.== @ a (GHC.Classes.$p1Ord @ a $dOrd))
-                      eta `cast` (SetOrd.N:Set[0] <a>_N)
-                      eta1 `cast` (SetOrd.N:Set[0] <a>_N))) -}
+                      eta10 `cast` (SetOrd.N:Set[0] <a>_N)
+                      eta11 `cast` (SetOrd.N:Set[0] <a>_N))) -}
 6948930a90d9216b479c022f00b339cc
   setPrinter :: SetOrd.Set GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 1, Strictness: <L,1*U>,
@@ -1332,595 +1787,276 @@ c5a06c546f2e54434d9734a176593d9b
 8fe105f96fb94ab3c7cb4e40ecd9fdcc
   setPrinter1 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Input set = "#) -}
-3956197f93e24e48d38346946d23a3eb
+7028a9da79cb5e7b36f07eeed82392d9
   setUnion ::
     GHC.Classes.Ord a => SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a
   {- Arity: 3, HasNoCafRefs,
      Strictness: <L,U(1*U(1*C(C1(U)),A),C(C1(U)),A,A,A,A,A,A)><S,U><L,1*U>,
      Unfolding: (\ @ a
                    ($dOrd :: GHC.Classes.Ord a)
-                   (eta :: SetOrd.Set a)
-                   (eta1 :: SetOrd.Set a) ->
+                   (eta10 :: SetOrd.Set a)
+                   (eta11 :: SetOrd.Set a) ->
                  SetOrd.list2set
                    @ a
                    $dOrd
                    (Data.OldList.unionBy
                       @ a
                       (GHC.Classes.== @ a (GHC.Classes.$p1Ord @ a $dOrd))
-                      eta `cast` (SetOrd.N:Set[0] <a>_N)
-                      eta1 `cast` (SetOrd.N:Set[0] <a>_N))) -}
-0ad4d6f57552461986a4bc6850209074
+                      eta10 `cast` (SetOrd.N:Set[0] <a>_N)
+                      eta11 `cast` (SetOrd.N:Set[0] <a>_N))) -}
+c3b4f542f7ee2b4a935f58be19867667
+  symClos :: GHC.Classes.Ord a => Main.Rel a -> Main.Rel a
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <L,U(1*U(C(C1(U)),A),C(C1(U)),A,A,A,A,A,A)>,
+     Unfolding: (\ @ a ($dOrd :: GHC.Classes.Ord a) ->
+                 let {
+                   lvl18 :: (a, a) -> (a, a) -> GHC.Types.Ordering {- Arity: 2 -}
+                   = GHC.Classes.$fOrd(,)_$ccompare @ a @ a $dOrd $dOrd
+                 } in
+                 let {
+                   $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
+                 } in
+                 let {
+                   lvl19 :: (a, a) -> (a, a) -> GHC.Types.Bool {- Arity: 2 -}
+                   = GHC.Classes.$fEq(,)_$c== @ a @ a $dEq $dEq
+                 } in
+                 let {
+                   $dEq1 :: GHC.Classes.Eq (a, a)
+                   = GHC.Classes.$fEq(,) @ a @ a $dEq $dEq
+                 } in
+                 \ (a1 :: Main.Rel a) ->
+                 Data.OldList.sortBy
+                   @ (a, a)
+                   lvl18
+                   (Data.OldList.unionBy
+                      @ (a, a)
+                      lvl19
+                      a1
+                      (letrec {
+                         go :: [(a, a)] -> [(a, a)] {- Arity: 1, Strictness: <S,1*U> -}
+                         = \ (ds :: [(a, a)]) ->
+                           case ds of wild {
+                             [] -> GHC.Types.[] @ (a, a)
+                             : y ys
+                             -> case y of wild1 { (,) x y1 ->
+                                case GHC.List.elem @ (a, a) $dEq1 (y1, x) a1 of wild2 {
+                                  GHC.Types.False -> GHC.Types.: @ (a, a) (y1, x) (go ys)
+                                  GHC.Types.True -> go ys } } }
+                       } in
+                       go a1))) -}
+7407f1b3bbe0d976e56da192154080f2
+  symClos1 ::
+    (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+    -> (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+    -> GHC.Types.Ordering
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(SL),1*U(1*U,1*U)><S(SL),1*U(1*U,1*U)>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer))
+                   (w1 :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)) ->
+                 case w of ww { (,) ww1 ww2 ->
+                 case w1 of ww3 { (,) ww4 ww5 -> Main.$wlvl1 ww1 ww2 ww4 ww5 } }) -}
+1ee29b495f8a06f6eded98d177e9f46e
+  symClos_$ssymClos ::
+    Main.Rel GHC.Integer.Type.Integer
+    -> Main.Rel GHC.Integer.Type.Integer
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,U>,
+     Unfolding: (\ (a :: Main.Rel GHC.Integer.Type.Integer) ->
+                 Data.OldList.sortBy
+                   @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                   Main.symClos1
+                   (Data.OldList.unionBy
+                      @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                      Main.@@1
+                      a
+                      (letrec {
+                         go :: [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+                               -> [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+                           {- Arity: 1, Strictness: <S,1*U> -}
+                         = \ (ds :: [(GHC.Integer.Type.Integer,
+                                      GHC.Integer.Type.Integer)]) ->
+                           case ds of wild {
+                             []
+                             -> GHC.Types.[]
+                                  @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                             : y ys
+                             -> case y of wild1 { (,) x y1 ->
+                                case GHC.List.elem
+                                       @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                                       Main.$s$fEq(,)
+                                       (y1, x)
+                                       a of wild2 {
+                                  GHC.Types.False
+                                  -> GHC.Types.:
+                                       @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                                       (y1, x)
+                                       (go ys)
+                                  GHC.Types.True -> go ys } } }
+                       } in
+                       go a))) -}
+f9275658daf34c6a4fdd7c4826e32aca
   testDifference ::
     SetOrd.Set GHC.Types.Int
     -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><L,U>,
      Unfolding: (\ (l :: SetOrd.Set GHC.Types.Int)
                    (r :: SetOrd.Set GHC.Types.Int) ->
-                 case Main.testDifference_$spropOnlyInLeftSet
+                 case Main.propOnlyInLeftSet_$spropOnlyInLeftSet
                         Main.testDifference1
                         l
                         r of wild {
                    GHC.Types.False -> GHC.Types.False
                    GHC.Types.True
-                   -> case Main.testDifference_$spropNotOnlyNotInLeftSet
+                   -> case Main.propNotOnlyNotInLeftSet_$spropNotOnlyNotInLeftSet
                              Main.testDifference1
                              l
                              r of wild1 {
                         GHC.Types.False -> GHC.Types.False
                         GHC.Types.True
-                        -> case Main.testDifference_$spropNotOnlyNotInRightSet
+                        -> case Main.propNotOnlyNotInRightSet_$spropNotOnlyNotInRightSet
                                   Main.testDifference1
                                   l
                                   r of wild2 {
                              GHC.Types.False -> GHC.Types.False
                              GHC.Types.True
-                             -> Main.testDifference_$spropNotInBothSets
+                             -> Main.propNotInBothSets_$spropNotInBothSets
                                   Main.testDifference1
                                   l
                                   r } } }) -}
-4f337ec2018fcb557a1cd5ac5c98d3a1
+569c2dee62bf377ccbc6a844faa0d703
   testDifference1 ::
     SetOrd.Set GHC.Types.Int
     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
      Unfolding: InlineRule (2, True, False)
-                (\ (eta :: SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int) ->
+                (\ (eta10 :: SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int) ->
                  SetOrd.list2set
                    @ GHC.Types.Int
                    GHC.Classes.$fOrdInt
                    (Main.testDifference_go
-                      eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
-                      eta `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N))) -}
-ac5b97a4cc55fa764685180da7945e2a
-  testDifference_$spropNotInBothSets ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><S,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
-                 let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
-                 } in
-                 let {
-                   $j :: GHC.Types.Bool <join 0>
-                   = letrec {
-                       go :: [GHC.Types.Int] -> GHC.Types.Bool
-                         <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                       = \ (ds :: [GHC.Types.Int]) ->
-                         case ds of wild {
-                           [] -> GHC.Types.True
-                           : y ys
-                           -> case GHC.List.elem
-                                     @ GHC.Types.Int
-                                     GHC.Classes.$fEqInt
-                                     y
-                                     eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                                GHC.Types.False -> go ys
-                                GHC.Types.True
-                                -> case GHC.List.elem
-                                          @ GHC.Types.Int
-                                          GHC.Classes.$fEqInt
-                                          y
-                                          newSet
-                                            `cast`
-                                          (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                     GHC.Types.False -> go ys
-                                     GHC.Types.True -> GHC.Types.False } } }
-                     } in
-                     go eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> $j
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False -> go ys
-                            GHC.Types.True
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False } } }
-                 } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
-59793f44876c7dff7db5f61f2ebc5704
-  testDifference_$spropNotOnlyNotInLeftSet ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><L,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
-                 let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> GHC.Types.True
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False -> go ys
-                            GHC.Types.True
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False } } }
-                 } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
-6bfacf32b2cd48e0562848fadea1e4e8
-  testDifference_$spropNotOnlyNotInRightSet ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><L,U><S,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
-                 let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> GHC.Types.True
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False -> go ys
-                            GHC.Types.True
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False } } }
-                 } in
-                 go eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
-d4a7edbfaee351e76826c88cf92b7647
-  testDifference_$spropOnlyInLeftSet ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><L,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
-                 let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> GHC.Types.True
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys }
-                            GHC.Types.True -> go ys } }
-                 } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+                      eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
+                      eta10 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N))) -}
 2aa266c5bc6529a004f34b933dc97cd7
   testDifference_go ::
     [GHC.Types.Int] -> [GHC.Types.Int] -> [GHC.Types.Int]
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U> -}
-e16adf8798da6e715211cadab06410c2
+5ab906472e96ee852fa6fa4d06d3af0a
   testIntersection ::
     SetOrd.Set GHC.Types.Int
     -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><L,U>,
      Unfolding: (\ (l :: SetOrd.Set GHC.Types.Int)
                    (r :: SetOrd.Set GHC.Types.Int) ->
-                 case Main.testUnion_$spropOnlyNotInLeftSet
+                 case Main.propOnlyNotInLeftSet_$spropOnlyNotInLeftSet
                         Main.testIntersection1
                         l
                         r of wild {
                    GHC.Types.False -> GHC.Types.False
                    GHC.Types.True
-                   -> case Main.testIntersection_$spropNotOnlyInLeftSet
+                   -> case Main.propNotOnlyInLeftSet_$spropNotOnlyInLeftSet
                              Main.testIntersection1
                              l
                              r of wild1 {
                         GHC.Types.False -> GHC.Types.False
                         GHC.Types.True
-                        -> case Main.testUnion_$spropOnlyNotInRightSet
+                        -> case Main.propOnlyNotInRightSet_$spropOnlyNotInRightSet
                                   Main.testIntersection1
                                   l
                                   r of wild2 {
                              GHC.Types.False -> GHC.Types.False
                              GHC.Types.True
-                             -> case Main.testIntersection_$spropNotOnlyInRightSet
+                             -> case Main.propNotOnlyInRightSet_$spropNotOnlyInRightSet
                                        Main.testIntersection1
                                        l
                                        r of wild3 {
                                   GHC.Types.False -> GHC.Types.False
                                   GHC.Types.True
-                                  -> Main.testUnion_$spropInBothSets
+                                  -> Main.propInBothSets_$spropInBothSets
                                        Main.testIntersection1
                                        l
                                        r } } } }) -}
-93034d30252b7eec7778204ba715eedb
+f0c3782d46d7c15314da9dbc9b1d5976
   testIntersection1 ::
     SetOrd.Set GHC.Types.Int
     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U>,
      Unfolding: InlineRule (2, True, False)
-                (\ (eta :: SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int) ->
+                (\ (eta10 :: SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int) ->
                  SetOrd.list2set
                    @ GHC.Types.Int
                    GHC.Classes.$fOrdInt
                    (Data.OldList.intersectBy
                       @ GHC.Types.Int
                       GHC.Classes.eqInt
-                      eta `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
-                      eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N))) -}
-f861d3294ae622aca1ed0237228bac52
-  testIntersection_$spropNotOnlyInLeftSet ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><L,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
-                 let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> GHC.Types.True
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False }
-                            GHC.Types.True -> go ys } }
-                 } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
-03068ddde9331f5c233d2fed671219ef
-  testIntersection_$spropNotOnlyInRightSet ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><L,U><S,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
-                 let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> GHC.Types.True
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> go ys GHC.Types.True -> GHC.Types.False }
-                            GHC.Types.True -> go ys } }
-                 } in
-                 go eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
-318284d2219291fbfb8b4a6ae6904fe9
+                      eta10 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
+                      eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N))) -}
+9459768e4954b3f59f9e27b1259d99fe
   testUnion ::
     SetOrd.Set GHC.Types.Int
     -> SetOrd.Set GHC.Types.Int -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><L,U>,
      Unfolding: (\ (l :: SetOrd.Set GHC.Types.Int)
                    (r :: SetOrd.Set GHC.Types.Int) ->
-                 case Main.testDifference_$spropOnlyInLeftSet
+                 case Main.propOnlyInLeftSet_$spropOnlyInLeftSet
                         Main.testUnion1
                         l
                         r of wild {
                    GHC.Types.False -> GHC.Types.False
                    GHC.Types.True
-                   -> case Main.testUnion_$spropOnlyNotInLeftSet
+                   -> case Main.propOnlyNotInLeftSet_$spropOnlyNotInLeftSet
                              Main.testUnion1
                              l
                              r of wild1 {
                         GHC.Types.False -> GHC.Types.False
                         GHC.Types.True
-                        -> case Main.testUnion_$spropOnlyInRightSet
+                        -> case Main.propOnlyInRightSet_$spropOnlyInRightSet
                                   Main.testUnion1
                                   l
                                   r of wild2 {
                              GHC.Types.False -> GHC.Types.False
                              GHC.Types.True
-                             -> case Main.testUnion_$spropOnlyNotInRightSet
+                             -> case Main.propOnlyNotInRightSet_$spropOnlyNotInRightSet
                                        Main.testUnion1
                                        l
                                        r of wild3 {
                                   GHC.Types.False -> GHC.Types.False
                                   GHC.Types.True
-                                  -> Main.testUnion_$spropInBothSets Main.testUnion1 l r } } } }) -}
-de987a48fac60f1294e9cc10eca1a86d
+                                  -> Main.propInBothSets_$spropInBothSets
+                                       Main.testUnion1
+                                       l
+                                       r } } } }) -}
+c3bc4988e8693226f74cab7bb9062138
   testUnion1 ::
     SetOrd.Set GHC.Types.Int
     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><L,1*U>,
      Unfolding: InlineRule (2, True, False)
-                (\ (eta :: SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int) ->
+                (\ (eta10 :: SetOrd.Set GHC.Types.Int)
+                   (eta11 :: SetOrd.Set GHC.Types.Int) ->
                  SetOrd.list2set
                    @ GHC.Types.Int
                    GHC.Classes.$fOrdInt
                    (Data.OldList.unionBy
                       @ GHC.Types.Int
                       GHC.Classes.eqInt
-                      eta `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
-                      eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N))) -}
-cb08c0ffc0acf7edfe1efae7f4a0ad7c
-  testUnion_$spropInBothSets ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><S,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
+                      eta10 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
+                      eta11 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N))) -}
+c335f11430cafc302736fd24b9337f94
+  trClos :: GHC.Classes.Ord a => Main.Rel a -> Main.Rel a
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)><S,U>,
+     Unfolding: (\ @ a
+                   ($dOrd :: GHC.Classes.Ord a)
+                   (eta10 :: Main.Rel a) ->
                  let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
+                   $dEq :: GHC.Classes.Eq a = GHC.Classes.$p1Ord @ a $dOrd
                  } in
-                 let {
-                   $j :: GHC.Types.Bool <join 0>
-                   = letrec {
-                       go :: [GHC.Types.Int] -> GHC.Types.Bool
-                         <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                       = \ (ds :: [GHC.Types.Int]) ->
-                         case ds of wild {
-                           [] -> GHC.Types.True
-                           : y ys
-                           -> case GHC.List.elem
-                                     @ GHC.Types.Int
-                                     GHC.Classes.$fEqInt
-                                     y
-                                     eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                                GHC.Types.False -> go ys
-                                GHC.Types.True
-                                -> case GHC.List.elem
-                                          @ GHC.Types.Int
-                                          GHC.Classes.$fEqInt
-                                          y
-                                          newSet
-                                            `cast`
-                                          (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                     GHC.Types.False -> GHC.Types.False
-                                     GHC.Types.True -> go ys } } }
-                     } in
-                     go eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> $j
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False -> go ys
-                            GHC.Types.True
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys } } }
-                 } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
-d65b1d5f6e06562763b08840ac4e3efd
-  testUnion_$spropOnlyInRightSet ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><L,U><S,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
-                 let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> GHC.Types.True
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys }
-                            GHC.Types.True -> go ys } }
-                 } in
-                 go eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
-139b198447c6811003799699cfdabbcb
-  testUnion_$spropOnlyNotInLeftSet ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><S,U><L,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
-                 let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> GHC.Types.True
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False -> go ys
-                            GHC.Types.True
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys } } }
-                 } in
-                 go eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
-5a545655982d0f53d5b1ae816640a3df
-  testUnion_$spropOnlyNotInRightSet ::
-    (SetOrd.Set GHC.Types.Int
-     -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-    -> SetOrd.Set GHC.Types.Int
-    -> SetOrd.Set GHC.Types.Int
-    -> GHC.Types.Bool
-  {- Arity: 3, HasNoCafRefs, Strictness: <L,1*C1(C1(U))><L,U><S,U>,
-     Unfolding: (\ (eta :: SetOrd.Set GHC.Types.Int
-                           -> SetOrd.Set GHC.Types.Int -> SetOrd.Set GHC.Types.Int)
-                   (eta1 :: SetOrd.Set GHC.Types.Int)
-                   (eta2 :: SetOrd.Set GHC.Types.Int) ->
-                 let {
-                   newSet :: SetOrd.Set GHC.Types.Int = eta eta1 eta2
-                 } in
-                 letrec {
-                   go :: [GHC.Types.Int] -> GHC.Types.Bool
-                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
-                   = \ (ds :: [GHC.Types.Int]) ->
-                     case ds of wild {
-                       [] -> GHC.Types.True
-                       : y ys
-                       -> case GHC.List.elem
-                                 @ GHC.Types.Int
-                                 GHC.Classes.$fEqInt
-                                 y
-                                 eta1 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild1 {
-                            GHC.Types.False -> go ys
-                            GHC.Types.True
-                            -> case GHC.List.elem
-                                      @ GHC.Types.Int
-                                      GHC.Classes.$fEqInt
-                                      y
-                                      newSet `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N) of wild2 {
-                                 GHC.Types.False -> GHC.Types.False GHC.Types.True -> go ys } } }
-                 } in
-                 go eta2 `cast` (SetOrd.N:Set[0] <GHC.Types.Int>_N)) -}
+                 Data.OldList.nubBy
+                   @ (a, a)
+                   (GHC.Classes.$fEq(,)_$c== @ a @ a $dEq $dEq)
+                   (GHC.Base.++ @ (a, a) eta10 (Main.@@ @ a $dEq eta10 eta10))) -}
 instance [orphan] Test.QuickCheck.Arbitrary.Arbitrary [SetOrd.Set]
   = Main.$fArbitrarySet
 "SPEC $carbitrary @ Int" forall ($dArbitrary :: Test.QuickCheck.Arbitrary.Arbitrary
@@ -1928,46 +2064,62 @@ instance [orphan] Test.QuickCheck.Arbitrary.Arbitrary [SetOrd.Set]
                                 ($dOrd :: GHC.Classes.Ord GHC.Types.Int)
   Main.$fArbitrarySet1 @ GHC.Types.Int $dOrd $dArbitrary
   = Main.$fArbitrarySet_$s$carbitrary
+"SPEC @@ @ Integer" forall ($dEq :: GHC.Classes.Eq
+                                      GHC.Integer.Type.Integer)
+  Main.@@ @ GHC.Integer.Type.Integer $dEq = Main.@@_$s@@
 "SPEC propInBothSets @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                GHC.Types.Int)
   Main.propInBothSets @ GHC.Types.Int $dOrd
-  = Main.testUnion_$spropInBothSets
+  = Main.propInBothSets_$spropInBothSets
 "SPEC propNotInBothSets @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                   GHC.Types.Int)
   Main.propNotInBothSets @ GHC.Types.Int $dOrd
-  = Main.testDifference_$spropNotInBothSets
+  = Main.propNotInBothSets_$spropNotInBothSets
 "SPEC propNotOnlyInLeftSet @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                      GHC.Types.Int)
   Main.propNotOnlyInLeftSet @ GHC.Types.Int $dOrd
-  = Main.testIntersection_$spropNotOnlyInLeftSet
+  = Main.propNotOnlyInLeftSet_$spropNotOnlyInLeftSet
 "SPEC propNotOnlyInRightSet @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                       GHC.Types.Int)
   Main.propNotOnlyInRightSet @ GHC.Types.Int $dOrd
-  = Main.testIntersection_$spropNotOnlyInRightSet
+  = Main.propNotOnlyInRightSet_$spropNotOnlyInRightSet
 "SPEC propNotOnlyNotInLeftSet @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                         GHC.Types.Int)
   Main.propNotOnlyNotInLeftSet @ GHC.Types.Int $dOrd
-  = Main.testDifference_$spropNotOnlyNotInLeftSet
+  = Main.propNotOnlyNotInLeftSet_$spropNotOnlyNotInLeftSet
 "SPEC propNotOnlyNotInRightSet @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                          GHC.Types.Int)
   Main.propNotOnlyNotInRightSet @ GHC.Types.Int $dOrd
-  = Main.testDifference_$spropNotOnlyNotInRightSet
+  = Main.propNotOnlyNotInRightSet_$spropNotOnlyNotInRightSet
 "SPEC propOnlyInLeftSet @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                   GHC.Types.Int)
   Main.propOnlyInLeftSet @ GHC.Types.Int $dOrd
-  = Main.testDifference_$spropOnlyInLeftSet
+  = Main.propOnlyInLeftSet_$spropOnlyInLeftSet
 "SPEC propOnlyInRightSet @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                    GHC.Types.Int)
   Main.propOnlyInRightSet @ GHC.Types.Int $dOrd
-  = Main.testUnion_$spropOnlyInRightSet
+  = Main.propOnlyInRightSet_$spropOnlyInRightSet
 "SPEC propOnlyNotInLeftSet @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                      GHC.Types.Int)
   Main.propOnlyNotInLeftSet @ GHC.Types.Int $dOrd
-  = Main.testUnion_$spropOnlyNotInLeftSet
+  = Main.propOnlyNotInLeftSet_$spropOnlyNotInLeftSet
 "SPEC propOnlyNotInRightSet @ Int" forall ($dOrd :: GHC.Classes.Ord
                                                       GHC.Types.Int)
   Main.propOnlyNotInRightSet @ GHC.Types.Int $dOrd
-  = Main.testUnion_$spropOnlyNotInRightSet
+  = Main.propOnlyNotInRightSet_$spropOnlyNotInRightSet
+"SPEC symClos @ Integer" forall ($dOrd :: GHC.Classes.Ord
+                                            GHC.Integer.Type.Integer)
+  Main.symClos @ GHC.Integer.Type.Integer $dOrd
+  = Main.symClos_$ssymClos
+"SPEC/Main $fEq(,) @ Integer @ Integer" [orphan] forall (v1 :: GHC.Classes.Eq
+                                                                 GHC.Integer.Type.Integer)
+                                                        (v :: GHC.Classes.Eq
+                                                                GHC.Integer.Type.Integer)
+  GHC.Classes.$fEq(,) @ GHC.Integer.Type.Integer
+                      @ GHC.Integer.Type.Integer
+                      v
+                      v1
+  = Main.$s$fEq(,)
 "SPEC/Main $fShowSet @ Int" [orphan] forall (v :: GHC.Show.Show
                                                     GHC.Types.Int)
   SetOrd.$fShowSet @ GHC.Types.Int v = Main.$s$fShowSet
