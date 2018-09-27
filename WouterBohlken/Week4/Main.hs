@@ -123,8 +123,13 @@ testTrClos = quickCheck ((isTr . trClos) :: Rel (Int, Int) -> Bool)
 
 -- Assignment 8
 
--- testTcScIsScTc = quickCheck(\x -> symClos (trClos x) == trClos (symClos x))
--- Fail on [(0,1)]
+counterExample = [(0,1)]
+testTrSymIsSymTr = quickCheck(symClos (trClos counterExample) /= trClos (symClos counterExample))
+-- symClos (trClos counterExample
+--    [(0,1),(1,0)]
+-- trClos (symClos counterExample)
+--    [(0,1),(1,0),(0,0),(1,1)]
+
 
 -- Assignment 9
 
