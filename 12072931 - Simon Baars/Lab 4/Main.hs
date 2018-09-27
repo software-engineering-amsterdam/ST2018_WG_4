@@ -100,14 +100,17 @@ propNotInBothSets :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Boo
 propNotInBothSets setFunction (Set leftSet) (Set rightSet) = all (\x -> x `elem` rightSet --> x `notElem` newSet) leftSet && all (\x -> x `elem` leftSet --> x `notElem` newSet) rightSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
+checkProperties :: [(Set a -> Set a -> Set a) -> Set a -> Set a -> Bool] -> (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
+checkProperties a b c d = all (\x -> x b c d) a
+
 testIntersection :: Set Int -> Set Int -> Bool
-testIntersection l r = propOnlyNotInLeftSet setIntersection l r && propNotOnlyInLeftSet setIntersection l r && propOnlyNotInRightSet setIntersection l r && propNotOnlyInRightSet setIntersection l r && propInBothSets setIntersection l r
+testIntersection = checkProperties [propOnlyNotInLeftSet, propNotOnlyInLeftSet, propOnlyNotInRightSet, propNotOnlyInRightSet, propInBothSets] setIntersection
 
 testUnion :: Set Int -> Set Int -> Bool
-testUnion l r = propOnlyInLeftSet setUnion l r && propOnlyNotInLeftSet setUnion l r && propOnlyInRightSet setUnion l r && propOnlyNotInRightSet setUnion l r && propInBothSets setUnion l r
+testUnion = checkProperties [propOnlyInLeftSet, propOnlyNotInLeftSet, propOnlyInRightSet, propOnlyNotInRightSet, propInBothSets] setUnion
 
 testDifference :: Set Int -> Set Int -> Bool
-testDifference l r = propOnlyInLeftSet setDifference l r && propNotOnlyNotInLeftSet setDifference l r && propNotOnlyNotInRightSet setDifference l r  && propNotInBothSets setDifference l r
+testDifference = checkProperties [propOnlyInLeftSet, propNotOnlyNotInLeftSet, propNotOnlyNotInRightSet, propNotInBothSets] setDifference
 
 -- Assignment 5
 
@@ -131,6 +134,34 @@ trClos closure
 
 -- Assignment 7
 
+propAllReversed :: Ord a => (Rel a -> Rel a) -> Rel a -> Bool
+propAllReversed relFunction rel = let applied = relFunction rel in all (\(x,y) -> (y,x) `elem` applied) rel
+
+propAllOriginal :: Ord a => (Rel a -> Rel a) -> Rel a -> Bool
+propAllOriginal relFunction rel = let applied = relFunction rel in all (\(x,y) -> (x,y) `elem` applied) rel
+
+propFirstClosure :: Ord a => (Rel a -> Rel a) -> Rel a -> Bool
+propFirstClosure relFunction rel = let applied = relFunction rel in all (\(x,y) -> (x,y) `elem` applied) (rel @@ rel)
+
+propSecondClosure :: Ord a => (Rel a -> Rel a) -> Rel a -> Bool
+propSecondClosure relFunction rel = let applied = relFunction rel in all (\(x,y) -> (x,y) `elem` applied) (rel @@ applied)
+
+testSymmetricClosure :: Rel Int -> Bool
+testSymmetricClosure x = propAllReversed symClos x && propAllOriginal symClos x
+
+testTransitiveClosure :: Rel Int -> Bool
+testTransitiveClosure x = propAllOriginal trClos x && propFirstClosure trClos x && propSecondClosure trClos x
+
+-- Assignment 8
+
+-- So, for this example I created the following function to make QuickCheck come up with a counterexample:
+testSymmetricTransitiveClosure :: Rel Int -> Bool
+testSymmetricTransitiveClosure x = symClos (trClos x) == trClos (symClos x)
+-- Using this, QuickCheck will find a counter example after three tests, at both [(0,1)] and [(1,0)]. Hereby my explanation:
+-- `trClos (symClos [(0,1)])` results in `[(0,0),(0,1),(1,0),(1,1)]`
+-- `symClos (trClos [(0,1)])` results in `[(0,1),(1,0)]`
+-- This is because `symClos [(0,1)]` results in `[(0,1),(1,0)]`, and then doing `trClos [(0,1),(1,0)]` we het the result `[(0,0),(0,1),(1,0),(1,1)]`.
+-- However, if we calculate the transitive close first (`trClos [(0,1)]`) we get `[(0,1)]`, of which the symbolic closure (`symClos [(0,1)]`) is `[(0,1),(1,0)]`.
 
 main :: IO ()
 main = do
@@ -148,3 +179,10 @@ main = do
 
   putStrLn "== Assignment 6 (Transitive Closure) =="
   print $ trClos [(1,2),(2,3),(3,4)]
+
+  putStrLn "== Assignment 7 (Testing Symmetric Closure & Transitive Closure) =="
+  quickCheck testSymmetricClosure
+  quickCheck testTransitiveClosure
+
+  putStrLn "== Assignment 8 (Please note that quickcheck failure is intended here!) =="
+  quickCheck testSymmetricTransitiveClosure
