@@ -98,14 +98,21 @@ infixr 5 @@
 r @@ s =
  nub [ (x,z) | (x,y) <- r, (w,z) <- s, y == w ]
 
--- trClos :: Ord a => Rel a -> Rel a
+trClos :: Ord a => Rel a -> Rel a
+trClos a = rmdups (a ++ (a @@ a))
 
 
 
 -- Assignment 7
 
-isSym :: Eq a => Rel a -> Bool
+hasAllTr :: (Ord a, Eq a) => Rel a -> Rel a -> Bool
+hasAllTr e r = subSet (createSet (e @@ r)) (createSet r)
+
+isSym :: (Ord a, Eq a) => Rel a -> Bool
 isSym r = all (hasInverse r) r
+
+isTr :: (Ord a, Eq a) => Rel a -> Bool
+isTr r = all (\x -> hasAllTr [x] r) r
 
 -- testSym = quickCheck(isSym generateSet)
 
