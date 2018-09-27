@@ -84,7 +84,7 @@ convertToClauses :: Form -> Clauses
 convertToClauses (Cnj [Dsj fs1, Dsj fs2]) = [concatMap convertPropToClause fs1, concatMap convertPropToClause fs2]
 convertToClauses (Cnj [fs1, Dsj fs2]) = [convertPropToClause fs1, concatMap convertPropToClause fs2]
 convertToClauses (Cnj [Dsj fs1, fs2]) = [concatMap convertPropToClause fs1, convertPropToClause fs2]
-convertToClauses (Cnj fs) = [concatMap convertPropToClause fs]
+convertToClauses (Cnj fs) = concatMap convertToClauses fs
 convertToClauses (Dsj fs) = [concatMap convertPropToClause fs]
 
 -- Convert a form to a Clause format
