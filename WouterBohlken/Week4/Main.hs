@@ -120,7 +120,7 @@ inverseTuple a = (snd a, fst a)
 hasInverse :: Eq a => Rel a -> (a,a) -> Bool
 hasInverse r t = inverseTuple t `elem` r
 
-symClos :: (Eq a, Ord a) => Rel a -> Rel a
+symClos :: (Ord a) => Rel a -> Rel a
 symClos r = sort $ r ++ map inverseTuple (filter (not . hasInverse r) r)
 
 
@@ -134,7 +134,7 @@ infixr 5 @@
 r @@ s =
  nub [ (x,z) | (x,y) <- r, (w,z) <- s, y == w ]
 
-trClos :: (Ord a, Eq a) => Rel a -> Rel a
+trClos :: (Ord a) => Rel a -> Rel a
 trClos closure = until (\x -> subSet (list2set (x @@ x)) (list2set x)) trClos (sort $ nub (closure ++ closure @@ closure))
 
 
