@@ -104,10 +104,7 @@ r @@ s =
  nub [ (x,z) | (x,y) <- r, (w,z) <- s, y == w ]
 
 trClos :: (Ord a, Eq a) => Rel a -> Rel a
-trClos closure  | subSet (list2set (closure @@ closure)) (list2set closure) = closure
-                | otherwise = trClos (nub (closure ++ (closure @@ closure)))
-
-
+trClos closure = until (\x -> subSet (list2set (x @@ x)) (list2set x)) trClos (sort (nub (closure ++ closure @@ closure)))
 
 -- Assignment 7
 -- Time: 1 hour
