@@ -97,10 +97,12 @@ differenceSetContainsNoElemsInB      a (Set b) c =  all (\x -> not (inSet x c)) 
 differenceSetElementsInANotInBAndC  (Set a) b c = all (\x -> inSet x b `nand` inSet x c) a
 
 -- This tests if all elements that are in A or B, are also contained in the Union set and that there are not element in C which are not in A or B
-testUnionSet = quickCheck((\a b -> unionSetContainsAllElements a b (unionSet a b) && unionSetContainsNoOtherElements a b (unionSet a b)) :: Set Int -> Set Int -> Bool)
+testUnionSet = quickCheck((\a b -> unionSetContainsAllElements a b (unionSet a b) &&
+  unionSetContainsNoOtherElements a b (unionSet a b)) :: Set Int -> Set Int -> Bool)
 
 -- This tests if all elements that are in A and B, are also contained in the Intersection set and that there are not element in C which are not in A and B
-testIntersectionSet = quickCheck((\a b -> intersectionSetContainsAllElements a b (intersectionSet a b) && intersectionSetContainsNoOtherElements a b (intersectionSet a b)) :: Set Int -> Set Int -> Bool)
+testIntersectionSet = quickCheck((\a b -> intersectionSetContainsAllElements a b (intersectionSet a b) &&
+  intersectionSetContainsNoOtherElements a b (intersectionSet a b)) :: Set Int -> Set Int -> Bool)
 
 -- This test will determine whether the difference set is correct, by checking is all elements occur in either set A or set B, and not both
 testDifferenceSet = quickCheck((\a b -> differenceSetOnlyContainsElemsInA a b (differenceSet a b) &&
@@ -174,13 +176,21 @@ testTrSymIsSymTr = quickCheck(symClos (trClos counterExample) /= trClos (symClos
 --    [(0,1),(1,0),(0,0),(1,1)]
 
 
--- Assignment 9
-
-
 
 
 
 main :: IO ()
 main = do
-    putStrLn "empty"
-    putStrLn "empty"
+    putStrLn "+++ Assignment 3 +++"
+    putStrLn "Testing union set: "
+    testUnionSet
+    putStrLn "Testing intersection set: "
+    testIntersectionSet
+    putStrLn "Testing difference set: "
+    testDifferenceSet
+
+    putStrLn "\n+++ Assignment 7 +++"
+    putStrLn "Testing symmetric closure: "
+    testSymClos
+    putStrLn "Testing transitive closure: "
+    testTrClos
