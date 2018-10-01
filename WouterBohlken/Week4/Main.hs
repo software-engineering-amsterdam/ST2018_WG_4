@@ -57,7 +57,7 @@ instance (Arbitrary a, Ord a) => Arbitrary (Set a) where
 
 
 -- Assignment 3
--- Time: 1:30 hours
+-- Time: 2:30 hours
 
 intersectionSet :: (Ord a) => Set a -> Set a -> Set a
 intersectionSet (Set []) set2 = Set []
@@ -65,7 +65,7 @@ intersectionSet (Set set1) (Set set2) = list2set (filter (\x -> inSet x (Set set
 
 differenceSet :: (Ord a) => Set a -> Set a -> Set a
 differenceSet (Set []) set2 = Set []
-differenceSet (Set set1) (Set set2) = list2set ((set1 \\ set2) ++ (set2 \\ set1))
+differenceSet (Set set1) (Set set2) = list2set (set1 \\ set2)
 
 
 -- Tests
@@ -83,14 +83,18 @@ nand x y = not (x && y)
 nor :: Bool -> Bool -> Bool
 nor x y = not x && not y
 
-unionSetContainsAllElements, unionSetContainsNoOtherElements, intersectionSetContainsAllElements, intersectionSetContainsNoOtherElements, isDifferenceSet :: (Ord a) => Set a -> Set a -> Set a -> Bool
-isDifferenceSet a b (Set c) = all (\x -> inSet x a `xor` inSet x b) c
+unionSetContainsAllElements, unionSetContainsNoOtherElements :: (Ord a) => Set a -> Set a -> Set a -> Bool
+unionSetContainsAllElements (Set a) (Set b) c = all (\x -> (inSet x (Set a) || inSet x (Set b)) --> inSet x c) (a ++ b)
+unionSetContainsNoOtherElements (Set a) (Set b) c = all (\x -> (inSet x (Set a) `nor` inSet x (Set b)) == not (inSet x c)) (a ++ b)
 
+intersectionSetContainsAllElements, intersectionSetContainsNoOtherElements :: (Ord a) => Set a -> Set a -> Set a -> Bool
 intersectionSetContainsAllElements (Set a) (Set b) c = all (\x -> (inSet x (Set a) && inSet x (Set b)) --> inSet x c) (a ++ b)
 intersectionSetContainsNoOtherElements (Set a) (Set b) c = all (\x -> (inSet x (Set a) `nand` inSet x (Set b)) == not (inSet x c)) (a ++ b)
 
-unionSetContainsAllElements (Set a) (Set b) c = all (\x -> (inSet x (Set a) || inSet x (Set b)) --> inSet x c) (a ++ b)
-unionSetContainsNoOtherElements (Set a) (Set b) c = all (\x -> (inSet x (Set a) `nor` inSet x (Set b)) == not (inSet x c)) (a ++ b)
+differenceSetOnlyContainsElemsInA, differenceSetContainsNoElemsInB, differenceSetElementsInANotInBAndC :: (Ord a) => Set a -> Set a -> Set a -> Bool
+differenceSetOnlyContainsElemsInA    a b (Set c) = all (\x -> inSet x a && not (inSet x b)) c
+differenceSetContainsNoElemsInB      a (Set b) c =  all (\x -> not (inSet x c)) b
+differenceSetElementsInANotInBAndC  (Set a) b c = all (\x -> inSet x b `nand` inSet x c) a
 
 -- This tests if all elements that are in A or B, are also contained in the Union set and that there are not element in C which are not in A or B
 testUnionSet = quickCheck((\a b -> unionSetContainsAllElements a b (unionSet a b) && unionSetContainsNoOtherElements a b (unionSet a b)) :: Set Int -> Set Int -> Bool)
@@ -99,7 +103,9 @@ testUnionSet = quickCheck((\a b -> unionSetContainsAllElements a b (unionSet a b
 testIntersectionSet = quickCheck((\a b -> intersectionSetContainsAllElements a b (intersectionSet a b) && intersectionSetContainsNoOtherElements a b (intersectionSet a b)) :: Set Int -> Set Int -> Bool)
 
 -- This test will determine whether the difference set is correct, by checking is all elements occur in either set A or set B, and not both
-testDifferenceSet = quickCheck((\x y -> isDifferenceSet x y (differenceSet x y)) :: Set Int -> Set Int -> Bool)
+testDifferenceSet = quickCheck((\a b -> differenceSetOnlyContainsElemsInA a b (differenceSet a b) &&
+  differenceSetContainsNoElemsInB a b (differenceSet a b) &&
+  differenceSetElementsInANotInBAndC a b (differenceSet a b)) :: Set Int -> Set Int -> Bool)
 
 
 
