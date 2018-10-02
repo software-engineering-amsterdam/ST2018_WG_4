@@ -12,8 +12,12 @@ import SetOrd
 
 
 -- Assignment 1
-
--- Read chapter 4
+-- Time: 2 hours
+-- Rereading chapter 4 of the book didn't seem to yield any notable questions
+-- As I made a report on the assignments from chapters 1-7 in my pre-masters,
+-- the reading part didn't cause any difficulty.
+-- The difficulty I had during this chapter (and this assignments in the other chapters,
+-- was thinking of good ways to prove theorems
 
 
 
@@ -112,8 +116,9 @@ testDifferenceSet = quickCheck((\a b -> differenceSetOnlyContainsElemsInA a b (d
 
 
 -- Assignment 4
-
--- Read chapter 5
+-- Time 2:30 hours
+-- Rereading chapter 5 was a little harder than chapter 4, and there were a few points that were unclear to me
+-- p 172, "To see that R + is transitive, assume xR + y and yR + z", how can you assume this, when we have to prove transitivity?
 
 
 
