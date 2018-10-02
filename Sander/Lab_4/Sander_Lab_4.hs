@@ -68,7 +68,7 @@ unionSet' (Set (x:xs)) set2  =
 
 --Exercise 4
 -- Chapter 5 of Haskell road
--- time spent: 60 mins
+-- time spent: 90 mins
 
 -- Questions:
 --   -
@@ -95,7 +95,7 @@ trClos :: Ord a => Rel a -> Rel a
 trClos a
     | a == currentTrClos = a
     | otherwise = trClos currentTrClos
-    where currentTrClos = sortUniq(a ++ [(x,z) | (x,y) <- a, (y,z) <- a, ((elem (x,y) a) && (elem (y,z) a))])
+    where currentTrClos = sortUniq(a ++ [(x,z) | (x,y) <- a, (y,z) <- a, (elem (x,y) a && elem (y,z) a)])
 
 --Exercise 7
 -- time spent:  mins
@@ -121,6 +121,6 @@ propSymClosIn a = all (\(x,y) -> elem (y,x) (symClos a)) a
 -- time spent:  mins
 
 -- No: e.g.:
--- let rel1 = [(1,2),(2,3),(3,3)]
--- symClos(trClos(rel1)) == trClos(symClos(rel1))
---  -False
+-- R = [(1,2),(2,3),(3,3)]
+-- symClos(trClos(R)) == trClos(symClos(R))
+--  - False
