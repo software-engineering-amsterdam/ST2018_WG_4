@@ -7,10 +7,12 @@ import Control.Monad
 import Debug.Trace
 import Data.List
 
--- Assignment 1 (Haskell Road to Logic)
+-- Assignment 1 (Haskell Road to Logic Chapter 4)
 -- Time: 190 minutes
 --
 -- Page 122: What does the keyword `undefined` do in Haskell?
+-- Page 145: What are the implications of having an atom as your factor?
+-- Page 145: How do "logical translations" work?
 
 -- Assignment 2 (Random data generator for Set Int)
 -- Time: 90 minutes
@@ -113,6 +115,18 @@ testUnion = checkProperties [propOnlyInLeftSet, propOnlyNotInLeftSet, propOnlyIn
 
 testDifference :: Set Int -> Set Int -> Bool
 testDifference = checkProperties [propOnlyInLeftSet, propNotOnlyNotInLeftSet, propNotOnlyNotInRightSet, propNotInBothSets] setDifference
+
+-- Assignment 4 (Haskell Road to Logic Chapter 5)
+-- Time: 240 minutes
+--
+-- This chapter was really though to get through. The examples were hard to follow and I could solve few of the exercises without looking at the solutions. In the end I did not have time to further solve any exercises.
+-- Page 174: What is a "Real Plane"? Why is R2 called a "real plane"?
+-- Page 180 & 182: What is a delta set? --> This was answered later on, as it is the identity of a certain set.
+-- Example 5.63 is completely unclear to me.
+-- Page 208: What does "having a common ancestor down the male line" mean?
+-- Page 208 & 209: How to work with stirling set numbers?
+-- Page 211: How does a quotient work?
+-- Page 211: How to determine the number of elements in an atom? Or does |a| mean something else in this formula?
 
 -- Assignment 5
 -- Time: 10 minutes
