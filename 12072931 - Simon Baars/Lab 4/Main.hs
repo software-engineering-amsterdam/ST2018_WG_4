@@ -26,10 +26,6 @@ randomNumber minB maxB = do
     g <- newStdGen
     return $ fst $ randomR (minB, maxB) g
 
--- Removes all duplicates from a list
-removeDuplicates :: Eq a => [a] -> [a]
-removeDuplicates = foldl (\y x -> if x `elem` y then y else y++ [x]) []
-
 generateRandomSetInt :: IO (Set Int)
 generateRandomSetInt = randomNumber 0 100 >>= \y -> randomNumberStream (-y) y >>= \x -> return (list2set (take y x))
 
@@ -44,6 +40,7 @@ setPrinter x = trace ("QuickCheck random set = " ++ show x) True
 
 -- Assignment 3
 -- Time: 120 minutes
+-- I have defined 10 properties. Each property's documentation is documented in comment above the property itself. Each test function expect a certain set of properties to be true.
 
 setIntersection :: Ord a => Set a -> Set a -> Set a
 setIntersection (Set x) (Set y) = list2set (x `intersect` y)
@@ -62,44 +59,54 @@ set2list :: Ord a => Set a -> [a]
 set2list (Set a) = a
 
 -- LEFT SET
+-- Checks for all elements in the first set, that if the element is NOT in the second set then it should be in the resulting set.
 propOnlyInLeftSet :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propOnlyInLeftSet setFunction (Set leftSet) (Set rightSet) = all (\x -> x `notElem` rightSet --> x `elem` newSet) leftSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
+-- Checks for all elements in the first set, that if the element is in the second set then it should be in the resulting set.
 propOnlyNotInLeftSet :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propOnlyNotInLeftSet setFunction (Set leftSet) (Set rightSet) = all (\x -> x `elem` rightSet --> x `elem` newSet) leftSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
+-- Checks for all elements in the first set, that if the element is NOT in the second set then it should NOT be in the resulting set.
 propNotOnlyInLeftSet :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propNotOnlyInLeftSet setFunction (Set leftSet) (Set rightSet) = all (\x -> x `notElem` rightSet --> x `notElem` newSet) leftSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
+-- Checks for all elements in the first set, that if the element is in the second set then it should NOT be in the resulting set.
 propNotOnlyNotInLeftSet :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propNotOnlyNotInLeftSet setFunction (Set leftSet) (Set rightSet) = all (\x -> x `elem` rightSet --> x `notElem` newSet) leftSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
 -- RIGHT SET
+-- Checks for all elements in the second set, that if the element is NOT in the first set then it should be in the resulting set.
 propOnlyInRightSet :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propOnlyInRightSet setFunction (Set leftSet) (Set rightSet) = all (\x -> x `notElem` leftSet --> x `elem` newSet) rightSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
+-- Checks for all elements in the second set, that if the element is in the first set then it should be in the resulting set.
 propOnlyNotInRightSet :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propOnlyNotInRightSet setFunction (Set leftSet) (Set rightSet) = all (\x -> x `elem` leftSet --> x `elem` newSet) rightSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
+-- Checks for all elements in the second set, that if the element is NOT in the first set then it should NOT be in the resulting set.
 propNotOnlyInRightSet :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propNotOnlyInRightSet setFunction (Set leftSet) (Set rightSet) = all (\x -> x `notElem` leftSet --> x `notElem` newSet) rightSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
+-- Checks for all elements in the second set, that if the element is NOT in the first set then it should NOT be in the resulting set.
 propNotOnlyNotInRightSet :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propNotOnlyNotInRightSet setFunction (Set leftSet) (Set rightSet) = all (\x -> x `elem` leftSet --> x `notElem` newSet) rightSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
 -- BOTH SETS
+-- Checks for all elements in that exist in both sets that they are also in the resulting set.
 propInBothSets :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propInBothSets setFunction (Set leftSet) (Set rightSet) = all (\x -> x `elem` rightSet --> x `elem` newSet) leftSet && all (\x -> x `elem` leftSet --> x `elem` newSet) rightSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
 
+-- Checks for all elements in that exist in both sets that they are NOT in the resulting set.
 propNotInBothSets :: Ord a => (Set a -> Set a -> Set a) -> Set a -> Set a -> Bool
 propNotInBothSets setFunction (Set leftSet) (Set rightSet) = all (\x -> x `elem` rightSet --> x `notElem` newSet) leftSet && all (\x -> x `elem` leftSet --> x `notElem` newSet) rightSet
   where newSet = set2list (setFunction (Set leftSet) (Set rightSet))
@@ -145,10 +152,10 @@ infixr 5 @@
 r @@ s = nub [ (x,z) | (x,y) <- r, (w,z) <- s, y == w ]
 
 trClos :: Ord a => Rel a -> Rel a
-trClos closure
-  | closure == closureUntilNow = sort closure
-  | otherwise                  = trClos closureUntilNow
-  where closureUntilNow = nub $ closure ++ (closure @@ closure)
+trClos clos
+  | clos == x = sort clos
+  | otherwise = trClos x
+  where x = nub $ clos ++ (clos @@ clos)
 
 -- Assignment 7
 -- Time: 45 minutes
@@ -186,7 +193,7 @@ testSymmetricTransitiveClosure x = symClos (trClos x) == trClos (symClos x)
 main :: IO ()
 main = do
   putStrLn "\x1b[36m== Assignment 2 (Random data generator for Set Int) ==\x1b[0m"
-  generateRandomSetInt >>= \x -> putStrLn $ "My random list: " ++ show x
+  generateRandomSetInt >>= \x -> putStrLn $ "My random set: " ++ show x
   quickCheck (withMaxSuccess 10 setPrinter)
 
   putStrLn "\x1b[36m== Assignment 3 (Union, Intersect and Differerce on sets) ==\x1b[0m"

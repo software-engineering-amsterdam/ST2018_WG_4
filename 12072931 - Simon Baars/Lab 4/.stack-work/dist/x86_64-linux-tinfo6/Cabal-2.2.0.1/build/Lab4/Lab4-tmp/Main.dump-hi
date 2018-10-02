@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-09-27 14:09:53.897821372 UTC
+2018-10-02 18:07:39.261140598 UTC
 
 interface main:Main [orphan module] 8043
-  interface hash: e98ccd778c9b49100b60cba340eb418b
-  ABI hash: 379c61ccb172b6745c5bceaed0838395
-  export-list hash: da08acbfadad675e7b1d416e10f57f4f
+  interface hash: d7bc732b174a6589a84ab6f4f5fde0d1
+  ABI hash: 08c614d4278a05a8c5feeae2e567e2b4
+  export-list hash: 6ae50b37327f4eed275219d4090db8b0
   orphan hash: 0543c94f393dc87a43597417b6a99364
   flag hash: 3621c4a3db1e69fa9ee0458d5de78495
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -36,7 +36,6 @@ exports:
   Main.randomNumber
   Main.randomNumberStream
   Main.randomSetGenerator
-  Main.removeDuplicates
   Main.set2list
   Main.setDifference
   Main.setIntersection
@@ -2255,25 +2254,6 @@ d54e982cebd9970076d414a0256d7cd4
                         `cast`
                       (Test.QuickCheck.Random.N:QCGen[0]) of ww2 { System.Random.TF.Gen.TFGen ww3 ww4 ww5 ww6 ww7 ww8 ->
                  Main.$wrandomSetGenerator @ a w w1 ww1 ww3 ww4 ww5 ww6 w4 } }) -}
-9d2d68163dd05a06379e8754fd323a06
-  removeDuplicates :: GHC.Classes.Eq a => [a] -> [a]
-  {- Arity: 2, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)><S,1*U>,
-     Unfolding: (\ @ a ($dEq :: GHC.Classes.Eq a) (eta :: [a]) ->
-                 letrec {
-                   go :: [a] -> [a] -> [a]
-                     <join 2> {- Arity: 2, Strictness: <S,1*U><S,U> -}
-                   = \ (ds :: [a]) (eta1 :: [a]) ->
-                     case ds of wild {
-                       [] -> eta1
-                       : y ys
-                       -> case GHC.List.elem @ a $dEq y eta1 of wild1 {
-                            GHC.Types.False
-                            -> go
-                                 ys
-                                 (GHC.Base.++ @ a eta1 (GHC.Types.: @ a y (GHC.Types.[] @ a)))
-                            GHC.Types.True -> go ys eta1 } }
-                 } in
-                 go eta (GHC.Types.[] @ a)) -}
 d8b7eaa25538121b7abe21adedc5e6ba
   set2list :: GHC.Classes.Ord a => SetOrd.Set a -> [a]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,A><S,1*U>,
