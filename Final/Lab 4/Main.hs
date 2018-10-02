@@ -10,9 +10,13 @@ import Data.List
 -- Assignment 1 (Haskell Road to Logic Chapter 4)
 -- Time: 190 minutes
 --
+-- Simon:
 -- Page 122: What does the keyword `undefined` do in Haskell?
 -- Page 145: What are the implications of having an atom as your factor?
 -- Page 145: How do "logical translations" work?
+--
+-- Sander:
+-- If R were a legitimate set, this would unavoidably lead us to the conclusion that R ∈ R ⇐⇒ R 6∈ R. I do not understand how that would lead us to that conclusion.
 
 -- Assignment 2 (Random data generator for Set Int)
 -- Time: 90 minutes
@@ -126,6 +130,7 @@ testDifference = checkProperties [propOnlyInLeftSet, propNotOnlyNotInLeftSet, pr
 -- Assignment 4 (Haskell Road to Logic Chapter 5)
 -- Time: 240 minutes
 --
+-- Simon:
 -- This chapter was really though to get through. The examples were hard to follow and I could solve few of the exercises without looking at the solutions. In the end I did not have time to further solve any exercises.
 -- Page 174: What is a "Real Plane"? Why is R2 called a "real plane"?
 -- Page 180 & 182: What is a delta set? --> This was answered later on, as it is the identity of a certain set.
