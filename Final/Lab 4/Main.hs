@@ -139,6 +139,10 @@ testDifference = checkProperties [propOnlyInLeftSet, propNotOnlyNotInLeftSet, pr
 -- Page 208 & 209: How to work with stirling set numbers?
 -- Page 211: How does a quotient work?
 -- Page 211: How to determine the number of elements in an atom? Or does |a| mean something else in this formula?
+-- 
+-- Wouter
+-- p 172, "To see that R+ is transitive, assume xR + y and yR+z", how can you assume this, when we have to prove transitivity? Seems to me that the assumption is that R+ is transitive
+-- Example 5.103 is unclear to me
 
 -- Assignment 5
 -- Time: 10 minutes
