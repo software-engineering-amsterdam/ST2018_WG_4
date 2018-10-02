@@ -71,7 +71,18 @@ unionSet' (Set (x:xs)) set2  =
 -- time spent: 90 mins
 
 -- Questions:
---   -
+--   - Show that a relation R on a set A is symmetric iff ∀x, y ∈ A(xRy ⇔ yRx).
+--      -- This is the definition of a symmetric relation, how would one go on to show that that is indeed so?
+
+--   - To show that R is the smallest relation S that has all the properties in
+-- O, show the following:
+-- 1. R has all the properties in O,
+-- 2. If S has all the properties in O, then R ⊆ S.
+        -- I dont get what the point of this is
+
+--   - Show that an intersection of arbitrarily many transitive relationsis transitive.
+--      -- I can intuitively see that this is true, but how would one formally prove it?
+
 
 --Exercise 5
 -- time spent: 15 mins
