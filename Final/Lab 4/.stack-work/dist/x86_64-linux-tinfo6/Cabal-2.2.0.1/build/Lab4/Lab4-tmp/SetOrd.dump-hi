@@ -1,0 +1,452 @@
+
+==================== FINAL INTERFACE ====================
+2018-09-27 11:52:26.927185778 UTC
+
+interface main:SetOrd 8043
+  interface hash: aac6b5400ec6f61048a8d9aea2884039
+  ABI hash: 20d6f0f41725706843d2ab2f20e545d8
+  export-list hash: e89ac246b305a3091bdfb86588a1cb82
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: ee312b2e23dd9bc7ec296dbf29303b00
+  opt_hash: 14e536840aca4e889cad654e6f9b79c1
+  hpc_hash: 93b885adfe0da089cdf634904fd59f71
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  SetOrd.!!!
+  SetOrd.deleteSet
+  SetOrd.emptySet
+  SetOrd.inSet
+  SetOrd.insertSet
+  SetOrd.isEmpty
+  SetOrd.list2set
+  SetOrd.powerSet
+  SetOrd.subSet
+  SetOrd.takeSet
+  SetOrd.unionSet
+  SetOrd.Set{SetOrd.Set}
+module dependencies:
+package dependencies: base-4.11.1.0* ghc-prim-0.5.2.0
+                      integer-gmp-1.0.2.0
+orphans: base-4.11.1.0:GHC.Float base-4.11.1.0:GHC.Base
+family instance modules: base-4.11.1.0:Control.Applicative
+                         base-4.11.1.0:Data.Functor.Const
+                         base-4.11.1.0:Data.Functor.Identity base-4.11.1.0:Data.Monoid
+                         base-4.11.1.0:Data.Semigroup.Internal base-4.11.1.0:GHC.Generics
+                         base-4.11.1.0:GHC.IO.Exception
+import  -/  base-4.11.1.0:Data.Foldable 8ed35c38958063956af33c935ea03444
+import  -/  base-4.11.1.0:Data.List 83dc843e47bfc0c5af51e19c6f3476d5
+import  -/  base-4.11.1.0:Data.OldList 1b35aa3c6805ff7c8887a35a866fe006
+import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
+import  -/  base-4.11.1.0:GHC.List 1e4357702d8d00cded0703bd293e50e8
+import  -/  base-4.11.1.0:GHC.Show 73be67392447c974f19c3befd83c46c0
+import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
+import  -/  ghc-prim-0.5.2.0:GHC.Classes 122abfcd7450c6c11602933c9ca5f80d
+import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
+fixities infixl 9 !!!
+56195f57183aedd3b7c4611066b7ba06
+  (!!!) :: GHC.Classes.Eq a => SetOrd.Set a -> GHC.Types.Int -> a
+  {- Arity: 3, Strictness: <L,A><S,1*U><S(S),1*U(U)>,
+     Unfolding: InlineRule (3, True, True)
+                (\ @ a
+                   ($dEq :: GHC.Classes.Eq a)
+                   (ds :: SetOrd.Set a)
+                   (n :: GHC.Types.Int) ->
+                 GHC.List.!! @ a ds `cast` (SetOrd.N:Set[0] <a>_N) n) -}
+55dc3292b9803e1d32b9c4b5d42bfa6e
+  $fEqSet :: GHC.Classes.Eq a => GHC.Classes.Eq (SetOrd.Set a)
+  DFunId
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U(C(C1(U)),A)>m,
+     Inline: CONLIKE,
+     Unfolding: DFun: @ a (v :: GHC.Classes.Eq a).
+                  @ (SetOrd.Set a)
+                  (GHC.Classes.$fEq[]_$c== @ a v)
+                    `cast`
+                  (Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R <GHC.Types.Bool>_R)
+                  (GHC.Classes.$fEq[]_$c/= @ a v)
+                    `cast`
+                  (Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R <GHC.Types.Bool>_R) -}
+55dc3292b9803e1d32b9c4b5d42bfa6e
+  $fOrdSet :: GHC.Classes.Ord a => GHC.Classes.Ord (SetOrd.Set a)
+  DFunId
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <L,U(1*U(C(C1(U)),A),C(C1(U)),A,A,A,A,A,A)>m,
+     Inline: CONLIKE,
+     Unfolding: DFun: @ a (v :: GHC.Classes.Ord a).
+                  @ (SetOrd.Set a)
+                  (SetOrd.$fOrdSet_$cp1Ord @ a v)
+                  (GHC.Classes.$fOrd[]_$ccompare @ a v)
+                    `cast`
+                  (Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R <GHC.Types.Ordering>_R)
+                  (GHC.Classes.$fOrd[]_$c< @ a v)
+                    `cast`
+                  (Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R <GHC.Types.Bool>_R)
+                  (GHC.Classes.$fOrd[]_$c<= @ a v)
+                    `cast`
+                  (Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R <GHC.Types.Bool>_R)
+                  (GHC.Classes.$fOrd[]_$c> @ a v)
+                    `cast`
+                  (Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R <GHC.Types.Bool>_R)
+                  (GHC.Classes.$fOrd[]_$c>= @ a v)
+                    `cast`
+                  (Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R <GHC.Types.Bool>_R)
+                  (GHC.Classes.$fOrd[]_$cmax @ a v)
+                    `cast`
+                  (Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N)
+                  (GHC.Classes.$fOrd[]_$cmin @ a v)
+                    `cast`
+                  (Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                   ->_R Sym (SetOrd.N:Set[0]) <a>_N) -}
+55dc3292b9803e1d32b9c4b5d42bfa6e
+  $fOrdSet_$cp1Ord ::
+    GHC.Classes.Ord a => GHC.Classes.Eq (SetOrd.Set a)
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <L,1*U(1*U(C(C1(U)),A),A,A,A,A,A,A,A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ a ($dOrd :: GHC.Classes.Ord a) ->
+                 SetOrd.$fEqSet @ a (GHC.Classes.$p1Ord @ a $dOrd)) -}
+55dc3292b9803e1d32b9c4b5d42bfa6e
+  $fShowSet :: GHC.Show.Show a => GHC.Show.Show (SetOrd.Set a)
+  DFunId
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U(C(C1(C1(U))),A,A)>m,
+     Inline: CONLIKE,
+     Unfolding: DFun: @ a (v :: GHC.Show.Show a).
+                  @ (SetOrd.Set a)
+                  (SetOrd.$fShowSet_$cshowsPrec @ a v)
+                  (SetOrd.$fShowSet_$cshow @ a v)
+                  (SetOrd.$fShowSet_$cshowList @ a v) -}
+9bbdfec9e49c5fac69caaef0ed631c6b
+  $fShowSet1 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 0#) -}
+8db346bec358b0ece529253bd43a778a
+  $fShowSet2 :: GHC.Types.Char
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.C# ','#) -}
+eac2c50c3bdcd83bcb0a2c19edb138c4
+  $fShowSet3 :: GHC.Types.Char
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.C# '}'#) -}
+cc07bd764528233d9e36852284f5dc6e
+  $fShowSet4 :: GHC.Types.Char
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.C# '{'#) -}
+1fe5d23583343bd7a3c00af3b2ebdf45
+  $fShowSet5 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("{}"#) -}
+55dc3292b9803e1d32b9c4b5d42bfa6e
+  $fShowSet_$cshow ::
+    GHC.Show.Show a => SetOrd.Set a -> GHC.Base.String
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><S,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a ($dShow :: GHC.Show.Show a) (x :: SetOrd.Set a) ->
+                 SetOrd.$fShowSet_$cshowsPrec
+                   @ a
+                   $dShow
+                   SetOrd.$fShowSet1
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+55dc3292b9803e1d32b9c4b5d42bfa6e
+  $fShowSet_$cshowList ::
+    GHC.Show.Show a => [SetOrd.Set a] -> GHC.Show.ShowS
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><S,1*U><L,U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ @ a
+                   ($dShow :: GHC.Show.Show a)
+                   (ls :: [SetOrd.Set a])
+                   (s :: GHC.Base.String) ->
+                 GHC.Show.showList__
+                   @ (SetOrd.Set a)
+                   (SetOrd.$fShowSet_$cshowsPrec @ a $dShow SetOrd.$fShowSet1)
+                   ls
+                   s) -}
+55dc3292b9803e1d32b9c4b5d42bfa6e
+  $fShowSet_$cshowsPrec ::
+    GHC.Show.Show a => GHC.Types.Int -> SetOrd.Set a -> GHC.Show.ShowS
+  {- Arity: 4, HasNoCafRefs,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><L,A><S,1*U><L,U>, Inline: [0],
+     Unfolding: InlineRule (4, True, True)
+                (\ @ a
+                   (w :: GHC.Show.Show a)
+                   (w1 :: GHC.Types.Int)
+                   (w2 :: SetOrd.Set a)
+                   (w3 :: GHC.Base.String) ->
+                 SetOrd.$w$cshowsPrec @ a w w2 w3) -}
+9487f6b76a82577eca8b4bc9b0b8dd68
+  $tc'Set :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   4455802302389472535##
+                   15495650058025000846##
+                   SetOrd.$trModule
+                   SetOrd.$tc'Set2
+                   1#
+                   SetOrd.$tc'Set1) -}
+1f6516066102082118cfc08d383c09fc
+  $tc'Set1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m4, Inline: [~] -}
+0afff1d88632f1c38e1d23416a94f1e5
+  $tc'Set2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SetOrd.$tc'Set3) -}
+a85a8f9aeda4cf3da3f65b60054b3edf
+  $tc'Set3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Set"#) -}
+7cfa340b3566a855201c6979cd5f5f81
+  $tcSet :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   12533337774852811677##
+                   15817077556414911140##
+                   SetOrd.$trModule
+                   SetOrd.$tcSet1
+                   0#
+                   GHC.Types.krep$*Arr*) -}
+78327541b46527ff27b951a3b03385fe
+  $tcSet1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SetOrd.$tcSet2) -}
+d4f7fa29cc67c697ed105174d76118ac
+  $tcSet2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Set"#) -}
+b76694be4abcb70b66c8ee76c44cb289
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   SetOrd.$trModule3
+                   SetOrd.$trModule1) -}
+dcd20971756d633c2a2931c8a28a03f5
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SetOrd.$trModule2) -}
+d35ff931b0b3434d13554985655da2c5
+  $trModule2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SetOrd"#) -}
+77ab0598509f25b4566389cfe4f8ceac
+  $trModule3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SetOrd.$trModule4) -}
+9dd946a077403809c3299771ab6dab6b
+  $trModule4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("main"#) -}
+55dc3292b9803e1d32b9c4b5d42bfa6e
+  $w$cshowsPrec ::
+    GHC.Show.Show a =>
+    SetOrd.Set a -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><S,1*U><L,U>, Inline: [0],
+     Unfolding: (\ @ a
+                   (w :: GHC.Show.Show a)
+                   (w1 :: SetOrd.Set a)
+                   (w2 :: GHC.Base.String) ->
+                 case w1 `cast` (SetOrd.N:Set[0] <a>_N) of wild {
+                   [] -> GHC.CString.unpackAppendCString# SetOrd.$fShowSet5 w2
+                   : x xs
+                   -> GHC.Types.:
+                        @ GHC.Types.Char
+                        SetOrd.$fShowSet4
+                        (GHC.Show.showsPrec
+                           @ a
+                           w
+                           GHC.Show.$fShow(,)1
+                           x
+                           (letrec {
+                              showl :: [a] -> GHC.Base.String -> GHC.Base.String
+                                {- Arity: 2, Strictness: <S,1*U><L,U> -}
+                              = \ (ds :: [a]) (str :: GHC.Base.String) ->
+                                case ds of wild1 {
+                                  [] -> GHC.Types.: @ GHC.Types.Char SetOrd.$fShowSet3 str
+                                  : x1 xs1
+                                  -> GHC.Types.:
+                                       @ GHC.Types.Char
+                                       SetOrd.$fShowSet2
+                                       (GHC.Show.showsPrec
+                                          @ a
+                                          w
+                                          GHC.Show.$fShow(,)1
+                                          x1
+                                          (showl xs1 str)) }
+                            } in
+                            showl xs w2)) }) -}
+55dc3292b9803e1d32b9c4b5d42bfa6e
+  newtype Set a = Set [a]
+85793bb06262b839b3c06582ef1ea76d
+  deleteSet :: GHC.Classes.Ord a => a -> SetOrd.Set a -> SetOrd.Set a
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(A,C(C1(U)),A,A,A,A,A,A)><L,U><S,1*U>,
+     Unfolding: (\ @ a
+                   ($dOrd :: GHC.Classes.Ord a)
+                   (x :: a)
+                   (ds :: SetOrd.Set a) ->
+                 letrec {
+                   deleteList :: a -> [a] -> [a]
+                     {- Arity: 2, Strictness: <L,U><S,1*U> -}
+                   = \ (x1 :: a) (ds1 :: [a]) ->
+                     case ds1 of wild {
+                       [] -> GHC.Types.[] @ a
+                       : y ys'
+                       -> case GHC.Classes.compare @ a $dOrd x1 y of wild1 {
+                            GHC.Types.LT -> wild
+                            GHC.Types.EQ -> ys'
+                            GHC.Types.GT -> GHC.Types.: @ a y (deleteList x1 ys') } }
+                 } in
+                 (deleteList x ds `cast` (SetOrd.N:Set[0] <a>_N))
+                   `cast`
+                 (Sym (SetOrd.N:Set[0]) <a>_N)) -}
+1991e01165a7e637f63a234be6822514
+  emptySet :: SetOrd.Set a
+  {- HasNoCafRefs,
+     Unfolding: InlineRule (0, True, True)
+                GHC.Types.[]
+                  `cast`
+                (forall (a :: <*>_N). Sym (SetOrd.N:Set[0]) <a>_N) -}
+ad9f9ded8a495f934d1b8c6e36ccae94
+  inSet :: GHC.Classes.Ord a => a -> SetOrd.Set a -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(1*U(C(C1(U)),A),A,A,C(C1(U)),A,A,A,A)><L,U><S,1*U>,
+     Unfolding: (\ @ a
+                   ($dOrd :: GHC.Classes.Ord a)
+                   (eta :: a)
+                   (eta1 :: SetOrd.Set a) ->
+                 GHC.List.elem
+                   @ a
+                   (GHC.Classes.$p1Ord @ a $dOrd)
+                   eta
+                   (GHC.List.takeWhile
+                      @ a
+                      (\ (ds :: a) -> GHC.Classes.<= @ a $dOrd ds eta)
+                      eta1 `cast` (SetOrd.N:Set[0] <a>_N))) -}
+092b032a2187d3293afbd4068075e756
+  insertSet :: GHC.Classes.Ord a => a -> SetOrd.Set a -> SetOrd.Set a
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(A,C(C1(U)),A,A,A,A,A,A)><L,U><S,1*U>,
+     Unfolding: (\ @ a
+                   ($dOrd :: GHC.Classes.Ord a)
+                   (x :: a)
+                   (ds :: SetOrd.Set a) ->
+                 letrec {
+                   insertList :: a -> [a] -> [a]
+                     {- Arity: 2, Strictness: <L,U><S,1*U> -}
+                   = \ (x1 :: a) (ds1 :: [a]) ->
+                     case ds1 of wild {
+                       [] -> GHC.Types.: @ a x1 (GHC.Types.[] @ a)
+                       : y ys'
+                       -> case GHC.Classes.compare @ a $dOrd x1 y of wild1 {
+                            GHC.Types.LT -> GHC.Types.: @ a x1 wild
+                            GHC.Types.EQ -> wild
+                            GHC.Types.GT -> GHC.Types.: @ a y (insertList x1 ys') } }
+                 } in
+                 (insertList x ds `cast` (SetOrd.N:Set[0] <a>_N))
+                   `cast`
+                 (Sym (SetOrd.N:Set[0]) <a>_N)) -}
+ec81d0361465718f31050bb4847c4808
+  isEmpty :: SetOrd.Set a -> GHC.Types.Bool
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ a (ds :: SetOrd.Set a) ->
+                 case ds `cast` (SetOrd.N:Set[0] <a>_N) of wild {
+                   [] -> GHC.Types.True : ipv ipv1 -> GHC.Types.False }) -}
+3ebf2dc6bb92bb4670e51c5779791240
+  list2set :: GHC.Classes.Ord a => [a] -> SetOrd.Set a
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <L,U(A,C(C1(U)),A,A,A,A,A,A)><S,1*U> -}
+eb68128c9946538de63f8e19214ba794
+  powerList :: [a] -> [[a]]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
+368011c5e0870b04242b4e8be12484cf
+  powerSet ::
+    GHC.Classes.Ord a => SetOrd.Set a -> SetOrd.Set (SetOrd.Set a)
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <L,U(A,C(C1(U)),A,A,A,A,A,A)><S,1*U>,
+     Unfolding: InlineRule (0, True, True)
+                SetOrd.powerSet1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <GHC.Classes.Ord a>_R
+                 ->_R <SetOrd.Set a>_R
+                 ->_R Sym (SetOrd.N:Set[0]) <SetOrd.Set a>_N) -}
+da21404db98e9fd957c9bae77c671f7b
+  powerSet1 :: GHC.Classes.Ord a => SetOrd.Set a -> [SetOrd.Set a]
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <L,U(A,C(C1(U)),A,A,A,A,A,A)><S,1*U>,
+     Unfolding: (\ @ a
+                   ($dOrd :: GHC.Classes.Ord a)
+                   (ds :: SetOrd.Set a) ->
+                 Data.OldList.sortBy
+                   @ (SetOrd.Set a)
+                   (GHC.Classes.$fOrd[]_$ccompare @ a $dOrd)
+                     `cast`
+                   (Sym (SetOrd.N:Set[0]) <a>_N
+                    ->_R Sym (SetOrd.N:Set[0]) <a>_N
+                    ->_R <GHC.Types.Ordering>_R)
+                   (GHC.Base.map
+                      @ [a]
+                      @ (SetOrd.Set a)
+                      (\ (xs :: [a]) -> SetOrd.list2set @ a $dOrd xs)
+                      (SetOrd.powerList @ a ds `cast` (SetOrd.N:Set[0] <a>_N)))) -}
+cf13fe605b96f7022605a7f401e6d3d2
+  subSet ::
+    GHC.Classes.Ord a => SetOrd.Set a -> SetOrd.Set a -> GHC.Types.Bool
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(U(C(C1(U)),A),A,A,C(C1(U)),A,A,A,A)><S,1*U><L,U> -}
+3ca51ec9a95ca5b8c510d61296a14e2d
+  takeSet ::
+    GHC.Classes.Eq a => GHC.Types.Int -> SetOrd.Set a -> SetOrd.Set a
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,A><S(S),1*U(U)><L,1*U>,
+     Unfolding: InlineRule (0, True, True)
+                SetOrd.takeSet1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <GHC.Classes.Eq a>_R
+                 ->_R <GHC.Types.Int>_R
+                 ->_R <SetOrd.Set a>_R
+                 ->_R Sym (SetOrd.N:Set[0]) <a>_N) -}
+75d2e29eaa4ddb8bafbfd4cf4cb7a969
+  takeSet1 ::
+    GHC.Classes.Eq a => GHC.Types.Int -> SetOrd.Set a -> [a]
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,A><S(S),1*U(U)><L,1*U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ @ a
+                   ($dEq :: GHC.Classes.Eq a)
+                   (n :: GHC.Types.Int)
+                   (ds :: SetOrd.Set a) ->
+                 case n of wild1 { GHC.Types.I# y ->
+                 case GHC.Prim.<# 0# y of lwild {
+                   DEFAULT -> GHC.Types.[] @ a
+                   1#
+                   -> GHC.List.$wunsafeTake
+                        @ a
+                        y
+                        ds `cast` (SetOrd.N:Set[0] <a>_N) } }) -}
+1135ee0042225ae7272986fecae922ec
+  unionSet ::
+    GHC.Classes.Ord a => SetOrd.Set a -> SetOrd.Set a -> SetOrd.Set a
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(A,C(C1(U)),A,A,A,A,A,A)><S,1*U><S,1*U> -}
+instance [safe] GHC.Classes.Eq [SetOrd.Set] = SetOrd.$fEqSet
+instance [safe] GHC.Classes.Ord [SetOrd.Set] = SetOrd.$fOrdSet
+instance [safe] GHC.Show.Show [SetOrd.Set] = SetOrd.$fShowSet
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: safe
+require own pkg trusted: False
+
