@@ -159,22 +159,29 @@ trClos clos
 
 -- Assignment 7
 -- Time: 45 minutes
+-- After defining the properties for the relations, they can be tested by QuickCheck. This is because `arbitrary` can automatically create random parameters of type `[(Int,Int)]`. By making the test methods accept a Rel Int, QuickCheck can automatically generate random parameters.
 
+-- The property that are reversed relations are in the resulting relation.
 propAllReversed :: Ord a => (Rel a -> Rel a) -> Rel a -> Bool
 propAllReversed relFunction rel = let applied = relFunction rel in all (\(x,y) -> (y,x) `elem` applied) rel
 
+-- The property that are original (non-reversed) relations are in the resulting relation.
 propAllOriginal :: Ord a => (Rel a -> Rel a) -> Rel a -> Bool
 propAllOriginal relFunction rel = let applied = relFunction rel in all (\(x,y) -> (x,y) `elem` applied) rel
 
+-- The property that the direct (one step) links of a transitive closure are in the resulting relation.
 propFirstClosure :: Ord a => (Rel a -> Rel a) -> Rel a -> Bool
 propFirstClosure relFunction rel = let applied = relFunction rel in all (\(x,y) -> (x,y) `elem` applied) (rel @@ rel)
 
+-- The property that the indirect (two step) links of a transitive closure are in the resulting relation.
 propSecondClosure :: Ord a => (Rel a -> Rel a) -> Rel a -> Bool
 propSecondClosure relFunction rel = let applied = relFunction rel in all (\(x,y) -> (x,y) `elem` applied) (rel @@ applied)
 
+-- Tests the symmetric closure by the `propAllReversed` and `propAllOriginal` properties (see the properties themselves for more information about them).
 testSymmetricClosure :: Rel Int -> Bool
 testSymmetricClosure x = propAllReversed symClos x && propAllOriginal symClos x
 
+-- Tests the transitive closure by the `propAllOriginal`, `propFirstClosure` and `propSecondClosure` properties (see the properties themselves for more information about them).
 testTransitiveClosure :: Rel Int -> Bool
 testTransitiveClosure x = propAllOriginal trClos x && propFirstClosure trClos x && propSecondClosure trClos x
 
