@@ -103,7 +103,7 @@ initNodeNrc :: Grid -> [Node]
 initNodeNrc gr = let s = grid2sud gr in
               if (not . consistentNrc) s then []
               else [(s, constraintsNrc s)]
-
+ 
 succNodeNrc :: Node -> [Node]
 succNodeNrc (s,[]) = []
 succNodeNrc (s,p:ps) = extendNodeNrc (s,ps) p
