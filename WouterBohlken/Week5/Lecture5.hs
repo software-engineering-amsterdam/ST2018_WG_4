@@ -5,6 +5,7 @@ where
 
 import Data.List
 import System.Random
+import Debug.Trace
 
 type Row    = Int
 type Column = Int

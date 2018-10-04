@@ -1,10 +1,11 @@
-
-module Lecture5
+module Assignment2
 
 where
 
 import Data.List
 import System.Random
+
+-- Time spent: 75 minutes
 
 type Row    = Int
 type Column = Int

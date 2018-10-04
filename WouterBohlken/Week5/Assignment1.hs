@@ -1,8 +1,10 @@
-module Main where
+module Assignment1 where
 
 import System.Random
 import Test.QuickCheck
 import Data.List
+
+-- Time spent: 75 minutes
 
 -- Code from lecture 5
 type Row    = Int
