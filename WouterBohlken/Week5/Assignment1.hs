@@ -204,7 +204,6 @@ exmple1 = T 1 [T 2 [], T 3 []]
 exmple2 = T 0 [exmple1,exmple1,exmple1]
 
 grow :: (node -> [node]) -> node -> Tree node
-
 grow step seed = T seed (map (grow step) (step seed))
 
 count :: Tree a -> Int
