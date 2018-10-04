@@ -31,6 +31,9 @@ blocks = [[1..3],[4..6],[7..9]]
 nrcBlocks :: [[Int]]
 nrcBlocks = [[2..4],[6..8]]
 
+inNrcBlock :: Int -> Bool
+inNrcBlock n = elem n $ nrcbl n
+
 showVal :: Value -> String
 showVal 0 = " "
 showVal d = show d
@@ -358,8 +361,7 @@ genProblem n = do ys <- randomize xs
                   return (minimalize n ys)
    where xs = filledPositions (fst n)
 
-main :: IO ()
-main = do [r] <- rsolveNs [emptyN]
-          showNode r
-          s  <- genProblem r
-          showNode s
+main :: IO [()]
+main = do
+ putStrLn "+++ Assignment 1 +++"
+ solveAndShow nrc1

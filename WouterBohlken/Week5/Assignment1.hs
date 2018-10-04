@@ -5,8 +5,8 @@ import Test.QuickCheck
 import Data.List
 
 -- Time spent: 75 minutes
-
 -- Code from lecture 5
+
 type Row    = Int
 type Column = Int
 type Value  = Int
@@ -399,7 +399,7 @@ nrc1 =    [[0,0,0,3,0,0,0,0,0],
 -- Assignment 2
 
 
-main :: IO ()
+main :: IO [()]
 main = do
   putStrLn "+++ Assignment 1 +++"
-  -- solveAndShow nrc1
+  solveAndShow nrc1
