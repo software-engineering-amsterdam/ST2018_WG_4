@@ -20,7 +20,7 @@ columnConstrnt = [[(r,c)| r <- values ] | c <- values ]
 blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks ]
 nrcBlockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- nrcBlocks, b2 <- nrcBlocks ]
 
-allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt]
+allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt] --, nrcBlockConstrnt]
 
 positions, values :: [Int]
 positions = [1..9]
@@ -31,9 +31,6 @@ blocks = [[1..3],[4..6],[7..9]]
 
 nrcBlocks :: [[Int]]
 nrcBlocks = [[2..4],[6..8]]
-
-inNrcBlock :: Int -> Bool
-inNrcBlock n = elem n $ nrcbl n
 
 showVal :: Value -> String
 showVal 0 = " "
@@ -80,39 +77,15 @@ grid2sud gr = \ (r,c) -> pos gr (r,c)
 showSudoku :: Sudoku -> IO()
 showSudoku = showGrid . sud2grid
 
-bl :: Int -> [Int]
-bl x = concat $ filter (elem x) blocks
-
-nrcbl :: Int -> [Int]
-nrcbl x = concat $ filter (elem x) nrcBlocks
-
-subGrid :: Sudoku -> Position -> [Value]
-subGrid s (r,c) =
-  [ s (r',c') | r' <- bl r, c' <- bl c ]
-
 injective :: Eq a => [a] -> Bool
 injective xs = nub xs == xs
 
-rowInjective :: Sudoku -> Row -> Bool
-rowInjective s r = injective vs where
-   vs = filter (/= 0) [ s (r,i) | i <- positions ]
-
-colInjective :: Sudoku -> Column -> Bool
-colInjective s c = injective vs where
-   vs = filter (/= 0) [ s (i,c) | i <- positions ]
-
-subgridInjective :: Sudoku -> Position -> Bool
-subgridInjective s (r,c) = injective vs where
-   vs = filter (/= 0) (subGrid s (r,c))
+constraintInjective :: Sudoku -> Constrnt -> Bool
+constraintInjective s con = all injective vs where
+                               vs = map (\ci -> filter (/= 0) (map s ci) ) con
 
 consistent :: Sudoku -> Bool
-consistent s = and $
-               [ rowInjective s r |  r <- positions ]
-                ++
-               [ colInjective s c |  c <- positions ]
-                ++
-               [ subgridInjective s (r,c) |
-                    r <- [1,4,7], c <- [1,4,7]]
+consistent s = all (\x -> x) (map (constraintInjective s) allConstrnts)
 
 extend :: Sudoku -> (Position,Value) -> Sudoku
 extend = update
