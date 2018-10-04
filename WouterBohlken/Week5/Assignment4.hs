@@ -44,9 +44,9 @@ shuffle xs = do
 generateWithBlocksMissing :: Int -> IO Node
 generateWithBlocksMissing n = do
                                 [r] <- rsolveNs [emptyN]
-                                showNode r
                                 a <- shuffle [0..8]
                                 p <- genProblemNBlocks r (take n a)
+                                showNode p
                                 return p
 
 

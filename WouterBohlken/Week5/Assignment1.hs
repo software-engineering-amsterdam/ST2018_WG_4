@@ -177,7 +177,7 @@ sameblock :: (Row,Column) -> (Row,Column) -> Bool
 sameblock (r,c) (x,y) = bl r == bl x && bl c == bl y
 
 nrcsameblock :: (Row,Column) -> (Row,Column) -> Bool
-nrcsameblock (r,c) (x,y) | inNrcBlock r && inNrcBlock c && inNrcBlock x && inNrcBlock y = nrcbl r == nrcbl x && nrcbl c == nrcbl y
+nrcsameblock (r,c) (x,y) | all inNrcBlock [r,c,x,y = nrcbl r == nrcbl x && nrcbl c == nrcbl y
                          | otherwise = False
 
 initNode :: Grid -> [Node]

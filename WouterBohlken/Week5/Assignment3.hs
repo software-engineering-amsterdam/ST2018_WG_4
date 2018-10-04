@@ -7,7 +7,7 @@ import System.Random
 import Test.QuickCheck
 import Lecture5
 
--- Time: 45 minutes
+-- Time: 1 hour
 -- Remove all items and check if all new problems are ambiguous
 test :: IO ()
 test = do

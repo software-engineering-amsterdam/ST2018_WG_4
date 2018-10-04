@@ -4,6 +4,7 @@ where
 
 import Data.List
 import System.Random
+import Debug.Trace
 
 -- Time spent: 75 minutes
 
@@ -19,7 +20,7 @@ columnConstrnt = [[(r,c)| r <- values ] | c <- values ]
 blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks ]
 nrcBlockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- nrcBlocks, b2 <- nrcBlocks ]
 
-allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt, nrcBlockConstrnt]
+allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt]
 
 positions, values :: [Int]
 positions = [1..9]
@@ -82,6 +83,9 @@ showSudoku = showGrid . sud2grid
 bl :: Int -> [Int]
 bl x = concat $ filter (elem x) blocks
 
+nrcbl :: Int -> [Int]
+nrcbl x = concat $ filter (elem x) nrcBlocks
+
 subGrid :: Sudoku -> Position -> [Value]
 subGrid s (r,c) =
   [ s (r',c') | r' <- bl r, c' <- bl c ]
@@ -132,18 +136,28 @@ extendNode (s,constraints) (r,c,vs) =
      sortBy length3rd $
          prune (r,c,v) constraints) | v <- vs ]
 
+
+
+findConstraintByPosition :: Position -> [[(Row,Column)]] -> [(Row,Column)]
+findConstraintByPosition pos [] = []
+findConstraintByPosition pos (con:cons) | elem pos con = con
+                                        | otherwise = findConstraintByPosition pos cons
+
+violatesConstraint :: Position -> Position -> [[(Row,Column)]] -> Bool
+violatesConstraint pos1 pos2 con = length l > 0 && elem pos1 l
+                                    where l = findConstraintByPosition pos2 con
+
+violatesAnyConstraint :: Position -> Position -> Bool
+violatesAnyConstraint pos1 pos2 = any (violatesConstraint pos1 pos2) allConstrnts
+
+
+
 prune :: (Row,Column,Value)
       -> [Constraint] -> [Constraint]
 prune _ [] = []
 prune (r,c,v) ((x,y,zs):rest)
-  | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
-  | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
-  | sameblock (r,c) (x,y) =
-        (x,y,zs\\[v]) : prune (r,c,v) rest
+  | violatesAnyConstraint (r,c) (x,y) = (x,y,zs\\[v]) : prune (r,c,v) rest
   | otherwise = (x,y,zs) : prune (r,c,v) rest
-
-sameblock :: Position -> Position -> Bool
-sameblock (r,c) (x,y) = bl r == bl x && bl c == bl y
 
 initNode :: Grid -> [Node]
 initNode gr = let s = grid2sud gr in
@@ -363,5 +377,5 @@ genProblem n = do ys <- randomize xs
 
 main :: IO [()]
 main = do
- putStrLn "+++ Assignment 1 +++"
- solveAndShow nrc1
+ putStrLn "+++ Assignment 2 +++"
+ solveAndShow example2
