@@ -23,30 +23,18 @@ showVal 0 = " "
 showVal d = show d
 
 showRow :: [Value] -> IO()
-showRow [a1,a2,a3,a4,a5,a6,a7,a8,a9] =
- do  putChar '|'         ; putChar ' '
-     putStr (showVal a1) ; putChar ' '
-     putStr (showVal a2) ; putChar ' '
-     putStr (showVal a3) ; putChar ' '
-     putChar '|'         ; putChar ' '
-     putStr (showVal a4) ; putChar ' '
-     putStr (showVal a5) ; putChar ' '
-     putStr (showVal a6) ; putChar ' '
-     putChar '|'         ; putChar ' '
-     putStr (showVal a7) ; putChar ' '
-     putStr (showVal a8) ; putChar ' '
-     putStr (showVal a9) ; putChar ' '
-     putChar '|'         ; putChar '\n'
+showRow [a1,a2,a3,a4,a5,a6,a7,a8,a9] = putStrLn $ "| " ++ showVal a1 ++ " " ++ showVal a2 ++ " " ++ showVal a3 ++ " | " ++ showVal a4 ++ " "
+     ++ showVal a5 ++ " " ++ showVal a6 ++ " | " ++ showVal a7 ++ " " ++showVal a8 ++ " " ++ showVal a9 ++ " |"
 
 showGrid :: Grid -> IO()
 showGrid [as,bs,cs,ds,es,fs,gs,hs,is] =
- do putStrLn ("+-------+-------+-------+")
+ do putStrLn "+-------+-------+-------+"
     showRow as; showRow bs; showRow cs
-    putStrLn ("+-------+-------+-------+")
+    putStrLn "+-------+-------+-------+"
     showRow ds; showRow es; showRow fs
-    putStrLn ("+-------+-------+-------+")
+    putStrLn "+-------+-------+-------+"
     showRow gs; showRow hs; showRow is
-    putStrLn ("+-------+-------+-------+")
+    putStrLn "+-------+-------+-------+"
 
 type Sudoku = (Row,Column) -> Value
 
@@ -86,9 +74,10 @@ freeInSubgrid s (r,c) = freeInSeq (subGrid s (r,c))
 
 freeAtPos :: Sudoku -> (Row,Column) -> [Value]
 freeAtPos s (r,c) =
-  (freeInRow s r)
-   `intersect` (freeInColumn s c)
-   `intersect` (freeInSubgrid s (r,c))
+  freeInRow s r
+   `intersect` freeInColumn s c
+   `intersect` freeInSubgrid s (r,c)
+   `intersect` freeInNrcSubgrid s (r,c)
 
 injective :: Eq a => [a] -> Bool
 injective xs = nub xs == xs
@@ -107,12 +96,15 @@ subgridInjective s (r,c) = injective vs where
 
 consistent :: Sudoku -> Bool
 consistent s = and $
-               [ rowInjective s r |  r <- positions ]
+               [ rowInjective s r |  r <- positions]
                 ++
-               [ colInjective s c |  c <- positions ]
+               [ colInjective s c |  c <- positions]
                 ++
                [ subgridInjective s (r,c) |
                     r <- [1,4,7], c <- [1,4,7]]
+                ++
+               [ nrcSubgridInjective s (a,b) |
+                    a <- [2,6], b <- [2,6]]
 
 extend :: Sudoku -> ((Row,Column),Value) -> Sudoku
 extend = update
@@ -142,12 +134,14 @@ prune _ [] = []
 prune (r,c,v) ((x,y,zs):rest)
   | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
   | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
-  | sameblock (r,c) (x,y) =
+  | sameBlock (r,c) (x,y) =
         (x,y,zs\\[v]) : prune (r,c,v) rest
+  | nrcSameBlock (r,c) (x,y) =
+      (x,y,zs\\[v]) : prune (r,c,v) rest
   | otherwise = (x,y,zs) : prune (r,c,v) rest
 
-sameblock :: (Row,Column) -> (Row,Column) -> Bool
-sameblock (r,c) (x,y) = bl r == bl x && bl c == bl y
+sameBlock :: (Row,Column) -> (Row,Column) -> Bool
+sameBlock (r,c) (x,y) = bl r == bl x && bl c == bl y
 
 initNode :: Grid -> [Node]
 initNode gr = let s = grid2sud gr in
@@ -188,7 +182,7 @@ search :: (node -> [node])
 search children goal [] = []
 search children goal (x:xs)
   | goal x    = x : search children goal xs
-  | otherwise = search children goal ((children x) ++ xs)
+  | otherwise = search children goal (children x ++ xs)
 
 solveNs :: [Node] -> [Node]
 solveNs = search succNode solved
@@ -201,7 +195,7 @@ solveAndShow :: Grid -> IO[()]
 solveAndShow gr = solveShowNs (initNode gr)
 
 solveShowNs :: [Node] -> IO[()]
-solveShowNs = sequence . fmap showNode . solveNs
+solveShowNs = traverse showNode . solveNs
 
 example1 :: Grid
 example1 = [[5,3,0,0,7,0,0,0,0],
@@ -259,7 +253,7 @@ example5 = [[1,0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0,9]]
 
 emptyN :: Node
-emptyN = (\ _ -> 0,constraints (\ _ -> 0))
+emptyN = (const 0,constraints (const 0))
 
 getRandomInt :: Int -> IO Int
 getRandomInt n = getStdRandom (randomR (0,n))
@@ -346,3 +340,36 @@ genProblem :: Node -> IO Node
 genProblem n = do ys <- randomize xs
                   return (minimalize n ys)
    where xs = filledPositions (fst n)
+
+
+-- Assignment 1
+nrcExample :: Grid
+nrcExample = [[0,0,0,3,0,0,0,0,0],
+           [0,0,0,7,0,0,3,0,0],
+           [2,0,0,0,0,0,0,0,8],
+           [0,0,6,0,0,5,0,0,0],
+           [0,9,1,6,0,0,0,0,0],
+           [3,0,0,0,7,1,2,0,0],
+           [0,0,0,0,0,0,0,3,1],
+           [0,8,0,0,4,0,0,0,0],
+           [0,0,2,0,0,0,0,0,0]]
+
+nrcBl :: Int -> [Int]
+nrcBl x = concat $ filter (elem x) nrcBlocks
+
+nrcBlocks :: [[Int]]
+nrcBlocks = [[2..4],[6..8]]
+
+nrcSubGrid :: Sudoku -> (Row,Column) -> [Value]
+nrcSubGrid s (r,c) = [ s (r',c') | r' <- nrcBl r, c' <- nrcBl c]
+
+freeInNrcSubgrid :: Sudoku -> (Row,Column) -> [Value]
+freeInNrcSubgrid s (r,c) = freeInSeq (nrcSubGrid s (r,c))
+
+nrcSubgridInjective :: Sudoku -> (Row,Column) -> Bool
+nrcSubgridInjective s (r,c) = injective vs where
+  vs = filter (/= 0) (nrcSubGrid s (r,c))
+
+nrcSameBlock :: (Row,Column) -> (Row,Column) -> Bool
+nrcSameBlock (r,c) (x,y) | all (\v -> v/=1 && x/=5 && v/=9) [r,c,x,y] = nrcBl r == nrcBl x && nrcBl c == nrcBl y
+                         | otherwise = False

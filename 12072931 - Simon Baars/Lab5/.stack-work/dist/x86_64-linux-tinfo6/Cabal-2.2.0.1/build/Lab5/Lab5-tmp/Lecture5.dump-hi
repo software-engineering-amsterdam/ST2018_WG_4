@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-03 13:03:13.367231369 UTC
+2018-10-04 08:06:48.39191553 UTC
 
 interface main:Lecture5 8043
-  interface hash: 935b756119724f8cf673e0057da0c71a
-  ABI hash: 1f7ea7a03f96215db1ed3503787c223d
-  export-list hash: 753ed28271f4f7038548e09baaaf905e
+  interface hash: c41a3429017d28a8b5952c91c34048e0
+  ABI hash: 9491a9f6e0d189afc9c4f549926ab377
+  export-list hash: 932b8b73210a7cfc518458bfc6efd33d
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 9ae8a699cb106faa4356352859ff4048
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -35,6 +35,7 @@ exports:
   Lecture5.filledPositions
   Lecture5.freeAtPos
   Lecture5.freeInColumn
+  Lecture5.freeInNrcSubgrid
   Lecture5.freeInRow
   Lecture5.freeInSeq
   Lecture5.freeInSubgrid
@@ -49,6 +50,12 @@ exports:
   Lecture5.injective
   Lecture5.length3rd
   Lecture5.minimalize
+  Lecture5.nrcBl
+  Lecture5.nrcBlocks
+  Lecture5.nrcExample
+  Lecture5.nrcSameBlock
+  Lecture5.nrcSubGrid
+  Lecture5.nrcSubgridInjective
   Lecture5.openPositions
   Lecture5.positions
   Lecture5.prune
@@ -58,8 +65,8 @@ exports:
   Lecture5.rsearch
   Lecture5.rsolveNs
   Lecture5.rsuccNode
+  Lecture5.sameBlock
   Lecture5.sameLen
-  Lecture5.sameblock
   Lecture5.search
   Lecture5.showGrid
   Lecture5.showNode
@@ -355,7 +362,7 @@ d08eed8db65524a395f0f0bfb83d73e2
     GHC.Prim.Int# -> a -> [Lecture5.Tree a] -> GHC.Show.ShowS
   {- Arity: 4, HasNoCafRefs,
      Strictness: <L,U(C(C1(C(U))),A,A)><S,U><L,U><L,U>, Inline: [0] -}
-1324a0cb381218e7ce3d8371695872ba
+a65193d90454f0d0dfdd38216df41a17
   $weraseN ::
     Lecture5.Node
     -> Lecture5.Row
@@ -488,7 +495,7 @@ c3c511fead1ec88f57be9b066cc92adf
                             (go1 ys) }
                  } in
                  go1 ww4) -}
-4615e33676cd5dfaf292119e4c570e69
+8520cf80aa07e0feb3209d48b8a4fbda
   $wfail ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
@@ -505,7 +512,7 @@ c3c511fead1ec88f57be9b066cc92adf
                    `cast`
                  (GHC.Types.N:IO[0] <Lecture5.Node>_R)
                    w) -}
-75e6411b048954e8a6989881add0cc74
+2e1de094a219fdae22bce819ca8d18d0
   $wfreeAtPos ::
     Lecture5.Sudoku
     -> Lecture5.Row -> Lecture5.Column -> [Lecture5.Value]
@@ -519,10 +526,16 @@ c3c511fead1ec88f57be9b066cc92adf
                    (Data.OldList.intersectBy
                       @ Lecture5.Value
                       GHC.Classes.eqInt
-                      (Lecture5.freeInRow w ww)
-                      (Lecture5.freeInColumn w ww1))
+                      (Data.OldList.intersectBy
+                         @ Lecture5.Value
+                         GHC.Classes.eqInt
+                         (Lecture5.freeInRow w ww)
+                         (Lecture5.freeInColumn w ww1))
+                      (Lecture5.constraints_go
+                         (Lecture5.$wsubGrid w ww ww1)
+                         Lecture5.positions))
                    (Lecture5.constraints_go
-                      (Lecture5.$wsubGrid w ww ww1)
+                      (Lecture5.$wnrcSubGrid w ww ww1)
                       Lecture5.positions)) -}
 6a84b4d11a0ab2ca06807fa7a2dfe1f8
   $wgrid2sud ::
@@ -551,6 +564,101 @@ c3c511fead1ec88f57be9b066cc92adf
                    -> case GHC.Prim.==# ww2 ww3 of lwild1 {
                         DEFAULT -> GHC.Types.GT 1# -> GHC.Types.EQ }
                    1# -> GHC.Types.LT } } }) -}
+f5daa20143f84ab6ad12e960f426534a
+  $wnrcSameBlock ::
+    GHC.Prim.Int#
+    -> Lecture5.Column
+    -> Lecture5.Row
+    -> Lecture5.Column
+    -> GHC.Types.Bool
+  {- Arity: 4, Strictness: <S,1*U><L,1*U(U)><L,1*U(U)><L,1*U(U)>,
+     Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#)
+                   (ww1 :: Lecture5.Column)
+                   (ww2 :: Lecture5.Row)
+                   (ww3 :: Lecture5.Column) ->
+                 case ww of wild {
+                   DEFAULT
+                   -> case ww2 of wild1 { GHC.Types.I# x ->
+                      case x of wild2 {
+                        DEFAULT
+                        -> case wild of wild3 {
+                             DEFAULT
+                             -> case ww1 of wild4 { GHC.Types.I# x1 ->
+                                case x1 of wild5 {
+                                  DEFAULT
+                                  -> case wild2 of wild6 {
+                                       DEFAULT
+                                       -> case ww3 of wild7 { GHC.Types.I# x2 ->
+                                          case x2 of wild8 {
+                                            DEFAULT
+                                            -> case GHC.Classes.$fEq[]_$s$c==
+                                                      (Lecture5.nrcBl (GHC.Types.I# wild3))
+                                                      (Lecture5.nrcBl wild1) of wild9 {
+                                                 GHC.Types.False -> GHC.Types.False
+                                                 GHC.Types.True
+                                                 -> GHC.Classes.$fEq[]_$s$c==
+                                                      (Lecture5.nrcBl wild4)
+                                                      (Lecture5.nrcBl wild7) }
+                                            1# -> GHC.Types.False
+                                            9# -> GHC.Types.False } }
+                                       1# -> GHC.Types.False
+                                       9# -> GHC.Types.False }
+                                  1# -> GHC.Types.False
+                                  9# -> GHC.Types.False } }
+                             9# -> GHC.Types.False }
+                        5# -> GHC.Types.False } }
+                   1# -> GHC.Types.False }) -}
+92a34c92d64daa54ca7d9e8c5a42502c
+  $wnrcSubGrid ::
+    Lecture5.Sudoku
+    -> Lecture5.Row -> Lecture5.Column -> [Lecture5.Value]
+  {- Arity: 3, Strictness: <L,C(U)><L,U><L,U>, Inline: [0],
+     Unfolding: (\ (w :: Lecture5.Sudoku)
+                   (ww :: Lecture5.Row)
+                   (ww1 :: Lecture5.Column) ->
+                 let {
+                   lvl13 :: [GHC.Types.Int] = Lecture5.nrcBl ww1
+                 } in
+                 letrec {
+                   go1 :: [GHC.Types.Int] -> [Lecture5.Value]
+                     {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [GHC.Types.Int]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.[] @ Lecture5.Value
+                       : y ys
+                       -> let {
+                            z :: [Lecture5.Value] = go1 ys
+                          } in
+                          letrec {
+                            go2 :: [GHC.Types.Int] -> [Lecture5.Value]
+                              {- Arity: 1, Strictness: <S,1*U> -}
+                            = \ (ds1 :: [GHC.Types.Int]) ->
+                              case ds1 of wild1 {
+                                [] -> z
+                                : y1 ys1 -> GHC.Types.: @ Lecture5.Value (w (y, y1)) (go2 ys1) }
+                          } in
+                          go2 lvl13 }
+                 } in
+                 go1 (Lecture5.nrcBl ww)) -}
+e37db9ede8930f67ef6dc85114e7ed40
+  $wnrcSubgridInjective ::
+    Lecture5.Sudoku
+    -> Lecture5.Row -> Lecture5.Column -> GHC.Types.Bool
+  {- Arity: 3, Strictness: <L,C(U)><L,U><L,U>, Inline: [0],
+     Unfolding: (\ (w :: Lecture5.Sudoku)
+                   (ww :: Lecture5.Row)
+                   (ww1 :: Lecture5.Column) ->
+                 let {
+                   xs :: [Lecture5.Value]
+                   = GHC.List.filter
+                       @ GHC.Types.Int
+                       Lecture5.consistent4
+                       (Lecture5.$wnrcSubGrid w ww ww1)
+                 } in
+                 GHC.Classes.$fEq[]_$s$c==
+                   (Data.OldList.nubBy @ Lecture5.Value GHC.Classes.eqInt xs)
+                   xs) -}
 3a2cd432bf45848657886c370c8332e0
   $wrsuccNode ::
     Lecture5.Sudoku
@@ -573,15 +681,8 @@ c3c511fead1ec88f57be9b066cc92adf
                            ww3
                            ww4
                            ww5 } #) } }) -}
-390def26b60683e5365fc9575050ba0b
-  $wsameLen :: [Lecture5.Value] -> [Lecture5.Value] -> GHC.Types.Bool
-  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>, Inline: [0],
-     Unfolding: (\ (ww :: [Lecture5.Value]) (ww1 :: [Lecture5.Value]) ->
-                 case GHC.List.$wlenAcc @ GHC.Types.Int ww 0# of ww2 { DEFAULT ->
-                 case GHC.List.$wlenAcc @ GHC.Types.Int ww1 0# of ww3 { DEFAULT ->
-                 GHC.Prim.tagToEnum# @ GHC.Types.Bool (GHC.Prim.==# ww2 ww3) } }) -}
-4dfd594e2a054de42012addb16fd9f4a
-  $wsameblock ::
+79ce52c6cc42100fb60c5791c19b5c2b
+  $wsameBlock ::
     Lecture5.Row
     -> Lecture5.Column
     -> Lecture5.Row
@@ -600,6 +701,13 @@ c3c511fead1ec88f57be9b066cc92adf
                    -> GHC.Classes.$fEq[]_$s$c==
                         (Lecture5.bl ww1)
                         (Lecture5.bl ww3) }) -}
+390def26b60683e5365fc9575050ba0b
+  $wsameLen :: [Lecture5.Value] -> [Lecture5.Value] -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>, Inline: [0],
+     Unfolding: (\ (ww :: [Lecture5.Value]) (ww1 :: [Lecture5.Value]) ->
+                 case GHC.List.$wlenAcc @ GHC.Types.Int ww 0# of ww2 { DEFAULT ->
+                 case GHC.List.$wlenAcc @ GHC.Types.Int ww1 0# of ww3 { DEFAULT ->
+                 GHC.Prim.tagToEnum# @ GHC.Types.Bool (GHC.Prim.==# ww2 ww3) } }) -}
 730b36c29b3d67b54cc0bc775e99e985
   $wshowVal :: GHC.Prim.Int# -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>, Inline: [0],
@@ -612,7 +720,7 @@ c3c511fead1ec88f57be9b066cc92adf
                              (GHC.Types.[] @ GHC.Types.Char) of ww4 { (#,#) ww5 ww6 ->
                       GHC.Types.: @ GHC.Types.Char ww5 ww6 }
                    0# -> Lecture5.showVal1 }) -}
-2c6a314d90e756f95b95a022c5edec0a
+1b034d0f52071951f52f48408eaf0071
   $wsubGrid ::
     Lecture5.Sudoku
     -> Lecture5.Row -> Lecture5.Column -> [Lecture5.Value]
@@ -621,7 +729,7 @@ c3c511fead1ec88f57be9b066cc92adf
                    (ww :: Lecture5.Row)
                    (ww1 :: Lecture5.Column) ->
                  let {
-                   lvl8 :: [GHC.Types.Int] = Lecture5.bl ww1
+                   lvl13 :: [GHC.Types.Int] = Lecture5.bl ww1
                  } in
                  letrec {
                    go1 :: [GHC.Types.Int] -> [Lecture5.Value]
@@ -641,10 +749,10 @@ c3c511fead1ec88f57be9b066cc92adf
                                 [] -> z
                                 : y1 ys1 -> GHC.Types.: @ Lecture5.Value (w (y, y1)) (go2 ys1) }
                           } in
-                          go2 lvl8 }
+                          go2 lvl13 }
                  } in
                  go1 (Lecture5.bl ww)) -}
-0ce4a3b45d1124f37de79ca17593f9c0
+445b8566a6036d509d2c557f163d8161
   $wsubgridInjective ::
     Lecture5.Sudoku
     -> Lecture5.Row -> Lecture5.Column -> GHC.Types.Bool
@@ -656,7 +764,7 @@ c3c511fead1ec88f57be9b066cc92adf
                    xs :: [Lecture5.Value]
                    = GHC.List.filter
                        @ GHC.Types.Int
-                       Lecture5.consistent5
+                       Lecture5.consistent4
                        (Lecture5.$wsubGrid w ww ww1)
                  } in
                  GHC.Classes.$fEq[]_$s$c==
@@ -684,7 +792,7 @@ d08eed8db65524a395f0f0bfb83d73e2
   data Tree a = T a [Lecture5.Tree a]
 1b11e40a7ce70e3c8b21fbe0dfea5a4f
   type Value = GHC.Types.Int
-d44dcc9cf3c2059b9e9d2fb50baf1e85
+853461b03b9a6055bbb0683d192be88a
   bl :: GHC.Types.Int -> [GHC.Types.Int]
   {- Arity: 1, Strictness: <L,U>,
      Unfolding: (\ (x :: GHC.Types.Int) ->
@@ -704,76 +812,36 @@ d44dcc9cf3c2059b9e9d2fb50baf1e85
                             GHC.Types.True -> GHC.Base.++ @ GHC.Types.Int y (go1 ys) } }
                  } in
                  go1 Lecture5.blocks) -}
-4c9f08eaeb0baeed6fba1f91bcfb0fc1
+ef3792ea5e60da6c4e30264dfad8a8c6
   blocks :: [[GHC.Types.Int]]
   {- Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [GHC.Types.Int]
-                   Lecture5.blocks13
+                   Lecture5.blocks5
                    Lecture5.blocks1) -}
-fbf4b6c7cd190e3f45aeec11401102b9
+da14f1646ffc1de6a9f4ef26f9d4935e
   blocks1 :: [[GHC.Types.Int]]
   {- Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [GHC.Types.Int]
-                   Lecture5.blocks12
+                   Lecture5.blocks4
                    Lecture5.blocks2) -}
-615ada731376953bf96898484d33e583
-  blocks10 :: [GHC.Types.Int]
-  {- Unfolding: (GHC.Enum.eftInt 4# 6#) -}
-5432970edbdfde170d4a37555a9e4c7b
-  blocks11 :: [GHC.Types.Int]
-  {- Unfolding: (GHC.Enum.eftInt 3# 5#) -}
-99260799d7207018d12a1e035f678069
-  blocks12 :: [GHC.Types.Int]
-  {- Unfolding: (GHC.Enum.eftInt 2# 4#) -}
-c65d7ef15539050c05c99e02e97ace35
-  blocks13 :: [GHC.Types.Int]
-  {- Unfolding: (GHC.Enum.eftInt 1# 3#) -}
-fcc2c48495cbd68b94623596ed289fa9
+3f18cbf36293c0c00e26595c64d4712a
   blocks2 :: [[GHC.Types.Int]]
   {- Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [GHC.Types.Int]
-                   Lecture5.blocks11
-                   Lecture5.blocks3) -}
-d9a7c4822e9b516726f0c397c9bf2fbf
-  blocks3 :: [[GHC.Types.Int]]
-  {- Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [GHC.Types.Int]
-                   Lecture5.blocks10
-                   Lecture5.blocks4) -}
-a38f919a36665ce43c1d967f0991fee6
-  blocks4 :: [[GHC.Types.Int]]
-  {- Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [GHC.Types.Int]
-                   Lecture5.blocks9
-                   Lecture5.blocks5) -}
-e8a79dcbda336ce0bd5f1a59b9caa296
-  blocks5 :: [[GHC.Types.Int]]
-  {- Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [GHC.Types.Int]
-                   Lecture5.blocks8
-                   Lecture5.blocks6) -}
-e2c7c0a8b12b0f0e433de8e4d1fb1258
-  blocks6 :: [[GHC.Types.Int]]
-  {- Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [GHC.Types.Int]
-                   Lecture5.blocks7
+                   Lecture5.blocks3
                    (GHC.Types.[] @ [GHC.Types.Int])) -}
-78dd306c12edfba0bfa5b34c4ccf7cd7
-  blocks7 :: [GHC.Types.Int]
+323b7418bb7b73ef010750e191e747bf
+  blocks3 :: [GHC.Types.Int]
   {- Unfolding: (GHC.Enum.eftInt 7# 9#) -}
-0caee56e9036c2c0073dd0052ce72892
-  blocks8 :: [GHC.Types.Int]
-  {- Unfolding: (GHC.Enum.eftInt 6# 8#) -}
-3f01506dac884d2acbf0a9d013d532bc
-  blocks9 :: [GHC.Types.Int]
-  {- Unfolding: (GHC.Enum.eftInt 5# 7#) -}
+0cb483d416bf3ef01a39acb3d513c3ef
+  blocks4 :: [GHC.Types.Int]
+  {- Unfolding: (GHC.Enum.eftInt 4# 6#) -}
+2da786eedc8bbdd21c2e558d6d32a5a9
+  blocks5 :: [GHC.Types.Int]
+  {- Unfolding: (GHC.Enum.eftInt 1# 3#) -}
 8ff779d28e83be271e44c8903ef3e732
   colInjective ::
     Lecture5.Sudoku -> Lecture5.Column -> GHC.Types.Bool
@@ -797,14 +865,14 @@ e2c7c0a8b12b0f0e433de8e4d1fb1258
                  GHC.Classes.$fEq[]_$s$c==
                    (Data.OldList.nubBy @ Lecture5.Value GHC.Classes.eqInt xs)
                    xs) -}
-bdb1752254b58a1b29326ff7cb54b1c4
+0847a80c066ebaf7aa66078578f2129b
   consistent :: Lecture5.Sudoku -> GHC.Types.Bool
   {- Arity: 1, Strictness: <L,C(U(U))>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.consistent1
                   `cast`
                 (<Lecture5.Sudoku>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
-fc80077dd682c40cd723e5c8cff9e433
+b72b2cebb29a6d949b4ab92f1a21ad1e
   consistent1 :: Lecture5.Sudoku -> Data.Semigroup.Internal.All
   {- Arity: 1, Strictness: <L,C(U(U))>,
      Unfolding: (\ (s :: Lecture5.Sudoku) ->
@@ -820,27 +888,59 @@ fc80077dd682c40cd723e5c8cff9e433
                              case Lecture5.$wsubgridInjective
                                     s
                                     ds
-                                    Lecture5.consistent4 of wild {
+                                    Lecture5.consistent7 of wild {
                                GHC.Types.False -> GHC.Types.False
                                GHC.Types.True
                                -> case Lecture5.$wsubgridInjective
                                          s
                                          ds
-                                         Lecture5.consistent3 of wild1 {
+                                         Lecture5.consistent6 of wild1 {
                                     GHC.Types.False -> GHC.Types.False
                                     GHC.Types.True
                                     -> case Lecture5.$wsubgridInjective
                                               s
                                               ds
-                                              Lecture5.consistent2 of wild2 {
+                                              Lecture5.consistent5 of wild2 {
                                          GHC.Types.False -> GHC.Types.False
                                          GHC.Types.True
                                          -> ds1 `cast` (Data.Semigroup.Internal.N:All[0]) } } }
                          } in
-                         (c Lecture5.consistent4
-                            (c Lecture5.consistent3
-                               (c Lecture5.consistent2
-                                  GHC.Types.True `cast` (Sym (Data.Semigroup.Internal.N:All[0])))
+                         (c Lecture5.consistent7
+                            (c Lecture5.consistent6
+                               (c Lecture5.consistent5
+                                  (case Lecture5.$wnrcSubgridInjective
+                                          s
+                                          Lecture5.consistent3
+                                          Lecture5.consistent3 of wild {
+                                     GHC.Types.False
+                                     -> GHC.Types.False
+                                          `cast`
+                                        (Sym (Data.Semigroup.Internal.N:All[0]))
+                                     GHC.Types.True
+                                     -> case Lecture5.$wnrcSubgridInjective
+                                               s
+                                               Lecture5.consistent3
+                                               Lecture5.consistent2 of wild1 {
+                                          GHC.Types.False
+                                          -> GHC.Types.False
+                                               `cast`
+                                             (Sym (Data.Semigroup.Internal.N:All[0]))
+                                          GHC.Types.True
+                                          -> case Lecture5.$wnrcSubgridInjective
+                                                    s
+                                                    Lecture5.consistent2
+                                                    Lecture5.consistent3 of wild2 {
+                                               GHC.Types.False
+                                               -> GHC.Types.False
+                                                    `cast`
+                                                  (Sym (Data.Semigroup.Internal.N:All[0]))
+                                               GHC.Types.True
+                                               -> (Lecture5.$wnrcSubgridInjective
+                                                     s
+                                                     Lecture5.consistent2
+                                                     Lecture5.consistent2)
+                                                    `cast`
+                                                  (Sym (Data.Semigroup.Internal.N:All[0])) } } }))
                                  `cast`
                                (Sym (Data.Semigroup.Internal.N:All[0])))
                               `cast`
@@ -875,24 +975,30 @@ fc80077dd682c40cd723e5c8cff9e433
                             GHC.Types.True -> go1 ys } }
                  } in
                  go1 Lecture5.positions) -}
-e08559e637646f2da1243d9786de4384
+5fc829d6ec6f77b45e7f36f7adf6b061
   consistent2 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 7#) -}
-84eea51e83b67fea43387d3f0e58f798
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 6#) -}
+5b13b59cdba3a71a2885d4d487db838b
   consistent3 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 4#) -}
-75e1a7f5beb73618b4868694cdb07121
-  consistent4 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 1#) -}
-2d5c11e9c266b08e89a4c32826e2e640
-  consistent5 :: Lecture5.Value -> GHC.Types.Bool
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 2#) -}
+0a0b70ee722b4d188117b0df39035d45
+  consistent4 :: Lecture5.Value -> GHC.Types.Bool
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(1*U)>,
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: Lecture5.Value) ->
                  case ds of wild { GHC.Types.I# x ->
                  case x of wild1 {
                    DEFAULT -> GHC.Types.True 0# -> GHC.Types.False } }) -}
-95345b8e4d9586adf861c5452b027cae
+049ea4afcc8a413d7b82b23d31b473b0
+  consistent5 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 7#) -}
+14904b55e50f1b82f78e9bf5a91532aa
+  consistent6 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 4#) -}
+e59c91d8571f377910690689ce99d5a2
+  consistent7 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 1#) -}
+6890f24feed037635761ce91af26ddd3
   constraints :: Lecture5.Sudoku -> [Lecture5.Constraint]
   {- Arity: 1, Strictness: <L,C(U(U))>,
      Unfolding: (\ (s :: Lecture5.Sudoku) ->
@@ -934,20 +1040,20 @@ e08559e637646f2da1243d9786de4384
 88a247c277145d10cc72f35a96704c7b
   count1 :: [Lecture5.Tree a] -> GHC.Prim.Int# -> GHC.Prim.Int#
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,U>, Inline: [0] -}
-9d81689720732ae242c84ae98953bc5b
+62cdf0ff855bfac643349392db9bbf23
   emptyN :: Lecture5.Node
   {- Strictness: m,
      Unfolding: ((Lecture5.emptyN2, Lecture5.emptyN1)) -}
-b2b15fd016b0696599807070f8813632
+61f7b983b8de01da14c7d1a8b8e7dad5
   emptyN1 :: [Lecture5.Constraint]
   {- Unfolding: (Lecture5.constraints Lecture5.emptyN2) -}
-1bdf3aa1feeb34aed08599692a0f9013
-  emptyN2 :: (Lecture5.Row, Lecture5.Column) -> GHC.Types.Int
+77c22a187f55150aef674b518fa8abae
+  emptyN2 :: (Lecture5.Row, Lecture5.Column) -> Lecture5.Value
   {- Arity: 1, HasNoCafRefs, Strictness: <L,A>m,
      Unfolding: InlineRule (1, True, True)
                 (\ (ds :: (Lecture5.Row, Lecture5.Column)) ->
                  Lecture5.$fShowTree1) -}
-b50f205f666b738634e1bb97efa23bc6
+e7ec36e11c4bb567bb0163d14026ff19
   eraseN ::
     Lecture5.Node -> (Lecture5.Row, Lecture5.Column) -> Lecture5.Node
   {- Arity: 2, Strictness: <L,U(C(U(U)),A)><S,1*U(U(U),U(U))>m,
@@ -973,1021 +1079,1021 @@ b50f205f666b738634e1bb97efa23bc6
                  case w2 of ww5 { (,) ww6 ww7 ->
                  case ww6 of ww8 { GHC.Types.I# ww9 ->
                  Lecture5.$weraseS w ww4 ww2 ww9 ww7 } } } }) -}
-98ac08e159824a1fee086e0c92756d33
+e537e5159722e0f94804c029654aa81b
   example1 :: Lecture5.Grid
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example91
+                   Lecture5.example89
                    Lecture5.example7) -}
-72e9bff94ee905c40b3323b0e8330b36
+4dbd7eb91e0bd2fdac8bb3f11df1107b
   example10 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example56
+                   Lecture5.example54
                    Lecture5.example11) -}
-c4c7590ebb590891a0f72e6d340fcafc
+fe1b865d2ba0598444170a5a8e6baec2
   example100 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example137
+                   Lecture5.example120
                    Lecture5.example101) -}
-5814e7afef79ba3d2dcc0eb8e42b84ea
+4686e39e647ce68dd3ca5dc2f5d4748b
   example101 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example128
+                   Lecture5.example116
                    Lecture5.example102) -}
-6f4b0c814ed5befacca773d633d412a3
+4a73ec70408e535416e27ef3625d91c1
   example102 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example122
+                   Lecture5.example111
                    Lecture5.example103) -}
-1f2b28d922ddac0e17f0a57ef2083249
+475f7188c552f9eb3bf7ee4cfe155a23
   example103 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example118
-                   Lecture5.example104) -}
-36585b63c0fafda9cacc38d7300152b8
-  example104 :: [[Lecture5.Value]]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [Lecture5.Value]
-                   Lecture5.example113
-                   Lecture5.example105) -}
-3cf0237efdb2642f224af1f9e2e9900d
-  example105 :: [[Lecture5.Value]]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [Lecture5.Value]
-                   Lecture5.example106
+                   Lecture5.example104
                    (GHC.Types.[] @ [Lecture5.Value])) -}
-bbe77c8941419687b29d282351d9040f
+57fbf1dd593ddce120eec9523fb38fad
+  example104 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example105) -}
+6da80215646f819455c7a1fd611b273f
+  example105 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent6
+                   Lecture5.example106) -}
+a4fa0188634203973ba3cae8aff722bf
   example106 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example107) -}
-8e7d1d3a97fdf822933a79035942aa3f
+7a694f42258b28283997a6acb750b6cf
   example107 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent3
+                   Lecture5.$fShowTree1
                    Lecture5.example108) -}
-0426b1fcb139a712c507fbe844bf4d40
+9084f3e7e58abe7148b1c41118de453c
   example108 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example109) -}
-91e1aa2f6c0b06e373a4ea30ba24a995
+7273593a064a499150e2b4f7652b6c62
   example109 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.example24
                    Lecture5.example110) -}
-47964bd42a24abedc18aef00b4b2dd1b
+338685116ae050300c741e23e5f90955
   example11 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example47
+                   Lecture5.example45
                    Lecture5.example12) -}
-bab5257769578ab787313eeb96c8b01b
+6edf3160b29311491748f3da2feb5265
   example110 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example111) -}
-404560d5e69b1aac5f263e5fec654441
+                   Lecture5.consistent5
+                   Lecture5.example88) -}
+a2c589cafa38a42b6139c43ebe4a21ce
   example111 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example24
+                   Lecture5.$fShowTree1
                    Lecture5.example112) -}
-1e69a0f5656b8610be5c8d7f2aa374c1
+562bb205d96f5c73e72139c9eca70a60
   example112 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent2
-                   Lecture5.example90) -}
-a6a23bc6daf1e07199c1d568b5e8a080
+                   Lecture5.$fShowTree1
+                   Lecture5.example113) -}
+d5b585f70e76568610ae151a0b63dc7a
   example113 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example114) -}
-6068396373cccec6d53942bb392fb7c7
+d1e17a4dc8e217e3c0dd924f73eb07db
   example114 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.example63
                    Lecture5.example115) -}
-2c0f863a972d838938f4bdda76fbbfeb
+440db5766f1ce8690a9ffb053f87edca
   example115 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example116) -}
-9a71eb016c0fcc70589348932eddf4ff
+                   Lecture5.example94) -}
+6ef7c2b4125696cd5e44613db4067347
   example116 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
+                   Lecture5.$fShowTree1
                    Lecture5.example117) -}
-b55e03c764eec27cf5ace2ddf8fe11d7
+60af311be5edf2bf7f6b4d2ca5d7e2f9
   example117 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example96) -}
-96c068fdc9045b039bc7d3d8392c772f
+                   Lecture5.example35
+                   Lecture5.example118) -}
+8c5f779f0d6974c23bbb52cdeb80f663
   example118 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.consistent7
                    Lecture5.example119) -}
-9631eacd496d4557f8dc2599af1f32fb
+0ed3779fb28e3bbcb2563b087fb6757f
   example119 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example35
-                   Lecture5.example120) -}
-c5aa9c3d7ff7473c8ace042555b7f681
+                   Lecture5.consistent6
+                   Lecture5.example93) -}
+64ed6ba1a77cc8a8d0932df32c1e10fc
   example12 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
                    Lecture5.example36
                    Lecture5.example13) -}
-a9d1661698524485576ae852f910230c
+070f35a8417c96687b9ed7f676025e4c
   example120 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent4
+                   Lecture5.example25
                    Lecture5.example121) -}
-84ccf337ca7103b5e1fab10c5e2fe408
+b0bc2e77b72a8382615fd3f4f34ddddb
   example121 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent3
-                   Lecture5.example95) -}
-aadf6f4c44d84bc248c4806be75a6ba2
+                   Lecture5.$fShowTree1
+                   Lecture5.example122) -}
+a6fd474897a91ab3e778711e6d58e4c7
   example122 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example25
+                   Lecture5.example63
                    Lecture5.example123) -}
-20f62f2ce27679839d693701dfca613d
+c81a7a6df30f5f749d4b4cf0ec75ba9b
   example123 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example124) -}
-55de3b71d2bb834b44dda317c60be380
+8ed7f2e0c1debe1a91f7e85081b9e274
   example124 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
+                   Lecture5.example24
                    Lecture5.example125) -}
-3f98e1dc0f3c6148e0e18d8bd45c888c
+682f62e8718e184398ad8c44560ec26f
   example125 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example126) -}
-5e93c5310dc29b2e54ccd6b5a2bc719f
+                   Lecture5.consistent7
+                   Lecture5.example79) -}
+47d77c754c2106460605a000db35bc23
   example126 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example24
+                   Lecture5.consistent3
                    Lecture5.example127) -}
-51ad9e983fa1da70378ab9c030bda090
+e0204acda0f6c5db52baa35e0e3c0c4a
   example127 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent4
-                   Lecture5.example81) -}
-f7c9433688c4de3f462da6cd748c7a4e
+                   Lecture5.$fShowTree1
+                   Lecture5.example128) -}
+aa26c6ad34354f2cfe02f369d4b989ca
   example128 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example45
+                   Lecture5.$fShowTree1
                    Lecture5.example129) -}
-426ef94b8747372f5cbb045074694fc5
+7a29d94ea619dd19c71b1c7056783ac6
   example129 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example130) -}
-7cbfce98512ad3bd578a6b27b723d941
+c1c0d19938c001c12bb77075ecca9b00
   example13 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
                    Lecture5.example26
                    Lecture5.example14) -}
-85c8be27deff254a4927a349a78ba4e5
+dab55fe7794c4061aae60e61fd961499
   example130 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example131) -}
-12e24ead6c506744202dfcd8ad8cfd8a
+7a4e5fb333c23152c0d4e51f13bd6a72
   example131 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example132) -}
-22d5d4ba5ed182072ca9c8d3f727dfc7
+c252e6f6c6539a4dd43c4639f10614b9
   example132 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example133) -}
-8016dae83def13154215c5fabba23895
+d029057d9c2089f08fcc2f9478975225
   example133 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example134) -}
-31b5c660015c89d9e4b7035e3b3aebc1
+eaec9c4a9ee66001787e45ae49635033
   example134 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example135) -}
-f8bddda0daa2e040cc776d105183a1bd
+                   Lecture5.consistent5
+                   (GHC.Types.[] @ Lecture5.Value)) -}
+1ca9b6b28016066fd5b0d0f37533d17b
   example135 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example136) -}
-004f001b3c8c2227e9964ff268750260
+bef9beb5bd03c5b4e777cb9a6cc4be87
   example136 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent2
-                   (GHC.Types.[] @ Lecture5.Value)) -}
-c0e4b7373d8b9292846a628aa3374820
+                   Lecture5.$fShowTree1
+                   Lecture5.example137) -}
+7d795f6fcaefe6b5de8d905040232aee
   example137 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.example24
                    Lecture5.example138) -}
-5ebab9590f1a0b1adc35f5e3fcb52479
+d80b985bf561348f2f5030e25cf0221f
   example138 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example139) -}
-673484a54a2eb48a00c575c8245210ee
+c26eb6055e226fd5b305b7d6691a8420
   example139 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example24
+                   Lecture5.$fShowTree1
                    Lecture5.example140) -}
-6ebdb5224b892f8c50a8b19e523f3233
+88ff8a5af17b0d9fec3546ea04baa00b
   example14 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
                    Lecture5.example15
                    (GHC.Types.[] @ [Lecture5.Value])) -}
-0c1231cbf631311d2c611627d502bb86
+a5e9529be395c3bd172759b83c0245c8
   example140 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example141) -}
-ced2c2c7207922071173871e7698cc59
+7ce464f96c6615693a0b642d12f3619a
   example141 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example142) -}
-fb8889b37d44d58f95d06ac516c31b7a
+091ab5ea8ab6efd1184959185ef4aea0
   example142 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example143) -}
-7d8d07ec93babe739c92b08046e7d569
+                   Lecture5.example63
+                   Lecture5.example44) -}
+972538f33455df76e97106cddae39f73
   example143 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example144) -}
-8b1b1bb34254fbe5b8ebfbec726ab22b
+4cd9df9d76131354eea2a2b03cf0612f
   example144 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
-                   Lecture5.example44) -}
-16134cb68adbfe53371f3665a75b623e
+                   Lecture5.$fShowTree1
+                   Lecture5.example145) -}
+1c9e2cd34a02230e15d9704cf6256bda
   example145 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.consistent3
                    Lecture5.example146) -}
-9f2fab5797e7aca8b9ca108dee1bbae0
+329f1ba7b5a1bb5c2281a1041314fcd3
   example146 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example147) -}
-011fb2a10c2cf3ca10ef1b35d9780da4
+017c2eeccececad7c7466470dc1ef77a
   example147 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example45
+                   Lecture5.$fShowTree1
                    Lecture5.example148) -}
-c09027163819707a2e4e31064edcd68c
+059af92ea28b57ad996259749cb24691
   example148 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.example35
                    Lecture5.example149) -}
-b2c83414986b9b4f713ff9fe10244ee7
+3fe2c2eed4bc588394c2941886e864ca
   example149 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example150) -}
-9195d43d597044c61dd27db86ebb0a30
+670641d5c3c71fc8baaa5680027687bc
   example15 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example16) -}
-0541ae49fe3c3d63873f28608553e9de
+c730cff7a87fcad0a1fbe23493348718
   example150 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example35
-                   Lecture5.example151) -}
-17b372976679a00b501cde6767f7d35e
-  example151 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example152) -}
-7b37227ade2ee016619fd650e884331c
-  example152 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
                    Lecture5.example24
-                   Lecture5.example153) -}
-8b53a8ce2063adbf2e8410f1c98ea626
-  example153 :: [Lecture5.Value]
+                   Lecture5.example151) -}
+46959b2898231a49deb04822fcaa1814
+  example151 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.example25
                    (GHC.Types.[] @ Lecture5.Value)) -}
-8ab508c9d5fb5a96302900d552de2774
+e027d7f06d54ddddd1c7b4e3a84268f8
+  example152 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example153) -}
+8a221c2430943bacbf3cf33153bdbedd
+  example153 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example154) -}
+13a55e5e0c94528e773b1d8d5541f762
   example154 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example155) -}
-100b79f1af43bcc1f1eb750da69ae593
+ac84cd365bcdf90642f91eff704b87ab
   example155 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example156) -}
-63455831e1f82fa35083bc19cbe85489
+7b5b9ad8dd52624817f6ef8b19535630
   example156 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example157) -}
-8b585711533c306aca753eba63e6a432
+                   Lecture5.example69) -}
+13267cc4fb58e1f6d22bbcb30fd3a6c4
   example157 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.consistent7
                    Lecture5.example158) -}
-abe8fc3285ab26ff1ea2b87468997f3c
+a1afb4449f7c968940d54164fef27ef7
   example158 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example71) -}
-b483894f62ab5d40488de7e3c074ba63
+                   Lecture5.example159) -}
+71b15cb0197f2adb36a8b43c7cd409fc
   example159 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent4
+                   Lecture5.$fShowTree1
                    Lecture5.example160) -}
-22f2771403a9f2875b18b28380ef4696
+72c1fb2a10ad09a5972a2a0ed910cd7a
   example16 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example17) -}
-a51a8c1f857ddef4f334d981897231f3
+7ffc67afb4904c5121964e7172400707
   example160 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example161) -}
-ca55d437e48efad5999a0a79e738bc2d
+a72f7428311051fb103567211fff942b
   example161 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.example63
                    Lecture5.example162) -}
-78af9b4eeee73af40532d5cbda990c2c
+e05d9f6cd1186b58a2465fb9a98e1015
   example162 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example163) -}
-6ecc3dfdc43624296e19349ffeeddc35
+42fc337f9c38cf831e84ee11c52d295c
   example163 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
+                   Lecture5.example35
                    Lecture5.example164) -}
-cb9cad08ac6606450b6c314276c1b5b7
+26658443a193ad2912673e1a6ea91edd
   example164 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example165) -}
-c727efcd70a62d20faaad47c230db8b9
+87f40e1cf4b7e4d63a34c0233867d0e2
   example165 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example35
-                   Lecture5.example166) -}
-01b822cbb7dffddbab9d4d7d040a74ae
-  example166 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example167) -}
-8e2727088d59fe8a6ef4727e819297b9
-  example167 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.consistent3
+                   Lecture5.consistent6
                    (GHC.Types.[] @ Lecture5.Value)) -}
-197ebd6877aaa0657d63806bb6d6e090
+15a970d0436f10b1ccafcc9c1762338c
+  example166 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.example184
+                   Lecture5.example167) -}
+585ac6e43fe6f081f4b2e2dc63e1fe5f
+  example167 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.example183
+                   Lecture5.example168) -}
+9a2e8ac1a239fcbf0587b62b01f77c75
   example168 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example186
+                   Lecture5.example182
                    Lecture5.example169) -}
-27045582f863e114ac69f3a612aad418
+d3442865dcf2070cc8d639b00ebc002d
   example169 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example185
+                   Lecture5.example181
                    Lecture5.example170) -}
-b5459467735538062c05afba6d288b70
+79b7438fb452eeed0da0303b6f8ae2e2
   example17 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example18) -}
-d8e5dc8b003f05e9f3ee60dda8a703c2
+90a33ad573fac8e24af856cd932d18cb
   example170 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example184
+                   Lecture5.example180
                    Lecture5.example171) -}
-59668408628526d1f86f02ca49f8dcec
+1dea6407c6fa7d349f471ebbf1b22723
   example171 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example183
+                   Lecture5.example179
                    Lecture5.example172) -}
-acc51f84320bbcac4ef865d988993d27
+51468b4b47db85ec812756ec7d2feb2a
   example172 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example182
+                   Lecture5.example178
                    Lecture5.example173) -}
-a2f86fd272e5fa49133327130ca70c87
+6d0d0f1d64b60494428fada27a7a6f92
   example173 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example181
-                   Lecture5.example174) -}
-b4bf60b66f4c13b54870aa83b318c25d
-  example174 :: [[Lecture5.Value]]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [Lecture5.Value]
-                   Lecture5.example180
-                   Lecture5.example175) -}
-4b69619689600c1f7704d790bb07bc96
-  example175 :: [[Lecture5.Value]]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [Lecture5.Value]
-                   Lecture5.example176
+                   Lecture5.example174
                    (GHC.Types.[] @ [Lecture5.Value])) -}
-112b2a3dfe099a281b28256210b9c6d8
-  example176 :: [Lecture5.Value]
+30927ba4d8da8445fc633f30bec59724
+  example174 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.example24
+                   Lecture5.example175) -}
+b5595c1ef317acb2f4cd71f9cf55c40a
+  example175 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example176) -}
+9fbca04950bdb76a1f833874eeaeed58
+  example176 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
                    Lecture5.example177) -}
-f59675a9f931c3cb550c3cdd03b2ebd6
+4f88081025a434ea5ce6764f488f2a67
   example177 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example178) -}
-0937b2e8825b733d6fd9f225085aae51
+                   Lecture5.example115) -}
+da994f3566c1a62ac19b39f5f8e93080
   example178 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example179) -}
-4319b38769c2fb73a82b531a939a3629
+                   Lecture5.example25
+                   Lecture5.example175) -}
+74ae05cccfd27b6a537565fc73335079
   example179 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example117) -}
-8989fd9bee35d7b3d2b6ab3ff29569aa
+                   Lecture5.consistent5
+                   Lecture5.example175) -}
+d8e66c434e8dd14c0c603e8a569c5332
   example18 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example19) -}
-2671daec315f5ce57bfedf8e84c2f78b
+5df1e6b7ba891c7f65f107a40ad3483c
   example180 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example25
-                   Lecture5.example177) -}
-865abc6d9ccbf9ce35f15f2021afd83a
+                   Lecture5.consistent2
+                   Lecture5.example175) -}
+ed8bfb0e1c822248881c56eaced62fbd
   example181 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent2
-                   Lecture5.example177) -}
-4d6a23b74fd8d9ed3f93a03f2883dbe6
+                   Lecture5.example35
+                   Lecture5.example175) -}
+75a8b7c94eeb07230fa2fa5600acfdb5
   example182 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example46
-                   Lecture5.example177) -}
-310c1e27260708d9d0f04eb45eeb7f5d
+                   Lecture5.consistent6
+                   Lecture5.example175) -}
+61e46fceb333fa0748fe2dabb12defb3
   example183 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example35
-                   Lecture5.example177) -}
-42f0de202f5e4ad671597f70bd19a9b6
+                   Lecture5.example63
+                   Lecture5.example175) -}
+75a5dbd06a1305a847cd04c523f4d03a
   example184 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.consistent3
-                   Lecture5.example177) -}
-edd84caca08cbfa0ed7abff504f08830
+                   Lecture5.example175) -}
+63b52368efb6877d3574e3d89d654902
   example185 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
-                   Lecture5.example177) -}
-81c16679df4e30f9fb3f70354733636c
+                   Lecture5.consistent7
+                   Lecture5.example186) -}
+a5b00715a72679c19c3c9791f8c6deee
   example186 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example45
-                   Lecture5.example177) -}
-746604c78de909c035c2c630a9fbed34
+                   Lecture5.consistent3
+                   Lecture5.example187) -}
+967789be72169b41c669234967dec3a8
   example187 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent4
+                   Lecture5.example63
                    Lecture5.example188) -}
-90cb0dfb90c10ba632a8014584bcae4e
+850754289694f3351c03e504a396dd4d
   example188 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example45
+                   Lecture5.consistent6
                    Lecture5.example189) -}
-7d9067098bfc980a10fac5453d860846
+dacaf5137a916c04770e90156fb60b7f
   example189 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
+                   Lecture5.example35
                    Lecture5.example190) -}
-615f508826b1bbd3a2b54677e0612d78
+87ccd0160983cba5e63342e629afbd89
   example19 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.example25
                    Lecture5.example20) -}
-24220e7db49ec1d81ab27013dbfe5176
+b681aae0e986804f30b808db47050c6c
   example190 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent3
+                   Lecture5.consistent2
                    Lecture5.example191) -}
-74fa8e0ea1d84b1f23e3ee40f64dd620
+2ecbe10b3e9f28589c9f321cb969f594
   example191 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example35
+                   Lecture5.consistent5
                    Lecture5.example192) -}
-c2fe8e2aa7caef22b0da54e68ebb2ced
+b3315127a6a9a743a42c5d31d3d4beaf
   example192 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.example46
-                   Lecture5.example193) -}
-4ef38fc8d4bbbf0ec91f133b26925eef
-  example193 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.consistent2
-                   Lecture5.example194) -}
-6cc6d6ef7af2380303bb9f016527dfdd
-  example194 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.example25
                    Lecture5.example23) -}
-e167d58c27538edd32c53139dc937114
+4128eb832fdf2265226808cae73c33bf
+  example193 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.example240
+                   Lecture5.example194) -}
+2eb32c9b611cbeb31a01968bdd794c10
+  example194 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.example237
+                   Lecture5.example195) -}
+08c71bd45cc61a9d2ee16e706b311dfd
   example195 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example242
+                   Lecture5.example233
                    Lecture5.example196) -}
-bdfd16fe6fdf0cdaea4261e00c0f2fce
+bf810b55c1e2c187e2d8b0f5e9bcb0b3
   example196 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example239
+                   Lecture5.example228
                    Lecture5.example197) -}
-51db7888495c6f7108cfa6dd1eb839a8
+796c6d19e23b87c73ffb9189daf1cf33
   example197 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example235
+                   Lecture5.example222
                    Lecture5.example198) -}
-84bd914e38321a242739134a2fa5f68c
+38fc4696431415291ecd37164f4a5f58
   example198 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example230
+                   Lecture5.example216
                    Lecture5.example199) -}
-caf51e0b882fee9df7ba5e9ec785f031
+a2987c14336564f59683ad1aa23f6f63
   example199 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example224
+                   Lecture5.example209
                    Lecture5.example200) -}
-be4db5e3db9565b6034dcd772750bad7
+dac4c7f401374ac5cfca97d0afd74354
   example2 :: Lecture5.Grid
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example97
+                   Lecture5.example95
                    Lecture5.example7) -}
-dbae28ad9026347d4baae0fdaae02be1
+cfe94bd51f3c758d155cf600ea4ffedc
   example20 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example21) -}
-2d09d8def771fbbf2feddb43720e231e
+b45b739fa16b04393cbca79c2cce4cd6
   example200 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example218
-                   Lecture5.example201) -}
-d70aaa58c79759e2614206a339a5fafb
-  example201 :: [[Lecture5.Value]]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [Lecture5.Value]
-                   Lecture5.example211
-                   Lecture5.example202) -}
-92256268d8b63049cbe42141eea5a759
-  example202 :: [[Lecture5.Value]]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [Lecture5.Value]
-                   Lecture5.example203
+                   Lecture5.example201
                    (GHC.Types.[] @ [Lecture5.Value])) -}
-c5236ef03bb13e2a659b75c1ae54722b
+492423f68b8e820fc51339146f7fea1b
+  example201 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example202) -}
+fd7abb53710e02e0525a89cc23179005
+  example202 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example203) -}
+017266d84910218b88f28f6d242372e8
   example203 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example204) -}
-e9e0e7a3daf252032a118015217a7471
+cfe0621f02c9b9089ab019a0e08ca78e
   example204 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example205) -}
-6676fc0a8b47a81442ebad9ad6e8d524
+2cac24fee126d1f4a9c26de887347681
   example205 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example206) -}
-176dba1d33ac5111d3df72f4ac2e37a9
+e17f1c6f8f3622814ae8d7f56007227b
   example206 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example207) -}
-93777de996bba1333cb1a6fa8bc98f27
+124dc1a0afaec1efbe6d45c3504efa8e
   example207 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example208) -}
-3d53b23741c2eca4e98760f261c927f3
+4b629428286f8d47897f52120b5cd674
   example208 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example209) -}
-2e9174f648f82e6f80c6943c39868784
+                   Lecture5.example23) -}
+e9ee9f3016416c708fec58fcf735fec2
   example209 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example210) -}
-9330677b8b193cf0810af3b8a8071d02
+98ab45217b866b9797af0df1910cf77d
   example21 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example22) -}
-e1d2b1cb8090bab31445cb462d28948b
+f4c0f823359de1799f9d9fb71eb78bde
   example210 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example23) -}
-f52ee2ab51f67bbce340478b888880ae
+                   Lecture5.example211) -}
+a49edbb67a76cb661175846fd68d4643
   example211 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example212) -}
-6c706863d7a7d3628dffb5333b9210ea
+64848f348bfe901797b94e666088f726
   example212 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example213) -}
-0417aa757099a8b43b099e3492e67960
+8d39489605c8cec6c520304ef792f672
   example213 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example214) -}
-fa2d130c9962804483819fa7f0e73463
+2cb3ba1267b110a46b47d778d883594f
   example214 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example215) -}
-b85f1f4d1346d064080d69b56776c8a3
+2e1a5735f3245591a096100b4e891e63
   example215 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example216) -}
-75d2db804fbe90c89a927306051e5822
+                   Lecture5.example43) -}
+065d1fdf078025fd5c926411586c9fbd
   example216 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example217) -}
-cadbf4de25c52aa84e56d8aa48e8520c
+db009d4fbcd66144a3f8e48810f63e3c
   example217 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example43) -}
-37a56c56b7500825cf543896f3a433e4
+                   Lecture5.example218) -}
+d34594434903455911596057d1c9850d
   example218 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example219) -}
-5f6e9c6696e5b16665f53d5a905ebd9b
+0270eca4198602220a6faaa57e21e024
   example219 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example220) -}
-c12defe171b60b5a8de76e41aa2ba95a
+c5bb7fd3240c34ae7ce13f27a2ca866d
   example22 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent2
+                   Lecture5.consistent5
                    Lecture5.example23) -}
-dc80ce4e64f5a58deb0ffa5bdda70020
+1961e113ea4756a3f11a06f8caf80f57
   example220 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example221) -}
-33428de7b978209a0a88b30e5d409d96
+ff208c2c94ebbaf6a0341efa548f07e5
   example221 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example222) -}
-5d63722f5726cd31b31ec2197e1f9b4a
+                   Lecture5.example110) -}
+8a733d294b893df3af7852f5d2284b96
   example222 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example223) -}
-674c8043674ac526dcd91d5ada293492
+de46bbda13b95e32443937b6e5046846
   example223 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example112) -}
-277a55d56c3b46174a93271dce6f57bd
+                   Lecture5.example224) -}
+4ed4c9193821b0f8f568214058e282f2
   example224 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example225) -}
-afc22c0bfaaacd7c3cf65b673a8b8f38
+2950d9449795d73f9b55930ec218528f
   example225 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example226) -}
-fd77eeca20afe3ed23e88406e5b0ca54
+9444bb26e1a8ab5c7e2e61e2e39f1776
   example226 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example227) -}
-ef1941f9930e5ee0d0808732c59051a0
+73b3d3eec36e6ea77666238a22cf02d4
   example227 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example228) -}
-b8518d866e5831dfe02cf67603ddcd2d
+                   Lecture5.consistent2
+                   Lecture5.example87) -}
+27dad3f5738ab52193b79616e0ac1163
   example228 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example229) -}
-d3cf9efdac552f654b0dc7a66c0dd01d
+e6cdd53d1e845f8ce9f7e8e840332673
   example229 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example46
-                   Lecture5.example89) -}
+                   Lecture5.$fShowTree1
+                   Lecture5.example230) -}
 5a7f2c9eba95f0bf7baac1f619831e72
   example23 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
@@ -1995,158 +2101,144 @@ d3cf9efdac552f654b0dc7a66c0dd01d
                    @ Lecture5.Value
                    Lecture5.example24
                    (GHC.Types.[] @ Lecture5.Value)) -}
-3d0d88b1ae4892c19b3e65f501caf1e7
+9c32a7ac69ca17c56de3aa4ee32a35c3
   example230 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example231) -}
-26541d674f393d41acb053c00511d906
+8aa2c6e57a5a947d8c27d651ce9f8e50
   example231 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example232) -}
-daaaa1e86272d53c9258c354dd6ccc0f
+52a030584979108a8555db0760ccc965
   example232 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example233) -}
-6ebc1905b9e9ef243978bbce4a4cf050
+                   Lecture5.example35
+                   Lecture5.example94) -}
+b1b44b7d014edfefb70d0da66f1f4332
   example233 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example234) -}
-259a58089429fecf75d04e511e21ea80
+e81e8fda52166f035f4febbce361de81
   example234 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example35
-                   Lecture5.example96) -}
-edc700ab346981e605b1b69e53d90730
+                   Lecture5.$fShowTree1
+                   Lecture5.example235) -}
+06f4cdac345bcb5e43e410e12499dbc0
   example235 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example236) -}
-15303e3b1a9c1c0267a166d3b352ea9c
+02b4ca4cafc8c13ce0fbc803c89cc98d
   example236 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example237) -}
-e58bdbbe4179531a5784610eec3e93e0
+                   Lecture5.consistent6
+                   Lecture5.example115) -}
+b3a094411faa2fab1e0787cf3d32981c
   example237 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example238) -}
-a24f48dc38b8f20a80396f07416786a8
+dce8f22dadf4e504e6c5dcdca0b99846
   example238 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent3
-                   Lecture5.example117) -}
-ac32db9b5469ded99dc1d293fb5c55ba
+                   Lecture5.$fShowTree1
+                   Lecture5.example239) -}
+25ab6364fc8edb851558b2a2bb399610
   example239 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example240) -}
+                   Lecture5.example63
+                   Lecture5.example177) -}
 eb9969cdc31bcce210351dfaf750fc60
   example24 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 9#) -}
-fb941cadf6126271ed395cd123b05ca1
+513ad77bb67154d83f41fecdbc24343a
   example240 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example241) -}
-dcd730929a44197aa004895c7d7a428b
+ca8711ae0d733f38a29045df0c78c073
   example241 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
-                   Lecture5.example179) -}
-66c799be274c9c780bcd967a6e4717a1
+                   Lecture5.consistent3
+                   Lecture5.example176) -}
+ca843ad5c0d066cc783364d814b34217
   example242 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example243) -}
-1a0069e04b0f1bcae0665eb600426cee
-  example243 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.example45
-                   Lecture5.example178) -}
-263f1d266896a6584c39230b8517d190
-  example244 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.consistent4
-                   Lecture5.example177) -}
+                   Lecture5.consistent7
+                   Lecture5.example175) -}
 996171cd9c6d53436c8a38c166f2bde0
   example25 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 8#) -}
-436ee57011f33cb8e7a4aee3f0eff83a
+bfd3225872a92e766fefb7ec8fbcbd54
   example26 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example27) -}
-91136ea0de8c4f27c3ee74d9cb6e0702
+2424431ddca9a3cd38a4402f8cf0fa50
   example27 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example28) -}
-3f6ebc7fb917f8e1442daca4949896e8
+dad0582f30ffd10b56194c8f4a7a93f5
   example28 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example29) -}
-3099bc18367d0bb6d346625250e93de9
+41e068326b15c8165631dac8e9704c9d
   example29 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent3
+                   Lecture5.consistent6
                    Lecture5.example30) -}
-e58a207d2cac8d224e653cd606824ced
+7c51bf89e6e71a66733a7ff475af5aa6
   example3 :: Lecture5.Grid
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example159
-                   Lecture5.example98) -}
-9135673254e31c63994d3febad6a164e
+                   Lecture5.example157
+                   Lecture5.example96) -}
+f83bace236c4e34a44b9d15509dd11f9
   example30 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent4
+                   Lecture5.consistent7
                    Lecture5.example31) -}
 bb4f042b687737a57ecff64f7db54d5d
   example31 :: [Lecture5.Value]
@@ -2179,61 +2271,61 @@ b89bc0cc764afd91df784b96fc859e29
 1cf4b0ff7b522bb0452e7ec0b40e828f
   example35 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 5#) -}
-2c3b99e3767310269931421426518616
+a5e2029b571f5b0ee79efa0a7bf46704
   example36 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example37) -}
-65f54b4c08882b7f9f989fba3a0e2e2b
+e971fdb06d98512c69ff4fb1c6683f18
   example37 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example46
+                   Lecture5.consistent2
                    Lecture5.example38) -}
-0d9653811b37e848f0647110a4118920
+34b8ab19fb66c45f7640a9771576ede4
   example38 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example39) -}
-6314c77f93e42b9467a6ded385165711
+273474684df71c896bc4c6d9f92445e9
   example39 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example40) -}
-fb463e6e44957cff13b1e338e600ec52
+cb2e43cced2ae2ae1bb09be22b0c57e3
   example4 :: Lecture5.Grid
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example187
-                   Lecture5.example168) -}
-c0c4a1f0a52b059d0a8e87ac025c2b81
+                   Lecture5.example185
+                   Lecture5.example166) -}
+e44998db97a283f97274bf9421904c6c
   example40 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example41) -}
-50d2cad0de652c49c249bae1811043ea
+647c0d374cfdf19dadaab6777b2ea877
   example41 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example42) -}
-4f3c28bea4acf1e8e14988e72269c8b3
+a59601c3a6694251be37173355ed423e
   example42 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example45
+                   Lecture5.consistent3
                    Lecture5.example43) -}
 a0e7fbab809abf64c7fd46490a25aea9
   example43 :: [Lecture5.Value]
@@ -2249,406 +2341,414 @@ a0e7fbab809abf64c7fd46490a25aea9
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    (GHC.Types.[] @ Lecture5.Value)) -}
-07e34b6c1eb5e076183545826135b9b2
-  example45 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 2#) -}
-128fb132fc6fe6ee9964c0e95cecbc51
-  example46 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 6#) -}
-3054c1f0bb98b38b0c3142f32335399a
+1eab703841fdb98fdd160b7a1c98a475
+  example45 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent5
+                   Lecture5.example46) -}
+2a8254f91f2d6ecb9121ab04984169e3
+  example46 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example47) -}
+6ae5fec7a3d26d45d7cd4f58244cd01b
   example47 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent2
+                   Lecture5.$fShowTree1
                    Lecture5.example48) -}
-4ee43059d72726a577adb468f1b4d0cb
+bd26433b40728d84f5cb7dfeb71b9806
   example48 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example49) -}
-3e3b3f0952659557d109e7831cbca6d7
+e3a12fb82bec047ed5eb0b07a71bea24
   example49 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.consistent3
                    Lecture5.example50) -}
-2ca1a4c7ce847db0a19ad6667d057f44
+ed5022675b092fd2cdf0dc99b388abd4
   example5 :: Lecture5.Grid
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example244
-                   Lecture5.example195) -}
-c6bd568bc01c5ca6106853096fa87eb8
+                   Lecture5.example242
+                   Lecture5.example193) -}
+70b39a9cabc63aa29ae23e1454857c41
   example50 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example51) -}
-bdc6501ecdb28ed099a491ef4c7e8ab4
+289467fa88e6edd7a1550ac6824d2ec5
   example51 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example45
+                   Lecture5.$fShowTree1
                    Lecture5.example52) -}
-9b5e14dc989cb1dff7e46413aad9512e
+543e518dacfb3e52c07b1304804ce83d
   example52 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example53) -}
-4ec65b82cc09c32ce6727d82c2242341
+9d681dd39497880f4dfb0390cd5e9b5f
   example53 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example54) -}
-96d8a60c1427e30f3c8e3aecdad6a054
+                   Lecture5.consistent2
+                   (GHC.Types.[] @ Lecture5.Value)) -}
+f86bcb423038eed5d9bee6a7861568a6
   example54 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.consistent6
                    Lecture5.example55) -}
-81bc3c6fa0159db767204c20494fa6c8
+864dd4f6c25d5a6293020ba0b6265305
   example55 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example46
-                   (GHC.Types.[] @ Lecture5.Value)) -}
-58e3f7ecd9a8c4c71ea040c438df8500
+                   Lecture5.$fShowTree1
+                   Lecture5.example56) -}
+606a06c9d4654c5bc2a010e1ad3ca711
   example56 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent3
+                   Lecture5.$fShowTree1
                    Lecture5.example57) -}
-8d7723a364b74cb5e083d08cac323072
+d255dbdd4de69e8257d3523f767b788a
   example57 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.example25
                    Lecture5.example58) -}
-4018adeae667a0fbe9134bdebd84ed6c
+fa7d39fda2fc1319ea6bf2ccb17f8fbc
   example58 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example59) -}
-711f08becf4ca5ad0ca46e0300ba7eda
+bacc79d82ec432074690d5e3f9757dc3
   example59 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example25
+                   Lecture5.example63
                    Lecture5.example60) -}
-7bee53a75be38039a37e140205ccbfaf
+c1a1c5d69af842dce58f87eafed4a1bc
   example60 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example61) -}
-dc970ed777f4978639e7d6e8afa5a707
+8ba7b6e92a26875258482b2a13317c8d
   example61 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
+                   Lecture5.$fShowTree1
                    Lecture5.example62) -}
-f4b35cea31067e4102b1a1c0760047a2
+58186bb071639a1e95275ec4a2529820
   example62 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example63) -}
-217900058ffb7f46283597ab6947a936
-  example63 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example64) -}
-2ecccbba44fc693e78f33f554d88abff
+                   Lecture5.consistent7
+                   (GHC.Types.[] @ Lecture5.Value)) -}
+696495d62cb28e21005ecfa5a757f61a
+  example63 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 3#) -}
+8503b789e302b113ffae7b289dfae6c8
   example64 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent4
-                   (GHC.Types.[] @ Lecture5.Value)) -}
-ee8f090609fd36c7c23b2907a170c7b3
-  example65 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 3#) -}
-308c11cb369f8e2bdd445a23d7f837b9
+                   Lecture5.example25
+                   Lecture5.example65) -}
+49fbee5abec0537d3ba4de247163735c
+  example65 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example66) -}
+28743f252d2e2c4a24d52281cf805150
   example66 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example25
+                   Lecture5.$fShowTree1
                    Lecture5.example67) -}
-e9961ba8f7b0566c0f83b33d0a601f47
+70d5496031be2a35973cfe8c2d56a621
   example67 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example68) -}
-14a3150db9a624bcb546de406e8b1dcb
+d07d2283f944c99effe505faaafe9c21
   example68 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.consistent2
                    Lecture5.example69) -}
-fb5ac5a1965368b4fe74f320f311578e
+dae4f67ce84ca9cd0369ce1b91544b89
   example69 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example70) -}
-3eb22df45ac09ff6bfc4f69fd32a0d38
+a4a3e5feb778662dbfa6d1af570768a1
   example7 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example83
+                   Lecture5.example81
                    Lecture5.example8) -}
-563bec8532180d9597749dbd5917e82c
+38c33174ce47deeeb9db4d7f7aa9dd2b
   example70 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example46
+                   Lecture5.$fShowTree1
                    Lecture5.example71) -}
-5fd2a1a7d3c609c6a5edc636b9a60611
+2e5d662cf4cd37ce994905a3309a5553
   example71 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example72) -}
-c95cb4bf7d43448121a3e810863d6a14
+d53ed755f5c393ae80320cd201aba552
   example72 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example73) -}
-30b75f63fa9d64782fa4bbe0dea4d065
+                   Lecture5.example63
+                   (GHC.Types.[] @ Lecture5.Value)) -}
+a587e36f1b87371616d8beefc997eae6
   example73 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example74) -}
-69a3986dfca6fed757377969bca11f50
+6d205c2e5c0cbff2fe7b283bfe798502
   example74 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
-                   (GHC.Types.[] @ Lecture5.Value)) -}
-04ce2da5c8eaa66e643771b154b7eff9
+                   Lecture5.example24
+                   Lecture5.example75) -}
+08494bebd613ba1ba8927359bfafe726
   example75 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.example25
                    Lecture5.example76) -}
-a63cccce1d30ddcf2ec6ed65a6844c5b
+6e440df5bd5f61b6ac1f9236bf053345
   example76 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example24
+                   Lecture5.$fShowTree1
                    Lecture5.example77) -}
-a3e67b43150d88c020627a4177cb2819
+f71bc38a0abe866609299f6edc08ac7c
   example77 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example25
+                   Lecture5.$fShowTree1
                    Lecture5.example78) -}
-7a91272c012f9e016a21e571d196d85e
+4eefaebd960783b878bcfd9392a1a2aa
   example78 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example79) -}
-e2c8a590f90816d93862e901069674c9
+d5c99a69eb418dfa3dbde719ceadeb32
   example79 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example80) -}
-c4da4065056f7f526a074c835ac800c1
+138e47b4aa40436f5b31d9b14f4188a1
   example8 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example75
+                   Lecture5.example73
                    Lecture5.example9) -}
-4d9d48e45fcbc45a6da3a3280bdc80b2
+044db1eef3c6516a74d3f8af87cef646
   example80 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example81) -}
-961a7649f799a8d9717c5415b48044c5
+                   Lecture5.consistent2
+                   Lecture5.example44) -}
+206ff26fcdac659b773dbc10fa1848df
   example81 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.consistent2
                    Lecture5.example82) -}
-3962f4ef7d38aa56639b7bc8d4dc9c01
+92be4704a7ee69dd629037a7e40aaa1c
   example82 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example46
-                   Lecture5.example44) -}
-a99ad929ad10d52ae24c76f8392ba9d5
+                   Lecture5.$fShowTree1
+                   Lecture5.example83) -}
+ed6031c37d68f18b4d4da6146b00f8d7
   example83 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example46
+                   Lecture5.$fShowTree1
                    Lecture5.example84) -}
-eb6327ea06dba60178fb07dafeea910a
+e1acf2d36175437c71691d927f2e332d
   example84 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.consistent7
                    Lecture5.example85) -}
-a02d6cfaaf213213311684af20ec2a8b
+23c5afa28613efd88a0bd827d2936d79
   example85 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.$fShowTree1
+                   Lecture5.example24
                    Lecture5.example86) -}
-dd996c4e0f103140b7621ec9fc0c2980
+b9d8cf927bc2eb839b1e5c8df1f7b4a1
   example86 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent4
+                   Lecture5.example35
                    Lecture5.example87) -}
-f778f532fbd18449ea000254062f1606
+1c3aed4f3945e0e0984d4901b8cf8795
   example87 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example24
-                   Lecture5.example88) -}
-b65f7e89774ca26a4468199cc56ce8b9
-  example88 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.example35
-                   Lecture5.example89) -}
-edd92c2757fcaedf71d510a1b4a677c4
-  example89 :: [Lecture5.Value]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example90) -}
-d78a3875160168f8a2dbc5e4ba67ac24
-  example9 :: [[Lecture5.Value]]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ [Lecture5.Value]
-                   Lecture5.example66
-                   Lecture5.example10) -}
-b241149d8d14b185ee2ccd8b49bedfe1
-  example90 :: [Lecture5.Value]
+                   Lecture5.example88) -}
+0bbab2b58130eb746cb65a19746eeaca
+  example88 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.example44) -}
-f7aa2af0f8b8e0bb365c33b3173a12db
-  example91 :: [Lecture5.Value]
+3a048e2b96f61d90076da6e412b7dedd
+  example89 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.example35
-                   Lecture5.example92) -}
-da72c1be389603eb8a97c2bb03b4a5cf
-  example92 :: [Lecture5.Value]
+                   Lecture5.example90) -}
+b492d5ec2922882fb6140545567fd17f
+  example9 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.example64
+                   Lecture5.example10) -}
+efb52937c26289ae0a0738067b0c5321
+  example90 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.example65
-                   Lecture5.example93) -}
-011065a6899ec7fff6945d4ba3cbd979
-  example93 :: [Lecture5.Value]
+                   Lecture5.example63
+                   Lecture5.example91) -}
+d8c8f3a6db6d71429e45aeab3f5369c7
+  example91 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
+                   Lecture5.example92) -}
+d4a852fc6bf3b8fd7f8d07a875680803
+  example92 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example93) -}
+0e707f63708f301bd6fb7dd2df38c612
+  example93 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent5
                    Lecture5.example94) -}
-a63d3530753da8555404393884e4dc4d
+a70acb4f95c55081e3e60dc180a9b2ae
   example94 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
-                   Lecture5.example95) -}
-caffc25b057ef62e087f457ae3332f40
+                   Lecture5.example87) -}
+ca388425e407146318caaba572411423
   example95 :: [Lecture5.Value]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ Lecture5.Value
-                   Lecture5.consistent2
-                   Lecture5.example96) -}
-6dc1f4c7c4aee99660f9732f9d9c046e
-  example96 :: [Lecture5.Value]
+                   Lecture5.$fShowTree1
+                   Lecture5.example90) -}
+9ca9bbbba7e465de487b8b191778ab42
+  example96 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example89) -}
-e653df2b553c80e1a26a06534ce7d1c0
-  example97 :: [Lecture5.Value]
+                   @ [Lecture5.Value]
+                   Lecture5.example152
+                   Lecture5.example97) -}
+72a58f54d0b55c3293cb6669d489e7df
+  example97 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
-                   @ Lecture5.Value
-                   Lecture5.$fShowTree1
-                   Lecture5.example92) -}
-242a71d2072f0e5b4b3fe08f140c4b72
+                   @ [Lecture5.Value]
+                   Lecture5.example143
+                   Lecture5.example98) -}
+6a9dd9dffe13baf0bb167306fac6f375
   example98 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example154
+                   Lecture5.example135
                    Lecture5.example99) -}
-03f6e5f8d2951057b42109d9ec720d8d
+dc5fd32c4f71ba66678fdd95d331ee82
   example99 :: [[Lecture5.Value]]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ [Lecture5.Value]
-                   Lecture5.example145
+                   Lecture5.example126
                    Lecture5.example100) -}
 58da13c4f1aa580d466fccc89517326a
   exmple1 :: Lecture5.Tree GHC.Integer.Type.Integer
@@ -2788,7 +2888,7 @@ d7423e9d9ca1183455f25559c48d2467
                           go2 Lecture5.positions }
                  } in
                  go1 Lecture5.positions) -}
-063b092b2b030c34f855e90fb7adaa65
+0a64b68dff8def0d8cb2eebd222831c6
   freeAtPos ::
     Lecture5.Sudoku
     -> (Lecture5.Row, Lecture5.Column) -> [Lecture5.Value]
@@ -2813,6 +2913,18 @@ d7423e9d9ca1183455f25559c48d2467
                  Lecture5.constraints_go
                    (go1 Lecture5.positions)
                    Lecture5.positions) -}
+7868350620266ae9ed7db5f0d1f95018
+  freeInNrcSubgrid ::
+    Lecture5.Sudoku
+    -> (Lecture5.Row, Lecture5.Column) -> [Lecture5.Value]
+  {- Arity: 2, Strictness: <L,C(U)><S,1*U(U,U)>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (s :: Lecture5.Sudoku)
+                   (ds :: (Lecture5.Row, Lecture5.Column)) ->
+                 case ds of wild { (,) r c ->
+                 Lecture5.constraints_go
+                   (Lecture5.nrcSubGrid s (r, c))
+                   Lecture5.positions }) -}
 e06702c80042b5163d04a6a4a4f86b43
   freeInRow :: Lecture5.Sudoku -> Lecture5.Row -> [Lecture5.Value]
   {- Arity: 2, Strictness: <L,C(U)><L,U>,
@@ -2834,7 +2946,7 @@ e8bfa6d2c4e6bd24ee60ec1cae566b08
      Unfolding: InlineRule (1, True, False)
                 (\ (seq :: [Lecture5.Value]) ->
                  Lecture5.constraints_go seq Lecture5.positions) -}
-44cc63c0f5be219f35461d6f81fd7e9d
+7f74f26bc87086538545ec12f0e5e7c9
   freeInSubgrid ::
     Lecture5.Sudoku
     -> (Lecture5.Row, Lecture5.Column) -> [Lecture5.Value]
@@ -2874,14 +2986,14 @@ c62b5a801610c25580d00fc1d071fab1
     -> (# GHC.Prim.State# GHC.Prim.RealWorld,
           [(Lecture5.Row, Lecture5.Column)] #)
   {- Arity: 2, Strictness: <S,U><S,U> -}
-2e008b39b70f98557e017aa1bbc84f9b
+fc4c89a51bebdca5d85fe11a25e1f7e7
   genRandomSudoku :: GHC.Types.IO Lecture5.Node
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.genRandomSudoku1
                   `cast`
                 (Sym (GHC.Types.N:IO[0] <Lecture5.Node>_R)) -}
-43f56a3ab55cac8da4d7d5679a9310ec
+302b6c12b9238c75a484b43d127701a3
   genRandomSudoku1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
@@ -2912,22 +3024,22 @@ c62b5a801610c25580d00fc1d071fab1
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [node] #)
   {- Arity: 4, HasNoCafRefs,
      Strictness: <L,C(C1(U(U,1*U)))><L,C(U)><C(S(SS)),1*C1(U(U,1*U))><S,U> -}
-06a63ab29b018ec19fb737355cde05f4
+9c01e7c65525c034e6988c9335cb897c
   genRandomSudoku2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    Lecture5.genRandomSudoku3) -}
-662d0ffaa5a631b29258fe4d57fbe153
+7a683faf44aec14981a462a13c3b134a
   genRandomSudoku3 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("Pattern match failure in do expression at Lecture5.hs:316:22-24"#) -}
-e939e97c7c3cd716c70a53988eea8e53
+     Unfolding: ("Pattern match failure in do expression at Lecture5.hs:310:22-24"#) -}
+44bd38b0a0d85894629e1b97f83734b6
   genRandomSudoku4 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lecture5.Node] #)
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
                  (# s, Lecture5.genRandomSudoku5 #)) -}
-d87c8b20f25bb550cb0b9b0db0c32e73
+79b8156a56e7a2fb985b39411a6b6712
   genRandomSudoku5 :: [Lecture5.Node]
   {- Strictness: m2,
      Unfolding: (GHC.Types.:
@@ -3069,7 +3181,7 @@ a9ac002349877049dde3477f3b9ef7f0
                 (\ @ node (w :: node -> [node]) (w1 :: node) ->
                  case Lecture5.$wgrow @ node w w1 of ww { (#,#) ww1 ww2 ->
                  Lecture5.T @ node ww1 ww2 }) -}
-60bffa79bb45f2478638f5a7ec4f0614
+a367c6b3d55373e352dabe29908d63ea
   initNode :: Lecture5.Grid -> [Lecture5.Node]
   {- Arity: 1, Strictness: <L,U>,
      Unfolding: (\ (gr :: Lecture5.Grid) ->
@@ -3109,6 +3221,472 @@ c7a1770a2f41e9cfc8762681ce30985b
   minimalize ::
     Lecture5.Node -> [(Lecture5.Row, Lecture5.Column)] -> Lecture5.Node
   {- Arity: 2, Strictness: <L,U(U,U)><S,1*U> -}
+19c0d0dbfb2dae36fddfdd41a6d7ab91
+  nrcBl :: GHC.Types.Int -> [GHC.Types.Int]
+  {- Arity: 1, Strictness: <L,U>,
+     Unfolding: (\ (x :: GHC.Types.Int) ->
+                 letrec {
+                   go1 :: [[GHC.Types.Int]] -> [GHC.Types.Int]
+                     {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [[GHC.Types.Int]]) ->
+                     case ds of wild {
+                       [] -> GHC.Types.[] @ GHC.Types.Int
+                       : y ys
+                       -> case GHC.List.elem
+                                 @ GHC.Types.Int
+                                 GHC.Classes.$fEqInt
+                                 x
+                                 y of wild1 {
+                            GHC.Types.False -> go1 ys
+                            GHC.Types.True -> GHC.Base.++ @ GHC.Types.Int y (go1 ys) } }
+                 } in
+                 go1 Lecture5.nrcBlocks) -}
+66c6ffd3f9cdc312e8bea10460701ae8
+  nrcBlocks :: [[GHC.Types.Int]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Int]
+                   Lecture5.nrcBlocks3
+                   Lecture5.nrcBlocks1) -}
+e8716cf0dfb06c12876cef3776762fbb
+  nrcBlocks1 :: [[GHC.Types.Int]]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [GHC.Types.Int]
+                   Lecture5.nrcBlocks2
+                   (GHC.Types.[] @ [GHC.Types.Int])) -}
+980cba81a6c10de3672f6412f273eb6f
+  nrcBlocks2 :: [GHC.Types.Int]
+  {- Unfolding: (GHC.Enum.eftInt 6# 8#) -}
+15918330cf838ed7ee3f9c9ca6cf35c9
+  nrcBlocks3 :: [GHC.Types.Int]
+  {- Unfolding: (GHC.Enum.eftInt 2# 4#) -}
+fb0be02828ba2cfa70142ef2872c7ea2
+  nrcExample :: Lecture5.Grid
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.example111
+                   Lecture5.nrcExample1) -}
+9d3231a28899cecd2298bd9f7fd078a0
+  nrcExample1 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.nrcExample49
+                   Lecture5.nrcExample2) -}
+3a2c719adc8d90ec23354db58dee83d4
+  nrcExample10 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample11) -}
+1e6758871f2f9d033f2e1575570537c0
+  nrcExample11 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent3
+                   Lecture5.example177) -}
+b99930192490203e75c36f5343bcc9b2
+  nrcExample12 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample13) -}
+06edebe17044934336aada9bbb8fd808
+  nrcExample13 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.example25
+                   Lecture5.nrcExample14) -}
+083b00b540142cb89328a582b1cf0366
+  nrcExample14 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample15) -}
+7ef5ef8cbd81aa946c5548a2c80e1e1a
+  nrcExample15 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample16) -}
+91f6b70983ff688083dda6b330711478
+  nrcExample16 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent6
+                   Lecture5.example94) -}
+6f6bf21e285853ff597ce4223fe52c90
+  nrcExample17 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample18) -}
+f1ef25f570cb93f0ccf5641630a63ae2
+  nrcExample18 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample19) -}
+3c57c64da863a7d2dafb1d6ee8e5b4ba
+  nrcExample19 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample20) -}
+f228ab39507cfb61f6c9c4ca4676caa5
+  nrcExample2 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.nrcExample41
+                   Lecture5.nrcExample3) -}
+09d39894265052d57823bc89294b9c2d
+  nrcExample20 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample21) -}
+78c1ca10d655f3292625598563205f47
+  nrcExample21 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample22) -}
+c72a41f4733cf5a0226d35029fd47f1a
+  nrcExample22 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample23) -}
+859974217d4a5b16d31dc8c5a1158512
+  nrcExample23 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample24) -}
+f3cf34a40396f4ea576f27d74d585db5
+  nrcExample24 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.example63
+                   Lecture5.example62) -}
+e87e0c30a6b7197acb0e6b4a3a10e388
+  nrcExample25 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.example63
+                   Lecture5.nrcExample26) -}
+d5bdd5fedae6185e29c71b8b9255d384
+  nrcExample26 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample27) -}
+d153aedf03b352dd27a72b717c7d8079
+  nrcExample27 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample28) -}
+ba47dc026b54c78de5b0845390933573
+  nrcExample28 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample29) -}
+186c5eceea4a7e85f1e9a71acbd0b32f
+  nrcExample29 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent5
+                   Lecture5.nrcExample30) -}
+097d4b6da04f9ef075102d8b47cace60
+  nrcExample3 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.nrcExample36
+                   Lecture5.nrcExample4) -}
+77e46a20f57e6a42d79e98245e18ae35
+  nrcExample30 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent7
+                   Lecture5.nrcExample31) -}
+4301e074880a8dfb47e1d5257912aad1
+  nrcExample31 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent3
+                   Lecture5.example88) -}
+8249b0dcf1c9a680575a9ce0a5afd687
+  nrcExample32 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample33) -}
+f42c721a9d5a4a099927d49eb01be25a
+  nrcExample33 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.example24
+                   Lecture5.nrcExample34) -}
+aa266a9b985aeda7fd58d8091215a3ca
+  nrcExample34 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent7
+                   Lecture5.nrcExample35) -}
+b2994b1a222da8f02740ddc1f9c5e3cc
+  nrcExample35 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent2
+                   Lecture5.example115) -}
+02c3c4dc1f123bd63524e74bf15122d0
+  nrcExample36 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample37) -}
+7dbc265eb86e1cc662f510b9e70b1e99
+  nrcExample37 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample38) -}
+ed9bc58998910fd5175d85f8b1e016bd
+  nrcExample38 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent2
+                   Lecture5.nrcExample39) -}
+b3f6c53249486cbf06c7d1d7e6076879
+  nrcExample39 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample40) -}
+11c1ce2ddbee86218a4cba3cfc215c18
+  nrcExample4 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.nrcExample32
+                   Lecture5.nrcExample5) -}
+952e436014fe424128291bfe647fb17f
+  nrcExample40 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example86) -}
+b04fa55c4e1d86ea11cad6bf774b4fb0
+  nrcExample41 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent3
+                   Lecture5.nrcExample42) -}
+961ced00f556b330ae15fcbdf4a817e0
+  nrcExample42 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample43) -}
+b597d2086a77c093dd6c25a823a4f3e6
+  nrcExample43 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample44) -}
+9cfa2720478ce2594d449785034ddb39
+  nrcExample44 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample45) -}
+5ce77af24fca5cd9925d13c565f26995
+  nrcExample45 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample46) -}
+84349ed86e82ae553c3a5ecc83606728
+  nrcExample46 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample47) -}
+044a758bbd2f8d6ae39b7b39749652ac
+  nrcExample47 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample48) -}
+776fd5c2eb94a8bcfd2578fca9d0b29b
+  nrcExample48 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.example151) -}
+3266aa2eef03ce8689df0f82bff09e57
+  nrcExample49 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample50) -}
+71d910d3e221625ab0f50173acfae8a3
+  nrcExample5 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.nrcExample25
+                   Lecture5.nrcExample6) -}
+e8530a8ef499c3b3d8e7d785d8d24059
+  nrcExample50 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample51) -}
+1826f9d5b39805884acd617b8ac4cc10
+  nrcExample51 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample52) -}
+db877d9735a527fa00c7352c36fa2282
+  nrcExample52 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.consistent5
+                   Lecture5.nrcExample53) -}
+f63d181d17d95ffc52262f1c07eddc64
+  nrcExample53 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample54) -}
+2e6702ad0b0aa25bd004e0ef98570184
+  nrcExample54 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample55) -}
+e6e1b59cac46c6172c156423b625f1f9
+  nrcExample55 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.example63
+                   Lecture5.example88) -}
+78ea8cdb399cc9146b84699dc3fc239d
+  nrcExample6 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.nrcExample17
+                   Lecture5.nrcExample7) -}
+538a91320cff3f378074cce3c9527093
+  nrcExample7 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.nrcExample12
+                   Lecture5.nrcExample8) -}
+76911aa4c2bf9a81d280a64adaa7644c
+  nrcExample8 :: [[Lecture5.Value]]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ [Lecture5.Value]
+                   Lecture5.nrcExample9
+                   (GHC.Types.[] @ [Lecture5.Value])) -}
+d062d7fa6fa28f5e346d24ed6c715516
+  nrcExample9 :: [Lecture5.Value]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ Lecture5.Value
+                   Lecture5.$fShowTree1
+                   Lecture5.nrcExample10) -}
+961eebb6ee4d3ba4bee00b3f8b289587
+  nrcSameBlock ::
+    (Lecture5.Row, Lecture5.Column)
+    -> (Lecture5.Row, Lecture5.Column) -> GHC.Types.Bool
+  {- Arity: 2,
+     Strictness: <S(S(S)L),1*U(1*U(1*U),1*U(U))><S,1*U(1*U(U),1*U(U))>,
+     Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: (Lecture5.Row, Lecture5.Column))
+                   (w1 :: (Lecture5.Row, Lecture5.Column)) ->
+                 case w of ww { (,) ww1 ww2 ->
+                 case ww1 of ww3 { GHC.Types.I# ww4 ->
+                 case w1 of ww5 { (,) ww6 ww7 ->
+                 Lecture5.$wnrcSameBlock ww4 ww2 ww6 ww7 } } }) -}
+55ce4edfb5467bff6e781f0dff9d77a0
+  nrcSubGrid ::
+    Lecture5.Sudoku
+    -> (Lecture5.Row, Lecture5.Column) -> [Lecture5.Value]
+  {- Arity: 2, Strictness: <L,C(U)><S,1*U(U,U)>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: Lecture5.Sudoku)
+                   (w1 :: (Lecture5.Row, Lecture5.Column)) ->
+                 case w1 of ww { (,) ww1 ww2 ->
+                 Lecture5.$wnrcSubGrid w ww1 ww2 }) -}
+daba39ce0c5930756d221ef22043dadb
+  nrcSubgridInjective ::
+    Lecture5.Sudoku
+    -> (Lecture5.Row, Lecture5.Column) -> GHC.Types.Bool
+  {- Arity: 2, Strictness: <L,C(U)><S,1*U(U,U)>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: Lecture5.Sudoku)
+                   (w1 :: (Lecture5.Row, Lecture5.Column)) ->
+                 case w1 of ww { (,) ww1 ww2 ->
+                 Lecture5.$wnrcSubgridInjective w ww1 ww2 }) -}
 0cc10e49e172188cd6f976167f4e6f5c
   openPositions ::
     Lecture5.Sudoku -> [(Lecture5.Row, Lecture5.Column)]
@@ -3151,12 +3729,12 @@ eb96e721ff771ee4d3230f1b96c26bcb
     (Lecture5.Row, Lecture5.Column, Lecture5.Value)
     -> [Lecture5.Constraint] -> [Lecture5.Constraint]
   {- Arity: 2, Strictness: <L,1*U(U(U),U(U),U)><S,1*U> -}
-7a078570716be6a24ced5581df9d8532
+4cd5cd6e6c9f7de1d2e510690b76832a
   randomS :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.randomS1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-a2060e8e6eaa57b4e31034d58ebbfa90
+38d408bb94299a86671591db1da3af14
   randomS1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -3189,7 +3767,7 @@ a2060e8e6eaa57b4e31034d58ebbfa90
                         : ipv2 ipv3
                         -> case Lecture5.$wfail ipv of ds2 { (#,#) ipv4 ipv5 ->
                            Lecture5.randomS2 ipv5 ipv4 } } } }) -}
-66cb40fb0a3a08e9db84873d5f0cdbf2
+5e5b42064fae6b15ae009ad6022f53d6
   randomS2 ::
     (Lecture5.Sudoku, [Lecture5.Constraint])
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -3201,7 +3779,7 @@ a2060e8e6eaa57b4e31034d58ebbfa90
                  Lecture5.randomS3
                    (Lecture5.sud2grid (case x of wild { (,) x1 ds1 -> x1 }))
                    eta) -}
-fccd2c763c4a08b283a3b85debbc88b1
+64e055688c6cff7c935247220fe9ab5b
   randomS3 ::
     [[Lecture5.Value]]
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -3211,50 +3789,50 @@ fccd2c763c4a08b283a3b85debbc88b1
                    (eta :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case ds of wild {
                    []
-                   -> case Lecture5.randomS7
+                   -> case Lecture5.randomS6
                       ret_ty (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
                       of {}
                    : as ds1
                    -> case ds1 of wild1 {
                         []
-                        -> case Lecture5.randomS7
+                        -> case Lecture5.randomS6
                            ret_ty (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
                            of {}
                         : bs ds2
                         -> case ds2 of wild2 {
                              []
-                             -> case Lecture5.randomS7
+                             -> case Lecture5.randomS6
                                 ret_ty (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
                                 of {}
                              : cs ds3
                              -> case ds3 of wild3 {
                                   []
-                                  -> case Lecture5.randomS7
+                                  -> case Lecture5.randomS6
                                      ret_ty (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
                                      of {}
                                   : ds4 ds5
                                   -> case ds5 of wild4 {
                                        []
-                                       -> case Lecture5.randomS7
+                                       -> case Lecture5.randomS6
                                           ret_ty (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
                                           of {}
                                        : es ds6
                                        -> case ds6 of wild5 {
                                             []
-                                            -> case Lecture5.randomS7
+                                            -> case Lecture5.randomS6
                                                ret_ty (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
                                                of {}
                                             : fs ds7
                                             -> case ds7 of wild6 {
                                                  []
-                                                 -> case Lecture5.randomS7
+                                                 -> case Lecture5.randomS6
                                                     ret_ty (# GHC.Prim.State# GHC.Prim.RealWorld,
                                                               () #)
                                                     of {}
                                                  : gs ds8
                                                  -> case ds8 of wild7 {
                                                       []
-                                                      -> case Lecture5.randomS7
+                                                      -> case Lecture5.randomS6
                                                          ret_ty (# GHC.Prim.State#
                                                                      GHC.Prim.RealWorld,
                                                                    () #)
@@ -3262,7 +3840,7 @@ fccd2c763c4a08b283a3b85debbc88b1
                                                       : hs ds9
                                                       -> case ds9 of wild8 {
                                                            []
-                                                           -> case Lecture5.randomS7
+                                                           -> case Lecture5.randomS6
                                                               ret_ty (# GHC.Prim.State#
                                                                           GHC.Prim.RealWorld,
                                                                         () #)
@@ -3272,71 +3850,74 @@ fccd2c763c4a08b283a3b85debbc88b1
                                                                 []
                                                                 -> case GHC.IO.Handle.Text.hPutStr2
                                                                           GHC.IO.Handle.FD.stdout
-                                                                          Lecture5.randomS5
+                                                                          Lecture5.randomS4
                                                                           GHC.Types.True
                                                                           eta of ds11 { (#,#) ipv ipv1 ->
-                                                                   case Lecture5.randomS4
-                                                                          as
+                                                                   case (Lecture5.showRow as)
+                                                                          `cast`
+                                                                        (GHC.Types.N:IO[0] <()>_R)
                                                                           ipv of ds12 { (#,#) ipv2 ipv3 ->
-                                                                   case Lecture5.randomS4
-                                                                          bs
+                                                                   case (Lecture5.showRow bs)
+                                                                          `cast`
+                                                                        (GHC.Types.N:IO[0] <()>_R)
                                                                           ipv2 of ds13 { (#,#) ipv4 ipv5 ->
-                                                                   case Lecture5.randomS4
-                                                                          cs
+                                                                   case (Lecture5.showRow cs)
+                                                                          `cast`
+                                                                        (GHC.Types.N:IO[0] <()>_R)
                                                                           ipv4 of ds14 { (#,#) ipv6 ipv7 ->
                                                                    case GHC.IO.Handle.Text.hPutStr2
                                                                           GHC.IO.Handle.FD.stdout
-                                                                          Lecture5.randomS5
+                                                                          Lecture5.randomS4
                                                                           GHC.Types.True
                                                                           ipv6 of ds15 { (#,#) ipv8 ipv9 ->
-                                                                   case Lecture5.randomS4
-                                                                          ds4
+                                                                   case (Lecture5.showRow ds4)
+                                                                          `cast`
+                                                                        (GHC.Types.N:IO[0] <()>_R)
                                                                           ipv8 of ds16 { (#,#) ipv10 ipv11 ->
-                                                                   case Lecture5.randomS4
-                                                                          es
+                                                                   case (Lecture5.showRow es)
+                                                                          `cast`
+                                                                        (GHC.Types.N:IO[0] <()>_R)
                                                                           ipv10 of ds17 { (#,#) ipv12 ipv13 ->
-                                                                   case Lecture5.randomS4
-                                                                          fs
+                                                                   case (Lecture5.showRow fs)
+                                                                          `cast`
+                                                                        (GHC.Types.N:IO[0] <()>_R)
                                                                           ipv12 of ds18 { (#,#) ipv14 ipv15 ->
                                                                    case GHC.IO.Handle.Text.hPutStr2
                                                                           GHC.IO.Handle.FD.stdout
-                                                                          Lecture5.randomS5
+                                                                          Lecture5.randomS4
                                                                           GHC.Types.True
                                                                           ipv14 of ds19 { (#,#) ipv16 ipv17 ->
-                                                                   case Lecture5.randomS4
-                                                                          gs
+                                                                   case (Lecture5.showRow gs)
+                                                                          `cast`
+                                                                        (GHC.Types.N:IO[0] <()>_R)
                                                                           ipv16 of ds20 { (#,#) ipv18 ipv19 ->
-                                                                   case Lecture5.randomS4
-                                                                          hs
+                                                                   case (Lecture5.showRow hs)
+                                                                          `cast`
+                                                                        (GHC.Types.N:IO[0] <()>_R)
                                                                           ipv18 of ds21 { (#,#) ipv20 ipv21 ->
-                                                                   case Lecture5.randomS4
-                                                                          is
+                                                                   case (Lecture5.showRow is)
+                                                                          `cast`
+                                                                        (GHC.Types.N:IO[0] <()>_R)
                                                                           ipv20 of ds22 { (#,#) ipv22 ipv23 ->
                                                                    GHC.IO.Handle.Text.hPutStr2
                                                                      GHC.IO.Handle.FD.stdout
-                                                                     Lecture5.randomS5
+                                                                     Lecture5.randomS4
                                                                      GHC.Types.True
                                                                      ipv22 } } } } } } } } } } } }
                                                                 : ipv ipv1
-                                                                -> case Lecture5.randomS7
+                                                                -> case Lecture5.randomS6
                                                                    ret_ty (# GHC.Prim.State#
                                                                                GHC.Prim.RealWorld,
                                                                              () #)
                                                                    of {} } } } } } } } } } }) -}
-f0d952f858804f8abca3c7058419ad89
-  randomS4 ::
-    [Lecture5.Value]
-    -> GHC.Prim.State# GHC.Prim.RealWorld
-    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
-  {- Arity: 2, Strictness: <S,1*U><S,U> -}
-c502c5864ae6847c7e61d053fe84493e
-  randomS5 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Lecture5.randomS6) -}
-a2194796bf69c6aac05fa72d88127c46
-  randomS6 :: GHC.Prim.Addr#
+0e0c9dc0333bf278bfbe0376a01e9b3c
+  randomS4 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lecture5.randomS5) -}
+22e547ad6a832e40bac01e1f198e2a3c
+  randomS5 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("+-------+-------+-------+"#) -}
-d33b06c2dc162e587078d3e158e7fb5e
-  randomS7 :: GHC.Types.IO ()
+072db1c152bf0df1333ac8a434cf3c97
+  randomS6 :: GHC.Types.IO ()
   {- Strictness: x -}
 8af411acf9f8a2d349d26fa78d2a4cf7
   randomize :: GHC.Classes.Eq a => [a] -> GHC.Types.IO [a]
@@ -3430,6 +4011,17 @@ a430ef39cf9296626ec1c03064899a6f
                   `cast`
                 (<(Lecture5.Sudoku, [Lecture5.Constraint])>_R
                  ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R)) -}
+7bb5e46da24cc4025765ca93eedd59a0
+  sameBlock ::
+    (Lecture5.Row, Lecture5.Column)
+    -> (Lecture5.Row, Lecture5.Column) -> GHC.Types.Bool
+  {- Arity: 2, Strictness: <S,1*U(U,U)><S,1*U(U,U)>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: (Lecture5.Row, Lecture5.Column))
+                   (w1 :: (Lecture5.Row, Lecture5.Column)) ->
+                 case w of ww { (,) ww1 ww2 ->
+                 case w1 of ww3 { (,) ww4 ww5 ->
+                 Lecture5.$wsameBlock ww1 ww2 ww4 ww5 } }) -}
 b6218ff423df2dcac333724411e2f46d
   sameLen ::
     Lecture5.Constraint -> Lecture5.Constraint -> GHC.Types.Bool
@@ -3441,29 +4033,18 @@ b6218ff423df2dcac333724411e2f46d
                  case w of ww { (,,) ww1 ww2 ww3 ->
                  case w1 of ww4 { (,,) ww5 ww6 ww7 ->
                  Lecture5.$wsameLen ww3 ww7 } }) -}
-de7f2b2c6b57d956e7171c5bf827eb93
-  sameblock ::
-    (Lecture5.Row, Lecture5.Column)
-    -> (Lecture5.Row, Lecture5.Column) -> GHC.Types.Bool
-  {- Arity: 2, Strictness: <S,1*U(U,U)><S,1*U(U,U)>, Inline: [0],
-     Unfolding: InlineRule (2, True, False)
-                (\ (w :: (Lecture5.Row, Lecture5.Column))
-                   (w1 :: (Lecture5.Row, Lecture5.Column)) ->
-                 case w of ww { (,) ww1 ww2 ->
-                 case w1 of ww3 { (,) ww4 ww5 ->
-                 Lecture5.$wsameblock ww1 ww2 ww4 ww5 } }) -}
 a9f91518ac6bab7927918debfbfc4733
   search ::
     (node -> [node]) -> (node -> GHC.Types.Bool) -> [node] -> [node]
   {- Arity: 3, HasNoCafRefs, Strictness: <L,C(U)><L,C(U)><S,1*U> -}
-8d32aa819e2d20cc08c817d974ad3098
+3fb73e48d6de545ad5e49120cdf40133
   showGrid :: Lecture5.Grid -> GHC.Types.IO ()
   {- Arity: 2, Strictness: <S,1*U><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.randomS3
                   `cast`
                 (<[[Lecture5.Value]]>_R ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-0d0ba752189818df6b98cfdc69c793fc
+54c9093a7f186b07532c581589c7941f
   showNode :: Lecture5.Node -> GHC.Types.IO ()
   {- Arity: 2, Strictness: <L,1*U(1*C(U),A)><S,U>,
      Unfolding: InlineRule (0, True, True)
@@ -3471,21 +4052,17 @@ a9f91518ac6bab7927918debfbfc4733
                   `cast`
                 (<(Lecture5.Sudoku, [Lecture5.Constraint])>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-01e9ecf758749c5c1dd58e4e7f048c18
+d2e71026d52ba47b06540ff7906bdcd5
   showRow :: [Lecture5.Value] -> GHC.Types.IO ()
-  {- Arity: 2, Strictness: <S,1*U><S,U>,
-     Unfolding: InlineRule (0, True, True)
-                Lecture5.randomS4
-                  `cast`
-                (<[Lecture5.Value]>_R ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-f15bb06123302eddc40c790564469ad9
+  {- Arity: 1, Strictness: <S,1*U> -}
+d9c8bc4093146cbea740cc83720592dd
   showSudoku :: Lecture5.Sudoku -> GHC.Types.IO ()
   {- Arity: 2, Strictness: <L,C(U)><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.showSudoku1
                   `cast`
                 (<Lecture5.Sudoku>_R ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-9abb46363209de5038f57a92b0f18cd6
+b9cad0d2b57883d907bbf824f2b3ccf1
   showSudoku1 ::
     Lecture5.Sudoku
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -3507,14 +4084,14 @@ cf0101f8f7d7145db240498970898242
 48c0139f39ba489287acc30fdd30ce12
   showVal2 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: (" "#) -}
-2e3c88e7cc4a3e5348e17942a8163d14
+1e3b7ca65db9bcb008d81ea289202565
   solveAndShow :: Lecture5.Grid -> GHC.Types.IO [()]
   {- Arity: 2, Strictness: <L,U><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.solveAndShow1
                   `cast`
                 (<Lecture5.Grid>_R ->_R Sym (GHC.Types.N:IO[0] <[()]>_R)) -}
-47ccf64d0e0fe62b3415ee510e25f059
+8a5d59306bbc0469f3a8a84269b559fd
   solveAndShow1 ::
     Lecture5.Grid
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -3548,9 +4125,9 @@ edcf844c698457cd6c29bbb5c1a1035b
                    Lecture5.succNode
                    Lecture5.solved
                    (GHC.Types.[] @ Lecture5.Node)) -}
-69314a1b5e87e98a2d248d5fde2e6a01
+cebdf78c7b7bae464c2c3b32c7fdb07c
   solveAndShow3 ::
-    [(Lecture5.Sudoku, [Lecture5.Constraint])]
+    [Lecture5.Node]
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [()] #)
   {- Arity: 2, Strictness: <S,1*U><S,U> -}
@@ -3561,14 +4138,14 @@ edcf844c698457cd6c29bbb5c1a1035b
                    @ Lecture5.Node
                    Lecture5.succNode
                    Lecture5.solved) -}
-6a1e513e9e8357638611f17375f3ebe4
+ac3a5d66d926387da301ef58ca47fcf3
   solveShowNs :: [Lecture5.Node] -> GHC.Types.IO [()]
   {- Arity: 2, Strictness: <S,1*U><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.solveShowNs1
                   `cast`
                 (<[Lecture5.Node]>_R ->_R Sym (GHC.Types.N:IO[0] <[()]>_R)) -}
-f318595dd6236b267dc08b658cfba469
+920e0c4c8380e4c2759f18aa2a9afe28
   solveShowNs1 ::
     [Lecture5.Node]
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -3591,7 +4168,7 @@ a48772541d3c5ca4885c383fd4273635
                  case x of wild { (,) ds1 y ->
                  case y of wild1 {
                    [] -> GHC.Types.True : ds2 ds3 -> GHC.Types.False } }) -}
-c9b06d4ac40f724dcb8fbebb04d8f79c
+b690c23bb7656b4d227fd30d3861ba08
   subGrid ::
     Lecture5.Sudoku
     -> (Lecture5.Row, Lecture5.Column) -> [Lecture5.Value]
@@ -3600,7 +4177,7 @@ c9b06d4ac40f724dcb8fbebb04d8f79c
                 (\ (w :: Lecture5.Sudoku)
                    (w1 :: (Lecture5.Row, Lecture5.Column)) ->
                  case w1 of ww { (,) ww1 ww2 -> Lecture5.$wsubGrid w ww1 ww2 }) -}
-cfa12aebabf35baafc30c281222a7902
+aebf219e280c0acba0057d33cf7f5b0e
   subgridInjective ::
     Lecture5.Sudoku
     -> (Lecture5.Row, Lecture5.Column) -> GHC.Types.Bool
