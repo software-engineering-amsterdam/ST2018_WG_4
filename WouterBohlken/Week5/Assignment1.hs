@@ -20,6 +20,9 @@ blocks = [[1..3],[4..6],[7..9]]
 nrcBlocks :: [[Int]]
 nrcBlocks = [[2..4],[6..8]]
 
+inNrcBlock :: Int -> Bool
+inNrcBlock n = elem n $ nrcbl n
+
 showVal :: Value -> String
 showVal 0 = " "
 showVal d = show d
@@ -172,7 +175,7 @@ sameblock :: (Row,Column) -> (Row,Column) -> Bool
 sameblock (r,c) (x,y) = bl r == bl x && bl c == bl y
 
 nrcsameblock :: (Row,Column) -> (Row,Column) -> Bool
-nrcsameblock (r,c) (x,y) | (r /= 1 && r /= 5 && c /= 1 && c /= 5 && x /= 1 && x /= 5 && y /=1 && y /= 5 && r /= 9 && c /= 9 && x /= 9 && y /= 9) = nrcbl r == nrcbl x && nrcbl c == nrcbl y
+nrcsameblock (r,c) (x,y) | inNrcBlock r && inNrcBlock c && inNrcBlock x && inNrcBlock y = nrcbl r == nrcbl x && nrcbl c == nrcbl y
                          | otherwise = False
 
 initNode :: Grid -> [Node]
