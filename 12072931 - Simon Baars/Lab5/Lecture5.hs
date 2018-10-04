@@ -411,3 +411,11 @@ freePosTest :: Position -> Bool
 freePosTest pos = freeAtPositions (grid2sud nrcExample) pos == freeAtPos (grid2sud nrcExample) pos
 
 -- Assignment 3
+testHasUniqueSol :: IO Bool
+testHasUniqueSol = (genRandomSudoku >>= genProblem) >>= \x -> return (uniqueSol x && checkAllErasedHints x)
+
+checkAllErasedHints :: Node -> Bool
+checkAllErasedHints node = let grid = sud2grid (fst node) in all (not . uniqueSol) (foldr (\x acc -> removeHints node x ++ acc) [] (zip values grid))
+
+removeHints :: Node -> (Int, [Value]) -> [Node]
+removeHints node (index, vals) = foldr (\(x,y) acc -> eraseN node (index, x):acc) [] (filter (\(x,y) -> y/= 0) (zip values vals))

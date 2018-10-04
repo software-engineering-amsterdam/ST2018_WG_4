@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-04 11:33:27.028758009 UTC
+2018-10-04 12:42:36.239463935 UTC
 
 interface main:Main 8043
-  interface hash: 42f2e41af0f70074eb1de3fd98a8a156
-  ABI hash: 21b15c454f7e167c435481e9d483b08b
+  interface hash: a441904f584c715ac236ca3c985b4885
+  ABI hash: 1af3df3fafc5f41b4d41807553c11875
   export-list hash: 11f811ec11ddb407ae02300f3d162041
   orphan hash: 22254aaa5bdb7a2832d61bf114694d95
   flag hash: e02561aff3fbba899313e779d62898af
@@ -54,12 +54,12 @@ import  -/  QuickCheck-2.11.3:Test.QuickCheck.Test 5c80e8a0569651177c75db83b77c7
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
 import  -/  base-4.11.1.0:System.IO 1c239be44126f7b1ba512ea61300f4dc
 import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
-import  -/  Lecture5 555b82bdcb6d691bf4ec832086c585d0
-  exports: 3db08dbf1334f306dbfc4ffaf1038be5
-  freePosTest 736769fe3f261b2dbfb2d813df5db6e9
+import  -/  Lecture5 7190832c3e84774c6848fa849df986f0
+  exports: cd37e94a03f6988ad23c491a160ddc36
+  freePosTest be73aff8a74928dbbca512de3aca27d6
   genSudokuPositions 2dc2f33ea1904cba57db08b4957a6c9d
-  nrcExample 2514bca79b30ec89fbc96f8bce1db058
-  solveAndShow a3117bf51db8bcd0206c108bd1819871
+  nrcExample cb292d69ab70c72d317c9d9f15057ec8
+  solveAndShow d79e0ad8fd54d4aa9637df8ef3917191
 4f5da328cb489e211905ea56e6beab98
   $s$fShow(,) :: GHC.Show.Show (GHC.Types.Int, GHC.Types.Int)
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -109,12 +109,12 @@ e5875966b74dad2d29772660b8a75e33
 d026be77cb9ced20e35a61514e0458aa
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("main"#) -}
-c0d10ead155c30663bcf63e3ecc09dde
+2c53a0289c0a312c126a02ad2eadb368
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-5714234a7de68c2355bd9b51762f4397
+147fc9b412ceb05304f315f44432d61a
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -158,7 +158,7 @@ c0d10ead155c30663bcf63e3ecc09dde
   {- HasNoCafRefs,
      Unfolding: ("\n\
                  \\ESC[36m== Assignment 3 (Refactored NRC Sudoku) ==\ESC[0m"#) -}
-c58f36a6e6943a11e154aaca594e6637
+0dee9f1891935ed8295d9b1aef70aa3a
   main4 ::
     Test.QuickCheck.Random.QCGen
     -> GHC.Types.Int
@@ -201,7 +201,7 @@ a561ea3ac76068429b0678ac7349320b
   main8 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("\ESC[36m== Assignment 1 (NRC Sudoku's) ==\ESC[0m"#) -}
-c7117fe16b530ab2b089671b45b920f4
+eeb527cae93e28e177c74f48658d7eda
   main9 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
