@@ -5,6 +5,8 @@ where
 
 import Data.List
 import System.Random
+import Debug.Trace
+import Test.QuickCheck
 
 type Row    = Int
 type Column = Int
@@ -71,13 +73,6 @@ freeInColumn s c =
 
 freeInSubgrid :: Sudoku -> (Row,Column) -> [Value]
 freeInSubgrid s (r,c) = freeInSeq (subGrid s (r,c))
-
-freeAtPos :: Sudoku -> (Row,Column) -> [Value]
-freeAtPos s (r,c) =
-  freeInRow s r
-   `intersect` freeInColumn s c
-   `intersect` freeInSubgrid s (r,c)
-   `intersect` freeInNrcSubgrid s (r,c)
 
 injective :: Eq a => [a] -> Bool
 injective xs = nub xs == xs
@@ -158,7 +153,7 @@ length3rd (_,_,zs) (_,_,zs') = compare (length zs) (length zs')
 
 constraints :: Sudoku -> [Constraint]
 constraints s = sortBy length3rd
-    [(r,c, freeAtPos s (r,c)) |
+    [(r,c, freeAtPositions s (r,c)) |
                        (r,c) <- openPositions s ]
 
 data Tree a = T a [Tree a] deriving (Eq,Ord,Show)
@@ -343,6 +338,7 @@ genProblem n = do ys <- randomize xs
 
 
 -- Assignment 1
+-- Time: 150 minutes
 nrcExample :: Grid
 nrcExample = [[0,0,0,3,0,0,0,0,0],
            [0,0,0,7,0,0,3,0,0],
@@ -371,5 +367,39 @@ nrcSubgridInjective s (r,c) = injective vs where
   vs = filter (/= 0) (nrcSubGrid s (r,c))
 
 nrcSameBlock :: (Row,Column) -> (Row,Column) -> Bool
-nrcSameBlock (r,c) (x,y) | all (\v -> v/=1 && x/=5 && v/=9) [r,c,x,y] = nrcBl r == nrcBl x && nrcBl c == nrcBl y
+nrcSameBlock (r,c) (x,y) | all (\v -> v/=1 && v/=5 && v/=9) [r,c,x,y] = nrcBl r == nrcBl x && nrcBl c == nrcBl y
                          | otherwise = False
+
+freeAtPos :: Sudoku -> (Row,Column) -> [Value]
+freeAtPos s (r,c) =
+               freeInRow s r
+   `intersect` freeInColumn s c
+   `intersect` freeInSubgrid s (r,c)
+   `intersect` freeInNrcSubgrid s (r,c)
+
+-- Assignment 2
+-- Time:
+type Position = (Row,Column)
+type Constrnt = [[Position]]
+
+rowConstrnt = [[(r,c)| c <- values ] | r <- values]
+columnConstrnt = [[(r,c)| r <- values ] | c <- values]
+--blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks]
+blockConstrnt = map (`createBlock` (3,3)) [(i,j) | i <- [1,4..9], j <- [1,4..9]]
+nrcConstrnt = map (`createBlock` (3,3)) [(i,j) | i <- [2,6], j <- [2,6]]
+
+
+createBlock :: Position -> (Int, Int) -> [Position]
+createBlock (posx, posy) (sizex,sizey) = [(i,j) | i <- [posx..(posx-1)+sizex], j <- [posy..(posy-1)+sizey]]
+
+freeAtPositions :: Sudoku -> Position -> [Value]
+freeAtPositions s pos = foldl1 intersect (map (freeAtPos' s pos) [rowConstrnt, columnConstrnt, blockConstrnt, nrcConstrnt])
+
+freeAtPos' :: Sudoku -> Position -> Constrnt -> [Value]
+freeAtPos' s (r,c) xs = let ys = filter (elem (r,c)) xs in if null ys then values else concatMap ((values \\) . map s) ys
+
+genSudokuPositions :: Gen Position
+genSudokuPositions = (arbitrary :: Gen Position) `suchThat` (\(x,y) -> x `elem` values && y `elem` values)
+
+freePosTest :: Position -> Bool
+freePosTest pos = freeAtPositions (grid2sud nrcExample) pos == freeAtPos (grid2sud nrcExample) pos

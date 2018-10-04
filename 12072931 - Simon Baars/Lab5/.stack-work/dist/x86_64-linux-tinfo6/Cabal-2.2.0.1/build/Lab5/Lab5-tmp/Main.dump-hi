@@ -1,12 +1,12 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-04 08:06:48.734375317 UTC
+2018-10-04 10:45:19.081872639 UTC
 
 interface main:Main 8043
-  interface hash: 2ad8e855b98981d3165b829d4468fc6a
-  ABI hash: 626e8db8b1365e5be65cd44b29347ad7
-  export-list hash: 13a73f7861b55d3cdd94dcfad8a18fbb
-  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  interface hash: 61c076cbd9697acbedad10ab8996897a
+  ABI hash: 7fe75cc7c078b012bfb2d1625cfc8dcb
+  export-list hash: 11f811ec11ddb407ae02300f3d162041
+  orphan hash: 22254aaa5bdb7a2832d61bf114694d95
   flag hash: e02561aff3fbba899313e779d62898af
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
   hpc_hash: 93b885adfe0da089cdf634904fd59f71
@@ -16,9 +16,13 @@ interface main:Main 8043
 exports:
   Main.main
 module dependencies: Lecture5
-package dependencies: array-0.5.2.0 base-4.11.1.0* deepseq-1.4.3.0
-                      ghc-prim-0.5.2.0 integer-gmp-1.0.2.0 random-1.1 time-1.8.0.2
-orphans: time-1.8.0.2:Data.Time.Format.Parse
+package dependencies: QuickCheck-2.11.3 array-0.5.2.0 base-4.11.1.0
+                      containers-0.5.11.0 deepseq-1.4.3.0 ghc-boot-th-8.4.3
+                      ghc-prim-0.5.2.0 integer-gmp-1.0.2.0 pretty-1.1.3.6
+                      primitive-0.6.3.0 random-1.1 template-haskell-2.13.0.0
+                      tf-random-0.5 time-1.8.0.2 transformers-0.5.5.0
+orphans: transformers-0.5.5.0:Control.Monad.Trans.Error
+         time-1.8.0.2:Data.Time.Format.Parse
          time-1.8.0.2:Data.Time.LocalTime.Internal.ZonedTime
          time-1.8.0.2:Data.Time.LocalTime.Internal.LocalTime
          time-1.8.0.2:Data.Time.Calendar.Gregorian base-4.11.1.0:GHC.Float
@@ -32,13 +36,61 @@ family instance modules: base-4.11.1.0:Control.Applicative
                          base-4.11.1.0:Data.Semigroup.Internal base-4.11.1.0:Data.Version
                          base-4.11.1.0:Data.Void base-4.11.1.0:GHC.Exts
                          base-4.11.1.0:GHC.Generics base-4.11.1.0:GHC.IO.Exception
+                         containers-0.5.11.0:Data.IntMap.Internal
+                         containers-0.5.11.0:Data.IntSet.Internal
+                         containers-0.5.11.0:Data.Map.Internal
+                         containers-0.5.11.0:Data.Sequence.Internal
+                         containers-0.5.11.0:Data.Set.Internal
+                         ghc-boot-th-8.4.3:GHC.ForeignSrcLang.Type
+                         ghc-boot-th-8.4.3:GHC.LanguageExtensions.Type
+                         pretty-1.1.3.6:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.6:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.3.0:Control.Monad.Primitive
+                         primitive-0.6.3.0:Data.Primitive.ByteArray
+                         template-haskell-2.13.0.0:Language.Haskell.TH.Syntax
+import  -/  QuickCheck-2.11.3:Test.QuickCheck e00d138ee3234e83a31cc3113c8c8ffb
+import  -/  QuickCheck-2.11.3:Test.QuickCheck.Property 2a2442debcbf309292a12478b176466b
+import  -/  QuickCheck-2.11.3:Test.QuickCheck.Test 5c80e8a0569651177c75db83b77c7ff4
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
 import  -/  base-4.11.1.0:System.IO 1c239be44126f7b1ba512ea61300f4dc
 import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
-import  -/  Lecture5 9491a9f6e0d189afc9c4f549926ab377
-  exports: 932b8b73210a7cfc518458bfc6efd33d
-  nrcExample fb0be02828ba2cfa70142ef2872c7ea2
-  solveAndShow 1e3b7ca65db9bcb008d81ea289202565
+import  -/  Lecture5 e31b65d11016f675333b2ddfa266bde1
+  exports: dcc35f988d58f240c30394e7a0489561
+  freePosTest ca797243952937e419b446a73bb724b1
+  genSudokuPositions 2dc2f33ea1904cba57db08b4957a6c9d
+  nrcExample 2b9f8c1bf4511e73fcdbabf3b33206c8
+  solveAndShow ea6906b073db6e35f99cc8365ebe2fd5
+4f5da328cb489e211905ea56e6beab98
+  $s$fShow(,) :: GHC.Show.Show (GHC.Types.Int, GHC.Types.Int)
+  {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ (GHC.Types.Int, GHC.Types.Int)
+                  (GHC.Show.$fShow(,)_$cshowsPrec
+                     @ GHC.Types.Int
+                     @ GHC.Types.Int
+                     GHC.Show.$fShowInt
+                     GHC.Show.$fShowInt)
+                  (\ (x :: (GHC.Types.Int, GHC.Types.Int)) ->
+                   GHC.Show.$fShow(,)_$cshowsPrec
+                     @ GHC.Types.Int
+                     @ GHC.Types.Int
+                     GHC.Show.$fShowInt
+                     GHC.Show.$fShowInt
+                     GHC.Show.$fShow(,)1
+                     x
+                     (GHC.Types.[] @ GHC.Types.Char))
+                  (\ (ls :: [(GHC.Types.Int, GHC.Types.Int)])
+                     (s :: GHC.Base.String) ->
+                   GHC.Show.showList__
+                     @ (GHC.Types.Int, GHC.Types.Int)
+                     (GHC.Show.$fShow(,)_$cshowsPrec
+                        @ GHC.Types.Int
+                        @ GHC.Types.Int
+                        GHC.Show.$fShowInt
+                        GHC.Show.$fShowInt
+                        GHC.Show.$fShow(,)1)
+                     ls
+                     s) -}
 be86c9d078d3acbf19ba91fe74a24273
   $trModule :: GHC.Types.Module
   {- HasNoCafRefs, Strictness: m,
@@ -57,68 +109,116 @@ e5875966b74dad2d29772660b8a75e33
 d026be77cb9ced20e35a61514e0458aa
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("main"#) -}
-154ffb90752371cb853cedda4a7a367a
-  $wshowl ::
-    [GHC.Types.Int] -> (# GHC.Types.Char, [GHC.Types.Char] #)
-  {- Arity: 1, Strictness: <S,1*U>, Inline: [0] -}
-2704d179ce4de48127728254762c0177
+7a9a18407acebf3b7753a9ad307c5e64
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-82d66c525f7a734806e09f9befaa3052
+45b17e797e0ed0ecea27343c60ef9b6e
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U>,
-     Unfolding: (\ (s1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main7
+                        GHC.Types.True
+                        s of ds1 { (#,#) ipv ipv1 ->
                  case Lecture5.solveAndShow1
                         Lecture5.nrcExample
-                        s1 of ds1 { (#,#) ipv ipv1 ->
+                        ipv of ds2 { (#,#) ipv2 ipv3 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main5
+                        GHC.Types.True
+                        ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                 case Test.QuickCheck.Test.$w$squickCheckWithResult
+                        (GHC.Base.Nothing @ (Test.QuickCheck.Random.QCGen, GHC.Types.Int))
+                        Test.QuickCheck.Test.stdArgs2
+                        Test.QuickCheck.Test.stdArgs1
+                        Test.QuickCheck.Test.stdArgs2
+                        GHC.Types.True
+                        GHC.Base.maxInt
+                        Main.main4
+                          `cast`
+                        (Sym (Test.QuickCheck.Gen.N:Gen[0]
+                                  (Test.QuickCheck.Property.N:Prop[0])) ; Sym (Test.QuickCheck.Property.N:Property[0]))
+                        ipv4 of ds4 { (#,#) ipv6 ipv7 ->
                  GHC.IO.Handle.Text.hPutStr2
                    GHC.IO.Handle.FD.stdout
                    Main.main2
                    GHC.Types.True
-                   ipv }) -}
-a0de9b0ef92b2f23483ee200178e5651
+                   ipv6 } } } }) -}
+4beaf365717789cea16b8064fe33cb3e
   main2 :: [GHC.Types.Char]
-  {- Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ GHC.Types.Char
-                   GHC.Show.showList__3
-                   Main.main3) -}
-cbdf70f1bc27bba01e66bb2f43003758
-  main3 :: [GHC.Types.Char]
-  {- Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ GHC.Types.Char
-                   GHC.Show.showList__3
-                   Main.main4) -}
-79cd70100e0258d8f861c517f1a7c2cd
-  main4 :: [GHC.Types.Char]
-  {- Unfolding: (case GHC.Show.$wshowSignedInt
-                        0#
-                        0#
-                        Main.main5 of ww2 { (#,#) ww3 ww4 ->
-                 GHC.Types.: @ GHC.Types.Char ww3 ww4 }) -}
-91550eb4640c2bc30585fbe8dfbb8d96
-  main5 :: GHC.Base.String
-  {- Unfolding: (case Main.$wshowl
-                        Lecture5.example112 of ww { (#,#) ww1 ww2 ->
-                 GHC.Types.: @ GHC.Types.Char ww1 ww2 }) -}
-6cf5e897097a34bd9411e5a8897c0351
-  main6 ::
+  {- Unfolding: (GHC.CString.unpackCString# Main.main3) -}
+6a168966e6984ff3baf7d06121476aca
+  main3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("\n\
+                 \\ESC[36m== Assignment 3 (Refactored NRC Sudoku) ==\ESC[0m"#) -}
+c86b5cf20231714dc3001cb6bcba4325
+  main4 ::
+    Test.QuickCheck.Random.QCGen
+    -> GHC.Types.Int
+    -> Test.QuickCheck.Property.Rose Test.QuickCheck.Property.Result
+  {- Arity: 2, Strictness: <S(SSSSLL),1*U(U,U,U,1*U,A,A)><L,U>,
+     Unfolding: (\ (eta :: Test.QuickCheck.Random.QCGen)
+                   (eta1 :: GHC.Types.Int)[OneShot] ->
+                 case eta
+                        `cast`
+                      (Test.QuickCheck.Random.N:QCGen[0]) of ww { System.Random.TF.Gen.TFGen ww1 ww2 ww3 ww4 ww5 ww6 ->
+                 Test.QuickCheck.Property.$wforAllShrink
+                   @ Lecture5.Position
+                   @ GHC.Types.Bool
+                   Main.$s$fShow(,)
+                   Test.QuickCheck.Property.$fTestableBool_$cproperty
+                     `cast`
+                   (Sym (Test.QuickCheck.Property.N:Testable[0] <GHC.Types.Bool>_N))
+                   Lecture5.genSudokuPositions1
+                     `cast`
+                   (Sym (Test.QuickCheck.Gen.N:Gen[0] <Lecture5.Position>_R))
+                   (Test.QuickCheck.Property.forAll2 @ Lecture5.Position)
+                   Lecture5.freePosTest
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   eta1 }) -}
+025ded987a95053b6a0a3990a9410e83
+  main5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main6) -}
+a561ea3ac76068429b0678ac7349320b
+  main6 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("\n\
+                 \\ESC[36m== Assignment 2 (Refactored NRC Sudoku) ==\ESC[0m"#) -}
+7a5abbdfeb8059515b4a07c83cf8b6b2
+  main7 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main8) -}
+8927c06b46e274a9ca1dd4e6e5b43fe2
+  main8 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("\ESC[36m== Assignment 1 (NRC Sudoku's) ==\ESC[0m"#) -}
+4163e6d99d3d92c781a6b5e6f23a0e21
+  main9 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1,
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+"SPEC/Main $fShow(,) @ Int @ Int" [orphan] forall (v1 :: GHC.Show.Show
+                                                           GHC.Types.Int)
+                                                  (v :: GHC.Show.Show GHC.Types.Int)
+  GHC.Show.$fShow(,) @ GHC.Types.Int @ GHC.Types.Int v v1
+  = Main.$s$fShow(,)
 vectorised variables:
 vectorised tycons:
 vectorised reused tycons:
 parallel variables:
 parallel tycons:
-trusted: safe
+trusted: none
 require own pkg trusted: False
 
