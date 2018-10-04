@@ -41,18 +41,55 @@ shuffle xs = do
     newArray :: Int -> [a] -> IO (IOArray Int a)
     newArray n xs =  newListArray (1,n) xs
 
-generateRandomWithNBlocksMissing :: Int -> IO Node
-generateRandomWithNBlocksMissing n = do [r] <- rsolveNs [emptyN]
-                                        -- showNode r
-                                        a <- shuffle [0..8]
-                                        p <- genProblemNBlocks r (take n a)
-                                        -- showNode p
-                                        return p
+generateWithBlocksMissing :: Int -> IO Node
+generateWithBlocksMissing n = do
+                                [r] <- rsolveNs [emptyN]
+                                showNode r
+                                a <- shuffle [0..8]
+                                p <- genProblemNBlocks r (take n a)
+                                return p
 
-generateRandomWith3BlocksMissing :: IO Node
-generateRandomWith3BlocksMissing = generateRandomWithNBlocksMissing 3
+
+findN :: Int -> IO ()
+findN n = do
+          a <- generateWithBlocksMissing n
+          if uniqueSol a then
+            showNode a
+            else findN n
 
 {-
+FindN 3 yielded:
++-------+-------+-------+
+| 1 2 6 | 8 7 5 | 4 9 3 |
+| 8 4 5 | 3 9 6 | 2 7 1 |
+| 3 9 7 | 1 2 4 | 6 8 5 |
++-------+-------+-------+
+| 5 3 4 | 9 6 7 | 1 2 8 |
+| 7 6 8 | 5 1 2 | 3 4 9 |
+| 9 1 2 | 4 3 8 | 7 5 6 |
++-------+-------+-------+
+| 4 5 3 | 2 8 1 | 9 6 7 |
+| 6 8 9 | 7 4 3 | 5 1 2 |
+| 2 7 1 | 6 5 9 | 8 3 4 |
++-------+-------+-------+
++-------+-------+-------+
+|       | 8   5 | 4     |
+|       | 3 9   |   7   |
+|       |   2   |     5 |
++-------+-------+-------+
+|     4 |       | 1   8 |
+|       |       | 3 4   |
+| 9 1 2 |       |       |
++-------+-------+-------+
+|     3 |       |   6   |
+| 6 8 9 |       |     2 |
+| 2     |       |   3   |
++-------+-------+-------+
+-}
+
+
+{-
+FindN 4 yielded:
 +-------+-------+-------+
 | 5 8 7 | 9 1 6 | 3 4 2 |
 | 9 2 1 | 4 3 5 | 8 6 7 |
@@ -80,15 +117,3 @@ generateRandomWith3BlocksMissing = generateRandomWithNBlocksMissing 3
 | 8 6   |       |     4 |
 +-------+-------+-------+
 -}
-generateRandomWith4BlocksMissing :: IO Node
-generateRandomWith4BlocksMissing = generateRandomWithNBlocksMissing 4
-
-generateRandomWith5BlocksMissing :: IO Node
-generateRandomWith5BlocksMissing = generateRandomWithNBlocksMissing 5
-
-findN :: Int -> IO ()
-findN n = do
-          a <- generateRandomWithNBlocksMissing n
-          if uniqueSol a then
-            showNode a
-            else findN n
