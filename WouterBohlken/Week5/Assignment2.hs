@@ -10,6 +10,15 @@ type Row    = Int
 type Column = Int
 type Value  = Int
 type Grid   = [[Value]]
+type Position = (Row,Column)
+type Constrnt = [[Position]]
+
+rowConstrnt = [[(r,c)| c <- values ] | r <- values ]
+columnConstrnt = [[(r,c)| r <- values ] | c <- values ]
+blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks ]
+nrcBlockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- nrcBlocks, b2 <- nrcBlocks ]
+
+allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt, nrcBlockConstrnt]
 
 positions, values :: [Int]
 positions = [1..9]
@@ -17,6 +26,9 @@ values    = [1..9]
 
 blocks :: [[Int]]
 blocks = [[1..3],[4..6],[7..9]]
+
+nrcBlocks :: [[Int]]
+nrcBlocks = [[2..4],[6..8]]
 
 showVal :: Value -> String
 showVal 0 = " "
@@ -83,12 +95,6 @@ freeInColumn s c =
 
 freeInSubgrid :: Sudoku -> (Row,Column) -> [Value]
 freeInSubgrid s (r,c) = freeInSeq (subGrid s (r,c))
-
-freeAtPos :: Sudoku -> (Row,Column) -> [Value]
-freeAtPos s (r,c) =
-  (freeInRow s r)
-   `intersect` (freeInColumn s c)
-   `intersect` (freeInSubgrid s (r,c))
 
 injective :: Eq a => [a] -> Bool
 injective xs = nub xs == xs
@@ -162,10 +168,25 @@ openPositions s = [ (r,c) | r <- positions,
 length3rd :: (a,b,[c]) -> (a,b,[c]) -> Ordering
 length3rd (_,_,zs) (_,_,zs') = compare (length zs) (length zs')
 
+freeAtPos :: Sudoku -> (Row,Column) -> [Value]
+freeAtPos s (r,c) = freeInRow s r `intersect` freeInColumn s c `intersect` freeInSubgrid s (r,c)
+
+freeAtPos' :: Sudoku -> Position -> Constrnt -> [Value]
+freeAtPos' s (r,c) xs = let
+    ys = filter (elem (r,c)) xs
+      in
+      foldl1 intersect (map ((values \\) . map s) ys)
+
+constraints' :: Sudoku -> [Constraint]
+constraints' s = sortBy length3rd [(r,c, freeAtPos s (r,c)) | (r,c) <- openPositions s]
+
 constraints :: Sudoku -> [Constraint]
 constraints s = sortBy length3rd
-    [(r,c, freeAtPos s (r,c)) |
-                       (r,c) <- openPositions s ]
+   [(r,c,
+     freeAtPos' s (r,c) rowConstrnt `intersect`
+     freeAtPos' s (r,c) columnConstrnt `intersect`
+     freeAtPos' s (r,c) blockConstrnt
+     ) | (r,c) <- openPositions s ]
 
 data Tree a = T a [Tree a] deriving (Eq,Ord,Show)
 
@@ -173,7 +194,6 @@ exmple1 = T 1 [T 2 [], T 3 []]
 exmple2 = T 0 [exmple1,exmple1,exmple1]
 
 grow :: (node -> [node]) -> node -> Tree node
-
 grow step seed = T seed (map (grow step) (step seed))
 
 count :: Tree a -> Int
@@ -188,7 +208,7 @@ search :: (node -> [node])
 search children goal [] = []
 search children goal (x:xs)
   | goal x    = x : search children goal xs
-  | otherwise = search children goal ((children x) ++ xs)
+  | otherwise = search children goal (children x ++ xs)
 
 solveNs :: [Node] -> [Node]
 solveNs = search succNode solved
@@ -257,6 +277,17 @@ example5 = [[1,0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,7,0,0],
             [0,0,0,0,0,0,0,8,0],
             [0,0,0,0,0,0,0,0,9]]
+
+nrc1 :: Grid
+nrc1 =    [[0,0,0,3,0,0,0,0,0],
+           [0,0,0,7,0,0,3,0,0],
+           [2,0,0,0,0,0,0,0,8],
+           [0,0,6,0,0,5,0,0,0],
+           [0,9,1,6,0,0,0,0,0],
+           [3,0,0,0,7,1,2,0,0],
+           [0,0,0,0,0,0,0,3,1],
+           [0,8,0,0,4,0,0,0,0],
+           [0,0,2,0,0,0,0,0,0]]
 
 emptyN :: Node
 emptyN = (\ _ -> 0,constraints (\ _ -> 0))
