@@ -378,22 +378,28 @@ freeAtPos s (r,c) =
    `intersect` freeInNrcSubgrid s (r,c)
 
 -- Assignment 2
--- Time:
+-- Time: 190 min
+-- Which of the two versions is easier to modify for NRC sudokus, and why?
+-- Definately the refactored version. With the refactored version we just add a new Constrnt and add it to the list of Constrnts. For the original version we had to create and modify a big bunch of methods, which is not needed with the refactored one.
+-- Which of the two versions is more efficient?
+-- Doesn't matter that much, but the original one used to be more efficient. For the original one smaller lists where used within the `freeAtPos` function. Because of this, it was more efficient.
+-- Short test report:
+-- To check if both implementations are equal I use quickcheck to check if my `freeAtPositions` method yields the same results as `freeAtPos`. I created my own QuickCheck generator which automatically generates sudoku positions. I perform all checks on the NRC sudoku example problem.
 type Position = (Row,Column)
 type Constrnt = [[Position]]
 
 rowConstrnt = [[(r,c)| c <- values ] | r <- values]
 columnConstrnt = [[(r,c)| r <- values ] | c <- values]
---blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks]
-blockConstrnt = map (`createBlock` (3,3)) [(i,j) | i <- [1,4..9], j <- [1,4..9]]
+blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks]
+--blockConstrnt = map (`createBlock` (3,3)) [(i,j) | i <- [1,4..9], j <- [1,4..9]]
 nrcConstrnt = map (`createBlock` (3,3)) [(i,j) | i <- [2,6], j <- [2,6]]
-
+constrnts = [rowConstrnt, columnConstrnt, blockConstrnt, nrcConstrnt]
 
 createBlock :: Position -> (Int, Int) -> [Position]
 createBlock (posx, posy) (sizex,sizey) = [(i,j) | i <- [posx..(posx-1)+sizex], j <- [posy..(posy-1)+sizey]]
 
 freeAtPositions :: Sudoku -> Position -> [Value]
-freeAtPositions s pos = foldl1 intersect (map (freeAtPos' s pos) [rowConstrnt, columnConstrnt, blockConstrnt, nrcConstrnt])
+freeAtPositions s pos = foldl1 intersect (map (freeAtPos' s pos) constrnts)
 
 freeAtPos' :: Sudoku -> Position -> Constrnt -> [Value]
 freeAtPos' s (r,c) xs = let ys = filter (elem (r,c)) xs in if null ys then values else concatMap ((values \\) . map s) ys
@@ -403,3 +409,5 @@ genSudokuPositions = (arbitrary :: Gen Position) `suchThat` (\(x,y) -> x `elem` 
 
 freePosTest :: Position -> Bool
 freePosTest pos = freeAtPositions (grid2sud nrcExample) pos == freeAtPos (grid2sud nrcExample) pos
+
+-- Assignment 3
