@@ -5,7 +5,7 @@
 --
 -- Lab5
 
-module Lab5
+module Ex1
 
 where
 
@@ -13,7 +13,6 @@ import Lecture5
 import System.Random
 import Test.QuickCheck
 import Data.List
-import Data.List.Unique
 import Data.Char
 import Debug.Trace
 
@@ -151,121 +150,3 @@ exampleNRC_1 = [[0,0,0,3,0,0,0,0,0],
                 [0,0,0,0,0,0,0,3,1],
                 [0,8,0,0,4,0,0,0,0],
                 [0,0,2,0,0,0,0,0,0]]
-
-
---Exercise 2
--- Refactoring of code
--- Which of the two versions is easier to modify for NRC sudokus, and why? -> Almost identical
--- Which of the two versions is more efficient?
-
--- Time: 120 minutes
-
-type Position = (Row,Column)
-type Constrnt = [[Position]]
-
-rowConstrnt :: [[(Int, Int)]]
-rowConstrnt = [[(r,c)| c <- values ] | r <- values ]
-
-columnConstrnt :: [[(Int, Int)]]
-columnConstrnt = [[(r,c)| r <- values ] | c <- values ]
-
-blockConstrnt :: [[(Int, Int)]]
-blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks ]
-
-blockNrcConstrnt :: [[(Int, Int)]]
-blockNrcConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- nrcBlocks, b2 <- nrcBlocks ]
-
-freeAtPos' :: Sudoku -> Position -> Constrnt -> [Value]
-freeAtPos' s (r,c) xs = let
-    ys = filter (elem (r,c)) xs
-  in
-    foldl1 intersect (map ((values \\) . map s) ys)
-
-combineFreeAtPos :: Sudoku -> Position -> [Value]
-combineFreeAtPos s (r,c)
-    | r `elem` [2,3,4,6,7,8] && c `elem` [2,3,4,6,7,8] = (freeAtPos' s (r,c) rowConstrnt)
-        `intersect` (freeAtPos' s (r,c) columnConstrnt)
-        `intersect` (freeAtPos' s (r,c) blockConstrnt)
-        `intersect` (freeAtPos' s (r,c) blockNrcConstrnt)
-    | otherwise = (freeAtPos' s (r,c) rowConstrnt)
-        `intersect` (freeAtPos' s (r,c) columnConstrnt)
-        `intersect` (freeAtPos' s (r,c) blockConstrnt)
-
-consistent' :: Sudoku -> Bool
-consistent' s = and $
-               [ rowInjective s r |  r <- positions ]
-                ++
-               [ colInjective s c |  c <- positions ]
-                ++
-               [ subgridInjective s (r,c) |
-                    r <- [1,4,7], c <- [1,4,7]]
-                ++
-               [ subgridInjectiveNrc s (r,c) |
-                    r <- [2,6], c <- [2,6]]
-
-constraints' :: Sudoku -> [Constraint]
-constraints' s = sortBy length3rd
-    [(r,c, combineFreeAtPos s (r,c)) |
-                       (r,c) <- openPositions s ]
-
-initNode' :: Grid -> [Node]
-initNode' gr = let s = grid2sud gr in
-              if (not . consistent') s then []
-              else [(s, constraints' s)]
-
-succNode' :: Node -> [Node]
-succNode' (s,[]) = []
-succNode' (s,p:ps) = extendNode' (s,ps) p
-
-extendNode' :: Node -> Constraint -> [Node]
-extendNode' (s,constraints') (r,c,vs) =
-   [(extend s ((r,c),v),
-     sortBy length3rd $
-         prune' (r,c,v) constraints') | v <- vs ]
-
-prune' :: (Row,Column,Value)
-     -> [Constraint] -> [Constraint]
-prune' _ [] = []
-prune' (r,c,v) ((x,y,zs):rest)
-  | r == x = (x,y,zs\\[v]) : prune' (r,c,v) rest
-  | c == y = (x,y,zs\\[v]) : prune' (r,c,v) rest
-  | sameblock (r,c) (x,y) =
-       (x,y,zs\\[v]) : prune' (r,c,v) rest
-  | sameblockNrc (r,c) (x,y) =
-       (x,y,zs\\[v]) : prune' (r,c,v) rest
-  | otherwise = (x,y,zs) : prune' (r,c,v) rest
-
-solveShowNs' :: [Node] -> IO[()]
-solveShowNs' = sequence . fmap showNode . solveNs'
-
-solveAndShow' :: Grid -> IO[()]
-solveAndShow' gr = solveShowNs' (initNode' gr)
-
-solveNs' :: [Node] -> [Node]
-solveNs' = search succNode' solved
-
---Exercise 3
--- time 180 mins
-genNonSolvedSudoku :: IO Node
-genNonSolvedSudoku = (genRandomSudoku  >>=  genProblem)
-
-checkWithElemRemoved :: Node -> IO Bool
-checkWithElemRemoved nd = do
-       let fillPos = filledPositions (fst nd)
-       let erasedSuds = map (eraseN nd) fillPos
-       return (all not $ map uniqueSol erasedSuds)
-
-checkSudMinimal :: IO ()
-checkSudMinimal = do
-        nd <- genNonSolvedSudoku
-        quickCheck(uniqueSol nd)
-        toCheck <- checkWithElemRemoved nd
-        quickCheck(toCheck)
-
-
---Exercise 4
--- time XX mins
-
-
---Exercise 5
--- time XX mins
