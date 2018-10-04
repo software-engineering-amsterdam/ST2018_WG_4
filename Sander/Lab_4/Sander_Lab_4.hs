@@ -68,10 +68,21 @@ unionSet' (Set (x:xs)) set2  =
 
 --Exercise 4
 -- Chapter 5 of Haskell road
--- time spent: 60 mins
+-- time spent: 90 mins
 
 -- Questions:
---   -
+--   - Show that a relation R on a set A is symmetric iff ∀x, y ∈ A(xRy ⇔ yRx).
+--      -- This is the definition of a symmetric relation, how would one go on to show that that is indeed so?
+
+--   - To show that R is the smallest relation S that has all the properties in
+-- O, show the following:
+-- 1. R has all the properties in O,
+-- 2. If S has all the properties in O, then R ⊆ S.
+        -- I dont get what the point of this is
+
+--   - Show that an intersection of arbitrarily many transitive relationsis transitive.
+--      -- I can intuitively see that this is true, but how would one formally prove it?
+
 
 --Exercise 5
 -- time spent: 15 mins
@@ -95,7 +106,7 @@ trClos :: Ord a => Rel a -> Rel a
 trClos a
     | a == currentTrClos = a
     | otherwise = trClos currentTrClos
-    where currentTrClos = sortUniq(a ++ [(x,z) | (x,y) <- a, (y,z) <- a, ((elem (x,y) a) && (elem (y,z) a))])
+    where currentTrClos = sortUniq(a ++ [(x,z) | (x,y) <- a, (y,z) <- a, (elem (x,y) a && elem (y,z) a)])
 
 --Exercise 7
 -- time spent:  mins
@@ -121,6 +132,6 @@ propSymClosIn a = all (\(x,y) -> elem (y,x) (symClos a)) a
 -- time spent:  mins
 
 -- No: e.g.:
--- let rel1 = [(1,2),(2,3),(3,3)]
--- symClos(trClos(rel1)) == trClos(symClos(rel1))
---  -False
+-- R = [(1,2),(2,3),(3,3)]
+-- symClos(trClos(R)) == trClos(symClos(R))
+--  - False
