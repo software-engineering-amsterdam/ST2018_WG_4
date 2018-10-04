@@ -12,7 +12,7 @@ import Data.Array.IO
 import Control.Monad
 import Lecture5
 
--- Time spent: 1 hour
+-- Time spent: 2 hours
 
 blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks ]
 
@@ -41,15 +41,15 @@ shuffle xs = do
     newArray :: Int -> [a] -> IO (IOArray Int a)
     newArray n xs =  newListArray (1,n) xs
 
-generateRandomWithNBlocksMissing :: Int -> IO Bool
+generateRandomWithNBlocksMissing :: Int -> IO Node
 generateRandomWithNBlocksMissing n = do [r] <- rsolveNs [emptyN]
-                                        showNode r
+                                        -- showNode r
                                         a <- shuffle [0..8]
                                         p <- genProblemNBlocks r (take n a)
-                                        showNode p
-                                        return (uniqueSol p)
+                                        -- showNode p
+                                        return p
 
-generateRandomWith3BlocksMissing :: IO Bool
+generateRandomWith3BlocksMissing :: IO Node
 generateRandomWith3BlocksMissing = generateRandomWithNBlocksMissing 3
 
 {-
@@ -80,8 +80,15 @@ generateRandomWith3BlocksMissing = generateRandomWithNBlocksMissing 3
 | 8 6   |       |     4 |
 +-------+-------+-------+
 -}
-generateRandomWith4BlocksMissing :: IO Bool
+generateRandomWith4BlocksMissing :: IO Node
 generateRandomWith4BlocksMissing = generateRandomWithNBlocksMissing 4
 
-generateRandomWith5BlocksMissing :: IO Bool
+generateRandomWith5BlocksMissing :: IO Node
 generateRandomWith5BlocksMissing = generateRandomWithNBlocksMissing 5
+
+findN :: Int -> IO ()
+findN n = do
+          a <- generateRandomWithNBlocksMissing n
+          if uniqueSol a then
+            showNode a
+            else findN n
