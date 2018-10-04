@@ -12,3 +12,4 @@ main =
      quickCheckResult $ forAll genSudokuPositions freePosTest
 
      putStrLn "\n\x1b[36m== Assignment 3 (Refactored NRC Sudoku) ==\x1b[0m"
+     testHasUniqueSol 1 10

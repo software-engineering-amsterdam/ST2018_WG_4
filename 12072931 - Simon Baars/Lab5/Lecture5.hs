@@ -3,10 +3,11 @@ module Lecture5
 
 where
 
-import Data.List
-import System.Random
-import Debug.Trace
-import Test.QuickCheck
+import           Data.List
+import           Data.Maybe
+import           Debug.Trace
+import           System.Random
+import           Test.QuickCheck
 
 type Row    = Int
 type Column = Int
@@ -169,7 +170,7 @@ count :: Tree a -> Int
 count (T _ ts) = 1 + sum (map count ts)
 
 takeT :: Int -> Tree a -> Tree a
-takeT 0 (T x _) = T x []
+takeT 0 (T x _)  = T x []
 takeT n (T x ts) = T x $ map (takeT (n-1)) ts
 
 search :: (node -> [node])
@@ -183,7 +184,7 @@ solveNs :: [Node] -> [Node]
 solveNs = search succNode solved
 
 succNode :: Node -> [Node]
-succNode (s,[]) = []
+succNode (s,[])   = []
 succNode (s,p:ps) = extendNode (s,ps) p
 
 solveAndShow :: Grid -> IO[()]
@@ -271,7 +272,7 @@ sameLen (_,_,xs) (_,_,ys) = length xs == length ys
 
 getRandomCnstr :: [Constraint] -> IO [Constraint]
 getRandomCnstr cs = getRandomItem (f cs)
-  where f [] = []
+  where f []     = []
         f (x:xs) = takeWhile (sameLen x) (x:xs)
 
 rsuccNode :: Node -> IO [Node]
@@ -309,17 +310,24 @@ randomS = genRandomSudoku >>= showNode
 
 uniqueSol :: Node -> Bool
 uniqueSol node = singleton (solveNs [node]) where
-  singleton [] = False
-  singleton [x] = True
+  singleton []       = False
+  singleton [x]      = True
   singleton (x:y:zs) = False
 
 eraseS :: Sudoku -> (Row,Column) -> Sudoku
-eraseS s (r,c) (x,y) | (r,c) == (x,y) = 0
-                     | otherwise      = s (x,y)
+eraseS s pos pos2 | pos == pos2 = 0
+                  | otherwise = s pos2
 
 eraseN :: Node -> (Row,Column) -> Node
-eraseN n (r,c) = (s, constraints s)
-  where s = eraseS (fst n) (r,c)
+eraseN n pos = (s, constraints s)
+  where s = eraseS (fst n) pos
+
+eraseS' :: Sudoku -> [(Row,Column)] -> Sudoku
+eraseS' = foldr (flip eraseS)
+
+eraseN' :: Node -> [(Row,Column)] -> Node
+eraseN' n pos = (s, constraints s)
+  where s = eraseS' (fst n) pos
 
 minimalize :: Node -> [(Row,Column)] -> Node
 minimalize n [] = n
@@ -402,7 +410,7 @@ freeAtPositions :: Sudoku -> Position -> [Value]
 freeAtPositions s pos = foldl1 intersect (map (freeAtPos' s pos) constrnts)
 
 freeAtPos' :: Sudoku -> Position -> Constrnt -> [Value]
-freeAtPos' s (r,c) xs = let ys = filter (elem (r,c)) xs in if null ys then values else concatMap ((values \\) . map s) ys
+freeAtPos' s pos xs = let ys = filter (elem pos) xs in if null ys then values else concatMap ((values \\) . map s) ys
 
 genSudokuPositions :: Gen Position
 genSudokuPositions = (arbitrary :: Gen Position) `suchThat` (\(x,y) -> x `elem` values && y `elem` values)
@@ -411,11 +419,23 @@ freePosTest :: Position -> Bool
 freePosTest pos = freeAtPositions (grid2sud nrcExample) pos == freeAtPos (grid2sud nrcExample) pos
 
 -- Assignment 3
-testHasUniqueSol :: IO Bool
-testHasUniqueSol = (genRandomSudoku >>= genProblem) >>= \x -> return (uniqueSol x && checkAllErasedHints x)
+-- Time: 210 minutes
+-- I wrote my own QuickCheck because the default QuickCheck doesn't handle IO Bool. The implemententation of this test checks if a random problem has a unique solution, and all it's erased hints have no unique solution.
 
 checkAllErasedHints :: Node -> Bool
-checkAllErasedHints node = let grid = sud2grid (fst node) in all (not . uniqueSol) (foldr (\x acc -> removeHints node x ++ acc) [] (zip values grid))
+checkAllErasedHints node = all (not . uniqueSol) (map (eraseN node) (filledPositions $ fst node))
 
-removeHints :: Node -> (Int, [Value]) -> [Node]
-removeHints node (index, vals) = foldr (\(x,y) acc -> eraseN node (index, x):acc) [] (filter (\(x,y) -> y/= 0) (zip values vals))
+testHasUniqueSol :: Int -> Int -> IO ()
+testHasUniqueSol testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+                else (genRandomSudoku >>= genProblem) >>= \x -> if uniqueSol x && checkAllErasedHints x then
+                                                                   do putStrLn $ "\nThe test passed for the following sudoku (" ++ show testsExecuted ++ " out of " ++ show totalTests ++ "):"
+                                                                      showNode x
+                                                                      testHasUniqueSol (testsExecuted+1) totalTests
+                                                                else do showNode x
+                                                                        error "I failed on this sudoku!"
+
+-- Assignment 4
+generateSudokuProblem :: Int -> Int -> Maybe (IO Node)
+generateSudokuProblem emptyBlocks 0 = Nothing
+generateSudokuProblem 0 tries       = Just (genRandomSudoku >>= genProblem)
+--generateSudokuProblem nEmptyBlocks tries = genRandomSudoku
