@@ -20,7 +20,7 @@ columnConstrnt = [[(r,c)| r <- values ] | c <- values ]
 blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks ]
 nrcBlockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- nrcBlocks, b2 <- nrcBlocks ]
 
-allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt] --, nrcBlockConstrnt]
+allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt, nrcBlockConstrnt]
 
 positions, values :: [Int]
 positions = [1..9]
@@ -145,10 +145,16 @@ openPositions s = [ (r,c) | r <- positions,
 length3rd :: (a,b,[c]) -> (a,b,[c]) -> Ordering
 length3rd (_,_,zs) (_,_,zs') = compare (length zs) (length zs')
 
+powerList  :: [a] -> [[a]]
+powerList  [] = [[]]
+powerList  (x:xs) = (powerList xs)
+                     ++ (map (x:) (powerList xs))
+
 freeAtPos' :: Sudoku -> Position -> Constrnt -> [Value]
 freeAtPos' s (r,c) xs = let
     ys = filter (elem (r,c)) xs
       in
+      if null ys then [1..9] else
       foldl1 intersect (map ((values \\) . map s) ys)
 
 allConstraints :: Sudoku -> Position -> [Value]
