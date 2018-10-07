@@ -57,7 +57,10 @@ findN n = do
             showNode a
             else findN n
 
+
 {-
+
+
 FindN 3 yielded:
 +-------+-------+-------+
 | 1 2 6 | 8 7 5 | 4 9 3 |
@@ -85,10 +88,8 @@ FindN 3 yielded:
 | 6 8 9 |       |     2 |
 | 2     |       |   3   |
 +-------+-------+-------+
--}
 
 
-{-
 FindN 4 yielded:
 +-------+-------+-------+
 | 5 8 7 | 9 1 6 | 3 4 2 |
@@ -116,4 +117,9 @@ FindN 4 yielded:
 |   7   |       |   5 6 |
 | 8 6   |       |     4 |
 +-------+-------+-------+
--}
+
+
+ FindN 5 didn't seem to generate a minimal problem after 100+ tries
+
+
+ -}

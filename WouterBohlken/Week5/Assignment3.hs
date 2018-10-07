@@ -9,8 +9,9 @@ import Lecture5
 
 -- Time: 1 hour
 -- Remove all items and check if all new problems are ambiguous
-test :: IO ()
-test = do
+
+main :: IO ()
+main = do
           [r] <- rsolveNs [emptyN]
           s  <- genProblem r
           let fillPos = filledPositions (fst s)

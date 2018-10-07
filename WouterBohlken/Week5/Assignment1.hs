@@ -177,7 +177,7 @@ sameblock :: (Row,Column) -> (Row,Column) -> Bool
 sameblock (r,c) (x,y) = bl r == bl x && bl c == bl y
 
 nrcsameblock :: (Row,Column) -> (Row,Column) -> Bool
-nrcsameblock (r,c) (x,y) | all inNrcBlock [r,c,x,y = nrcbl r == nrcbl x && nrcbl c == nrcbl y
+nrcsameblock (r,c) (x,y) | all inNrcBlock [r,c,x,y] = nrcbl r == nrcbl x && nrcbl c == nrcbl y
                          | otherwise = False
 
 initNode :: Grid -> [Node]
@@ -379,16 +379,16 @@ genProblem n = do ys <- randomize xs
 
 
 
-nrc1 :: Grid
-nrc1 =    [[0,0,0,3,0,0,0,0,0],
-           [0,0,0,7,0,0,3,0,0],
-           [2,0,0,0,0,0,0,0,8],
-           [0,0,6,0,0,5,0,0,0],
-           [0,9,1,6,0,0,0,0,0],
-           [3,0,0,0,7,1,2,0,0],
-           [0,0,0,0,0,0,0,3,1],
-           [0,8,0,0,4,0,0,0,0],
-           [0,0,2,0,0,0,0,0,0]]
+nrc :: Grid
+nrc =    [[0,0,0,3,0,0,0,0,0],
+          [0,0,0,7,0,0,3,0,0],
+          [2,0,0,0,0,0,0,0,8],
+          [0,0,6,0,0,5,0,0,0],
+          [0,9,1,6,0,0,0,0,0],
+          [3,0,0,0,7,1,2,0,0],
+          [0,0,0,0,0,0,0,3,1],
+          [0,8,0,0,4,0,0,0,0],
+          [0,0,2,0,0,0,0,0,0]]
 
 
 
@@ -402,4 +402,4 @@ nrc1 =    [[0,0,0,3,0,0,0,0,0],
 main :: IO [()]
 main = do
   putStrLn "+++ Assignment 1 +++"
-  solveAndShow nrc1
+  solveAndShow nrc

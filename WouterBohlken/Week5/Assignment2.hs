@@ -6,7 +6,7 @@ import Data.List
 import System.Random
 import Debug.Trace
 
--- Time spent: 75 minutes
+-- Time spent: 3 hours
 
 type Row    = Int
 type Column = Int
@@ -354,7 +354,19 @@ genProblem n = do ys <- randomize xs
                   return (minimalize n ys)
    where xs = filledPositions (fst n)
 
+
+nrc :: Grid
+nrc =    [[0,0,0,3,0,0,0,0,0],
+          [0,0,0,7,0,0,3,0,0],
+          [2,0,0,0,0,0,0,0,8],
+          [0,0,6,0,0,5,0,0,0],
+          [0,9,1,6,0,0,0,0,0],
+          [3,0,0,0,7,1,2,0,0],
+          [0,0,0,0,0,0,0,3,1],
+          [0,8,0,0,4,0,0,0,0],
+          [0,0,2,0,0,0,0,0,0]]
+
 main :: IO [()]
 main = do
  putStrLn "+++ Assignment 2 +++"
- solveAndShow example2
+ solveAndShow nrc
