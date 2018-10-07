@@ -26,8 +26,8 @@ genNonSolvedSudoku = (genRandomSudoku  >>=  genProblem)
 
 checkWithElemRemoved :: Node -> IO Bool
 checkWithElemRemoved nd = do
-       let fillPos = filledPositions (fst nd)
-       let erasedSuds = map (eraseN nd) fillPos
+       let fp = filledPositions (fst nd)
+       let erasedSuds = map (eraseN nd) fp
        return (all not $ map uniqueSol erasedSuds)
 
 checkSudMinimal :: IO ()
