@@ -435,6 +435,7 @@ testHasUniqueSol testsExecuted totalTests = if testsExecuted == totalTests then 
                                                                         error "I failed on this sudoku problem :-("
 
 -- Assignment 4
+-- Time: 230 minutes
 generateSudokuProblem :: Int -> Int -> IO (Maybe (IO Node))
 generateSudokuProblem emptyBlocks 0 = return Nothing
 generateSudokuProblem 0 tries       = return (Just (genRandomSudoku >>= genProblem))
@@ -458,3 +459,15 @@ getPositionForBlock x
 removeBlocksFromSudoku :: Int -> [Int] -> IO Node -> IO Node
 removeBlocksFromSudoku 0 valueList randSudoku = randSudoku
 removeBlocksFromSudoku nBlocks valueList randSudoku = randSudoku >>= \x -> getRandomInt (length valueList - 1) >>= \r -> removeBlocksFromSudoku (nBlocks-1) (deleteN r valueList) (return (eraseN' x (createBlock (getPositionForBlock (valueList !! r)) (3,3))))
+
+-- Assignment 5
+genNrcProblem :: Node -> IO Node
+genNrcProblem n = do ys <- randomize xs
+                  return (minimalize n ys)
+   where xs = filledPositions (fst n)
+
+minimalizeNrc :: Node -> [(Row,Column)] -> Node
+minimalizeNrc n [] = n
+minimalizeNrc n ((r,c):rcs) | uniqueSol n' = minimalize n' rcs
+                        | otherwise    = minimalize n  rcs
+ where n' = eraseN n (r,c)
