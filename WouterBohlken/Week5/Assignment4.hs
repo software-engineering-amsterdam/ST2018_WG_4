@@ -59,9 +59,11 @@ findN n = do
 
 
 {-
+The function findN generates a sudoku with N missing block, randomly positioned.
+It shows the generated sudoku and when the solution is unique, it shows the problem.
+When the solution is not unique, it retries
 
-
-FindN 3 yielded:
+findN 3 yielded:
 +-------+-------+-------+
 | 1 2 6 | 8 7 5 | 4 9 3 |
 | 8 4 5 | 3 9 6 | 2 7 1 |
@@ -90,7 +92,7 @@ FindN 3 yielded:
 +-------+-------+-------+
 
 
-FindN 4 yielded:
+findN 4 yielded (after some time):
 +-------+-------+-------+
 | 5 8 7 | 9 1 6 | 3 4 2 |
 | 9 2 1 | 4 3 5 | 8 6 7 |
@@ -119,7 +121,7 @@ FindN 4 yielded:
 +-------+-------+-------+
 
 
- FindN 5 didn't seem to generate a minimal problem after 100+ tries
+FindN 5 didn't seem to generate a minimal problem after 100+ tries
 
 
- -}
+-}
