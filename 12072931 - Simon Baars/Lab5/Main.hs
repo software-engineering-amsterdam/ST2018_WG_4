@@ -1,7 +1,8 @@
 module Main where
 
-import Lecture5
-import Test.QuickCheck
+import           Data.Maybe
+import           Lecture5
+import           Test.QuickCheck
 
 main :: IO ()
 main =
@@ -11,5 +12,15 @@ main =
      putStrLn "\n\x1b[36m== Assignment 2 (Refactored NRC Sudoku) ==\x1b[0m"
      quickCheckResult $ forAll genSudokuPositions freePosTest
 
-     putStrLn "\n\x1b[36m== Assignment 3 (Refactored NRC Sudoku) ==\x1b[0m"
-     testHasUniqueSol 1 10
+     putStrLn "\n\x1b[36m== Assignment 3 (Test for unique solutions) ==\x1b[0m"
+     testHasUniqueSol 1 3
+
+     putStrLn "\n\x1b[36m== Assignment 4 (Empty block sudoku problems) ==\x1b[0m"
+     putStrLn "Trying max 10 times to find a sudoku problems with 3 empty blocks."
+     generateSudokuProblem 3 10 >>= \x -> if isJust x then fromJust x >>= \y -> showNode y else putStrLn "Not found"
+     putStrLn "Trying max 10 times to find a sudoku problems with 4 empty blocks."
+     generateSudokuProblem 4 10 >>= \x -> if isJust x then fromJust x >>= \y -> showNode y else putStrLn "Not found"
+     putStrLn "Trying max 10 times to find a sudoku problems with 5 empty blocks."
+     generateSudokuProblem 5 10 >>= \x -> if isJust x then fromJust x >>= \y -> showNode y else putStrLn "Not found"
+     putStrLn "Trying max 10 times to find a sudoku problems with 6 empty blocks."
+     generateSudokuProblem 6 10 >>= \x -> if isJust x then fromJust x >>= \y -> showNode y else putStrLn "Not found"

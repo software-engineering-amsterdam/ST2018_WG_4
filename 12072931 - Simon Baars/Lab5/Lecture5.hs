@@ -428,14 +428,33 @@ checkAllErasedHints node = all (not . uniqueSol) (map (eraseN node) (filledPosit
 testHasUniqueSol :: Int -> Int -> IO ()
 testHasUniqueSol testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
                 else (genRandomSudoku >>= genProblem) >>= \x -> if uniqueSol x && checkAllErasedHints x then
-                                                                   do putStrLn $ "\nThe test passed for the following sudoku (" ++ show testsExecuted ++ " out of " ++ show totalTests ++ "):"
+                                                                   do putStrLn $ "\nThe test passed for the following sudoku problem (" ++ show testsExecuted ++ " out of " ++ show totalTests ++ "):"
                                                                       showNode x
                                                                       testHasUniqueSol (testsExecuted+1) totalTests
                                                                 else do showNode x
-                                                                        error "I failed on this sudoku!"
+                                                                        error "I failed on this sudoku problem :-("
 
 -- Assignment 4
-generateSudokuProblem :: Int -> Int -> Maybe (IO Node)
-generateSudokuProblem emptyBlocks 0 = Nothing
-generateSudokuProblem 0 tries       = Just (genRandomSudoku >>= genProblem)
---generateSudokuProblem nEmptyBlocks tries = genRandomSudoku
+generateSudokuProblem :: Int -> Int -> IO (Maybe (IO Node))
+generateSudokuProblem emptyBlocks 0 = return Nothing
+generateSudokuProblem 0 tries       = return (Just (genRandomSudoku >>= genProblem))
+generateSudokuProblem nEmptyBlocks tries = let newSudoku = removeBlocksFromSudoku nEmptyBlocks values genRandomSudoku in newSudoku >>= \x -> if uniqueSol x then return (Just (genProblem x)) else generateSudokuProblem nEmptyBlocks (tries - 1)
+
+-- Source https://www.reddit.com/r/haskell/comments/22o44v/delete_nth_item_another_noob_post/
+deleteN :: Int -> [a] -> [a]
+deleteN _ []     = []
+deleteN i (a:as)
+   | i == 0    = as
+   | otherwise = a : deleteN (i-1) as
+
+getPositionForBlock :: Value -> Position
+getPositionForBlock x
+  | x<=0 = error "Negative blocks are not allowed"
+  | x<=3 = (1+(3*((x-1) `mod` 3)),1)
+  | x<=6 = (1+(3*((x-1) `mod` 3)),4)
+  | x<=9 = (1+(3*((x-1) `mod` 3)),7)
+  | otherwise = error "Sudoku's only have 9 blocks."
+
+removeBlocksFromSudoku :: Int -> [Int] -> IO Node -> IO Node
+removeBlocksFromSudoku 0 valueList randSudoku = randSudoku
+removeBlocksFromSudoku nBlocks valueList randSudoku = randSudoku >>= \x -> getRandomInt (length valueList - 1) >>= \r -> removeBlocksFromSudoku (nBlocks-1) (deleteN r valueList) (return (eraseN' x (createBlock (getPositionForBlock (valueList !! r)) (3,3))))
