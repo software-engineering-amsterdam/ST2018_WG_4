@@ -335,6 +335,20 @@ genProblem n = do ys <- randomize xs
 
 -- Assignment 1
 -- Time: 110 minutes
+-- Result (of running the given example):
+--                                +-------+-------+-------+
+--                                | 4 7 8 | 3 9 2 | 6 1 5 |
+--                                | 6 1 9 | 7 5 8 | 3 2 4 |
+--                                | 2 3 5 | 4 1 6 | 9 7 8 |
+--                                +-------+-------+-------+
+--                                | 7 2 6 | 8 3 5 | 1 4 9 |
+--                                | 8 9 1 | 6 2 4 | 7 5 3 |
+--                                | 3 5 4 | 9 7 1 | 2 8 6 |
+--                                +-------+-------+-------+
+--                                | 5 6 7 | 2 8 9 | 4 3 1 |
+--                                | 9 8 3 | 1 4 7 | 5 6 2 |
+--                                | 1 4 2 | 5 6 3 | 8 9 7 |
+--                                +-------+-------+-------+
 nrcExample :: Grid
 nrcExample = [[0,0,0,3,0,0,0,0,0],
            [0,0,0,7,0,0,3,0,0],
@@ -377,6 +391,8 @@ freeAtPos s (r,c) =
 -- Doesn't matter that much, but the original one used to be more efficient. For the original one smaller lists where used within the `freeAtPos` function. Because of this, it was more efficient.
 -- Short test report:
 -- To check if both implementations are equal I use quickcheck to check if my `freeAtPositions` method yields the same results as `freeAtPos`. I created my own QuickCheck generator which automatically generates sudoku positions. I perform all checks on the NRC sudoku example problem.
+-- Result:
+--                                +++ OK, passed 100 tests.
 type Position = (Row,Column)
 type Constrnt = [[Position]]
 
@@ -405,7 +421,157 @@ freePosTest pos = freeAtPositions (grid2sud nrcExample) pos == freeAtPos (grid2s
 -- Assignment 3
 -- Time: 210 minutes
 -- I wrote my own QuickCheck because the default QuickCheck doesn't handle IO Bool. The implemententation of this test checks if a random problem has a unique solution, and all it's erased hints have no unique solution.
-
+-- Result (for running it 10 times, printing the sudoku problem being tested whether it is minimal):
+--                                The test passed for the following sudoku problem (1 out of 10):
+--                                +-------+-------+-------+
+--                                |       |       |       |
+--                                |     3 | 5     |     2 |
+--                                | 7     |   6   |       |
+--                                +-------+-------+-------+
+--                                |     1 |       |   2   |
+--                                |       |   1   |   5   |
+--                                |       | 4 3   |       |
+--                                +-------+-------+-------+
+--                                |       |   9   |   8   |
+--                                |   7   | 3   4 |       |
+--                                |       |       |   6   |
+--                                +-------+-------+-------+
+--
+--                                The test passed for the following sudoku problem (2 out of 10):
+--                                +-------+-------+-------+
+--                                |   7   |       |       |
+--                                |       | 5     |     7 |
+--                                |       | 1 2   | 9 5   |
+--                                +-------+-------+-------+
+--                                |     3 |       |     1 |
+--                                |       |   1   |       |
+--                                |       |       | 6     |
+--                                +-------+-------+-------+
+--                                |   1 8 |       |       |
+--                                | 4     |   7   |     3 |
+--                                |       |       |   1   |
+--                                +-------+-------+-------+
+--
+--                                The test passed for the following sudoku problem (3 out of 10):
+--                                +-------+-------+-------+
+--                                |       |   1   |     6 |
+--                                |   4   | 9     |       |
+--                                |   3 1 |       |       |
+--                                +-------+-------+-------+
+--                                |       |   9 2 |     1 |
+--                                |       |       |       |
+--                                |       |     7 |   5   |
+--                                +-------+-------+-------+
+--                                |     5 | 3   6 |   8   |
+--                                |       |       | 9     |
+--                                |       | 2     |       |
+--                                +-------+-------+-------+
+--
+--                                The test passed for the following sudoku problem (4 out of 10):
+--                                +-------+-------+-------+
+--                                |   8   |       |     9 |
+--                                |   4   |       |       |
+--                                | 5   3 |       |   2   |
+--                                +-------+-------+-------+
+--                                | 1     |       |   3   |
+--                                | 3     |       | 5   6 |
+--                                |   5   | 9     |     2 |
+--                                +-------+-------+-------+
+--                                |     4 |       |       |
+--                                | 8     | 7     |       |
+--                                |       |     2 |       |
+--                                +-------+-------+-------+
+--
+--                                The test passed for the following sudoku problem (5 out of 10):
+--                                +-------+-------+-------+
+--                                |       |   6 9 | 1     |
+--                                |       | 5   3 |       |
+--                                |       |       |       |
+--                                +-------+-------+-------+
+--                                |       |   5   | 6   4 |
+--                                |   1   |   8   |       |
+--                                |   4   | 6     |       |
+--                                +-------+-------+-------+
+--                                |   5   |       |     7 |
+--                                |       |       |   4   |
+--                                |     3 |       |   5 2 |
+--                                +-------+-------+-------+
+--
+--                                The test passed for the following sudoku problem (6 out of 10):
+--                                +-------+-------+-------+
+--                                |       | 3     |   6   |
+--                                |       |       |     1 |
+--                                |   8   |     7 |       |
+--                                +-------+-------+-------+
+--                                |       |   2   |       |
+--                                |       |   4   |       |
+--                                |     8 |       | 9     |
+--                                +-------+-------+-------+
+--                                |       | 4     |       |
+--                                |   6 2 |       | 8     |
+--                                |   4   |   3 9 |     6 |
+--                                +-------+-------+-------+
+--
+--                                The test passed for the following sudoku problem (7 out of 10):
+--                                +-------+-------+-------+
+--                                | 2 4   |       |   7   |
+--                                |       | 3     |       |
+--                                |   6   |     9 |   2   |
+--                                +-------+-------+-------+
+--                                |       |       |       |
+--                                |       |       | 2   1 |
+--                                |       |       |   9 7 |
+--                                +-------+-------+-------+
+--                                |   3 6 | 8     |       |
+--                                |     7 |       |       |
+--                                |   5   |       | 1 3   |
+--                                +-------+-------+-------+
+--
+--                                The test passed for the following sudoku problem (8 out of 10):
+--                                +-------+-------+-------+
+--                                |   2   |       |   7   |
+--                                | 9     |     6 |       |
+--                                |     4 | 9 5   |       |
+--                                +-------+-------+-------+
+--                                |   8   |       |       |
+--                                |       | 8   3 |       |
+--                                |       |     1 |     5 |
+--                                +-------+-------+-------+
+--                                |       |       | 3     |
+--                                |     7 |   3   |   4   |
+--                                |       |       |   2   |
+--                                +-------+-------+-------+
+--
+--                                The test passed for the following sudoku problem (9 out of 10):
+--                                +-------+-------+-------+
+--                                |     3 |       |     5 |
+--                                | 6   2 |       |     3 |
+--                                |       |       |   7   |
+--                                +-------+-------+-------+
+--                                | 8 5   |     4 |       |
+--                                |       |       |       |
+--                                | 3     |     6 |   2   |
+--                                +-------+-------+-------+
+--                                |       |       |       |
+--                                |       | 2 1 3 |     6 |
+--                                |       |       |     7 |
+--                                +-------+-------+-------+
+--
+--                                The test passed for the following sudoku problem (10 out of 10):
+--                                +-------+-------+-------+
+--                                |       |       |   2   |
+--                                |       |   2   |       |
+--                                |       |       |       |
+--                                +-------+-------+-------+
+--                                |   5   |       |     9 |
+--                                | 8 2   | 7   4 | 5     |
+--                                |       |   1   |   8   |
+--                                +-------+-------+-------+
+--                                | 5   9 |       |       |
+--                                |       |       |   3   |
+--                                |   3   |     6 |       |
+--                                +-------+-------+-------+
+--                                10 tests passed
 checkAllErasedHints :: Node -> Bool
 checkAllErasedHints node = all (not . uniqueSol) (map (eraseN node) (filledPositions $ fst node))
 
@@ -420,6 +586,58 @@ testIsMinimal testsExecuted totalTests = if testsExecuted == totalTests then put
 
 -- Assignment 4
 -- Time: 230 minutes
+-- Short report on findings:
+--        I made a code that tries to generate sudoku problems with a number of empty blocks within a certain
+--        number of attempts. The 3 and 4 empty blocks ones have always found a sudoku problem within 10 attempts.
+--        For 5 empty blocks a problem is found most of the time. For 6 empty blocks a problem is never found.
+-- Result:
+--                                Trying max 10 times to find a sudoku problem with at least 3 empty blocks.
+--                                +-------+-------+-------+
+--                                |   8   | 2   4 |       |
+--                                |       |       |       |
+--                                |   3   | 9 1   |       |
+--                                +-------+-------+-------+
+--                                |       |       |   7 5 |
+--                                |       |       |     8 |
+--                                |       |       |       |
+--                                +-------+-------+-------+
+--                                |     9 |       |     2 |
+--                                | 5 1   |       |   6 7 |
+--                                | 4     |       |   5   |
+--                                +-------+-------+-------+
+--
+--                                Trying max 10 times to find a sudoku problem with at least 4 empty blocks.
+--                                +-------+-------+-------+
+--                                | 6   9 |       |       |
+--                                |     1 |       | 9     |
+--                                |   7   |       |   8   |
+--                                +-------+-------+-------+
+--                                | 1     |       |       |
+--                                |       |       |       |
+--                                |   2 5 |       |       |
+--                                +-------+-------+-------+
+--                                |       | 8   5 | 3   4 |
+--                                |       |   7 1 | 2     |
+--                                |       | 4     |       |
+--                                +-------+-------+-------+
+--
+--                                Trying max 10 times to find a sudoku problem with at least 5 empty blocks.
+--                                +-------+-------+-------+
+--                                |       |       | 6 9 2 |
+--                                |       |       | 4     |
+--                                |       |       |     1 |
+--                                +-------+-------+-------+
+--                                |       | 4 7 2 |       |
+--                                |       | 3   8 |       |
+--                                |       |       |       |
+--                                +-------+-------+-------+
+--                                |     9 |   1 3 |       |
+--                                |   4   | 2     |       |
+--                                | 5     |   6   |       |
+--                                +-------+-------+-------+
+--
+--                                Trying max 10 times to find a sudoku problem with at least 6 empty blocks.
+--                                Not found
 generateSudokuProblem :: Int -> Int -> IO (Maybe (IO Node))
 generateSudokuProblem emptyBlocks 0 = return Nothing
 generateSudokuProblem 0 tries       = return (Just (genRandomSudoku >>= genProblem))
@@ -446,6 +664,20 @@ removeBlocksFromSudoku nBlocks valueList randSudoku = randSudoku >>= \x -> getRa
 
 -- Assignment 5
 -- Time: 50 minutes
+-- Result:
+--                                +-------+-------+-------+
+--                                |       | 2     |       |
+--                                | 5 8   |       |       |
+--                                |       |   4   |       |
+--                                +-------+-------+-------+
+--                                |       |     4 |     8 |
+--                                |     9 |   2   |       |
+--                                |       |       | 9   3 |
+--                                +-------+-------+-------+
+--                                | 6     |       |   5 4 |
+--                                |     7 |       |   2   |
+--                                |     5 |       | 3   9 |
+--                                +-------+-------+-------+
 nrcSameBlock :: (Row,Column) -> (Row,Column) -> Bool
 nrcSameBlock (r,c) (x,y) | all (\v -> v/=1 && v/=5 && v/=9) [r,c,x,y] = nrcBl r == nrcBl x && nrcBl c == nrcBl y
                          | otherwise = False

@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-08 18:31:17.005963631 UTC
+2018-10-08 18:45:33.434119342 UTC
 
 interface main:Main 8043
-  interface hash: 28fcca36232fecf5074925b62b52ae16
-  ABI hash: 37e44046c95f0ffc2817a243a27f681d
+  interface hash: 3637f12f5e598da6f11dc86f8adf7529
+  ABI hash: 5b0a88133c2a577c3cc6d76d5333c743
   export-list hash: 11f811ec11ddb407ae02300f3d162041
   orphan hash: 22254aaa5bdb7a2832d61bf114694d95
   flag hash: e02561aff3fbba899313e779d62898af
@@ -116,7 +116,7 @@ e5875966b74dad2d29772660b8a75e33
 d026be77cb9ced20e35a61514e0458aa
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("main"#) -}
-d9fd3ab567ae0e9d235f0e7800fd477a
+63a46b94f2d757c7f92daa971031e2e2
   $w$j ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -146,7 +146,7 @@ d9fd3ab567ae0e9d235f0e7800fd477a
                              (Lecture5.sud2grid (case ipv6 of wild1 { (,) x1 ds4 -> x1 }))
                              ipv5 of ds4 { (#,#) ipv7 ipv8 ->
                       Main.$w$j1 ipv7 } } } } }) -}
-6ad501870ceada29040ecd9cec5eefbe
+23728af3ede02d32694ddcacaba12373
   $w$j1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -176,7 +176,7 @@ d9fd3ab567ae0e9d235f0e7800fd477a
                              (Lecture5.sud2grid (case ipv6 of wild1 { (,) x1 ds4 -> x1 }))
                              ipv5 of ds4 { (#,#) ipv7 ipv8 ->
                       Main.$w$j2 ipv7 } } } } }) -}
-7dd2fd63f08c7b63b969cb5bd6f15901
+b801a500bd8c88d6b4749b14c57cb616
   $w$j2 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -258,12 +258,12 @@ bb7c0db4a1514890e64200548c459dbf
                                 (GHC.Types.N:IO[0] <Lecture5.Node>_R)
                                   ipv2 of ds3 { (#,#) ipv6 ipv7 ->
                            Main.main2 ipv6 ipv7 } } } } }) -}
-3b54fcb86f31a5923f86b30566db88d7
+d7d466eb4d3d0f054fbdbe477945679c
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-ff4577c809ff76f7ac2d52ad229c281e
+a4ffea46e4f7118e73163c17fecc64de
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -301,7 +301,7 @@ ff4577c809ff76f7ac2d52ad229c281e
                         ipv6 of ds5 { (#,#) ipv8 ipv9 ->
                  case Lecture5.$wtestIsMinimal
                         0#
-                        5#
+                        10#
                         ipv8 of ds6 { (#,#) ipv10 ipv11 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
@@ -335,23 +335,25 @@ ff4577c809ff76f7ac2d52ad229c281e
 06e4d54d48cdceedd943a81fa0ac2aa3
   main10 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 5#) -}
-e84c6da98cefcdb67eff62d42d305f0a
+6700eb610d374e8f004f6c884bbf8b6d
   main11 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.main12) -}
-98f6a339924cbd270a12f9327f15f880
+ede854380da038d31500fb39d17af157
   main12 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("Trying max 10 times to find a sudoku problem with at least 5 empty blocks."#) -}
+     Unfolding: ("\n\
+                 \Trying max 10 times to find a sudoku problem with at least 5 empty blocks."#) -}
 7f97adb76a242ded0741ad6d2407b3d0
   main13 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 4#) -}
-627dcb857342c7128cfed0930a1563e0
+b674edad722443f015168c0e9ddc160b
   main14 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.main15) -}
-f1c01d8cf740bfaa25f7b5808797b7f7
+0a127bf4b00eaca01747eaa5a4997691
   main15 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("Trying max 10 times to find a sudoku problem with at least 4 empty blocks."#) -}
+     Unfolding: ("\n\
+                 \Trying max 10 times to find a sudoku problem with at least 4 empty blocks."#) -}
 37d0cdc0a42620ff481d1d390ab9a63b
   main16 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 3#) -}
@@ -435,7 +437,7 @@ edc72ff9b0b5130ca8ed43cab370e085
   main27 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("\ESC[36m== Assignment 1 (NRC Sudoku's) ==\ESC[0m"#) -}
-0f0d385100bcf19cd5707521c64ce998
+d3c95d49638f1ca212f6b61802f7743e
   main28 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -460,13 +462,14 @@ d41da42cafc5d5f69a619f3573670da9
 2ef38c98220583e65013d1d4878b8bc6
   main7 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 6#) -}
-e290b8b476d9263c32ce095269a0f8d0
+19860c8b687f28cb7c309ec5b479e40f
   main8 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.main9) -}
-19af241dcf7d25ab9866777401da3e4a
+09f2da98230ed22a662ead54365287e4
   main9 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("Trying max 10 times to find a sudoku problem with at least 6 empty blocks."#) -}
+     Unfolding: ("\n\
+                 \Trying max 10 times to find a sudoku problem with at least 6 empty blocks."#) -}
 "SPEC/Main $fShow(,) @ Int @ Int" [orphan] forall (v1 :: GHC.Show.Show
                                                            GHC.Types.Int)
                                                   (v :: GHC.Show.Show GHC.Types.Int)
