@@ -29,12 +29,12 @@ version :: Version
 version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/bin"
-libdir     = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/lib/x86_64-linux-ghc-8.4.3/Lab5-0.1.0.0-L9i6O0GLcy76KZbPwboxn0-Lab5"
-dynlibdir  = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/lib/x86_64-linux-ghc-8.4.3"
-datadir    = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/share/x86_64-linux-ghc-8.4.3/Lab5-0.1.0.0"
-libexecdir = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/libexec/x86_64-linux-ghc-8.4.3/Lab5-0.1.0.0"
-sysconfdir = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/etc"
+bindir     = "/home/simon/haskell/ST2018_WG_4/Final/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/bin"
+libdir     = "/home/simon/haskell/ST2018_WG_4/Final/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/lib/x86_64-linux-ghc-8.4.3/Lab5-0.1.0.0-L9i6O0GLcy76KZbPwboxn0-Lab5"
+dynlibdir  = "/home/simon/haskell/ST2018_WG_4/Final/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/lib/x86_64-linux-ghc-8.4.3"
+datadir    = "/home/simon/haskell/ST2018_WG_4/Final/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/share/x86_64-linux-ghc-8.4.3/Lab5-0.1.0.0"
+libexecdir = "/home/simon/haskell/ST2018_WG_4/Final/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/libexec/x86_64-linux-ghc-8.4.3/Lab5-0.1.0.0"
+sysconfdir = "/home/simon/haskell/ST2018_WG_4/Final/Lab5/.stack-work/install/x86_64-linux-tinfo6/lts-12.11/8.4.3/etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "Lab5_bindir") (\_ -> return bindir)

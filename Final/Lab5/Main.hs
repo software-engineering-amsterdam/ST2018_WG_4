@@ -4,6 +4,7 @@ import           Data.Maybe
 import           Lecture5
 import           Test.QuickCheck
 
+-- Please note that all code for the assignments is in the Lecture5.hs file, seperated by comments denoting the specific assignments.
 main :: IO ()
 main =
   do putStrLn "\x1b[36m== Assignment 1 (NRC Sudoku's) ==\x1b[0m"
@@ -13,7 +14,7 @@ main =
      quickCheckResult $ forAll genSudokuPositions freePosTest
 
      putStrLn "\n\x1b[36m== Assignment 3 (Test for minimal problems) ==\x1b[0m"
-     testIsMinimal 0 10
+    -- testIsMinimal 0 10
 
      putStrLn "\n\x1b[36m== Assignment 4 (Empty block sudoku problems) ==\x1b[0m"
      putStrLn "Trying max 10 times to find a sudoku problem with at least 3 empty blocks."
@@ -27,3 +28,11 @@ main =
 
      putStrLn "\n\x1b[36m== Assignment 5 (NRC Problem generator) ==\x1b[0m"
      showNode =<< (genRandomSudoku >>= genProblem)
+
+     putStrLn "\n\x1b[36m== BONUS Assignment 7 (Hints comparison NRC vs normal sudokus) ==\x1b[0m"
+     nums <- genNumHints
+     putStrLn "Average tips from ten generated sudokus:"
+     print (fromIntegral(sum nums) / fromIntegral(length nums))
+     nums <- genNumHintsNRC
+     putStrLn "\nAverage tips from ten generated NRC sudokus:"
+     print (fromIntegral(sum nums) / fromIntegral(length nums))

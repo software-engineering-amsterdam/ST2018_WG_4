@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-08 18:45:32.773585211 UTC
+2018-10-08 19:27:16.787564284 UTC
 
 interface main:Lecture5 8043
-  interface hash: 7b4908e6b4d76d6b393a655d2004bb20
-  ABI hash: 272ee28846917f8e2126df74ab1cfb3e
-  export-list hash: 787f876d118ec06b243a629a43400eea
+  interface hash: a0654cd6b718fdb13b9d20b0f0fd4df9
+  ABI hash: 89b2161074f67109d973af505c52eb48
+  export-list hash: df0572af465b6393ac374929c126b33c
   orphan hash: ae86adf9ab717afc4d2cad9239bdbc0f
   flag hash: 9ae8a699cb106faa4356352859ff4048
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -50,8 +50,14 @@ exports:
   Lecture5.freeInSeq
   Lecture5.freeInSubgrid
   Lecture5.freePosTest
+  Lecture5.genNonSolvedSudoku
+  Lecture5.genNonSolvedSudokuNRC
+  Lecture5.genNumHints
+  Lecture5.genNumHintsNRC
   Lecture5.genProblem
+  Lecture5.genProblemType
   Lecture5.genRandomSudoku
+  Lecture5.genRandomSudokuType
   Lecture5.genSudokuPositions
   Lecture5.generateSudokuProblem
   Lecture5.getPositionForBlock
@@ -92,6 +98,7 @@ exports:
   Lecture5.showVal
   Lecture5.solveAndShow
   Lecture5.solveNs
+  Lecture5.solveNs'
   Lecture5.solveShowNs
   Lecture5.solved
   Lecture5.subGrid
@@ -101,6 +108,7 @@ exports:
   Lecture5.takeT
   Lecture5.testIsMinimal
   Lecture5.uniqueSol
+  Lecture5.uniqueSol'
   Lecture5.update
   Lecture5.values
   Lecture5.Column
@@ -149,6 +157,7 @@ family instance modules: base-4.11.1.0:Control.Applicative
 import  -/  QuickCheck-2.11.3:Test.QuickCheck e00d138ee3234e83a31cc3113c8c8ffb
 import  -/  QuickCheck-2.11.3:Test.QuickCheck.Arbitrary 749c030890709ce50a65277c8ad56400
 import  -/  QuickCheck-2.11.3:Test.QuickCheck.Gen 18d7f741d47ea7234320fe42d69d1321
+import  -/  base-4.11.1.0:Control.Monad c5f960c67d822497578bffbd3e4c01cf
 import  -/  base-4.11.1.0:Data.Foldable 8ed35c38958063956af33c935ea03444
 import  -/  base-4.11.1.0:Data.List 83dc843e47bfc0c5af51e19c6f3476d5
 import  -/  base-4.11.1.0:Data.Maybe 409c3da2b142470b68be39ce1d97a9f7
@@ -603,21 +612,23 @@ c3c511fead1ec88f57be9b066cc92adf
                       case ww1 of wild1 { GHC.Types.I# y ->
                       case GHC.Prim.==# x y of lwild1 {
                         DEFAULT -> w (GHC.Types.I# ww3, wild) 1# -> ww2 } } } }) -}
-837c05073513648089b801c7ac824a8f
+d077f93c2f5a1d282f220bfa17ee5147
   $wextendNode ::
     Lecture5.Sudoku
     -> [Lecture5.Constraint]
     -> Lecture5.Row
     -> Lecture5.Column
     -> [Lecture5.Value]
+    -> GHC.Types.Bool
     -> [Lecture5.Node]
-  {- Arity: 5, Strictness: <L,C(U)><L,U><L,U(U)><L,U(U)><S,1*U>,
+  {- Arity: 6, Strictness: <L,C(U)><L,U><L,U(U)><L,U(U)><S,1*U><L,U>,
      Inline: [0],
      Unfolding: (\ (ww :: Lecture5.Sudoku)
                    (ww1 :: [Lecture5.Constraint])
                    (ww2 :: Lecture5.Row)
                    (ww3 :: Lecture5.Column)
-                   (ww4 :: [Lecture5.Value]) ->
+                   (ww4 :: [Lecture5.Value])
+                   (w :: GHC.Types.Bool) ->
                  letrec {
                    go1 :: [Lecture5.Value] -> [Lecture5.Node]
                      {- Arity: 1, Strictness: <S,1*U> -}
@@ -644,11 +655,11 @@ c3c511fead1ec88f57be9b066cc92adf
                                   @ Lecture5.Row
                                   @ Lecture5.Column
                                   @ Lecture5.Value)
-                               (Lecture5.prune (ww2, ww3, y) ww1))
+                               (Lecture5.prune (ww2, ww3, y) ww1 w))
                             (go1 ys) }
                  } in
                  go1 ww4) -}
-1d2e32786ccda16fcfca4e6e754cc4dd
+c19d88e8c5dd5a613a80d8300b7b1e79
   $wfail ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
@@ -661,7 +672,7 @@ c3c511fead1ec88f57be9b066cc92adf
                     (forall (a :: <*>_N).
                      <GHC.Base.String>_R ->_R Sym (GHC.Types.N:IO[0] <a>_R))
                     @ Lecture5.Node
-                    Lecture5.genRandomSudoku2)
+                    Lecture5.genNonSolvedSudoku3)
                    `cast`
                  (GHC.Types.N:IO[0] <Lecture5.Node>_R)
                    w) -}
@@ -948,17 +959,19 @@ a48eae98c35db839cb020d395ca5090b
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
   {- Arity: 4, Strictness: <S,1*U><L,U><C(S),1*C1(U(U,U(U,U)))><S,U>,
      Inline: [0] -}
-3a2cd432bf45848657886c370c8332e0
+e4526ea0cbef767d0169f073f253354c
   $wrsuccNode ::
-    Lecture5.Sudoku
+    GHC.Types.Bool
+    -> Lecture5.Sudoku
     -> [Lecture5.Constraint]
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lecture5.Node] #)
-  {- Arity: 3, Strictness: <L,C(U)><S,U><S,U>, Inline: [0],
-     Unfolding: (\ (ww :: Lecture5.Sudoku)
+  {- Arity: 4, Strictness: <L,U><L,C(U)><S,U><S,U>, Inline: [0],
+     Unfolding: (\ (w :: GHC.Types.Bool)
+                   (ww :: Lecture5.Sudoku)
                    (ww1 :: [Lecture5.Constraint])
-                   (w :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 case Lecture5.genRandomSudoku7 ww1 w of ds1 { (#,#) ipv ipv1 ->
+                   (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Lecture5.genNonSolvedSudoku7 ww1 w1 of ds1 { (#,#) ipv ipv1 ->
                  case ipv1 of wild {
                    [] -> (# ipv, GHC.Types.[] @ Lecture5.Node #)
                    : ds2 ds3
@@ -966,10 +979,11 @@ a48eae98c35db839cb020d395ca5090b
                          case ds2 of ww2 { (,,) ww3 ww4 ww5 ->
                          Lecture5.$wextendNode
                            ww
-                           (Lecture5.genRandomSudoku_go wild ww1)
+                           (Lecture5.genNonSolvedSudoku_go wild ww1)
                            ww3
                            ww4
-                           ww5 } #) } }) -}
+                           ww5
+                           w } #) } }) -}
 79ce52c6cc42100fb60c5791c19b5c2b
   $wsameBlock ::
     Lecture5.Row
@@ -1149,14 +1163,14 @@ da14f1646ffc1de6a9f4ef26f9d4935e
 2da786eedc8bbdd21c2e558d6d32a5a9
   blocks5 :: [GHC.Types.Int]
   {- Unfolding: (GHC.Enum.eftInt 1# 3#) -}
-20bd1452ab0c462be5ada7b2368b7277
+88f1662e851b4b5439268fdcbf4d2a7c
   checkAllErasedHints :: Lecture5.Node -> GHC.Types.Bool
   {- Arity: 1, Strictness: <L,U(C(U(U)),A)>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.checkAllErasedHints1
                   `cast`
                 (<Lecture5.Node>_R ->_R Data.Semigroup.Internal.N:All[0]) -}
-7e0ed806fce3dcdc1241334b1411bb8a
+2edb718dcf14dda41bcc054ab33f3ff7
   checkAllErasedHints1 ::
     Lecture5.Node -> Data.Semigroup.Internal.All
   {- Arity: 1, Strictness: <L,U(C(U(U)),A)>,
@@ -1172,7 +1186,7 @@ da14f1646ffc1de6a9f4ef26f9d4935e
                        : y ys
                        -> case Lecture5.search
                                  @ Lecture5.Node
-                                 Lecture5.succNode
+                                 Lecture5.checkAllErasedHints2
                                  Lecture5.solved
                                  (GHC.Types.:
                                     @ Lecture5.Node
@@ -1188,6 +1202,16 @@ da14f1646ffc1de6a9f4ef26f9d4935e
                  go1
                    (Lecture5.filledPositions
                       (case node of wild { (,) x ds1 -> x }))) -}
+d62caa43834c07bd954ed771ad294aa7
+  checkAllErasedHints2 ::
+    (Lecture5.Sudoku, [Lecture5.Constraint]) -> [Lecture5.Node]
+  {- Arity: 1, Strictness: <S(LS),1*U(C(U),1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: (Lecture5.Sudoku, [Lecture5.Constraint])) ->
+                 case ds of wild { (,) s ds1 ->
+                 case ds1 of wild1 {
+                   [] -> GHC.Types.[] @ Lecture5.Node
+                   : p ps -> Lecture5.extendNode (s, ps) p GHC.Types.True } }) -}
 8ff779d28e83be271e44c8903ef3e732
   colInjective ::
     Lecture5.Sudoku -> Lecture5.Column -> GHC.Types.Bool
@@ -3259,17 +3283,20 @@ d88f7d1eda3d7057aefc01ccc33d329a
                  case w2 of ww8 { (,) ww9 ww10 ->
                  case ww9 of ww11 { GHC.Types.I# ww12 ->
                  Lecture5.$wextend w ww7 ww5 ww2 ww12 ww10 } } } } }) -}
-887e764418ea5127af2849f25ab4f8e7
+e9095a9c5b56ebd775150e88735712ae
   extendNode ::
-    Lecture5.Node -> Lecture5.Constraint -> [Lecture5.Node]
-  {- Arity: 2,
-     Strictness: <S,1*U(C(U),U)><S(LLS),1*U(U(U),U(U),1*U)>,
+    Lecture5.Node
+    -> Lecture5.Constraint -> GHC.Types.Bool -> [Lecture5.Node]
+  {- Arity: 3,
+     Strictness: <S,1*U(C(U),U)><S(LLS),1*U(U(U),U(U),1*U)><L,U>,
      Inline: [0],
-     Unfolding: InlineRule (2, True, False)
-                (\ (w :: Lecture5.Node) (w1 :: Lecture5.Constraint) ->
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: Lecture5.Node)
+                   (w1 :: Lecture5.Constraint)
+                   (w2 :: GHC.Types.Bool) ->
                  case w of ww { (,) ww1 ww2 ->
                  case w1 of ww3 { (,,) ww4 ww5 ww6 ->
-                 Lecture5.$wextendNode ww1 ww2 ww4 ww5 ww6 } }) -}
+                 Lecture5.$wextendNode ww1 ww2 ww4 ww5 ww6 w2 } }) -}
 d7423e9d9ca1183455f25559c48d2467
   filledPositions ::
     Lecture5.Sudoku -> [(Lecture5.Row, Lecture5.Column)]
@@ -3447,65 +3474,62 @@ b1c041eb64410e50e5c903ad94e8a22c
                       Lecture5.nrcExample
                       (GHC.Prim.-# ww4 1#))
                    (GHC.Prim.-# ww6 1#) } } }) -}
-c62b5a801610c25580d00fc1d071fab1
-  genProblem :: Lecture5.Node -> GHC.Types.IO Lecture5.Node
-  {- Arity: 2, Strictness: <L,U(U,U)><S,U>,
-     Unfolding: InlineRule (0, True, True)
-                Lecture5.genProblem1
-                  `cast`
-                (<Lecture5.Node>_R
-                 ->_R Sym (GHC.Types.N:IO[0] <Lecture5.Node>_R)) -}
-853138a56b119876c316667dce2d3aed
-  genProblem1 ::
-    Lecture5.Node
-    -> GHC.Prim.State# GHC.Prim.RealWorld
-    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
-  {- Arity: 2, Strictness: <L,U(U,U)><S,U>,
-     Unfolding: InlineRule (2, True, False)
-                (\ (n :: Lecture5.Node)
-                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 case Lecture5.genProblem_$srandomize
-                        (Lecture5.filledPositions (case n of wild { (,) x ds1 -> x }))
-                        s of ds1 { (#,#) ipv ipv1 ->
-                 (# ipv, Lecture5.minimalize n ipv1 #) }) -}
-2dcb6c63370119454709c77a116edbea
-  genProblem_$srandomize ::
-    [(Lecture5.Row, Lecture5.Column)]
-    -> GHC.Prim.State# GHC.Prim.RealWorld
-    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
-          [(Lecture5.Row, Lecture5.Column)] #)
-  {- Arity: 2, Strictness: <S,U><S,U> -}
-70295ad5342f73930bc3036376b7aeb6
-  genRandomSudoku :: GHC.Types.IO Lecture5.Node
+475da86864f83dd55973a98828c6eb71
+  genNonSolvedSudoku :: GHC.Types.IO Lecture5.Node
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
-                Lecture5.genRandomSudoku1
+                Lecture5.genNonSolvedSudoku1
                   `cast`
                 (Sym (GHC.Types.N:IO[0] <Lecture5.Node>_R)) -}
-3f7e08caa7d0c181da11bf1b678c1ae8
-  genRandomSudoku1 ::
+894f3293ef6adfbd7535f552812a50e7
+  genNonSolvedSudoku1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 case Lecture5.genRandomSudoku10
+                 case Lecture5.genNonSolvedSudoku10
                         @ Lecture5.Node
-                        Lecture5.genRandomSudoku6
+                        Lecture5.genNonSolvedSudoku6
                           `cast`
                         (<(Lecture5.Sudoku, [Lecture5.Constraint])>_R
                          ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
                         Lecture5.solved
-                        Lecture5.genRandomSudoku4
+                        Lecture5.genNonSolvedSudoku5
                           `cast`
                         (Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
                         s of ds1 { (#,#) ipv ipv1 ->
                  case ipv1 of wild {
-                   [] -> Lecture5.$wfail ipv
+                   []
+                   -> case (GHC.Magic.noinline
+                              @ (forall a. [GHC.Types.Char] -> GHC.Types.IO a)
+                              GHC.IO.failIO1
+                                `cast`
+                              (forall (a :: <*>_N).
+                               <GHC.Base.String>_R ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                              @ Lecture5.Node
+                              Lecture5.genNonSolvedSudoku3)
+                             `cast`
+                           (GHC.Types.N:IO[0] <Lecture5.Node>_R)
+                             ipv of ds2 { (#,#) ipv2 ipv3 ->
+                      Lecture5.genNonSolvedSudoku2 ipv2 ipv3 }
                    : r ds
                    -> case ds of wild1 {
-                        [] -> (# ipv, r #) : ipv2 ipv3 -> Lecture5.$wfail ipv } } }) -}
-37a47cf2f9e4126ade38bcb157aa7d0c
-  genRandomSudoku10 ::
+                        [] -> Lecture5.genNonSolvedSudoku2 ipv r
+                        : ipv2 ipv3
+                        -> case (GHC.Magic.noinline
+                                   @ (forall a. [GHC.Types.Char] -> GHC.Types.IO a)
+                                   GHC.IO.failIO1
+                                     `cast`
+                                   (forall (a :: <*>_N).
+                                    <GHC.Base.String>_R ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                                   @ Lecture5.Node
+                                   Lecture5.genNonSolvedSudoku3)
+                                  `cast`
+                                (GHC.Types.N:IO[0] <Lecture5.Node>_R)
+                                  ipv of ds2 { (#,#) ipv4 ipv5 ->
+                           Lecture5.genNonSolvedSudoku2 ipv4 ipv5 } } } }) -}
+31b8af05c6ac1c27b31af442799947e5
+  genNonSolvedSudoku10 ::
     (node -> GHC.Types.IO [node])
     -> (node -> GHC.Types.Bool)
     -> GHC.Types.IO [node]
@@ -3513,40 +3537,50 @@ c62b5a801610c25580d00fc1d071fab1
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [node] #)
   {- Arity: 4, HasNoCafRefs,
      Strictness: <L,C(C1(U(U,1*U)))><L,C(U)><C(S(SS)),1*C1(U(U,1*U))><S,U> -}
-37fbddc045dae8957231d84599bc634e
-  genRandomSudoku2 :: [GHC.Types.Char]
+b5df331087f88a31ccc3afba44d89ca3
+  genNonSolvedSudoku2 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> Lecture5.Node
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
+  {- Arity: 2, Strictness: <S,U><L,U(U,U)>,
+     Unfolding: (\ (ipv :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot]
+                   (ipv1 :: Lecture5.Node)[OneShot] ->
+                 case Lecture5.genNonSolvedSudoku_$srandomize
+                        (Lecture5.filledPositions (case ipv1 of wild { (,) x ds1 -> x }))
+                        ipv of ds1 { (#,#) ipv2 ipv3 ->
+                 (# ipv2, Lecture5.minimalize ipv1 ipv3 GHC.Types.True #) }) -}
+03ff2dee08e216dd742ee0297c146496
+  genNonSolvedSudoku3 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
-                   Lecture5.genRandomSudoku3) -}
-21a8369953fedbf437c7024e5419680f
-  genRandomSudoku3 :: GHC.Prim.Addr#
+                   Lecture5.genNonSolvedSudoku4) -}
+d98142f43eb19a5f9d8912bc5011caea
+  genNonSolvedSudoku4 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("Pattern match failure in do expression at Lecture5.hs:294:22-24"#) -}
-dc6e91718a7f9f62a7eda23eaa27b806
-  genRandomSudoku4 ::
+     Unfolding: ("Pattern match failure in do expression at Lecture5.hs:300:32-34"#) -}
+092daf1b0a03a0e285fc25bfa1d5d348
+  genNonSolvedSudoku5 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lecture5.Node] #)
   {- Arity: 1, Strictness: <S,U>,
-     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
-                 (# s, Lecture5.genRandomSudoku5 #)) -}
-465e7f263b732b6b794c2afeadb844c3
-  genRandomSudoku5 :: [Lecture5.Node]
-  {- Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ Lecture5.Node
-                   Lecture5.emptyN
-                   (GHC.Types.[] @ Lecture5.Node)) -}
-9a5b7c0a5c438b1d773bed2109aa71ba
-  genRandomSudoku6 ::
+     Unfolding: InlineRule (1, True, False)
+                (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 (# s,
+                    GHC.Types.:
+                      @ Lecture5.Node
+                      Lecture5.emptyN
+                      (GHC.Types.[] @ Lecture5.Node) #)) -}
+68f16b242c0571acf6b16e43de1f7aae
+  genNonSolvedSudoku6 ::
     (Lecture5.Sudoku, [Lecture5.Constraint])
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lecture5.Node] #)
-  {- Arity: 2, Strictness: <S(LS),1*U(C(U),U)><S,U>, Inline: [0],
-     Unfolding: InlineRule (2, True, False)
-                (\ (w :: (Lecture5.Sudoku, [Lecture5.Constraint]))
-                   (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 case w of ww { (,) ww1 ww2 -> Lecture5.$wrsuccNode ww1 ww2 w1 }) -}
-1dc6ea38e0b5e3c17cac9bf712138e00
-  genRandomSudoku7 ::
+  {- Arity: 2, Strictness: <S(LS),1*U(C(U),U)><S,U>,
+     Unfolding: (\ (w :: (Lecture5.Sudoku, [Lecture5.Constraint]))
+                   (w1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case w of ww { (,) ww1 ww2 ->
+                 Lecture5.$wrsuccNode GHC.Types.False ww1 ww2 w1 }) -}
+605d73f5c2ee1bed74c3ce233bf9b32a
+  genNonSolvedSudoku7 ::
     [Lecture5.Constraint]
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lecture5.Constraint] #)
@@ -3555,20 +3589,20 @@ dc6e91718a7f9f62a7eda23eaa27b806
                    (eta :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case cs of wild {
                    []
-                   -> Lecture5.genRandomSudoku8
+                   -> Lecture5.genNonSolvedSudoku8
                         @ Lecture5.Constraint
                         (GHC.Types.[] @ Lecture5.Constraint)
                         eta
                    : x xs
-                   -> Lecture5.genRandomSudoku8
+                   -> Lecture5.genNonSolvedSudoku8
                         @ Lecture5.Constraint
                         (GHC.List.takeWhile
                            @ (Lecture5.Row, Lecture5.Column, [Lecture5.Value])
                            (Lecture5.sameLen x)
                            wild)
                         eta }) -}
-cbe31795721caff1571bb684ad094e64
-  genRandomSudoku8 ::
+a189b806e71370f30504408f49d6b247
+  genNonSolvedSudoku8 ::
     [a]
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [a] #)
@@ -3579,7 +3613,7 @@ cbe31795721caff1571bb684ad094e64
                  case ds of wild {
                    [] -> (# eta, GHC.Types.[] @ a #)
                    : ipv ipv1
-                   -> case Lecture5.genRandomSudoku9
+                   -> case Lecture5.genNonSolvedSudoku9
                              (case GHC.List.$wlenAcc @ a wild 0# of ww2 { DEFAULT ->
                               GHC.Types.I# (GHC.Prim.-# ww2 1#) })
                              eta of ds1 { (#,#) ipv2 ipv3 ->
@@ -3589,8 +3623,8 @@ cbe31795721caff1571bb684ad094e64
                            (case ipv3 of ww { GHC.Types.I# ww1 ->
                             GHC.List.$w!! @ a wild ww1 })
                            (GHC.Types.[] @ a) #) } }) -}
-ab92dd280c7e970577fde6765e2229eb
-  genRandomSudoku9 ::
+2190efe98aebf654f643de1f8526a87b
+  genNonSolvedSudoku9 ::
     GHC.Types.Int
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, GHC.Types.Int #)
@@ -3623,11 +3657,225 @@ ab92dd280c7e970577fde6765e2229eb
                          case ww4 of a'1 { System.Random.StdGen ipv ipv1 -> (a'1, ww3) } })
                         eta of ds1 { (#,#) ipv ipv1 ->
                  case ipv1 of b1 { GHC.Types.I# ipv2 -> ds1 } } }) -}
-f20de70cd32d22526dcc2f342b17e975
-  genRandomSudoku_go ::
+b80454c7183ab4c2d92badc2a66d4d8d
+  genNonSolvedSudokuNRC :: GHC.Types.IO Lecture5.Node
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Lecture5.genNonSolvedSudokuNRC1
+                  `cast`
+                (Sym (GHC.Types.N:IO[0] <Lecture5.Node>_R)) -}
+7feaeaafa054b9b5bc77cfab906c6daf
+  genNonSolvedSudokuNRC1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Lecture5.genNonSolvedSudoku10
+                        @ Lecture5.Node
+                        Lecture5.genNonSolvedSudokuNRC2
+                          `cast`
+                        (<(Lecture5.Sudoku, [Lecture5.Constraint])>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
+                        Lecture5.solved
+                        Lecture5.genNonSolvedSudoku5
+                          `cast`
+                        (Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 case ipv1 of wild {
+                   []
+                   -> case (GHC.Magic.noinline
+                              @ (forall a. [GHC.Types.Char] -> GHC.Types.IO a)
+                              GHC.IO.failIO1
+                                `cast`
+                              (forall (a :: <*>_N).
+                               <GHC.Base.String>_R ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                              @ Lecture5.Node
+                              Lecture5.genNonSolvedSudoku3)
+                             `cast`
+                           (GHC.Types.N:IO[0] <Lecture5.Node>_R)
+                             ipv of ds2 { (#,#) ipv2 ipv3 ->
+                      Lecture5.genNonSolvedSudoku2 ipv2 ipv3 }
+                   : r ds
+                   -> case ds of wild1 {
+                        [] -> Lecture5.genNonSolvedSudoku2 ipv r
+                        : ipv2 ipv3
+                        -> case (GHC.Magic.noinline
+                                   @ (forall a. [GHC.Types.Char] -> GHC.Types.IO a)
+                                   GHC.IO.failIO1
+                                     `cast`
+                                   (forall (a :: <*>_N).
+                                    <GHC.Base.String>_R ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                                   @ Lecture5.Node
+                                   Lecture5.genNonSolvedSudoku3)
+                                  `cast`
+                                (GHC.Types.N:IO[0] <Lecture5.Node>_R)
+                                  ipv of ds2 { (#,#) ipv4 ipv5 ->
+                           Lecture5.genNonSolvedSudoku2 ipv4 ipv5 } } } }) -}
+3fe7a4003c50596944f2043aa03077c1
+  genNonSolvedSudokuNRC2 ::
+    (Lecture5.Sudoku, [Lecture5.Constraint])
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lecture5.Node] #)
+  {- Arity: 2, Strictness: <S(LS),1*U(C(U),U)><S,U>,
+     Unfolding: (\ (w :: (Lecture5.Sudoku, [Lecture5.Constraint]))
+                   (w1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case w of ww { (,) ww1 ww2 ->
+                 Lecture5.$wrsuccNode GHC.Types.True ww1 ww2 w1 }) -}
+e732d9aa6c026bf847b2bbbf84cf55b1
+  genNonSolvedSudoku_$srandomize ::
+    [(Lecture5.Row, Lecture5.Column)]
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          [(Lecture5.Row, Lecture5.Column)] #)
+  {- Arity: 2, Strictness: <S,U><S,U> -}
+4393975a4d4f658f57b37e2616d92fb0
+  genNonSolvedSudoku_go ::
     [Lecture5.Constraint]
     -> [Lecture5.Constraint] -> [Lecture5.Constraint]
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U> -}
+6ef4589cf507a1345c2e94754df6c7b5
+  genNumHints :: GHC.Types.IO [GHC.Types.Int]
+  {- Arity: 1,
+     Unfolding: InlineRule (0, True, True)
+                Lecture5.genNumHints1
+                  `cast`
+                (Sym (GHC.Types.N:IO[0] <[GHC.Types.Int]>_R)) -}
+a1c387f83157da3ab6af46c82ba4ba70
+  genNumHints1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [GHC.Types.Int] #)
+  {- Arity: 1,
+     Unfolding: (Lecture5.genNumHints2 Lecture5.exmple10) -}
+150de766d1378d02bdf38fb22d072ad3
+  genNumHints2 ::
+    GHC.Integer.Type.Integer
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [GHC.Types.Int] #)
+  {- Arity: 2, Strictness: <S,U><S,U> -}
+32f9dc1f96110f7e995c589b3f285817
+  genNumHintsNRC :: GHC.Types.IO [GHC.Types.Int]
+  {- Arity: 1,
+     Unfolding: InlineRule (0, True, True)
+                Lecture5.genNumHintsNRC1
+                  `cast`
+                (Sym (GHC.Types.N:IO[0] <[GHC.Types.Int]>_R)) -}
+8bbee73c74a1a1b6ef31a5319d7f737f
+  genNumHintsNRC1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [GHC.Types.Int] #)
+  {- Arity: 1,
+     Unfolding: (Lecture5.genNumHintsNRC2 Lecture5.exmple10) -}
+8a7b9188e47049d7f5cd58fdf6f754aa
+  genNumHintsNRC2 ::
+    GHC.Integer.Type.Integer
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [GHC.Types.Int] #)
+  {- Arity: 2, Strictness: <S,U><S,U> -}
+53e036b784ff98744b074306b54d532d
+  genProblem :: Lecture5.Node -> GHC.Types.IO Lecture5.Node
+  {- Arity: 2, Strictness: <L,U(U,U)><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Lecture5.genProblem1
+                  `cast`
+                (<Lecture5.Node>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <Lecture5.Node>_R)) -}
+21198d7a316350b3518d9c0ed4ab5ecb
+  genProblem1 ::
+    Lecture5.Node
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
+  {- Arity: 2, Strictness: <L,U(U,U)><S,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (n :: Lecture5.Node)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Lecture5.genNonSolvedSudoku_$srandomize
+                        (Lecture5.filledPositions (case n of wild { (,) x ds1 -> x }))
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 (# ipv, Lecture5.minimalize n ipv1 GHC.Types.True #) }) -}
+0b9d8f728834ded1db60f7b0ddf2a441
+  genProblemType ::
+    Lecture5.Node -> GHC.Types.Bool -> GHC.Types.IO Lecture5.Node
+  {- Arity: 3, Strictness: <L,U(U,U)><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Lecture5.genProblemType1
+                  `cast`
+                (<Lecture5.Node>_R
+                 ->_R <GHC.Types.Bool>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <Lecture5.Node>_R)) -}
+8cf34b896579a41df8c97551de95d85c
+  genProblemType1 ::
+    Lecture5.Node
+    -> GHC.Types.Bool
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
+  {- Arity: 3, Strictness: <L,U(U,U)><L,U><S,U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ (n :: Lecture5.Node)
+                   (isNRC :: GHC.Types.Bool)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Lecture5.genNonSolvedSudoku_$srandomize
+                        (Lecture5.filledPositions (case n of wild { (,) x ds1 -> x }))
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 (# ipv, Lecture5.minimalize n ipv1 isNRC #) }) -}
+14d70af0682b14318e766152f6be61f2
+  genRandomSudoku :: GHC.Types.IO Lecture5.Node
+  {- Arity: 1,
+     Unfolding: InlineRule (0, True, True)
+                Lecture5.genRandomSudoku1
+                  `cast`
+                (Sym (GHC.Types.N:IO[0] <Lecture5.Node>_R)) -}
+1594dc13504e4d488e589a3f428d8681
+  genRandomSudoku1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
+  {- Arity: 1,
+     Unfolding: (Lecture5.genRandomSudoku2 GHC.Types.True) -}
+75241dc9e2a6adf3be3d2426913c1f71
+  genRandomSudoku2 ::
+    GHC.Types.Bool
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lecture5.Node #)
+  {- Arity: 2, Strictness: <L,U><S,U>,
+     Unfolding: (\ (isNrc :: GHC.Types.Bool)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Lecture5.genNonSolvedSudoku10
+                        @ Lecture5.Node
+                        (Lecture5.genRandomSudoku3 isNrc)
+                          `cast`
+                        (<(Lecture5.Sudoku, [Lecture5.Constraint])>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
+                        Lecture5.solved
+                        Lecture5.genNonSolvedSudoku5
+                          `cast`
+                        (Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 case ipv1 of wild {
+                   [] -> Lecture5.$wfail ipv
+                   : r ds
+                   -> case ds of wild1 {
+                        [] -> (# ipv, r #) : ipv2 ipv3 -> Lecture5.$wfail ipv } } }) -}
+7e7e46f636951d661d613d0c66dbacf7
+  genRandomSudoku3 ::
+    GHC.Types.Bool
+    -> (Lecture5.Sudoku, [Lecture5.Constraint])
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lecture5.Node] #)
+  {- Arity: 3, Strictness: <L,U><S(LS),1*U(C(U),U)><S,U>,
+     Inline: [0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: GHC.Types.Bool)
+                   (w1 :: (Lecture5.Sudoku, [Lecture5.Constraint]))
+                   (w2 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case w1 of ww { (,) ww1 ww2 ->
+                 Lecture5.$wrsuccNode w ww1 ww2 w2 }) -}
+eb8f77db855cae1f08a3f1fbf54ffa7f
+  genRandomSudokuType :: GHC.Types.Bool -> GHC.Types.IO Lecture5.Node
+  {- Arity: 2, Strictness: <L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Lecture5.genRandomSudoku2
+                  `cast`
+                (<GHC.Types.Bool>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <Lecture5.Node>_R)) -}
 2dc2f33ea1904cba57db08b4957a6c9d
   genSudokuPositions :: Test.QuickCheck.Gen.Gen Lecture5.Position
   {- Arity: 2,
@@ -3715,28 +3963,28 @@ c7728bdaac86dbbaefb7c4f9f95fd22e
 9831231d7b9e29fdac1393d494fe39ef
   getPositionForBlock2 :: Lecture5.Position
   {- Strictness: x -}
-cc81ca8da730188663d93571f45cee6b
+38c98a0d50a976626c70d91a89ba9c64
   getRandomCnstr ::
     [Lecture5.Constraint] -> GHC.Types.IO [Lecture5.Constraint]
   {- Arity: 2, Strictness: <S,1*U><S,U>,
      Unfolding: InlineRule (0, True, True)
-                Lecture5.genRandomSudoku7
+                Lecture5.genNonSolvedSudoku7
                   `cast`
                 (<[Lecture5.Constraint]>_R
                  ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Constraint]>_R)) -}
-9f61d16255a58e6307c5658ab91d88f7
+415eb9f1223f4b5659256585e109bc26
   getRandomInt :: GHC.Types.Int -> GHC.Types.IO GHC.Types.Int
   {- Arity: 2, Strictness: <L,1*U(U)><S,U>m,
      Unfolding: InlineRule (0, True, True)
-                Lecture5.genRandomSudoku9
+                Lecture5.genNonSolvedSudoku9
                   `cast`
                 (<GHC.Types.Int>_R
                  ->_R Sym (GHC.Types.N:IO[0] <GHC.Types.Int>_R)) -}
-a9ac002349877049dde3477f3b9ef7f0
+78e0442659d0dfafaaeb6e8646b5968d
   getRandomItem :: [a] -> GHC.Types.IO [a]
   {- Arity: 2, Strictness: <S,1*U><S,U>,
      Unfolding: InlineRule (0, True, True)
-                Lecture5.genRandomSudoku8
+                Lecture5.genNonSolvedSudoku8
                   `cast`
                 (forall (a :: <*>_N).
                  <[a]>_R ->_R Sym (GHC.Types.N:IO[0] <[a]>_R)) -}
@@ -3793,10 +4041,13 @@ e2e5a7d260380220d6fbd2e4c32820de
                  case w of ww { (,,) ww1 ww2 ww3 ->
                  case w1 of ww4 { (,,) ww5 ww6 ww7 ->
                  Lecture5.$wlength3rd @ a @ b @ c ww3 ww7 } }) -}
-c7a1770a2f41e9cfc8762681ce30985b
+5ae254d0be9e567721986486951e3411
   minimalize ::
-    Lecture5.Node -> [(Lecture5.Row, Lecture5.Column)] -> Lecture5.Node
-  {- Arity: 2, Strictness: <L,U(U,U)><S,1*U> -}
+    Lecture5.Node
+    -> [(Lecture5.Row, Lecture5.Column)]
+    -> GHC.Types.Bool
+    -> Lecture5.Node
+  {- Arity: 3, Strictness: <L,U(U,U)><S,1*U><L,U> -}
 19c0d0dbfb2dae36fddfdd41a6d7ab91
   nrcBl :: GHC.Types.Int -> [GHC.Types.Int]
   {- Arity: 1, Strictness: <L,U>,
@@ -4365,36 +4616,31 @@ aad5763fe4cece09244f3c09f661b51c
 eb96e721ff771ee4d3230f1b96c26bcb
   positions :: [GHC.Types.Int]
   {- Unfolding: (GHC.Enum.eftInt 1# 9#) -}
-33599db2d237bd6aa418980885719dd2
+2c95150d4468667637bba9fdb138917c
   prune ::
     (Lecture5.Row, Lecture5.Column, Lecture5.Value)
-    -> [Lecture5.Constraint] -> [Lecture5.Constraint]
-  {- Arity: 2, Strictness: <L,1*U(U(U),U(U),U)><S,1*U> -}
-716eb856b1c3400ec69acc47d68fbeee
+    -> [Lecture5.Constraint] -> GHC.Types.Bool -> [Lecture5.Constraint]
+  {- Arity: 3, Strictness: <L,1*U(U(U),U(U),U)><S,1*U><L,1*U> -}
+3c33f9e7deeca2f77112f82242eda15e
   randomS :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.randomS1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-02e7401111c5e875978b87577bae8e39
+8e08e4b7ab42894e2037d4ed626bbca5
   randomS1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
                 (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 case Lecture5.genRandomSudoku10
+                 case Lecture5.genNonSolvedSudoku10
                         @ Lecture5.Node
-                        Lecture5.genRandomSudoku6
+                        (Lecture5.genRandomSudoku3 GHC.Types.True)
                           `cast`
                         (<(Lecture5.Sudoku, [Lecture5.Constraint])>_R
                          ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
                         Lecture5.solved
-                        (\ (s1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
-                         (# s1,
-                            GHC.Types.:
-                              @ Lecture5.Node
-                              Lecture5.emptyN
-                              (GHC.Types.[] @ Lecture5.Node) #))
+                        Lecture5.genNonSolvedSudoku5
                           `cast`
                         (Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
                         s of ds1 { (#,#) ipv ipv1 ->
@@ -4560,7 +4806,7 @@ eb96e721ff771ee4d3230f1b96c26bcb
 072db1c152bf0df1333ac8a434cf3c97
   randomS6 :: GHC.Types.IO ()
   {- Strictness: x -}
-8af411acf9f8a2d349d26fa78d2a4cf7
+53102c6f01bc49682c051f43b4a2bebf
   randomize :: GHC.Classes.Eq a => [a] -> GHC.Types.IO [a]
   {- Arity: 3, Strictness: <L,U(C(C1(U)),A)><S,U><S,U>,
      Unfolding: InlineRule (0, True, True)
@@ -4638,7 +4884,7 @@ ab85abc49486f3f895c96a2b89085fe7
                  GHC.Classes.$fEq[]_$s$c==
                    (Data.OldList.nubBy @ Lecture5.Value GHC.Classes.eqInt xs)
                    xs) -}
-07b6c4a4f22a3705b8e8a81809d34ee8
+e511e4d0aa44ca88329ef17027373632
   rsearch ::
     (node -> GHC.Types.IO [node])
     -> (node -> GHC.Types.Bool)
@@ -4647,33 +4893,37 @@ ab85abc49486f3f895c96a2b89085fe7
   {- Arity: 4, HasNoCafRefs,
      Strictness: <L,C(C1(U(U,1*U)))><L,C(U)><C(S(SS)),1*C1(U(U,1*U))><S,U>,
      Unfolding: InlineRule (0, True, True)
-                Lecture5.genRandomSudoku10
+                Lecture5.genNonSolvedSudoku10
                   `cast`
                 (forall (node :: <*>_N).
                  <node -> GHC.Types.IO [node]>_R
                  ->_R <node -> GHC.Types.Bool>_R
                  ->_R <GHC.Types.IO [node]>_R
                  ->_R Sym (GHC.Types.N:IO[0] <[node]>_R)) -}
-a430ef39cf9296626ec1c03064899a6f
-  rsolveNs :: [Lecture5.Node] -> GHC.Types.IO [Lecture5.Node]
-  {- Arity: 2, Strictness: <S,1*U><S,U>,
+876cd1315f2db887742469d5a78c92d7
+  rsolveNs ::
+    [Lecture5.Node] -> GHC.Types.Bool -> GHC.Types.IO [Lecture5.Node]
+  {- Arity: 3, Strictness: <S,1*U><L,U><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.rsolveNs1
                   `cast`
                 (<[Lecture5.Node]>_R
+                 ->_R <GHC.Types.Bool>_R
                  ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R)) -}
-2a6967aab75165e7229009423be08de2
+95f010804d7045b16eba2c3bd6a79403
   rsolveNs1 ::
     [Lecture5.Node]
+    -> GHC.Types.Bool
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lecture5.Node] #)
-  {- Arity: 2, Strictness: <S,1*U><S,U>,
-     Unfolding: InlineRule (2, True, False)
+  {- Arity: 3, Strictness: <S,1*U><L,U><S,U>,
+     Unfolding: InlineRule (3, True, False)
                 (\ (ns :: [Lecture5.Node])
+                   (isNRC :: GHC.Types.Bool)
                    (eta :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 Lecture5.genRandomSudoku10
+                 Lecture5.genNonSolvedSudoku10
                    @ Lecture5.Node
-                   Lecture5.genRandomSudoku6
+                   (Lecture5.genRandomSudoku3 isNRC)
                      `cast`
                    (<(Lecture5.Sudoku, [Lecture5.Constraint])>_R
                     ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
@@ -4683,13 +4933,15 @@ a430ef39cf9296626ec1c03064899a6f
                      `cast`
                    (Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
                    eta) -}
-437a4cf845908b686cf16a1637d628b3
-  rsuccNode :: Lecture5.Node -> GHC.Types.IO [Lecture5.Node]
-  {- Arity: 2, Strictness: <S(LS),1*U(C(U),U)><S,U>,
+6e8d4089af73538b36843e1db3722e2a
+  rsuccNode ::
+    GHC.Types.Bool -> Lecture5.Node -> GHC.Types.IO [Lecture5.Node]
+  {- Arity: 3, Strictness: <L,U><S(LS),1*U(C(U),U)><S,U>,
      Unfolding: InlineRule (0, True, True)
-                Lecture5.genRandomSudoku6
+                Lecture5.genRandomSudoku3
                   `cast`
-                (<(Lecture5.Sudoku, [Lecture5.Constraint])>_R
+                (<GHC.Types.Bool>_R
+                 ->_R <(Lecture5.Sudoku, [Lecture5.Constraint])>_R
                  ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R)) -}
 7bb5e46da24cc4025765ca93eedd59a0
   sameBlock ::
@@ -4764,14 +5016,14 @@ cf0101f8f7d7145db240498970898242
 48c0139f39ba489287acc30fdd30ce12
   showVal2 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: (" "#) -}
-f9a96b418e7a62dc991c2d79392ebfb7
+9ebf77650bc8256969b6a8d9fbb34337
   solveAndShow :: Lecture5.Grid -> GHC.Types.IO [()]
   {- Arity: 2, Strictness: <L,U><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.solveAndShow1
                   `cast`
                 (<Lecture5.Grid>_R ->_R Sym (GHC.Types.N:IO[0] <[()]>_R)) -}
-c460950ccf83364cca77bb016bc31dad
+0d871e167e0103c0591e360bf15492e9
   solveAndShow1 ::
     Lecture5.Grid
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -4791,18 +5043,18 @@ c460950ccf83364cca77bb016bc31dad
                    -> Lecture5.solveAndShow3
                         (Lecture5.search
                            @ Lecture5.Node
-                           Lecture5.succNode
+                           Lecture5.checkAllErasedHints2
                            Lecture5.solved
                            (GHC.Types.:
                               @ Lecture5.Node
                               (s, Lecture5.constraints s)
                               (GHC.Types.[] @ Lecture5.Node)))
                         eta }) -}
-edcf844c698457cd6c29bbb5c1a1035b
+9332e53d679fe1a88b76f525c4eb4e41
   solveAndShow2 :: [Lecture5.Node]
   {- Unfolding: (Lecture5.search
                    @ Lecture5.Node
-                   Lecture5.succNode
+                   Lecture5.checkAllErasedHints2
                    Lecture5.solved
                    (GHC.Types.[] @ Lecture5.Node)) -}
 cebdf78c7b7bae464c2c3b32c7fdb07c
@@ -4811,21 +5063,34 @@ cebdf78c7b7bae464c2c3b32c7fdb07c
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [()] #)
   {- Arity: 2, Strictness: <S,1*U><S,U> -}
-6baf8cd78d589cedf27fb99cafe20173
-  solveNs :: [Lecture5.Node] -> [Lecture5.Node]
-  {- Arity: 1,
-     Unfolding: (Lecture5.search
+da7ac1a0ecdbe2c28fa801699f14c996
+  solveNs :: [Lecture5.Node] -> GHC.Types.Bool -> [Lecture5.Node]
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (n :: [Lecture5.Node]) (isNRC :: GHC.Types.Bool) ->
+                 Lecture5.search
                    @ Lecture5.Node
-                   Lecture5.succNode
-                   Lecture5.solved) -}
-ac3a5d66d926387da301ef58ca47fcf3
+                   (Lecture5.succNode isNRC)
+                   Lecture5.solved
+                   n) -}
+ead4e738824684852e6d0be108665dcf
+  solveNs' :: [Lecture5.Node] -> [Lecture5.Node]
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (n :: [Lecture5.Node]) ->
+                 Lecture5.search
+                   @ Lecture5.Node
+                   Lecture5.checkAllErasedHints2
+                   Lecture5.solved
+                   n) -}
+bb4b3aa67fa26acfad89e97b490baea7
   solveShowNs :: [Lecture5.Node] -> GHC.Types.IO [()]
   {- Arity: 2, Strictness: <S,1*U><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Lecture5.solveShowNs1
                   `cast`
                 (<[Lecture5.Node]>_R ->_R Sym (GHC.Types.N:IO[0] <[()]>_R)) -}
-920e0c4c8380e4c2759f18aa2a9afe28
+01f042ad47a5ceb6bb6f078a42f993c3
   solveShowNs1 ::
     [Lecture5.Node]
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -4836,7 +5101,7 @@ ac3a5d66d926387da301ef58ca47fcf3
                  Lecture5.solveAndShow3
                    (Lecture5.search
                       @ Lecture5.Node
-                      Lecture5.succNode
+                      Lecture5.checkAllErasedHints2
                       Lecture5.solved
                       x)
                    eta) -}
@@ -4867,15 +5132,16 @@ ca1bd19a2626179673245957339e630b
                    (w1 :: (Lecture5.Row, Lecture5.Column)) ->
                  case w1 of ww { (,) ww1 ww2 ->
                  Lecture5.$wsubgridInjective w ww1 ww2 }) -}
-24a8c3aa0e9d7f943ca727601ca62fae
-  succNode :: Lecture5.Node -> [Lecture5.Node]
-  {- Arity: 1, Strictness: <S(LS),1*U(C(U),1*U)>,
-     Unfolding: InlineRule (1, True, False)
-                (\ (ds :: (Lecture5.Sudoku, [Lecture5.Constraint])) ->
+8a24822d18a702d3e261023f32bc4748
+  succNode :: GHC.Types.Bool -> Lecture5.Node -> [Lecture5.Node]
+  {- Arity: 2, Strictness: <L,U><S(LS),1*U(C(U),1*U)>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (isNRC :: GHC.Types.Bool)
+                   (ds :: (Lecture5.Sudoku, [Lecture5.Constraint])) ->
                  case ds of wild { (,) s ds1 ->
                  case ds1 of wild1 {
                    [] -> GHC.Types.[] @ Lecture5.Node
-                   : p ps -> Lecture5.extendNode (s, ps) p } }) -}
+                   : p ps -> Lecture5.extendNode (s, ps) p isNRC } }) -}
 f2af699618ecf9c765352b36ea28425f
   sud2grid :: Lecture5.Sudoku -> Lecture5.Grid
   {- Arity: 1, HasNoCafRefs, Strictness: <L,C(U)>,
@@ -4940,13 +5206,19 @@ f9b75e2f27e58e63b5411d5204ee404b
                  case w of ww { GHC.Types.I# ww1 ->
                  case w1 of ww2 { GHC.Types.I# ww3 ->
                  Lecture5.$wtestIsMinimal ww1 ww3 w2 } }) -}
-7be9c60bd6e2641fd7218e56ad0213a0
+8099a20776e42dbc5d7844bea97d0fac
   uniqueSol :: Lecture5.Node -> GHC.Types.Bool
   {- Arity: 1, Strictness: <L,U>,
-     Unfolding: (\ (node :: Lecture5.Node) ->
+     Unfolding: InlineRule (1, True, False)
+                (\ (node :: Lecture5.Node) ->
+                 Lecture5.uniqueSol' node GHC.Types.True) -}
+a0e101669f7851e3cc6817b4f8ff6ada
+  uniqueSol' :: Lecture5.Node -> GHC.Types.Bool -> GHC.Types.Bool
+  {- Arity: 2, Strictness: <L,U><L,U>,
+     Unfolding: (\ (node :: Lecture5.Node) (isNRC :: GHC.Types.Bool) ->
                  case Lecture5.search
                         @ Lecture5.Node
-                        Lecture5.succNode
+                        (Lecture5.succNode isNRC)
                         Lecture5.solved
                         (GHC.Types.:
                            @ Lecture5.Node
@@ -4979,7 +5251,7 @@ instance GHC.Show.Show [Lecture5.Tree] = Lecture5.$fShowTree
 "SPEC randomize @ (Row, Column)" forall ($dEq :: GHC.Classes.Eq
                                                    (Lecture5.Row, Lecture5.Column))
   Lecture5.randomize1 @ (Lecture5.Row, Lecture5.Column) $dEq
-  = Lecture5.genProblem_$srandomize
+  = Lecture5.genNonSolvedSudoku_$srandomize
 "SPEC/Lecture5 $fEq(,) @ Int @ Int" [orphan] forall (v1 :: GHC.Classes.Eq
                                                              GHC.Types.Int)
                                                     (v :: GHC.Classes.Eq GHC.Types.Int)

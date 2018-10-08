@@ -3,6 +3,7 @@ module Lecture5
 
 where
 
+import           Control.Monad
 import           Data.List
 import           Data.Maybe
 import           Debug.Trace
@@ -118,11 +119,11 @@ showNode = showSudoku . fst
 solved  :: Node -> Bool
 solved = null . snd
 
-extendNode :: Node -> Constraint -> [Node]
-extendNode (s,constraints) (r,c,vs) =
+extendNode :: Node -> Constraint -> Bool -> [Node]
+extendNode (s,constraints) (r,c,vs) isNRC =
    [(extend s ((r,c),v),
      sortBy length3rd $
-         prune (r,c,v) constraints) | v <- vs ]
+         prune (r,c,v) constraints isNRC) | v <- vs ]
 
 sameBlock :: (Row,Column) -> (Row,Column) -> Bool
 sameBlock (r,c) (x,y) = bl r == bl x && bl c == bl y
@@ -168,18 +169,21 @@ search children goal (x:xs)
   | goal x    = x : search children goal xs
   | otherwise = search children goal (children x ++ xs)
 
-solveNs :: [Node] -> [Node]
-solveNs = search succNode solved
+solveNs :: [Node] -> Bool -> [Node]
+solveNs n isNRC = search (succNode isNRC) solved n
 
-succNode :: Node -> [Node]
-succNode (s,[])   = []
-succNode (s,p:ps) = extendNode (s,ps) p
+solveNs' :: [Node] -> [Node]
+solveNs' n = solveNs n True
+
+succNode :: Bool -> Node -> [Node]
+succNode isNRC (s,[])   = []
+succNode isNRC (s,p:ps) = extendNode (s,ps) p isNRC
 
 solveAndShow :: Grid -> IO[()]
 solveAndShow gr = solveShowNs (initNode gr)
 
 solveShowNs :: [Node] -> IO[()]
-solveShowNs = traverse showNode . solveNs
+solveShowNs = traverse showNode . solveNs'
 
 example1 :: Grid
 example1 = [[5,3,0,0,7,0,0,0,0],
@@ -263,15 +267,14 @@ getRandomCnstr cs = getRandomItem (f cs)
   where f []     = []
         f (x:xs) = takeWhile (sameLen x) (x:xs)
 
-rsuccNode :: Node -> IO [Node]
-rsuccNode (s,cs) = do xs <- getRandomCnstr cs
-                      if null xs
-                        then return []
-                        else return
-                          (extendNode (s,cs\\xs) (head xs))
+rsuccNode :: Bool -> Node -> IO [Node]
+rsuccNode isNRC (s,cs) = do xs <- getRandomCnstr cs
+                            if null xs
+                            then return []
+                            else return (extendNode (s,cs\\xs) (head xs) isNRC)
 
-rsolveNs :: [Node] -> IO [Node]
-rsolveNs ns = rsearch rsuccNode solved (return ns)
+rsolveNs :: [Node] -> Bool -> IO [Node]
+rsolveNs ns isNRC = rsearch (rsuccNode isNRC) solved (return ns)
 
 rsearch :: (node -> IO [node])
             -> (node -> Bool) -> IO [node] -> IO [node]
@@ -291,16 +294,22 @@ rsearch succ goal ionodes =
                                succ goal (return $ tail xs)
 
 genRandomSudoku :: IO Node
-genRandomSudoku = do [r] <- rsolveNs [emptyN]
-                     return r
+genRandomSudoku = genRandomSudokuType True
+
+genRandomSudokuType :: Bool -> IO Node
+genRandomSudokuType isNrc = do [r] <- rsolveNs [emptyN] isNrc
+                               return r
 
 randomS = genRandomSudoku >>= showNode
 
-uniqueSol :: Node -> Bool
-uniqueSol node = singleton (solveNs [node]) where
+uniqueSol' :: Node -> Bool -> Bool
+uniqueSol' node isNRC = singleton (solveNs [node] isNRC) where
   singleton []       = False
   singleton [x]      = True
   singleton (x:y:zs) = False
+
+uniqueSol :: Node -> Bool
+uniqueSol node = uniqueSol' node True
 
 eraseS :: Sudoku -> (Row,Column) -> Sudoku
 eraseS s pos pos2 | pos == pos2 = 0
@@ -317,10 +326,10 @@ eraseN' :: Node -> [(Row,Column)] -> Node
 eraseN' n pos = (s, constraints s)
   where s = eraseS' (fst n) pos
 
-minimalize :: Node -> [(Row,Column)] -> Node
-minimalize n [] = n
-minimalize n ((r,c):rcs) | uniqueSol n' = minimalize n' rcs
-                         | otherwise    = minimalize n  rcs
+minimalize :: Node -> [(Row,Column)] -> Bool -> Node
+minimalize n [] isNRC = n
+minimalize n ((r,c):rcs) isNRC | uniqueSol' n' isNRC = minimalize n' rcs isNRC
+                               | otherwise          = minimalize n  rcs isNRC
   where n' = eraseN n (r,c)
 
 filledPositions :: Sudoku -> [(Row,Column)]
@@ -328,8 +337,11 @@ filledPositions s = [ (r,c) | r <- positions,
                               c <- positions, s (r,c) /= 0 ]
 
 genProblem :: Node -> IO Node
-genProblem n = do ys <- randomize xs
-                  return (minimalize n ys)
+genProblem n = genProblemType n True
+
+genProblemType :: Node -> Bool -> IO Node
+genProblemType n isNRC = do ys <- randomize xs
+                            return (minimalize n ys isNRC)
    where xs = filledPositions (fst n)
 
 
@@ -684,13 +696,46 @@ nrcSameBlock (r,c) (x,y) | all (\v -> v/=1 && v/=5 && v/=9) [r,c,x,y] = nrcBl r 
 
 -- A slightly modified version of the example prune code.
 prune :: (Row,Column,Value)
-      -> [Constraint] -> [Constraint]
-prune _ [] = []
-prune (r,c,v) ((x,y,zs):rest)
-  | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
-  | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
+      -> [Constraint] -> Bool -> [Constraint]
+prune _ [] isNRC = []
+prune (r,c,v) ((x,y,zs):rest) isNRC
+  | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest isNRC
+  | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest isNRC
   | sameBlock (r,c) (x,y) =
-        (x,y,zs\\[v]) : prune (r,c,v) rest
-  | nrcSameBlock (r,c) (x,y) =
-      (x,y,zs\\[v]) : prune (r,c,v) rest
-  | otherwise = (x,y,zs) : prune (r,c,v) rest
+        (x,y,zs\\[v]) : prune (r,c,v) rest isNRC
+  | isNRC && nrcSameBlock (r,c) (x,y) =
+      (x,y,zs\\[v]) : prune (r,c,v) rest isNRC
+  | otherwise = (x,y,zs) : prune (r,c,v) rest isNRC
+
+-- Assignment 7 (Bonus)
+-- Minimal problems for NRC Sudokus need fewer hints than standard Sudoku problems.
+-- Investigate the difference.
+-- What is the average number of hints in a minimal standard Sudoku problem?
+-- - Avarage number of tips from ten generated sudokus (standard):
+-- -  23.9
+
+-- What is the average number of hints in a minimal NRC Sudoku problem?
+-- - Avarage number of tips from ten generated sudokus (NRC):
+-- -  16.6
+--
+-- Result:
+--                                Average tips from ten generated sudokus:
+--                                23.9
+--
+--                                Average tips from ten generated NRC sudokus:
+--                                16.6
+genNonSolvedSudoku :: IO Node
+genNonSolvedSudoku = genRandomSudokuType False >>= genProblem
+
+genNumHints :: IO [Int]
+genNumHints = forM [1..10] $ \_ -> do
+       nd <- genNonSolvedSudoku
+       return (length (filledPositions (fst nd)))
+
+genNonSolvedSudokuNRC :: IO Node
+genNonSolvedSudokuNRC = genRandomSudoku >>= genProblem
+
+genNumHintsNRC :: IO [Int]
+genNumHintsNRC = forM [1..10] $ \_ -> do
+       nd <- genNonSolvedSudokuNRC
+       return (length (filledPositions (fst nd)))
