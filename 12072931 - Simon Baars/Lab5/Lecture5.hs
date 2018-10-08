@@ -124,18 +124,6 @@ extendNode (s,constraints) (r,c,vs) =
      sortBy length3rd $
          prune (r,c,v) constraints) | v <- vs ]
 
-prune :: (Row,Column,Value)
-      -> [Constraint] -> [Constraint]
-prune _ [] = []
-prune (r,c,v) ((x,y,zs):rest)
-  | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
-  | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
-  | sameBlock (r,c) (x,y) =
-        (x,y,zs\\[v]) : prune (r,c,v) rest
-  | nrcSameBlock (r,c) (x,y) =
-      (x,y,zs\\[v]) : prune (r,c,v) rest
-  | otherwise = (x,y,zs) : prune (r,c,v) rest
-
 sameBlock :: (Row,Column) -> (Row,Column) -> Bool
 sameBlock (r,c) (x,y) = bl r == bl x && bl c == bl y
 
@@ -346,7 +334,7 @@ genProblem n = do ys <- randomize xs
 
 
 -- Assignment 1
--- Time: 150 minutes
+-- Time: 110 minutes
 nrcExample :: Grid
 nrcExample = [[0,0,0,3,0,0,0,0,0],
            [0,0,0,7,0,0,3,0,0],
@@ -373,10 +361,6 @@ freeInNrcSubgrid s (r,c) = freeInSeq (nrcSubGrid s (r,c))
 nrcSubgridInjective :: Sudoku -> (Row,Column) -> Bool
 nrcSubgridInjective s (r,c) = injective vs where
   vs = filter (/= 0) (nrcSubGrid s (r,c))
-
-nrcSameBlock :: (Row,Column) -> (Row,Column) -> Bool
-nrcSameBlock (r,c) (x,y) | all (\v -> v/=1 && v/=5 && v/=9) [r,c,x,y] = nrcBl r == nrcBl x && nrcBl c == nrcBl y
-                         | otherwise = False
 
 freeAtPos :: Sudoku -> (Row,Column) -> [Value]
 freeAtPos s (r,c) =
@@ -425,12 +409,12 @@ freePosTest pos = freeAtPositions (grid2sud nrcExample) pos == freeAtPos (grid2s
 checkAllErasedHints :: Node -> Bool
 checkAllErasedHints node = all (not . uniqueSol) (map (eraseN node) (filledPositions $ fst node))
 
-testHasUniqueSol :: Int -> Int -> IO ()
-testHasUniqueSol testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
+testIsMinimal :: Int -> Int -> IO ()
+testIsMinimal testsExecuted totalTests = if testsExecuted == totalTests then putStrLn (show totalTests ++ " tests passed")
                 else (genRandomSudoku >>= genProblem) >>= \x -> if uniqueSol x && checkAllErasedHints x then
-                                                                   do putStrLn $ "\nThe test passed for the following sudoku problem (" ++ show testsExecuted ++ " out of " ++ show totalTests ++ "):"
+                                                                   do putStrLn $ "\nThe test passed for the following sudoku problem (" ++ show (testsExecuted + 1) ++ " out of " ++ show totalTests ++ "):"
                                                                       showNode x
-                                                                      testHasUniqueSol (testsExecuted+1) totalTests
+                                                                      testIsMinimal (testsExecuted+1) totalTests
                                                                 else do showNode x
                                                                         error "I failed on this sudoku problem :-("
 
@@ -461,13 +445,20 @@ removeBlocksFromSudoku 0 valueList randSudoku = randSudoku
 removeBlocksFromSudoku nBlocks valueList randSudoku = randSudoku >>= \x -> getRandomInt (length valueList - 1) >>= \r -> removeBlocksFromSudoku (nBlocks-1) (deleteN r valueList) (return (eraseN' x (createBlock (getPositionForBlock (valueList !! r)) (3,3))))
 
 -- Assignment 5
-genNrcProblem :: Node -> IO Node
-genNrcProblem n = do ys <- randomize xs
-                  return (minimalize n ys)
-   where xs = filledPositions (fst n)
+-- Time: 50 minutes
+nrcSameBlock :: (Row,Column) -> (Row,Column) -> Bool
+nrcSameBlock (r,c) (x,y) | all (\v -> v/=1 && v/=5 && v/=9) [r,c,x,y] = nrcBl r == nrcBl x && nrcBl c == nrcBl y
+                         | otherwise = False
 
-minimalizeNrc :: Node -> [(Row,Column)] -> Node
-minimalizeNrc n [] = n
-minimalizeNrc n ((r,c):rcs) | uniqueSol n' = minimalize n' rcs
-                        | otherwise    = minimalize n  rcs
- where n' = eraseN n (r,c)
+-- A slightly modified version of the example prune code.
+prune :: (Row,Column,Value)
+      -> [Constraint] -> [Constraint]
+prune _ [] = []
+prune (r,c,v) ((x,y,zs):rest)
+  | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
+  | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
+  | sameBlock (r,c) (x,y) =
+        (x,y,zs\\[v]) : prune (r,c,v) rest
+  | nrcSameBlock (r,c) (x,y) =
+      (x,y,zs\\[v]) : prune (r,c,v) rest
+  | otherwise = (x,y,zs) : prune (r,c,v) rest

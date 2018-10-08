@@ -12,8 +12,8 @@ main =
      putStrLn "\n\x1b[36m== Assignment 2 (Refactored NRC Sudoku) ==\x1b[0m"
      quickCheckResult $ forAll genSudokuPositions freePosTest
 
-     putStrLn "\n\x1b[36m== Assignment 3 (Test for unique solutions) ==\x1b[0m"
-     testHasUniqueSol 1 3
+     putStrLn "\n\x1b[36m== Assignment 3 (Test for minimal problems) ==\x1b[0m"
+     testIsMinimal 0 5
 
      putStrLn "\n\x1b[36m== Assignment 4 (Empty block sudoku problems) ==\x1b[0m"
      putStrLn "Trying max 10 times to find a sudoku problem with at least 3 empty blocks."
@@ -24,3 +24,6 @@ main =
      generateSudokuProblem 5 10 >>= \x -> if isJust x then fromJust x >>= \y -> showNode y else putStrLn "Not found"
      putStrLn "Trying max 10 times to find a sudoku problem with at least 6 empty blocks."
      generateSudokuProblem 6 10 >>= \x -> if isJust x then fromJust x >>= \y -> showNode y else putStrLn "Not found"
+
+     putStrLn "\n\x1b[36m== Assignment 5 (NRC Problem generator) ==\x1b[0m"
+     showNode =<< (genRandomSudoku >>= genProblem)
