@@ -5,7 +5,7 @@
 --
 -- Lab5
 
-module Ex2
+module Ex7
 
 where
 
@@ -14,6 +14,7 @@ import Test.QuickCheck
 import Data.List
 import Data.Char
 import Debug.Trace
+import Control.Monad
 
 type Row    = Int
 type Column = Int
@@ -22,14 +23,16 @@ type Grid   = [[Value]]
 
 
 
---Exercise 2
--- Refactoring of code
--- Which of the two versions is easier to modify for NRC sudokus, and why? ->
---  - Almost identical in the first time, but from now on every next constraint is easier
--- Which of the two versions is more efficient?
+--Exercise 7
+-- Minimal problems for NRC Sudokus need fewer hints than standard Sudoku problems.
+-- Investigate the difference.
+-- What is the average number of hints in a minimal standard Sudoku problem?
+-- - Avarage number of tips from ten generated sudokus (standard):
+-- -  24.3
 
--- Time: 180 minutes
--- Credits to @wouter (mine had a bug I couldnt find and i needed a perfectly working solution to go to the bonus)
+-- What is the average number of hints in a minimal NRC Sudoku problem?
+-- - Avarage number of tips from ten generated sudokus (NRC):
+-- -  17.1
 
 positions, values :: [Int]
 positions = [1..9]
@@ -153,7 +156,7 @@ type Constraint = (Row,Column,[Value])
 
 type Node = (Sudoku,[Constraint])
 
-allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt, blockNrcConstrnt]
+allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt] --, blockNrcConstrnt]
 
 showNode :: Node -> IO()
 showNode = showSudoku . fst
@@ -323,3 +326,118 @@ exampleNRC_1 = [[0,0,0,3,0,0,0,0,0],
                 [0,0,0,0,0,0,0,3,1],
                 [0,8,0,0,4,0,0,0,0],
                 [0,0,2,0,0,0,0,0,0]]
+
+emptyN :: Node
+emptyN = (\ _ -> 0,constraints (\ _ -> 0))
+
+getRandomInt :: Int -> IO Int
+getRandomInt n = getStdRandom (randomR (0,n))
+
+getRandomItem :: [a] -> IO [a]
+getRandomItem [] = return []
+getRandomItem xs = do n <- getRandomInt maxi
+                      return [xs !! n]
+                   where maxi = length xs - 1
+
+randomize :: Eq a => [a] -> IO [a]
+randomize xs = do y <- getRandomItem xs
+                  if null y
+                    then return []
+                    else do ys <- randomize (xs\\y)
+                            return (head y:ys)
+
+sameLen :: Constraint -> Constraint -> Bool
+sameLen (_,_,xs) (_,_,ys) = length xs == length ys
+
+getRandomCnstr :: [Constraint] -> IO [Constraint]
+getRandomCnstr cs = getRandomItem (f cs)
+  where f [] = []
+        f (x:xs) = takeWhile (sameLen x) (x:xs)
+
+rsuccNode :: Node -> IO [Node]
+rsuccNode (s,cs) = do xs <- getRandomCnstr cs
+                      if null xs
+                        then return []
+                        else return
+                          (extendNode (s,cs\\xs) (head xs))
+
+rsolveNs :: [Node] -> IO [Node]
+rsolveNs ns = rsearch rsuccNode solved (return ns)
+
+rsearch :: (node -> IO [node])
+            -> (node -> Bool) -> IO [node] -> IO [node]
+rsearch succ goal ionodes =
+  do xs <- ionodes
+     if null xs
+       then return []
+       else
+         if goal (head xs)
+           then return [head xs]
+           else do ys <- rsearch succ goal (succ (head xs))
+                   if (not . null) ys
+                      then return [head ys]
+                      else if null (tail xs) then return []
+                           else
+                             rsearch
+                               succ goal (return $ tail xs)
+
+genRandomSudoku :: IO Node
+genRandomSudoku = do [r] <- rsolveNs [emptyN]
+                     return r
+
+randomS = genRandomSudoku >>= showNode
+
+uniqueSol :: Node -> Bool
+uniqueSol node = singleton (solveNs [node]) where
+  singleton [] = False
+  singleton [x] = True
+  singleton (x:y:zs) = False
+
+eraseS :: Sudoku -> (Row,Column) -> Sudoku
+eraseS s (r,c) (x,y) | (r,c) == (x,y) = 0
+                     | otherwise      = s (x,y)
+
+eraseN :: Node -> (Row,Column) -> Node
+eraseN n (r,c) = (s, constraints s)
+  where s = eraseS (fst n) (r,c)
+
+minimalize :: Node -> [(Row,Column)] -> Node
+minimalize n [] = n
+minimalize n ((r,c):rcs) | uniqueSol n' = minimalize n' rcs
+                         | otherwise    = minimalize n  rcs
+  where n' = eraseN n (r,c)
+
+filledPositions :: Sudoku -> [(Row,Column)]
+filledPositions s = [ (r,c) | r <- positions,
+                              c <- positions, s (r,c) /= 0 ]
+
+genProblem :: Node -> IO Node
+genProblem n = do ys <- randomize xs
+                  return (minimalize n ys)
+   where xs = filledPositions (fst n)
+
+genNonSolvedSudoku :: IO Node
+genNonSolvedSudoku = (genRandomSudoku  >>=  genProblem)
+
+checkWithElemRemoved :: Node -> IO Bool
+checkWithElemRemoved nd = do
+      let fp = filledPositions (fst nd)
+      let erasedSuds = map (eraseN nd) fp
+      return (all not $ map uniqueSol erasedSuds)
+
+genNumHints :: IO [Int]
+genNumHints = forM [1..10] $ \_ -> do
+       nd <- genNonSolvedSudoku
+       return (length (filledPositions (fst nd)))
+
+calcAvarageHints :: IO ()
+calcAvarageHints = do
+      nums <- genNumHints
+      putStrLn "Avarage tips from ten generated sudokus:"
+      print (fromIntegral(sum(nums)) / fromIntegral(length(nums)))
+
+main :: IO ()
+main = do [r] <- rsolveNs [emptyN]
+          showNode r
+          s  <- genProblem r
+          showNode s
