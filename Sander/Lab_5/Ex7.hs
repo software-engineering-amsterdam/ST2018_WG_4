@@ -14,6 +14,7 @@ import Test.QuickCheck
 import Data.List
 import Data.Char
 import Debug.Trace
+import Control.Monad
 
 type Row    = Int
 type Column = Int
@@ -26,11 +27,12 @@ type Grid   = [[Value]]
 -- Minimal problems for NRC Sudokus need fewer hints than standard Sudoku problems.
 -- Investigate the difference.
 -- What is the average number of hints in a minimal standard Sudoku problem?
--- What is the average number of hints in a minimal NRC Sudoku problem?
+-- - Avarage number of tips from ten generated sudokus (standard):
+-- -  24.3
 
--- A Sudoku problem P is minimal if it admits a unique solution,
---  and every problem P' you can get from P by erasing one of the hints admits
---   more than one solution.
+-- What is the average number of hints in a minimal NRC Sudoku problem?
+-- - Avarage number of tips from ten generated sudokus (NRC):
+-- -  17.1
 
 positions, values :: [Int]
 positions = [1..9]
@@ -154,7 +156,7 @@ type Constraint = (Row,Column,[Value])
 
 type Node = (Sudoku,[Constraint])
 
-allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt] -- blockNrcConstrnt]
+allConstrnts = [rowConstrnt, columnConstrnt, blockConstrnt] --, blockNrcConstrnt]
 
 showNode :: Node -> IO()
 showNode = showSudoku . fst
@@ -423,14 +425,16 @@ checkWithElemRemoved nd = do
       let erasedSuds = map (eraseN nd) fp
       return (all not $ map uniqueSol erasedSuds)
 
+genNumHints :: IO [Int]
+genNumHints = forM [1..10] $ \_ -> do
+       nd <- genNonSolvedSudoku
+       return (length (filledPositions (fst nd)))
+
 calcAvarageHints :: IO ()
 calcAvarageHints = do
-       nd <- genNonSolvedSudoku
-       print (length (filledPositions (fst nd)))
-       -- quickCheck(uniqueSol nd)
-       -- toCheck <- checkWithElemRemoved nd
-       -- print toCheck
-       -- quickCheck(toCheck)
+      nums <- genNumHints
+      putStrLn "Avarage tips from ten generated sudokus:"
+      print (fromIntegral(sum(nums)) / fromIntegral(length(nums)))
 
 main :: IO ()
 main = do [r] <- rsolveNs [emptyN]
