@@ -411,7 +411,6 @@ type Constrnt = [[Position]]
 rowConstrnt = [[(r,c)| c <- values ] | r <- values]
 columnConstrnt = [[(r,c)| r <- values ] | c <- values]
 blockConstrnt = [[(r,c)| r <- b1, c <- b2 ] | b1 <- blocks, b2 <- blocks]
---blockConstrnt = map (`createBlock` (3,3)) [(i,j) | i <- [1,4..9], j <- [1,4..9]]
 nrcConstrnt = map (`createBlock` (3,3)) [(i,j) | i <- [2,6], j <- [2,6]]
 constrnts = [rowConstrnt, columnConstrnt, blockConstrnt, nrcConstrnt]
 
@@ -690,9 +689,12 @@ removeBlocksFromSudoku nBlocks valueList randSudoku = randSudoku >>= \x -> getRa
 --                                |     7 |       |   2   |
 --                                |     5 |       | 3   9 |
 --                                +-------+-------+-------+
+inNrcBlock :: Int -> Bool
+inNrcBlock n = elem n $ nrcBl n
+
 nrcSameBlock :: (Row,Column) -> (Row,Column) -> Bool
-nrcSameBlock (r,c) (x,y) | all (\v -> v/=1 && v/=5 && v/=9) [r,c,x,y] = nrcBl r == nrcBl x && nrcBl c == nrcBl y
-                         | otherwise = False
+nrcSameBlock (r,c) (x,y) = all inNrcBlock [r,c,x,y] && nrcBl r == nrcBl x && nrcBl c == nrcBl y
+
 
 -- A slightly modified version of the example prune code.
 prune :: (Row,Column,Value)

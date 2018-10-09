@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-08 19:37:37.795661521 UTC
+2018-10-09 16:39:00.373669357 UTC
 
 interface main:Main 8043
-  interface hash: 624a0e51711f9cb634128fef3b8f0f02
-  ABI hash: a6e18e7f2cbfeb19729d78e06dffdbee
+  interface hash: e11da8419e0968e6621ba193272c2f6a
+  ABI hash: f4144c6e34f7b2680a5acb8f67663936
   export-list hash: 11f811ec11ddb407ae02300f3d162041
   orphan hash: 22254aaa5bdb7a2832d61bf114694d95
   flag hash: e02561aff3fbba899313e779d62898af
@@ -58,8 +58,8 @@ import  -/  base-4.11.1.0:GHC.Real b4beb0389ba1ad5d9640aae67848c5d3
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
 import  -/  base-4.11.1.0:System.IO 1c239be44126f7b1ba512ea61300f4dc
 import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
-import  -/  Lecture5 89b2161074f67109d973af505c52eb48
-  exports: df0572af465b6393ac374929c126b33c
+import  -/  Lecture5 77f148a9c68cd5c0548a3ef541b6bcc9
+  exports: afbdd642421c659ebd66e9a38c2f2022
   freePosTest b1c041eb64410e50e5c903ad94e8a22c
   genNumHints 6ef4589cf507a1345c2e94754df6c7b5
   genNumHintsNRC 32f9dc1f96110f7e995c589b3f285817
@@ -262,12 +262,12 @@ ea2235fd126445b6cf9294a3e6c7b322
                                 (GHC.Types.N:IO[0] <Lecture5.Node>_R)
                                   ipv2 of ds3 { (#,#) ipv6 ipv7 ->
                            Main.main2 ipv6 ipv7 } } } } }) -}
-97e508a35095524091ac639f69c73906
+ae8b98c7fc636de7c8441b3a1d27805f
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-197a993d1450b4594830f83b78a65c6b
+5590a9b22c6929f8cde668510dc58c54
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -305,7 +305,7 @@ ea2235fd126445b6cf9294a3e6c7b322
                         ipv6 of ds5 { (#,#) ipv8 ipv9 ->
                  case Lecture5.$wtestIsMinimal
                         0#
-                        10#
+                        5#
                         ipv8 of ds6 { (#,#) ipv10 ipv11 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
@@ -552,7 +552,7 @@ e01f95b1c46e72f6060eddd4a7b337d1
   main34 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("\ESC[36m== Assignment 1 (NRC Sudoku's) ==\ESC[0m"#) -}
-b61ac39a2d52cc30467e969d44fa9d15
+8c23c345034ee292c82c6bd9ebe0fa26
   main35 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)

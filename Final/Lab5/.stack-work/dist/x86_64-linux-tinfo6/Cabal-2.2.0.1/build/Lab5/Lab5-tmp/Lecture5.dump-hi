@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-08 19:37:37.003136651 UTC
+2018-10-09 16:38:43.612052008 UTC
 
 interface main:Lecture5 8043
-  interface hash: a0654cd6b718fdb13b9d20b0f0fd4df9
-  ABI hash: 89b2161074f67109d973af505c52eb48
-  export-list hash: df0572af465b6393ac374929c126b33c
+  interface hash: 59479273eba5b8c317bf534a774edc69
+  ABI hash: 77f148a9c68cd5c0548a3ef541b6bcc9
+  export-list hash: afbdd642421c659ebd66e9a38c2f2022
   orphan hash: ae86adf9ab717afc4d2cad9239bdbc0f
   flag hash: 9ae8a699cb106faa4356352859ff4048
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -66,6 +66,7 @@ exports:
   Lecture5.getRandomItem
   Lecture5.grid2sud
   Lecture5.grow
+  Lecture5.inNrcBlock
   Lecture5.initNode
   Lecture5.injective
   Lecture5.length3rd
@@ -856,50 +857,54 @@ bc88e7a4bbcca252138e5c7da6a8ff58
                    -> case GHC.Prim.==# ww2 ww3 of lwild1 {
                         DEFAULT -> GHC.Types.GT 1# -> GHC.Types.EQ }
                    1# -> GHC.Types.LT } } }) -}
-15e149551bc8d3d37339c1627546084d
+d0173407f63dfe4660f67b77cc1b99be
   $wnrcSameBlock ::
-    GHC.Prim.Int#
+    Lecture5.Row
     -> Lecture5.Column
     -> Lecture5.Row
     -> Lecture5.Column
     -> GHC.Types.Bool
-  {- Arity: 4, Strictness: <S,1*U><L,1*U(U)><L,1*U(U)><L,1*U(U)>,
-     Inline: [0],
-     Unfolding: (\ (ww :: GHC.Prim.Int#)
+  {- Arity: 4, Strictness: <L,U><L,U><L,U><L,U>, Inline: [0],
+     Unfolding: (\ (ww :: Lecture5.Row)
                    (ww1 :: Lecture5.Column)
                    (ww2 :: Lecture5.Row)
                    (ww3 :: Lecture5.Column) ->
-                 case ww of wild {
-                   DEFAULT
-                   -> case ww1 of wild1 { GHC.Types.I# x ->
-                      case x of wild2 {
-                        DEFAULT
-                        -> case ww2 of wild3 { GHC.Types.I# x1 ->
-                           case x1 of wild4 {
-                             DEFAULT
-                             -> case ww3 of wild5 { GHC.Types.I# x2 ->
-                                case x2 of wild6 {
-                                  DEFAULT
+                 case GHC.List.elem
+                        @ GHC.Types.Int
+                        GHC.Classes.$fEqInt
+                        ww
+                        (Lecture5.nrcBl ww) of wild {
+                   GHC.Types.False -> GHC.Types.False
+                   GHC.Types.True
+                   -> case GHC.List.elem
+                             @ GHC.Types.Int
+                             GHC.Classes.$fEqInt
+                             ww1
+                             (Lecture5.nrcBl ww1) of wild1 {
+                        GHC.Types.False -> GHC.Types.False
+                        GHC.Types.True
+                        -> case GHC.List.elem
+                                  @ GHC.Types.Int
+                                  GHC.Classes.$fEqInt
+                                  ww2
+                                  (Lecture5.nrcBl ww2) of wild2 {
+                             GHC.Types.False -> GHC.Types.False
+                             GHC.Types.True
+                             -> case GHC.List.elem
+                                       @ GHC.Types.Int
+                                       GHC.Classes.$fEqInt
+                                       ww3
+                                       (Lecture5.nrcBl ww3) of wild3 {
+                                  GHC.Types.False -> GHC.Types.False
+                                  GHC.Types.True
                                   -> case GHC.Classes.$fEq[]_$s$c==
-                                            (Lecture5.nrcBl (GHC.Types.I# wild))
-                                            (Lecture5.nrcBl wild3) of wild7 {
+                                            (Lecture5.nrcBl ww)
+                                            (Lecture5.nrcBl ww2) of wild4 {
                                        GHC.Types.False -> GHC.Types.False
                                        GHC.Types.True
                                        -> GHC.Classes.$fEq[]_$s$c==
-                                            (Lecture5.nrcBl wild1)
-                                            (Lecture5.nrcBl wild5) }
-                                  1# -> GHC.Types.False
-                                  5# -> GHC.Types.False
-                                  9# -> GHC.Types.False } }
-                             1# -> GHC.Types.False
-                             5# -> GHC.Types.False
-                             9# -> GHC.Types.False } }
-                        1# -> GHC.Types.False
-                        5# -> GHC.Types.False
-                        9# -> GHC.Types.False } }
-                   1# -> GHC.Types.False
-                   5# -> GHC.Types.False
-                   9# -> GHC.Types.False }) -}
+                                            (Lecture5.nrcBl ww1)
+                                            (Lecture5.nrcBl ww3) } } } } }) -}
 53584a014c0c491fd32da8c2539ffe5e
   $wnrcSubGrid ::
     Lecture5.Sudoku
@@ -4005,6 +4010,16 @@ c7728bdaac86dbbaefb7c4f9f95fd22e
                 (\ @ node (w :: node -> [node]) (w1 :: node) ->
                  case Lecture5.$wgrow @ node w w1 of ww { (#,#) ww1 ww2 ->
                  Lecture5.T @ node ww1 ww2 }) -}
+c0c6ebbab31cd05dcb8108679d4518d7
+  inNrcBlock :: GHC.Types.Int -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <L,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (n :: GHC.Types.Int) ->
+                 GHC.List.elem
+                   @ GHC.Types.Int
+                   GHC.Classes.$fEqInt
+                   n
+                   (Lecture5.nrcBl n)) -}
 b1a0a4da1e7381bfee5e261265bd77c8
   initNode :: Lecture5.Grid -> [Lecture5.Node]
   {- Arity: 1, Strictness: <L,U>,
@@ -4545,20 +4560,17 @@ f61ea190c203f359fcc1983fc55db811
                    @ Lecture5.Value
                    Lecture5.$fShowTree1
                    Lecture5.nrcExample10) -}
-3be90e571b565737c6b7652c6690496d
+10b3e826858e96b89fbc7ca101abef6b
   nrcSameBlock ::
     (Lecture5.Row, Lecture5.Column)
     -> (Lecture5.Row, Lecture5.Column) -> GHC.Types.Bool
-  {- Arity: 2,
-     Strictness: <S(S(S)L),1*U(1*U(1*U),1*U(U))><S,1*U(1*U(U),1*U(U))>,
-     Inline: [0],
+  {- Arity: 2, Strictness: <S,1*U(U,U)><S,1*U(U,U)>, Inline: [0],
      Unfolding: InlineRule (2, True, False)
                 (\ (w :: (Lecture5.Row, Lecture5.Column))
                    (w1 :: (Lecture5.Row, Lecture5.Column)) ->
                  case w of ww { (,) ww1 ww2 ->
-                 case ww1 of ww3 { GHC.Types.I# ww4 ->
-                 case w1 of ww5 { (,) ww6 ww7 ->
-                 Lecture5.$wnrcSameBlock ww4 ww2 ww6 ww7 } } }) -}
+                 case w1 of ww3 { (,) ww4 ww5 ->
+                 Lecture5.$wnrcSameBlock ww1 ww2 ww4 ww5 } }) -}
 254bc9be825d6c8fcf2e9593f39f0802
   nrcSubGrid ::
     Lecture5.Sudoku

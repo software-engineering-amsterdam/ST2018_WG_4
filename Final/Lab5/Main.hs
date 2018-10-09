@@ -14,7 +14,7 @@ main =
      quickCheckResult $ forAll genSudokuPositions freePosTest
 
      putStrLn "\n\x1b[36m== Assignment 3 (Test for minimal problems) ==\x1b[0m"
-     testIsMinimal 0 10
+     testIsMinimal 0 5
 
      putStrLn "\n\x1b[36m== Assignment 4 (Empty block sudoku problems) ==\x1b[0m"
      putStrLn "Trying max 10 times to find a sudoku problem with at least 3 empty blocks."
