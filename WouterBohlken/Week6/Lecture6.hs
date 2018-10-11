@@ -3,6 +3,7 @@ module Lecture6
 
 where
 
+import Data.Bits
 import System.Random
 
 factorsNaive :: Integer -> [Integer]
@@ -110,8 +111,17 @@ coprimes = filter (uncurry coprime) pairs
 expM ::  Integer -> Integer -> Integer -> Integer
 expM x y = rem (x^y)
 
+exM' :: Integer -> Integer -> Integer -> Integer -> Integer
+exM' base 0     modulus result = result
+exM' base expon modulus result | expon `mod` 2 == 1 = exM' newBase newExpon modulus ((result * base) `mod` modulus)
+                               | otherwise = exM' newBase newExpon modulus result
+                              where newBase = (base ^ 2) `mod` modulus
+                                    newExpon = shiftR expon 1
+
+-- Base on the 'Right-to-left binary method' pseudocode in https://en.wikipedia.org/wiki/Modular_exponentiation
 exM :: Integer -> Integer -> Integer -> Integer
-exM = expM -- to be replaced by a fast version
+exM base expon 1 = 0
+exM base expon modulus = exM' (base `mod` modulus) expon modulus 1
 
 primeTestF :: Integer -> IO Bool
 primeTestF n = do
@@ -142,9 +152,6 @@ primeMR k n = do
     a <- randomRIO (2, n-1) :: IO Integer
     if exM a (n-1) n /= 1 || mrComposite a n
     then return False else primeMR (k-1) n
-
-composites :: [Integer]
-composites = error "not yet implemented"
 
 encodeDH :: Integer -> Integer -> Integer -> Integer
 encodeDH p k m = m*k `mod` p

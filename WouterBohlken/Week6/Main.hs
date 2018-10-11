@@ -10,22 +10,12 @@ import Data.List
 import System.Random
 import Test.QuickCheck
 import Lecture6
+import Control.Monad
 
--- Assignment 1
+-- Exercise 1
+-- See Lecture6
 
-exM' :: Integer -> Integer -> Integer -> Integer -> Integer
-exM' base 0     modulus result = result
-exM' base expon modulus result | expon `mod` 2 == 1 = exM' newBase newExpon modulus ((result * base) `mod` modulus)
-                               | otherwise = exM' newBase newExpon modulus result
-                              where newBase = (base ^ 2) `mod` modulus
-                                    newExpon = shiftR expon 1
-
--- Base on the 'Right-to-left binary method' pseudocode in https://en.wikipedia.org/wiki/Modular_exponentiation
-exM :: Integer -> Integer -> Integer -> Integer
-exM base expon 1 = 0
-exM base expon modulus = exM' (base `mod` modulus) expon modulus 1
-
--- Assignment 2
+-- Exercise 2
 -- compareExM :: IO Float
 -- compareExM = do
 --               let aStart = getCurrentTime
@@ -36,10 +26,43 @@ exM base expon modulus = exM' (base `mod` modulus) expon modulus 1
 --               let bTime = getCurrentTime - bStart
 --               return bTime / aTime
 
--- Assignment 3
+-- Exercise 3
 
 composites :: [Integer]
 composites = filter (\x -> factors x /= [x]) [2..]
+
+
+-- Exercise 4
+testPrimeF :: Integer -> IO Bool
+testPrimeF n = do
+                fPrime <- primeTestF n
+                let actualPrime = prime n
+                return (fPrime == actualPrime)
+
+testPrimesF :: [Integer] ->IO ()
+testPrimesF [] = putStrLn ""
+testPrimesF (x:xs) = do
+                      isPrime <- testPrimeF x
+                      unless isPrime $ putStrLn ("Fooled primeTestF with: " ++ show x)
+                      testPrimesF xs
+
+testCompositePrimes :: Int -> IO ()
+testCompositePrimes n = testPrimesF (take n composites)
+
+
+-- Exercise 5
+carmichael :: [Integer]
+carmichael = [ (6*k+1)*(12*k+1)*(18*k+1) |
+       k <- [2..],
+       prime (6*k+1),
+       prime (12*k+1),
+       prime (18*k+1) ]
+
+
+testCarmichael :: Int -> IO ()
+testCarmichael n = testPrimesF (take n carmichael)
+
+-- Exercise 6
 
 
 
