@@ -11,6 +11,8 @@ import System.Random
 import Test.QuickCheck
 import Lecture6
 
+-- Assignment 1
+
 exM' :: Integer -> Integer -> Integer -> Integer -> Integer
 exM' base 0     modulus result = result
 exM' base expon modulus result | expon `mod` 2 == 1 = exM' newBase newExpon modulus ((result * base) `mod` modulus)
@@ -22,6 +24,24 @@ exM' base expon modulus result | expon `mod` 2 == 1 = exM' newBase newExpon modu
 exM :: Integer -> Integer -> Integer -> Integer
 exM base expon 1 = 0
 exM base expon modulus = exM' (base `mod` modulus) expon modulus 1
+
+-- Assignment 2
+-- compareExM :: IO Float
+-- compareExM = do
+--               let aStart = getCurrentTime
+--               expM 56 46472344 6
+--               let aTime = getCurrentTime - aStart
+--               let bStart = getCurrentTime
+--               Main.exM 56 46472344 6
+--               let bTime = getCurrentTime - bStart
+--               return bTime / aTime
+
+-- Assignment 3
+
+composites :: [Integer]
+composites = filter (\x -> factors x /= [x]) [2..]
+
+
 
 main :: IO ()
 main = do
