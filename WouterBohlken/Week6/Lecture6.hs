@@ -145,7 +145,7 @@ mrComposite x n = let
   in
     exM x s n /= 1 && last fs /= (n-1)
 
-primeMR :: Int -> Integer -> IO Bool
+primeMR :: Integer -> Integer -> IO Bool
 primeMR _ 2 = return True
 primeMR 0 _ = return True
 primeMR k n = do

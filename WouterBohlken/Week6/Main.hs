@@ -59,12 +59,27 @@ carmichael = [ (6*k+1)*(12*k+1)*(18*k+1) |
        prime (18*k+1) ]
 
 
-testCarmichael :: Int -> IO ()
-testCarmichael n = testPrimesF (take n carmichael)
+testCarmichaelF :: Int -> IO ()
+testCarmichaelF n = testPrimesF (take n carmichael)
 
 -- Exercise 6
 
+testPrimeMR :: Integer -> IO Bool
+testPrimeMR n = do
+                fPrime <- primeMR 2 n
+                let actualPrime = prime n
+                return (fPrime == actualPrime)
 
+testPrimesMR :: [Integer] ->IO ()
+testPrimesMR [] = putStrLn ""
+testPrimesMR (x:xs) = do
+                      isPrime <- testPrimeMR x
+                      unless isPrime $ putStrLn ("Fooled primeTestMR with: " ++ show x)
+                      testPrimesMR xs
+
+
+testCarmichaelMR :: Int -> IO ()
+testCarmichaelMR n = testPrimesMR (take n carmichael)
 
 main :: IO ()
 main = do
