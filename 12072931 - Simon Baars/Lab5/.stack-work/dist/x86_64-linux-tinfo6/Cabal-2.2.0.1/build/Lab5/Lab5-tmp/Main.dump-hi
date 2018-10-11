@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-07 17:40:40.739372707 UTC
+2018-10-08 18:45:33.434119342 UTC
 
 interface main:Main 8043
-  interface hash: 11f242d78cd8a89898fec98163960718
-  ABI hash: 4b5aee7ed42431bb1e5096c24c59037a
+  interface hash: 3637f12f5e598da6f11dc86f8adf7529
+  ABI hash: 5b0a88133c2a577c3cc6d76d5333c743
   export-list hash: 11f811ec11ddb407ae02300f3d162041
   orphan hash: 22254aaa5bdb7a2832d61bf114694d95
   flag hash: e02561aff3fbba899313e779d62898af
@@ -56,15 +56,17 @@ import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
 import  -/  base-4.11.1.0:System.IO 1c239be44126f7b1ba512ea61300f4dc
 import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
-import  -/  Lecture5 234a25e54efa1f335503ee8bb259d952
-  exports: 17fbddaf11f0d03a33d86235584032a2
+import  -/  Lecture5 272ee28846917f8e2126df74ab1cfb3e
+  exports: 787f876d118ec06b243a629a43400eea
   freePosTest b1c041eb64410e50e5c903ad94e8a22c
+  genProblem c62b5a801610c25580d00fc1d071fab1
+  genRandomSudoku 70295ad5342f73930bc3036376b7aeb6
   genSudokuPositions 2dc2f33ea1904cba57db08b4957a6c9d
   generateSudokuProblem 47e022ff491b6fc0159ca3d806b306aa
   nrcExample cb292d69ab70c72d317c9d9f15057ec8
   showNode 54c9093a7f186b07532c581589c7941f
   solveAndShow f9a96b418e7a62dc991c2d79392ebfb7
-  testHasUniqueSol ca4748c67a5ccaf18002e2f28f9f0b02
+  testIsMinimal f9b75e2f27e58e63b5411d5204ee404b
 4f5da328cb489e211905ea56e6beab98
   $s$fShow(,) :: GHC.Show.Show (GHC.Types.Int, GHC.Types.Int)
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -114,8 +116,38 @@ e5875966b74dad2d29772660b8a75e33
 d026be77cb9ced20e35a61514e0458aa
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("main"#) -}
-30002ab47d101eb78e744c22fd2c955c
+63a46b94f2d757c7f92daa971031e2e2
   $w$j ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1, Strictness: <S,U>, Inline: [0],
+     Unfolding: (\ (w :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main14
+                        GHC.Types.True
+                        w of ds1 { (#,#) ipv ipv1 ->
+                 case Lecture5.$wgenerateSudokuProblem
+                        Main.main13
+                        10#
+                        ipv of ds2 { (#,#) ipv2 ipv3 ->
+                 case ipv3 of wild {
+                   GHC.Base.Nothing
+                   -> case GHC.IO.Handle.Text.hPutStr2
+                             GHC.IO.Handle.FD.stdout
+                             Main.main5
+                             GHC.Types.True
+                             ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                      Main.$w$j1 ipv4 }
+                   GHC.Base.Just ipv4
+                   -> case ipv4 `cast` (GHC.Types.N:IO[0] <Lecture5.Node>_R)
+                             ipv2 of ds3 { (#,#) ipv5 ipv6 ->
+                      case Lecture5.randomS3
+                             (Lecture5.sud2grid (case ipv6 of wild1 { (,) x1 ds4 -> x1 }))
+                             ipv5 of ds4 { (#,#) ipv7 ipv8 ->
+                      Main.$w$j1 ipv7 } } } } }) -}
+23728af3ede02d32694ddcacaba12373
+  $w$j1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U>, Inline: [0],
@@ -133,19 +165,19 @@ d026be77cb9ced20e35a61514e0458aa
                    GHC.Base.Nothing
                    -> case GHC.IO.Handle.Text.hPutStr2
                              GHC.IO.Handle.FD.stdout
-                             Main.main2
+                             Main.main5
                              GHC.Types.True
                              ipv2 of ds3 { (#,#) ipv4 ipv5 ->
-                      Main.$w$j1 ipv4 }
+                      Main.$w$j2 ipv4 }
                    GHC.Base.Just ipv4
                    -> case ipv4 `cast` (GHC.Types.N:IO[0] <Lecture5.Node>_R)
                              ipv2 of ds3 { (#,#) ipv5 ipv6 ->
                       case Lecture5.randomS3
                              (Lecture5.sud2grid (case ipv6 of wild1 { (,) x1 ds4 -> x1 }))
                              ipv5 of ds4 { (#,#) ipv7 ipv8 ->
-                      Main.$w$j1 ipv7 } } } } }) -}
-ced2692d54c4a434fc61b22c68dc27cd
-  $w$j1 ::
+                      Main.$w$j2 ipv7 } } } } }) -}
+b801a500bd8c88d6b4749b14c57cb616
+  $w$j2 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U>, Inline: [0],
@@ -163,49 +195,75 @@ ced2692d54c4a434fc61b22c68dc27cd
                    GHC.Base.Nothing
                    -> case GHC.IO.Handle.Text.hPutStr2
                              GHC.IO.Handle.FD.stdout
-                             Main.main2
+                             Main.main5
                              GHC.Types.True
                              ipv2 of ds3 { (#,#) ipv4 ipv5 ->
-                      Main.$w$j2 ipv4 }
+                      Main.$w$j3 ipv4 }
                    GHC.Base.Just ipv4
                    -> case ipv4 `cast` (GHC.Types.N:IO[0] <Lecture5.Node>_R)
                              ipv2 of ds3 { (#,#) ipv5 ipv6 ->
                       case Lecture5.randomS3
                              (Lecture5.sud2grid (case ipv6 of wild1 { (,) x1 ds4 -> x1 }))
                              ipv5 of ds4 { (#,#) ipv7 ipv8 ->
-                      Main.$w$j2 ipv7 } } } } }) -}
-0bb60991f7d368ec0c8508ad30b3a1a5
-  $w$j2 ::
+                      Main.$w$j3 ipv7 } } } } }) -}
+bb7c0db4a1514890e64200548c459dbf
+  $w$j3 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (w :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        Main.main5
+                        Main.main3
                         GHC.Types.True
                         w of ds1 { (#,#) ipv ipv1 ->
-                 case Lecture5.$wgenerateSudokuProblem
-                        Main.main4
-                        10#
+                 case Lecture5.genRandomSudoku10
+                        @ Lecture5.Node
+                        Lecture5.genRandomSudoku6
+                          `cast`
+                        (<(Lecture5.Sudoku, [Lecture5.Constraint])>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
+                        Lecture5.solved
+                        Lecture5.genRandomSudoku4
+                          `cast`
+                        (Sym (GHC.Types.N:IO[0] <[Lecture5.Node]>_R))
                         ipv of ds2 { (#,#) ipv2 ipv3 ->
                  case ipv3 of wild {
-                   GHC.Base.Nothing
-                   -> GHC.IO.Handle.Text.hPutStr2
-                        GHC.IO.Handle.FD.stdout
-                        Main.main2
-                        GHC.Types.True
-                        ipv2
-                   GHC.Base.Just ipv4
-                   -> case ipv4 `cast` (GHC.Types.N:IO[0] <Lecture5.Node>_R)
-                             ipv2 of ds3 { (#,#) ipv5 ipv6 ->
-                      Lecture5.randomS2 ipv6 ipv5 } } } }) -}
-4c92f7ef41e194c3f4c86d23401cba9b
+                   []
+                   -> case (GHC.Magic.noinline
+                              @ (forall a. [GHC.Types.Char] -> GHC.Types.IO a)
+                              GHC.IO.failIO1
+                                `cast`
+                              (forall (a :: <*>_N).
+                               <GHC.Base.String>_R ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                              @ Lecture5.Node
+                              Lecture5.genRandomSudoku2)
+                             `cast`
+                           (GHC.Types.N:IO[0] <Lecture5.Node>_R)
+                             ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                      Main.main2 ipv4 ipv5 }
+                   : r ds
+                   -> case ds of wild1 {
+                        [] -> Main.main2 ipv2 r
+                        : ipv4 ipv5
+                        -> case (GHC.Magic.noinline
+                                   @ (forall a. [GHC.Types.Char] -> GHC.Types.IO a)
+                                   GHC.IO.failIO1
+                                     `cast`
+                                   (forall (a :: <*>_N).
+                                    <GHC.Base.String>_R ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                                   @ Lecture5.Node
+                                   Lecture5.genRandomSudoku2)
+                                  `cast`
+                                (GHC.Types.N:IO[0] <Lecture5.Node>_R)
+                                  ipv2 of ds3 { (#,#) ipv6 ipv7 ->
+                           Main.main2 ipv6 ipv7 } } } } }) -}
+d7d466eb4d3d0f054fbdbe477945679c
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-d33606aaab3655720477441ecdf9256d
+a4ffea46e4f7118e73163c17fecc64de
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -213,7 +271,7 @@ d33606aaab3655720477441ecdf9256d
      Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        Main.main23
+                        Main.main26
                         GHC.Types.True
                         s of ds1 { (#,#) ipv ipv1 ->
                  case Lecture5.solveAndShow1
@@ -221,7 +279,7 @@ d33606aaab3655720477441ecdf9256d
                         ipv of ds2 { (#,#) ipv2 ipv3 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        Main.main21
+                        Main.main24
                         GHC.Types.True
                         ipv2 of ds3 { (#,#) ipv4 ipv5 ->
                  case Test.QuickCheck.Test.$w$squickCheckWithResult
@@ -231,39 +289,39 @@ d33606aaab3655720477441ecdf9256d
                         Test.QuickCheck.Test.stdArgs2
                         GHC.Types.True
                         GHC.Base.maxInt
-                        Main.main20
+                        Main.main23
                           `cast`
                         (Sym (Test.QuickCheck.Gen.N:Gen[0]
                                   (Test.QuickCheck.Property.N:Prop[0])) ; Sym (Test.QuickCheck.Property.N:Property[0]))
                         ipv4 of ds4 { (#,#) ipv6 ipv7 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        Main.main18
+                        Main.main21
                         GHC.Types.True
                         ipv6 of ds5 { (#,#) ipv8 ipv9 ->
-                 case Lecture5.$wtestHasUniqueSol
-                        1#
-                        3#
+                 case Lecture5.$wtestIsMinimal
+                        0#
+                        10#
                         ipv8 of ds6 { (#,#) ipv10 ipv11 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        Main.main16
+                        Main.main19
                         GHC.Types.True
                         ipv10 of ds7 { (#,#) ipv12 ipv13 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        Main.main14
+                        Main.main17
                         GHC.Types.True
                         ipv12 of ds8 { (#,#) ipv14 ipv15 ->
                  case Lecture5.$wgenerateSudokuProblem
-                        Main.main13
+                        Main.main16
                         10#
                         ipv14 of ds9 { (#,#) ipv16 ipv17 ->
                  case ipv17 of wild {
                    GHC.Base.Nothing
                    -> case GHC.IO.Handle.Text.hPutStr2
                              GHC.IO.Handle.FD.stdout
-                             Main.main2
+                             Main.main5
                              GHC.Types.True
                              ipv16 of ds10 { (#,#) ipv18 ipv19 ->
                       Main.$w$j ipv18 }
@@ -274,47 +332,70 @@ d33606aaab3655720477441ecdf9256d
                              (Lecture5.sud2grid (case ipv20 of wild1 { (,) x1 ds11 -> x1 }))
                              ipv19 of ds11 { (#,#) ipv21 ipv22 ->
                       Main.$w$j ipv21 } } } } } } } } } } } }) -}
-3550794e459b67902c0409c6a6e81177
+06e4d54d48cdceedd943a81fa0ac2aa3
   main10 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 4#) -}
-1ee76ac9bb8a6924b8a0633a33e6b20f
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 5#) -}
+6700eb610d374e8f004f6c884bbf8b6d
   main11 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.main12) -}
-11c1d696e8c21a1ea66cc54b6cf90473
+ede854380da038d31500fb39d17af157
   main12 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("Trying max 10 times to find a sudoku problems with 4 empty blocks."#) -}
-5a9b0d60c86ebc8df670938442c084b8
+     Unfolding: ("\n\
+                 \Trying max 10 times to find a sudoku problem with at least 5 empty blocks."#) -}
+7f97adb76a242ded0741ad6d2407b3d0
   main13 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 3#) -}
-bde2e33e81b3d714945c567e0044cafa
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 4#) -}
+b674edad722443f015168c0e9ddc160b
   main14 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.main15) -}
-a5461ee53a3caeb125e056e9602d6493
+0a127bf4b00eaca01747eaa5a4997691
   main15 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("Trying max 10 times to find a sudoku problems with 3 empty blocks."#) -}
-a71c91bce46ad3a4f0c2885fb8bbcb85
-  main16 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.main17) -}
-8576d9f36271bf94502f7020de54eb8b
-  main17 :: GHC.Prim.Addr#
+     Unfolding: ("\n\
+                 \Trying max 10 times to find a sudoku problem with at least 4 empty blocks."#) -}
+37d0cdc0a42620ff481d1d390ab9a63b
+  main16 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 3#) -}
+01297eea656f60e8c3da59973d8bf752
+  main17 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main18) -}
+a8c3964855ec6e8dcba43d7f0e60efb6
+  main18 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Trying max 10 times to find a sudoku problem with at least 3 empty blocks."#) -}
+1f37261f09f000ffad39ae2a15be7571
+  main19 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main20) -}
+7bc74a70ff003c76412b321d1bb34f31
+  main2 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> Lecture5.Node -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 2, Strictness: <S,U><L,U(U,U)>,
+     Unfolding: (\ (ipv :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot]
+                   (ipv1 :: Lecture5.Node)[OneShot] ->
+                 case Lecture5.genProblem_$srandomize
+                        (Lecture5.filledPositions (case ipv1 of wild { (,) x ds1 -> x }))
+                        ipv of ds1 { (#,#) ipv2 ipv3 ->
+                 Lecture5.randomS3
+                   (Lecture5.sud2grid
+                      (case Lecture5.minimalize ipv1 ipv3 of wild { (,) x1 ds2 -> x1 }))
+                   ipv2 }) -}
+4ebfc4c2bde70a0b4a6178b5d1a19cdd
+  main20 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("\n\
                  \\ESC[36m== Assignment 4 (Empty block sudoku problems) ==\ESC[0m"#) -}
-e7312b8ba108e0504db879480489d495
-  main18 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.main19) -}
-c216901c400356fc73c2970a37b37070
-  main19 :: GHC.Prim.Addr#
+6d79c35bca83588bf1f89917bf85a8bd
+  main21 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main22) -}
+7715dd2683fc6f19d896d1fd756e212b
+  main22 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("\n\
-                 \\ESC[36m== Assignment 3 (Test for unique solutions) ==\ESC[0m"#) -}
-23c70c4dd107753c4c0c4087cc1838d0
-  main2 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.main3) -}
-128b4f325c15e92498b08262f70a60b9
-  main20 ::
+                 \\ESC[36m== Assignment 3 (Test for minimal problems) ==\ESC[0m"#) -}
+f6bb66c62b8ecce2b967699afffbcbd8
+  main23 ::
     Test.QuickCheck.Random.QCGen
     -> GHC.Types.Int
     -> Test.QuickCheck.Property.Rose Test.QuickCheck.Property.Result
@@ -341,52 +422,54 @@ c216901c400356fc73c2970a37b37070
                    ww3
                    ww4
                    eta1 }) -}
-5c8574749d05c5adf4a3cc250380e0e2
-  main21 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.main22) -}
-daddfb71f9361bd806b08242e1f843eb
-  main22 :: GHC.Prim.Addr#
+fecc0f8d2ca25c4e7a05cf24a7e42407
+  main24 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main25) -}
+e412c3026690f09747d2438693edf9f6
+  main25 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("\n\
                  \\ESC[36m== Assignment 2 (Refactored NRC Sudoku) ==\ESC[0m"#) -}
-4dbb330c8c78b3b23aec5d8ab95d2970
-  main23 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Main.main24) -}
-4bbfc238a147e3b66b380a94df236521
-  main24 :: GHC.Prim.Addr#
+aef4e65ae9523cad91f2f8c8dac0917a
+  main26 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main27) -}
+edc72ff9b0b5130ca8ed43cab370e085
+  main27 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("\ESC[36m== Assignment 1 (NRC Sudoku's) ==\ESC[0m"#) -}
-5592842f37a0ba55f392174c3beecb7e
-  main25 ::
+d3c95d49638f1ca212f6b61802f7743e
+  main28 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1,
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-41bdced0b74ff10d757602cc7a4ce48b
-  main3 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("Not found"#) -}
-72ec6c400f1c0754d45cec5d83e773c0
-  main4 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 6#) -}
-cc1742794f0df7bf3643e4998e6c29ad
+68c5a337cb65ce8d31fd3ca806e2b647
+  main3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main4) -}
+d41da42cafc5d5f69a619f3573670da9
+  main4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("\n\
+                 \\ESC[36m== Assignment 5 (NRC Problem generator) ==\ESC[0m"#) -}
+0edc10ef314d2f106169c2122456004c
   main5 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.main6) -}
-e6b13bb3ffc191e3bfe6d13e90ac6d5d
+09ca207487d3e500425af601424539a7
   main6 :: GHC.Prim.Addr#
-  {- HasNoCafRefs,
-     Unfolding: ("Trying max 10 times to find a sudoku problems with 6 empty blocks."#) -}
-afb66d53055509630e096f7797d7c9bc
+  {- HasNoCafRefs, Unfolding: ("Not found"#) -}
+2ef38c98220583e65013d1d4878b8bc6
   main7 :: GHC.Types.Int
-  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 5#) -}
-fbb0a319283a7993e3a0635a1c277ac9
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 6#) -}
+19860c8b687f28cb7c309ec5b479e40f
   main8 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.main9) -}
-cb31f909b35fdb1e4987eff3c0c084a3
+09f2da98230ed22a662ead54365287e4
   main9 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("Trying max 10 times to find a sudoku problems with 5 empty blocks."#) -}
+     Unfolding: ("\n\
+                 \Trying max 10 times to find a sudoku problem with at least 6 empty blocks."#) -}
 "SPEC/Main $fShow(,) @ Int @ Int" [orphan] forall (v1 :: GHC.Show.Show
                                                            GHC.Types.Int)
                                                   (v :: GHC.Show.Show GHC.Types.Int)
