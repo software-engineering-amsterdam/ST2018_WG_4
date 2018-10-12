@@ -44,6 +44,28 @@
   (major1) == 2 && (major2) == 11 && (minor) <= 3)
 #endif /* MIN_VERSION_QuickCheck */
 
+/* package clock-0.7.2 */
+#ifndef VERSION_clock
+#define VERSION_clock "0.7.2"
+#endif /* VERSION_clock */
+#ifndef MIN_VERSION_clock
+#define MIN_VERSION_clock(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  7 || \
+  (major1) == 0 && (major2) == 7 && (minor) <= 2)
+#endif /* MIN_VERSION_clock */
+
+/* package formatting-6.3.6 */
+#ifndef VERSION_formatting
+#define VERSION_formatting "6.3.6"
+#endif /* VERSION_formatting */
+#ifndef MIN_VERSION_formatting
+#define MIN_VERSION_formatting(major1,major2,minor) (\
+  (major1) <  6 || \
+  (major1) == 6 && (major2) <  3 || \
+  (major1) == 6 && (major2) == 3 && (minor) <= 6)
+#endif /* MIN_VERSION_formatting */
+
 /* tool cpphs-1.20.8 */
 #ifndef TOOL_VERSION_cpphs
 #define TOOL_VERSION_cpphs "1.20.8"
@@ -155,7 +177,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "Lab6-0.1.0.0-FIYKyGCOsAeDsI3h3bfXp9-Lab6"
+#define CURRENT_COMPONENT_ID "Lab6-0.1.0.0-CvExenUaSY78rJns1POzzp-Lab6"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"

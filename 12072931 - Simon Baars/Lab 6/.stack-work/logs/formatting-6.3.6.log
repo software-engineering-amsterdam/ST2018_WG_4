@@ -1,0 +1,19 @@
+Configuring formatting-6.3.6...
+Preprocessing library for formatting-6.3.6..
+Building library for formatting-6.3.6..
+[ 1 of 13] Compiling Data.Text.Format.Functions ( src/Data/Text/Format/Functions.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Data/Text/Format/Functions.o )
+[ 2 of 13] Compiling Data.Text.Format.Int ( src/Data/Text/Format/Int.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Data/Text/Format/Int.o )
+[ 3 of 13] Compiling Data.Text.Format.Types ( src/Data/Text/Format/Types.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Data/Text/Format/Types.o )
+[ 4 of 13] Compiling Formatting.Buildable ( src/Formatting/Buildable.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Formatting/Buildable.o )
+[ 5 of 13] Compiling Data.Text.Format ( src/Data/Text/Format.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Data/Text/Format.o )
+[ 6 of 13] Compiling Formatting.Internal ( src/Formatting/Internal.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Formatting/Internal.o )
+[ 7 of 13] Compiling Formatting.Formatters ( src/Formatting/Formatters.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Formatting/Formatters.o )
+[ 8 of 13] Compiling Formatting       ( src/Formatting.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Formatting.o )
+[ 9 of 13] Compiling Formatting.Examples ( src/Formatting/Examples.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Formatting/Examples.o )
+[10 of 13] Compiling Formatting.Clock ( src/Formatting/Clock.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Formatting/Clock.o )
+[11 of 13] Compiling Formatting.Internal.Raw ( src/Formatting/Internal/Raw.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Formatting/Internal/Raw.o )
+[12 of 13] Compiling Formatting.ShortFormatters ( src/Formatting/ShortFormatters.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Formatting/ShortFormatters.o )
+[13 of 13] Compiling Formatting.Time  ( src/Formatting/Time.hs, .stack-work/dist/x86_64-linux-tinfo6/Cabal-2.2.0.1/build/Formatting/Time.o )
+ignoring (possibly broken) abi-depends field for packages
+Installing library in /home/simon/.stack/snapshots/x86_64-linux-tinfo6/lts-12.12/8.4.3/lib/x86_64-linux-ghc-8.4.3/formatting-6.3.6-A5GHx35xbY18NQVAcXAyHk
+Registering library for formatting-6.3.6..
