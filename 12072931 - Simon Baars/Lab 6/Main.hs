@@ -44,6 +44,15 @@ testPerformance (x,y,n) = monadicIO $ do
 printRan :: Integer -> Integer -> Integer -> Bool
 printRan x y z = trace ("x = " ++ show x ++ ", y = " ++ show y ++ ", z = " ++ show z) True
 
+-- Assignment 3
+factors :: Integer -> [Integer]
+factors y = [ x | x <- [1..y], y `mod` x == 0]
+
+composites :: [Integer]
+composites = filter (\x -> length (factors x) > 2) [0..]
+
+-- Assignment 4
+
 main :: IO ()
 main = do
   putStrLn "\x1b[36m== Assignment 1 (Modular Exponentiation) ==\x1b[0m"
@@ -52,4 +61,7 @@ main = do
   putStrLn "\x1b[36m== Assignment 2 (Performance Testing) ==\x1b[0m"
   quickCheck $ forAll genPos testPerformance
 
-  putStrLn "\x1b[36m== Assignment 3 (Performance testing) ==\x1b[0m"
+  putStrLn "\x1b[36m== Assignment 3 (Composite natural numbers) ==\x1b[0m"
+  putStrLn $ "These are the composite natural numbers between 1 and 100: " ++ show (takeWhile (<100) composites)
+
+  putStrLn "\x1b[36m== Assignment 4 (Fermat primality check) ==\x1b[0m"
