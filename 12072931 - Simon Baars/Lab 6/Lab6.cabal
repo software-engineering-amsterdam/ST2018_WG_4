@@ -51,7 +51,7 @@ executable Lab6
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.11 && <4.12, random >=1.1 && <1.2, QuickCheck >=2.11 && <2.12, clock >=0.7 && <0.8, formatting >= 6.3 && <6.4
+  build-depends:       base >=4.11 && <4.12, random >=1.1 && <1.2, QuickCheck >=2.11 && <2.12, clock >=0.7 && <0.8, monad-loops >=0.4 && <0.5
 
   -- Directories containing source files.
   -- hs-source-dirs:

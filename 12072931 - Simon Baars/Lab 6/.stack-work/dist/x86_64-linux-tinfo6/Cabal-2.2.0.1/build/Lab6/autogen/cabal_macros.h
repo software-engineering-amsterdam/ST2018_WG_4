@@ -55,16 +55,16 @@
   (major1) == 0 && (major2) == 7 && (minor) <= 2)
 #endif /* MIN_VERSION_clock */
 
-/* package formatting-6.3.6 */
-#ifndef VERSION_formatting
-#define VERSION_formatting "6.3.6"
-#endif /* VERSION_formatting */
-#ifndef MIN_VERSION_formatting
-#define MIN_VERSION_formatting(major1,major2,minor) (\
-  (major1) <  6 || \
-  (major1) == 6 && (major2) <  3 || \
-  (major1) == 6 && (major2) == 3 && (minor) <= 6)
-#endif /* MIN_VERSION_formatting */
+/* package monad-loops-0.4.3 */
+#ifndef VERSION_monad_loops
+#define VERSION_monad_loops "0.4.3"
+#endif /* VERSION_monad_loops */
+#ifndef MIN_VERSION_monad_loops
+#define MIN_VERSION_monad_loops(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  4 || \
+  (major1) == 0 && (major2) == 4 && (minor) <= 3)
+#endif /* MIN_VERSION_monad_loops */
 
 /* tool cpphs-1.20.8 */
 #ifndef TOOL_VERSION_cpphs
@@ -177,7 +177,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "Lab6-0.1.0.0-CvExenUaSY78rJns1POzzp-Lab6"
+#define CURRENT_COMPONENT_ID "Lab6-0.1.0.0-6k3CGQapEPw8gbeIeWkOs2-Lab6"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"
