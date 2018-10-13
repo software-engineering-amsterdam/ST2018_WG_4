@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-13 18:56:14.037851989 UTC
+2018-10-13 18:59:03.661001788 UTC
 
 interface main:Lecture6 8043
-  interface hash: 7407155d96db040a4fb4a3c25c5cc90b
-  ABI hash: a570f07aa5c462d63f2021998dcb1f7c
-  export-list hash: 230a2add7196ce1aa1e8d3a57acdc6b5
+  interface hash: ef8fd619e7b9f209975e3d71eda1f7e5
+  ABI hash: 64a699b0ebe12088221766fb1ea42d4b
+  export-list hash: e01b7181fc86fd1f02257a1070dbbbf5
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: b6c96e27b9c0f9c6b798b842d1c188fa
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -29,6 +29,7 @@ exports:
   Lecture6.encode
   Lecture6.encodeDH
   Lecture6.exM
+  Lecture6.exM'
   Lecture6.expM
   Lecture6.f
   Lecture6.fGcd
@@ -37,7 +38,6 @@ exports:
   Lecture6.fctGcd
   Lecture6.grow
   Lecture6.invM
-  Lecture6.listFoldl
   Lecture6.mers
   Lecture6.mrComposite
   Lecture6.multM
@@ -55,7 +55,6 @@ exports:
   Lecture6.secret
   Lecture6.select
   Lecture6.takeT
-  Lecture6.toBin
   Lecture6.totient
   Lecture6.trapdoor
   Lecture6.Tree{Lecture6.T}
@@ -76,6 +75,7 @@ family instance modules: base-4.11.1.0:Control.Applicative
                          base-4.11.1.0:Data.Semigroup.Internal base-4.11.1.0:Data.Version
                          base-4.11.1.0:Data.Void base-4.11.1.0:GHC.Exts
                          base-4.11.1.0:GHC.Generics base-4.11.1.0:GHC.IO.Exception
+import  -/  base-4.11.1.0:Data.Bits bbb4ac3d5246b98befe8bd31900b1c2f
 import  -/  base-4.11.1.0:Data.Foldable 8ed35c38958063956af33c935ea03444
 import  -/  base-4.11.1.0:Data.Traversable 7ad4edb9184ea1ae8e73f6b94f115c8c
 import  -/  base-4.11.1.0:Data.Tuple 3af66f3ac61ed95ba8a3a3f68ebc5003
@@ -359,7 +359,7 @@ adf5dc325f77028a5e58b00b676e714a
     (node -> [node]) -> node -> (# node, [Lecture6.Tree node] #)
   {- Arity: 2, HasNoCafRefs, Strictness: <L,C(U)><L,U>,
      Inline: [0] -}
-f6189663562822be7790e46699c91d5f
+156bbc709499d1fab50bfb1fcadb1ed0
   $wprimeTestsF ::
     GHC.Prim.Int#
     -> GHC.Integer.Type.Integer
@@ -378,8 +378,8 @@ f6189663562822be7790e46699c91d5f
                        (ipv1 :: [GHC.Integer.Type.Integer])[OneShot] ->
                      (# ipv,
                         let {
-                          lvl89 :: GHC.Integer.Type.Integer
-                          = GHC.Integer.Type.minusInteger w Lecture6.exM2
+                          lvl88 :: GHC.Integer.Type.Integer
+                          = GHC.Integer.Type.minusInteger w Lecture6.encode1
                         } in
                         letrec {
                           go :: [GHC.Integer.Type.Integer] -> GHC.Types.Bool
@@ -389,8 +389,8 @@ f6189663562822be7790e46699c91d5f
                               [] -> GHC.Types.True
                               : y ys
                               -> case GHC.Integer.Type.eqInteger#
-                                        (Lecture6.exM y lvl89 w)
-                                        Lecture6.exM2 of wild1 {
+                                        (Lecture6.exM y lvl88 w)
+                                        Lecture6.encode1 of wild1 {
                                    DEFAULT -> GHC.Types.False 1# -> go ys } }
                         } in
                         go ipv1 #)
@@ -398,12 +398,12 @@ f6189663562822be7790e46699c91d5f
                  case GHC.Prim.># 1# ww of lwild {
                    DEFAULT
                    -> let {
-                        lvl89 :: GHC.Integer.Type.Integer
-                        = GHC.Integer.Type.minusInteger w Lecture6.exM2
+                        lvl88 :: GHC.Integer.Type.Integer
+                        = GHC.Integer.Type.minusInteger w Lecture6.encode1
                       } in
                       let {
-                        lvl90 :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
-                        = (Lecture6.$seven2, lvl89)
+                        lvl89 :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                        = (Lecture6.$seven2, lvl88)
                       } in
                       letrec {
                         go :: GHC.Prim.Int#
@@ -414,7 +414,7 @@ f6189663562822be7790e46699c91d5f
                         = \ (x :: GHC.Prim.Int#)
                             (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                           case System.Random.$fRandomInteger3
-                                 lvl90
+                                 lvl89
                                  s of ds { (#,#) ipv ipv1 ->
                           case GHC.Prim.==# x ww of lwild1 {
                             DEFAULT
@@ -429,7 +429,7 @@ f6189663562822be7790e46699c91d5f
                       } in
                       case go 1# w1 of ds1 { (#,#) ipv ipv1 -> $j ipv ipv1 }
                    1# -> $j w1 (GHC.Types.[] @ GHC.Integer.Type.Integer) }) -}
-348687175bd8a566e9d0fd234a6f8e7c
+495fd01b055f9d0afa25e68b0b2968c6
   $wrsaPrivate ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
@@ -440,8 +440,8 @@ f6189663562822be7790e46699c91d5f
                  (# Lecture6.invM
                       (Lecture6.select w w1)
                       (GHC.Integer.Type.timesInteger
-                         (GHC.Integer.Type.minusInteger w Lecture6.exM2)
-                         (GHC.Integer.Type.minusInteger w1 Lecture6.exM2)),
+                         (GHC.Integer.Type.minusInteger w Lecture6.encode1)
+                         (GHC.Integer.Type.minusInteger w1 Lecture6.encode1)),
                     GHC.Integer.Type.timesInteger w w1 #)) -}
 247ef607da5d52327031d39ba1881557
   $wtakeT ::
@@ -449,7 +449,7 @@ f6189663562822be7790e46699c91d5f
     -> a -> [Lecture6.Tree a] -> (# a, [Lecture6.Tree a] #)
   {- Arity: 3, HasNoCafRefs, Strictness: <S,1*U><L,U><L,1*U>,
      Inline: [0] -}
-e7e449edcc7b722f713b1db6a5d5f60c
+fe439b040b0f3aca36d78f8e64712516
   $wtotient :: GHC.Integer.Type.Integer -> GHC.Prim.Int#
   {- Arity: 1, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (w :: GHC.Integer.Type.Integer) ->
@@ -461,12 +461,12 @@ e7e449edcc7b722f713b1db6a5d5f60c
                        DEFAULT
                        -> case GHC.Integer.Type.eqInteger#
                                  (GHC.Integer.Type.gcdInteger x w)
-                                 Lecture6.exM2 of wild1 {
-                            DEFAULT -> go (GHC.Integer.Type.plusInteger x Lecture6.exM2)
+                                 Lecture6.encode1 of wild1 {
+                            DEFAULT -> go (GHC.Integer.Type.plusInteger x Lecture6.encode1)
                             1#
                             -> let {
                                  r :: GHC.Types.Int -> GHC.Types.Int
-                                 = go (GHC.Integer.Type.plusInteger x Lecture6.exM2)
+                                 = go (GHC.Integer.Type.plusInteger x Lecture6.encode1)
                                } in
                                \ (a :: GHC.Types.Int) ->
                                case a of a1 { GHC.Types.I# ipv ->
@@ -474,7 +474,7 @@ e7e449edcc7b722f713b1db6a5d5f60c
                        1# -> GHC.Base.id @ GHC.Types.Int }
                  } in
                  case go
-                        Lecture6.exM2
+                        Lecture6.encode1
                         Lecture6.$fShowTree1 of wild { GHC.Types.I# i ->
                  case GHC.Integer.Type.smallInteger
                         i of ww { GHC.Integer.Type.S# ww1 ->
@@ -512,11 +512,11 @@ e48a6b0f9b0fcdbf2291365d7667dbe9
 8737c2abcfe2fd7ccb14c09c9c0c9c1b
   bound :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (131) -}
-d670579091b190a2a22f65913d37c48c
+4c87dd4d62b661ea94c61f0cee12e3aa
   cipher :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
   {- Arity: 1,
      Unfolding: (Lecture6.encode Lecture6.secret Lecture6.bound) -}
-286eebedfae01b1aaa46acb6240e5066
+39374a70479ab1317ccb077743e484c4
   coprime ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer -> GHC.Types.Bool
@@ -526,9 +526,9 @@ d670579091b190a2a22f65913d37c48c
                    (m :: GHC.Integer.Type.Integer) ->
                  case GHC.Integer.Type.eqInteger#
                         (Lecture6.fGcd n m)
-                        Lecture6.exM2 of wild { DEFAULT ->
+                        Lecture6.encode1 of wild { DEFAULT ->
                  GHC.Prim.tagToEnum# @ GHC.Types.Bool wild }) -}
-0538c208582fd1457fef06427dc5005d
+26f7f0715cbec1856dba2fccaac1376f
   coprime' ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer -> GHC.Types.Bool
@@ -540,9 +540,9 @@ d670579091b190a2a22f65913d37c48c
                         (GHC.Integer.Type.plusInteger
                            (GHC.Integer.Type.timesInteger ww1 n)
                            (GHC.Integer.Type.timesInteger ww2 m))
-                        Lecture6.exM2 of wild { DEFAULT ->
+                        Lecture6.encode1 of wild { DEFAULT ->
                  GHC.Prim.tagToEnum# @ GHC.Types.Bool wild } }) -}
-10c4d66fd544780a1bdba2d3eca0198b
+06af5b39ce4fd0caf9c26cc8ee437b34
   coprimeT ::
     Lecture6.Tree (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
   {- Unfolding: (case Lecture6.$wgrow
@@ -553,17 +553,17 @@ d670579091b190a2a22f65913d37c48c
                    @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
                    ww1
                    ww2 }) -}
-8d5410bf5dd6a41e2ae3e80b47876cb1
+193fa583655b42be364b639e6227dda2
   coprimeT1 :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
   {- HasNoCafRefs, Strictness: m,
-     Unfolding: ((Lecture6.exM2, Lecture6.exM2)) -}
-26b6d2983a58c05aff30a3643bef9979
+     Unfolding: ((Lecture6.encode1, Lecture6.encode1)) -}
+b127d75a51a4885d250110f863b4fb0c
   coprimes :: [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
   {- Unfolding: (GHC.List.filter
                    @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
                    Lecture6.coprimes1
                    Lecture6.pairs) -}
-538edb85d28e52d7e48668d9b40c5fba
+9dc1826d1d6c49d2c7b8d594108dd5bc
   coprimes1 ::
     (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
     -> GHC.Types.Bool
@@ -573,51 +573,53 @@ d670579091b190a2a22f65913d37c48c
                  case p of wild { (,) x ds ->
                  case GHC.Integer.Type.eqInteger#
                         (Lecture6.fGcd x ds)
-                        Lecture6.exM2 of wild1 { DEFAULT ->
+                        Lecture6.encode1 of wild1 { DEFAULT ->
                  GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 } }) -}
-a67ffb96ef3f4ed789497de9daf2172d
+e5aec30f2bf7995813612c1ade18db85
   decipher :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
   {- Arity: 1,
      Unfolding: (Lecture6.decode Lecture6.secret Lecture6.bound) -}
-b55663be5264b8ff6223076c512f910b
+a5701aa07d26e95d0c9d2073cefedcd9
   decode ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
-  {- Arity: 3, Strictness: <S,U><S,U><L,U>,
+  {- Arity: 3, Strictness: <S,U><L,U><L,U>,
      Unfolding: (\ (p :: GHC.Integer.Type.Integer)
                    (k :: GHC.Integer.Type.Integer)
                    (m :: GHC.Integer.Type.Integer) ->
-                 let {
-                   p' :: GHC.Integer.Type.Integer
-                   = GHC.Integer.Type.minusInteger p Lecture6.exM2
-                 } in
-                 let {
-                   exit :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
-                     <join 1> {- Arity: 1, Strictness: <S,U> -}
-                   = \ (x :: GHC.Integer.Type.Integer)[OneShot] ->
-                     Lecture6.exM m (Lecture6.invM x p') p
-                 } in
-                 letrec {
-                   go :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
-                     <join 1> {- Arity: 1, Strictness: <S,U> -}
-                   = \ (x :: GHC.Integer.Type.Integer) ->
-                     case GHC.Integer.Type.eqInteger#
-                            (GHC.Integer.Type.gcdInteger x p')
-                            Lecture6.exM2 of wild {
-                       DEFAULT -> go (GHC.Integer.Type.plusInteger x Lecture6.exM2)
-                       1# -> exit x }
-                 } in
-                 go k) -}
-95b4c8cc70e11c46240fd687a89f19df
+                 Lecture6.exM
+                   m
+                   (let {
+                      p' :: GHC.Integer.Type.Integer
+                      = GHC.Integer.Type.minusInteger p Lecture6.encode1
+                    } in
+                    let {
+                      exit :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
+                        <join 1> {- Arity: 1, Strictness: <S,U> -}
+                      = \ (x :: GHC.Integer.Type.Integer)[OneShot] -> Lecture6.invM x p'
+                    } in
+                    letrec {
+                      go :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
+                        <join 1> {- Arity: 1, Strictness: <S,U> -}
+                      = \ (x :: GHC.Integer.Type.Integer) ->
+                        case GHC.Integer.Type.eqInteger#
+                               (GHC.Integer.Type.gcdInteger x p')
+                               Lecture6.encode1 of wild {
+                          DEFAULT -> go (GHC.Integer.Type.plusInteger x Lecture6.encode1)
+                          1# -> exit x }
+                    } in
+                    go k)
+                   p) -}
+bc3d4a494b5ec7d46c247cf4c8508bc4
   decodeDH ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
-  {- Arity: 4, Strictness: <S,U><L,U><S,U><S,1*U>,
+  {- Arity: 4, Strictness: <S,U><L,U><L,U><S,1*U>,
      Unfolding: (\ (p :: GHC.Integer.Type.Integer)
                    (ga :: GHC.Integer.Type.Integer)
                    (b :: GHC.Integer.Type.Integer)
@@ -630,7 +632,7 @@ b55663be5264b8ff6223076c512f910b
                            (Lecture6.exM
                               ga
                               (GHC.Integer.Type.minusInteger
-                                 (GHC.Integer.Type.minusInteger p Lecture6.exM2)
+                                 (GHC.Integer.Type.minusInteger p Lecture6.encode1)
                                  b)
                               p))
                         p
@@ -653,36 +655,37 @@ da24c80f4cf8db985e02b6ef7d69c835
                  case w of ww { (,) ww1 ww2 ->
                  case Lecture6.$wgo ww1 ww2 of ww3 { (#,#) ww4 ww5 ->
                  (ww4, ww5) } }) -}
-679474423e41909bd110a90fba93b090
+9c91d7b0a6541407bcc32e7a68cebe50
   encode ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
-  {- Arity: 3, Strictness: <S,U><S,U><L,U>,
+  {- Arity: 3, Strictness: <S,U><L,U><L,U>,
      Unfolding: (\ (p :: GHC.Integer.Type.Integer)
                    (k :: GHC.Integer.Type.Integer)
                    (m :: GHC.Integer.Type.Integer) ->
-                 let {
-                   p' :: GHC.Integer.Type.Integer
-                   = GHC.Integer.Type.minusInteger p Lecture6.exM2
-                 } in
-                 let {
-                   exit :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
-                     <join 1> {- Arity: 1, Strictness: <S,U> -}
-                   = \ (x :: GHC.Integer.Type.Integer)[OneShot] -> Lecture6.exM m x p
-                 } in
-                 letrec {
-                   go :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
-                     <join 1> {- Arity: 1, Strictness: <S,U> -}
-                   = \ (x :: GHC.Integer.Type.Integer) ->
-                     case GHC.Integer.Type.eqInteger#
-                            (GHC.Integer.Type.gcdInteger x p')
-                            Lecture6.exM2 of wild {
-                       DEFAULT -> go (GHC.Integer.Type.plusInteger x Lecture6.exM2)
-                       1# -> exit x }
-                 } in
-                 go k) -}
+                 Lecture6.exM
+                   m
+                   (let {
+                      p' :: GHC.Integer.Type.Integer
+                      = GHC.Integer.Type.minusInteger p Lecture6.encode1
+                    } in
+                    letrec {
+                      go :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
+                        <join 1> {- Arity: 1, Strictness: <S,U> -}
+                      = \ (x :: GHC.Integer.Type.Integer) ->
+                        case GHC.Integer.Type.eqInteger#
+                               (GHC.Integer.Type.gcdInteger x p')
+                               Lecture6.encode1 of wild {
+                          DEFAULT -> go (GHC.Integer.Type.plusInteger x Lecture6.encode1)
+                          1# -> x }
+                    } in
+                    go k)
+                   p) -}
+3fcefcb0e90cd91d81f5679e9fce60ea
+  encode1 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (1) -}
 d8cea4c752ae987330926c9b2713d547
   encodeDH ::
     GHC.Integer.Type.Integer
@@ -699,80 +702,32 @@ d8cea4c752ae987330926c9b2713d547
                         (GHC.Integer.Type.timesInteger m k)
                         p
                    1# -> GHC.Real.divZeroError @ GHC.Integer.Type.Integer }) -}
-cd52082f5094d8396087ae57094b10a0
+35e0cb4f17dd9fdf6d226ab7489e7d76
   exM ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
-  {- Arity: 3, Strictness: <L,U><S,U><S,U>,
-     Unfolding: (\ (x :: GHC.Integer.Type.Integer)
-                   (y :: GHC.Integer.Type.Integer)
-                   (n :: GHC.Integer.Type.Integer) ->
-                 case GHC.Integer.Type.eqInteger# n Lecture6.$seven1 of wild {
+  {- Arity: 3, Strictness: <L,U><L,U><S,U>,
+     Unfolding: (\ (base :: GHC.Integer.Type.Integer)
+                   (expon :: GHC.Integer.Type.Integer)
+                   (ds :: GHC.Integer.Type.Integer) ->
+                 case GHC.Integer.Type.eqInteger# ds Lecture6.encode1 of wild {
                    DEFAULT
-                   -> case GHC.Show.$w$cshowsPrec4
-                             0#
-                             (Lecture6.toBin y)
-                             (GHC.Types.[] @ GHC.Types.Char) of ww2 { (#,#) ww3 ww4 ->
-                      letrec {
-                        go2 :: [GHC.Types.Char]
-                               -> [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
-                               -> GHC.Integer.Type.Integer
-                          {- Arity: 2, Strictness: <S,1*U><L,1*U> -}
-                        = \ (ds :: [GHC.Types.Char])
-                            (_ys :: [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]) ->
-                          case ds of wild1 {
-                            [] -> Lecture6.exM2
-                            : ipv ipv1
-                            -> case _ys of wild2 {
-                                 [] -> Lecture6.exM2
-                                 : ipv2 ipv3
-                                 -> case ipv of wild3 { GHC.Types.C# x1 ->
-                                    case x1 of wild4 {
-                                      DEFAULT -> go2 ipv1 ipv3
-                                      '1'#
-                                      -> case ipv2 of wild5 { (,) ds1 y1 ->
-                                         GHC.Integer.Type.modInteger
-                                           (GHC.Integer.Type.timesInteger (go2 ipv1 ipv3) y1)
-                                           n } } } } }
-                      } in
-                      GHC.Integer.Type.modInteger
-                        (go2
-                           (GHC.List.reverse1
-                              @ GHC.Types.Char
-                              (GHC.Types.: @ GHC.Types.Char ww3 ww4)
-                              (GHC.Types.[] @ GHC.Types.Char))
-                           (Lecture6.listFoldl
-                              @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
-                              Lecture6.exM1
-                              (GHC.Types.:
-                                 @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
-                                 (Lecture6.exM2, x)
-                                 (GHC.Types.[]
-                                    @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)))))
-                        n }
-                   1# -> GHC.Real.divZeroError @ GHC.Integer.Type.Integer }) -}
-52e3358e8291d5804387b90ba475a0f4
-  exM1 ::
-    [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
-    -> (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
-  {- Arity: 1, Strictness: <L,U>m, Inline: [0],
-     Unfolding: InlineRule (1, True, False)
-                (\ (w :: [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]) ->
-                 (case w of wild {
-                    [] -> case GHC.List.badHead ret_ty GHC.Integer.Type.Integer of {}
-                    : x ds1
-                    -> case x of wild1 { (,) x1 ds2 ->
-                       GHC.Integer.Type.timesInteger x1 Lecture6.$seven2 } },
-                  case w of wild {
-                    [] -> case GHC.List.badHead ret_ty GHC.Integer.Type.Integer of {}
-                    : x ds1
-                    -> case x of wild1 { (,) ds2 y ->
-                       GHC.Integer.Type.timesInteger y y } })) -}
-315dc48aa9cd1288c8caef4a44239406
-  exM2 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (1) -}
+                   -> Lecture6.exM'
+                        (GHC.Real.$fIntegralInteger_$cmod base ds)
+                        expon
+                        ds
+                        Lecture6.encode1
+                   1# -> Lecture6.$seven1 }) -}
+3b90ad4a28059951bdd061ebee9397b2
+  exM' ::
+    GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+  {- Arity: 4, Strictness: <L,U><S,U><L,U><S,1*U> -}
 cdd48cb0a2068f9d1142514e188c031e
   expM ::
     GHC.Integer.Type.Integer
@@ -854,7 +809,7 @@ b6102bd1e7b8668267cedf23fc75f7de
                 (\ @ node (w :: node -> [node]) (w1 :: node) ->
                  case Lecture6.$wgrow @ node w w1 of ww { (#,#) ww1 ww2 ->
                  Lecture6.T @ node ww1 ww2 }) -}
-e04ede6f0a87e5aba5829caa73ec1f85
+1efe9cbf63a92e823978e84b86b10fd4
   invM ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
@@ -866,43 +821,48 @@ e04ede6f0a87e5aba5829caa73ec1f85
                         (GHC.Integer.Type.plusInteger
                            (GHC.Integer.Type.timesInteger x ww1)
                            (GHC.Integer.Type.timesInteger ww2 n))
-                        Lecture6.exM2 of wild {
+                        Lecture6.encode1 of wild {
                    DEFAULT -> Lecture6.invM1
                    1#
                    -> case GHC.Integer.Type.$wsignumInteger ww1 of ww3 { DEFAULT ->
                       case GHC.Integer.Type.eqInteger#
                              (GHC.Integer.Type.S# ww3)
-                             Lecture6.exM2 of wild1 {
+                             Lecture6.encode1 of wild1 {
                         DEFAULT -> GHC.Integer.Type.plusInteger ww1 n 1# -> ww1 } } } }) -}
 9fbe2362fb03ff177e2d3e98bb399282
   invM1 :: GHC.Integer.Type.Integer
   {- Strictness: x -}
-441d7da63129862de34fa2a2680452c8
-  listFoldl :: ([a] -> a) -> [a] -> [a]
-  {- Arity: 2, HasNoCafRefs, Strictness: <L,C(U)><S,U> -}
 0b57ebdd644b604e7a24dc1d77cac13f
   mers :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
   {- Arity: 1, Strictness: <S,U> -}
-c46520c11be0b622d3758e422d9e370a
+f2fa2f3d496f73cee6c0988211154a59
   mrComposite ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer -> GHC.Types.Bool
   {- Arity: 2, Strictness: <L,U><S,U>,
      Unfolding: (\ (x :: GHC.Integer.Type.Integer)
                    (n :: GHC.Integer.Type.Integer) ->
-                 case Lecture6.$wgo
-                        Lecture6.$seven1
-                        (GHC.Integer.Type.minusInteger
-                           n
-                           Lecture6.exM2) of ww { (#,#) ww1 ww2 ->
+                 let {
+                   ds :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                   = case Lecture6.$wgo
+                            Lecture6.$seven1
+                            (GHC.Integer.Type.minusInteger
+                               n
+                               Lecture6.encode1) of ww { (#,#) ww1 ww2 ->
+                     (ww1, ww2) }
+                 } in
+                 let {
+                   s :: GHC.Integer.Type.Integer = case ds of wild { (,) r s1 -> s1 }
+                 } in
                  case GHC.Integer.Type.neqInteger#
-                        (Lecture6.exM x ww2 n)
-                        Lecture6.exM2 of wild {
+                        (Lecture6.exM x s n)
+                        Lecture6.encode1 of wild {
                    DEFAULT -> GHC.Types.False
                    1#
-                   -> let {
+                   -> case ds of wild1 { (,) r s1 ->
+                      let {
                         karg :: GHC.Integer.Type.Integer
-                        = GHC.Integer.Type.minusInteger n Lecture6.exM2
+                        = GHC.Integer.Type.minusInteger n Lecture6.encode1
                       } in
                       letrec {
                         go :: GHC.Integer.Type.Integer
@@ -910,7 +870,7 @@ c46520c11be0b622d3758e422d9e370a
                           <join 2> {- Arity: 2, Strictness: <S,U><L,1*U> -}
                         = \ (x1 :: GHC.Integer.Type.Integer)
                             (eta :: GHC.Integer.Type.Integer) ->
-                          case GHC.Integer.Type.gtInteger# x1 ww1 of wild1 {
+                          case GHC.Integer.Type.gtInteger# x1 r of wild2 {
                             DEFAULT
                             -> let {
                                  x2 :: GHC.Integer.Type.Integer
@@ -918,17 +878,17 @@ c46520c11be0b622d3758e422d9e370a
                                      x
                                      (GHC.Integer.Type.timesInteger
                                         (GHC.Real.^_$s^ Lecture6.$seven2 x1)
-                                        ww2)
+                                        s)
                                      n
                                } in
-                               case GHC.Integer.Type.neqInteger# x2 Lecture6.exM2 of wild2 {
+                               case GHC.Integer.Type.neqInteger# x2 Lecture6.encode1 of wild3 {
                                  DEFAULT
-                                 -> case GHC.Integer.Type.neqInteger# eta karg of wild3 { DEFAULT ->
-                                    GHC.Prim.tagToEnum# @ GHC.Types.Bool wild3 }
-                                 1# -> go (GHC.Integer.Type.plusInteger x1 Lecture6.exM2) x2 }
+                                 -> case GHC.Integer.Type.neqInteger# eta karg of wild4 { DEFAULT ->
+                                    GHC.Prim.tagToEnum# @ GHC.Types.Bool wild4 }
+                                 1# -> go (GHC.Integer.Type.plusInteger x1 Lecture6.encode1) x2 }
                             1#
-                            -> case GHC.Integer.Type.neqInteger# eta karg of wild2 { DEFAULT ->
-                               GHC.Prim.tagToEnum# @ GHC.Types.Bool wild2 } }
+                            -> case GHC.Integer.Type.neqInteger# eta karg of wild3 { DEFAULT ->
+                               GHC.Prim.tagToEnum# @ GHC.Types.Bool wild3 } }
                       } in
                       go
                         Lecture6.$seven1
@@ -945,15 +905,15 @@ c46520c11be0b622d3758e422d9e370a
                    (y :: GHC.Integer.Type.Integer) ->
                  GHC.Real.$fIntegralInteger_$crem
                    (GHC.Integer.Type.timesInteger x y)) -}
-9261b16e74dac069729e13b889bd0f80
+bf91b0bd7e9aac849906af841bd4bbfd
   pairs :: [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
-  {- Unfolding: (Lecture6.pairs_go Lecture6.exM2) -}
+  {- Unfolding: (Lecture6.pairs_go Lecture6.encode1) -}
 71151029a0fa86e6ccdae219826f2a48
   pairs_go ::
     GHC.Integer.Type.Integer
     -> [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
   {- Arity: 1, Strictness: <S,U> -}
-7f43106ed90ed15b061b5a8efb0f9b33
+a382926da332ce70e1368f0f282f0f40
   phi ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
@@ -962,8 +922,8 @@ c46520c11be0b622d3758e422d9e370a
                 (\ (p :: GHC.Integer.Type.Integer)
                    (q :: GHC.Integer.Type.Integer) ->
                  GHC.Integer.Type.timesInteger
-                   (GHC.Integer.Type.minusInteger p Lecture6.exM2)
-                   (GHC.Integer.Type.minusInteger q Lecture6.exM2)) -}
+                   (GHC.Integer.Type.minusInteger p Lecture6.encode1)
+                   (GHC.Integer.Type.minusInteger q Lecture6.encode1)) -}
 97846132a8330dd6b9a76564e2b3c905
   prime :: GHC.Integer.Type.Integer -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,U>,
@@ -995,7 +955,7 @@ c46520c11be0b622d3758e422d9e370a
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, GHC.Types.Bool #)
   {- Arity: 3, Strictness: <L,1*U(1*U)><S,U><S,U> -}
-a112bfa0da3e0944bead8beecb2a1f8c
+9a00e99ffe335e9b5e4f441fafc6e22a
   primeTestF ::
     GHC.Integer.Type.Integer -> GHC.Types.IO GHC.Types.Bool
   {- Arity: 2, Strictness: <L,U><S,U>,
@@ -1004,7 +964,7 @@ a112bfa0da3e0944bead8beecb2a1f8c
                   `cast`
                 (<GHC.Integer.Type.Integer>_R
                  ->_R Sym (GHC.Types.N:IO[0] <GHC.Types.Bool>_R)) -}
-e015bcd342ab9ef1dbe862459479f469
+51b7d02430ec7cb437147de2eb8f7b85
   primeTestF1 ::
     GHC.Integer.Type.Integer
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -1013,17 +973,18 @@ e015bcd342ab9ef1dbe862459479f469
      Unfolding: (\ (n :: GHC.Integer.Type.Integer)
                    (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case System.Random.$fRandomInteger3
-                        (Lecture6.$seven2, GHC.Integer.Type.minusInteger n Lecture6.exM2)
+                        (Lecture6.$seven2,
+                         GHC.Integer.Type.minusInteger n Lecture6.encode1)
                         s of ds1 { (#,#) ipv ipv1 ->
                  (# ipv,
                     case GHC.Integer.Type.eqInteger#
                            (Lecture6.exM
                               ipv1
-                              (GHC.Integer.Type.minusInteger n Lecture6.exM2)
+                              (GHC.Integer.Type.minusInteger n Lecture6.encode1)
                               n)
-                           Lecture6.exM2 of wild { DEFAULT ->
+                           Lecture6.encode1 of wild { DEFAULT ->
                     GHC.Prim.tagToEnum# @ GHC.Types.Bool wild } #) }) -}
-87884f48f283c11160e2f8bf640310a6
+c5cf4f3c0b89101516b7186f8edaa6de
   primeTestsF ::
     GHC.Types.Int
     -> GHC.Integer.Type.Integer -> GHC.Types.IO GHC.Types.Bool
@@ -1034,7 +995,7 @@ e015bcd342ab9ef1dbe862459479f469
                 (<GHC.Types.Int>_R
                  ->_R <GHC.Integer.Type.Integer>_R
                  ->_R Sym (GHC.Types.N:IO[0] <GHC.Types.Bool>_R)) -}
-96c24aa7a03fb097d203f8ce151b3662
+a72bd5bad8674cb8fadfa7995de0f160
   primeTestsF1 ::
     GHC.Types.Int
     -> GHC.Integer.Type.Integer
@@ -1062,22 +1023,22 @@ e015bcd342ab9ef1dbe862459479f469
 5140bacf742387f059ac089ce8e3da22
   primes2 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (3) -}
-43e59852c3a51aeab9eef79cbe499d74
+eb49aff85b76cdb187def741cef1ba29
   rsaDecode ::
     (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
-  {- Arity: 2, Strictness: <S(SS),1*U(U,U)><L,U>,
+  {- Arity: 2, Strictness: <S(LS),1*U(U,U)><L,U>,
      Unfolding: InlineRule (0, True, True) Lecture6.rsaEncode -}
-7e3f16c5c94c81587b3b8591f21906e7
+df3d8c0c9988bb835d86180af958b772
   rsaEncode ::
     (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
-  {- Arity: 2, Strictness: <S(SS),1*U(U,U)><L,U>,
+  {- Arity: 2, Strictness: <S(LS),1*U(U,U)><L,U>,
      Unfolding: InlineRule (2, True, False)
                 (\ (ds :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer))
                    (m :: GHC.Integer.Type.Integer) ->
                  case ds of wild { (,) e n -> Lecture6.exM m e n }) -}
-db8d642141859c64762ca61d9189f71b
+24070c6a5e0ce2e5bc87aad8929bf10b
   rsaPrivate ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
@@ -1088,7 +1049,7 @@ db8d642141859c64762ca61d9189f71b
                    (w1 :: GHC.Integer.Type.Integer) ->
                  case Lecture6.$wrsaPrivate w w1 of ww { (#,#) ww1 ww2 ->
                  (ww1, ww2) }) -}
-26f222025263ebe14407a59acede4d00
+207ac7c4acd3da46bf61f656a02f14f7
   rsaPublic ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
@@ -1104,7 +1065,7 @@ db8d642141859c64762ca61d9189f71b
 de8f54c68cde8cb056a9ff846f64a32d
   secret1 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (18) -}
-528b641d13b84606c33a2df76154ad78
+1e3a5c82c7a0063ca5e34d102b574954
   select ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
@@ -1114,8 +1075,8 @@ de8f54c68cde8cb056a9ff846f64a32d
                  let {
                    t :: GHC.Integer.Type.Integer
                    = GHC.Integer.Type.timesInteger
-                       (GHC.Integer.Type.minusInteger p Lecture6.exM2)
-                       (GHC.Integer.Type.minusInteger q Lecture6.exM2)
+                       (GHC.Integer.Type.minusInteger p Lecture6.encode1)
+                       (GHC.Integer.Type.minusInteger q Lecture6.encode1)
                  } in
                  letrec {
                    go :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
@@ -1123,8 +1084,8 @@ de8f54c68cde8cb056a9ff846f64a32d
                    = \ (x :: GHC.Integer.Type.Integer) ->
                      case GHC.Integer.Type.eqInteger#
                             (GHC.Integer.Type.gcdInteger x t)
-                            Lecture6.exM2 of wild {
-                       DEFAULT -> go (GHC.Integer.Type.plusInteger x Lecture6.exM2)
+                            Lecture6.encode1 of wild {
+                       DEFAULT -> go (GHC.Integer.Type.plusInteger x Lecture6.encode1)
                        1# -> x }
                  } in
                  go Lecture6.primes2) -}
@@ -1138,21 +1099,18 @@ e969547f72008a982e65cc44aa9c686a
                  case w1 of ww2 { Lecture6.T ww3 ww4 ->
                  case Lecture6.$wtakeT @ a ww1 ww3 ww4 of ww5 { (#,#) ww6 ww7 ->
                  Lecture6.T @ a ww6 ww7 } } }) -}
-347a8aa6fbf7cea79d97f18265e29e78
-  toBin :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
-  {- Arity: 1, Strictness: <S,U> -}
-433fb08863487e0c9c1046a90f1d1505
+8e341a5f3ecad5d8d867fc752188862a
   totient :: GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
   {- Arity: 1, Strictness: <S,U>m1, Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: GHC.Integer.Type.Integer) ->
                  case Lecture6.$wtotient w of ww { DEFAULT ->
                  GHC.Integer.Type.S# ww }) -}
-7cd7c81244eb42fd3ddaba3f1d1af34d
+fefff4df3c4a9ffbdd1452acc9f4ae8c
   trapdoor ::
     (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
-  {- Arity: 2, Strictness: <S(SS),1*U(U,U)><L,U>,
+  {- Arity: 2, Strictness: <S(LS),1*U(U,U)><L,U>,
      Unfolding: InlineRule (0, True, True) Lecture6.rsaEncode -}
 instance [safe] GHC.Classes.Eq [Lecture6.Tree] = Lecture6.$fEqTree
 instance [safe] GHC.Classes.Ord [Lecture6.Tree]

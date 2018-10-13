@@ -4,6 +4,7 @@ module Lecture6
 where
 
 import System.Random
+import Data.Bits
 
 factorsNaive :: Integer -> [Integer]
 factorsNaive n0 = factors' n0 2 where
@@ -110,16 +111,17 @@ coprimes = filter (uncurry coprime) pairs
 expM ::  Integer -> Integer -> Integer -> Integer
 expM x y = rem (x^y)
 
-toBin :: Integer -> Integer
-toBin 0 = 0
-toBin x = 10 * toBin (x `div` 2) + x `mod` 2
+exM' :: Integer -> Integer -> Integer -> Integer -> Integer
+exM' base 0     modulus result = result
+exM' base expon modulus result | expon `mod` 2 == 1 = exM' newBase newExpon modulus ((result * base) `mod` modulus)
+                               | otherwise = exM' newBase newExpon modulus result
+                              where newBase = (base ^ 2) `mod` modulus
+                                    newExpon = shiftR expon 1
 
-listFoldl :: ([a]->a) -> [a] -> [a]
-listFoldl f acc = let newAcc = f acc in acc ++ listFoldl f [newAcc]
-
+-- Base on the 'Right-to-left binary method' pseudocode in https://en.wikipedia.org/wiki/Modular_exponentiation
 exM :: Integer -> Integer -> Integer -> Integer
-exM x y n = foldr (\i acc -> acc * snd (snd i) `mod` n) 1 (filter (\i -> fst i == '1')
-            (zip (reverse . show $ toBin y) (listFoldl (\acc -> (fst (head acc) * 2, snd (head acc)^2)) [(1,x)]))) `mod` n
+exM base expon 1 = 0
+exM base expon modulus = exM' (base `mod` modulus) expon modulus 1
 
 primeTestF :: Integer -> IO Bool
 primeTestF n = do

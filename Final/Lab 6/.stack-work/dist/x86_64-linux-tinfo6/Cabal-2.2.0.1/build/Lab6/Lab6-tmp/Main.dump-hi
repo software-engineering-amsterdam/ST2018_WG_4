@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-13 18:55:47.010191075 UTC
+2018-10-13 18:59:04.482443885 UTC
 
 interface main:Main 8043
-  interface hash: 2585fd9dcae36a9086cb7902be984c1a
-  ABI hash: 20295dabf6c078eb64d3c6292fd0727a
+  interface hash: 31dbc062b8dff30e5507c024cce3a3af
+  ABI hash: 4afc167ee7b8ecaeb31ad509d992386e
   export-list hash: 4cd9ae15c21e42b2f51d4fbcb65bf292
   orphan hash: 7e6385a5814f642358f6f47adb288527
   flag hash: f3fa5c76493036586b6cf05d250b0635
@@ -84,14 +84,14 @@ import  -/  clock-0.7.2:System.Clock 5b90623d639f0022027ae71489653515
 import  -/  ghc-prim-0.5.2.0:GHC.Classes 122abfcd7450c6c11602933c9ca5f80d
 import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
 import  -/  integer-gmp-1.0.2.0:GHC.Integer.Type f3d5169c3d3830854b19f6565b265403
-import  -/  Lecture6 a570f07aa5c462d63f2021998dcb1f7c
-  exports: 230a2add7196ce1aa1e8d3a57acdc6b5
-  exM cd52082f5094d8396087ae57094b10a0
+import  -/  Lecture6 64a699b0ebe12088221766fb1ea42d4b
+  exports: e01b7181fc86fd1f02257a1070dbbbf5
+  exM 35e0cb4f17dd9fdf6d226ab7489e7d76
   expM cdd48cb0a2068f9d1142514e188c031e
   factors ca9126cdd16089d0de2bb4e8909f5ec5
   prime 97846132a8330dd6b9a76564e2b3c905
   primeMR 498b3ef2e4e504a565e6aff1c7076a66
-  primeTestsF 87884f48f283c11160e2f8bf640310a6
+  primeTestsF c5cf4f3c0b89101516b7186f8edaa6de
 import  -/  monad-loops-0.4.3:Control.Monad.Loops e76938e3a155629c9760ce247778d85e
 import  -/  random-1.1:System.Random 31994b60c33f032d578c64a928f735f7
 d603030a8e969d88cab3661afbbb8f2f
@@ -271,7 +271,7 @@ a45f11dadb1951ef2faf3acbc0bbf6cb
     GHC.Integer.Type.Integer
     -> GHC.Prim.Int# -> [GHC.Integer.Type.Integer]
   {- Arity: 2, Strictness: <S,U><S,1*U>m2, Inline: [0] -}
-6171167340d557b98dad8060044ffaea
+2d61e738add6b68be55bdbfe4904f952
   $wtestExM ::
     GHC.Integer.Type.Integer
     -> GHC.Integer.Type.Integer
@@ -460,7 +460,7 @@ f4020560b2e6ca1b89615ffefb670210
                 (\ (w1 :: GHC.Types.Int) ->
                  case w1 of ww { GHC.Types.I# ww1 ->
                  Main.$wfindMersennePrimesSimple ww1 }) -}
-ba2e515263e36bf146680a190abdeeb5
+88bace4fb2cf6057967fe83aba6187c0
   findTestFool ::
     GHC.Types.Int -> GHC.Types.IO GHC.Integer.Type.Integer
   {- Arity: 2, Strictness: <L,U(U)><S,U>,
@@ -469,7 +469,7 @@ ba2e515263e36bf146680a190abdeeb5
                   `cast`
                 (<GHC.Types.Int>_R
                  ->_R Sym (GHC.Types.N:IO[0] <GHC.Integer.Type.Integer>_R)) -}
-69b4cdadea1e76c0132121071e770a11
+a7b5b78d60f1c0b0ce9a7302f6df0f23
   findTestFool1 ::
     GHC.Types.Int
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -677,7 +677,7 @@ aeea79f56d109b7150eb7b535f3ee94b
 2bdb6d58caa076b9f962226a5b1bcdd3
   printRan3 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("x = "#) -}
-b21e58cc8637bb9695bb5d69ad03c9a5
+48b08c6612fbfc587122a031348822b2
   testExM ::
     (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer,
      GHC.Integer.Type.Integer)
