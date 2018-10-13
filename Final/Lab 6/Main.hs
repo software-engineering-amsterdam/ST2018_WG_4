@@ -209,17 +209,19 @@ countTillHit f index = let carM = drop index carmichael in firstM (\x -> f 1 (he
 --                    [2,3,5,7,13,17,19,31]
 --
 --                    Using fermat:
---                    [2,3,5,7,13,17,19]
+--                    [2,3,5,7,13,17,19,31,61,89,107,127,521,607,1279,2203,2281]
 --
 --                    Using Miller-Rabin:
---                    [2,3,5,7,13,17,19]
+--                    [2,3,5,7,13,17,19,31,61,89,107,127,521,607,1279,2203,2281]
 --
--- Getting more than 8 Mersenne numbers is hard on my laptop: using either fermat, miller-rabin or the `prime` function I can't get past 8 without clogging up the RAM (GHC has used 10.0/12.0 RAM memory :(  ). The fermat is not reliable for these small numbers. Both the fermat and the Miller-Rabin seem to perform worse than the `prime` function. This can also be due to the fact that these two functions use IO, which is also proven to give performance issues in the past.
+-- All these found numbers are actually mersenne primes according to WikiPedia.
+--
+-- Using Miller-Rabin and Fermat I can get way more Mersenne primes than when using the normal `prime` function. After about 16 Mersenne primes the process gets very slow, and I have a feeling my laptop currently dislikes me for putting all these heavy computations on it. The reliability of Fermat in particular is not always very good.
 findMersennePrimesSimple :: Int -> [Integer]
-findMersennePrimesSimple amount = take amount (filter (\x -> prime x && prime (2^x-1)) [1..])
+findMersennePrimesSimple amount = take amount (filter (\x -> prime (2^x-1)) primes)
 
 findMersennePrimes :: (Int -> Integer -> IO Bool) -> Int -> Integer -> IO [Integer]
-findMersennePrimes algorithm checks maxNum = filterM (\x -> algorithm checks x >>= \y -> if y then algorithm checks (2^x-1) else return False) [1..maxNum]
+findMersennePrimes algorithm checks maxNum = filterM (\x -> algorithm checks (2^x-1)) (takeWhile (<maxNum) primes)
 
 main :: IO ()
 main = do
@@ -253,7 +255,7 @@ main = do
   putStrLn "\x1b[36m== Assignment 6B (Finding Mersenne primes) ==\x1b[0m"
   putStrLn "Using the inefficient but reliable `prime` function:"
   print $ findMersennePrimesSimple 8
-  putStrLn "\nUsing fermat:"
-  print =<< findMersennePrimes primeMR 1 20
   putStrLn "\nUsing Miller-Rabin:"
-  print =<< findMersennePrimes primeTestsF 1 20
+  print =<< findMersennePrimes primeMR 1 2500
+  putStrLn "\nUsing fermat:"
+  print =<< findMersennePrimes primeTestsF 1 2500

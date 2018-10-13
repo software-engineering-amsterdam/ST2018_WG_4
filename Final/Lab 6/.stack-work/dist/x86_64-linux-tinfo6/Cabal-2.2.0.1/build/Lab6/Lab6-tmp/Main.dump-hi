@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-13 18:59:04.482443885 UTC
+2018-10-13 19:13:24.758662607 UTC
 
 interface main:Main 8043
-  interface hash: 31dbc062b8dff30e5507c024cce3a3af
-  ABI hash: 4afc167ee7b8ecaeb31ad509d992386e
+  interface hash: ccdbf4730fe0d444267db4d5972dc4b7
+  ABI hash: 13f1949168acfad8eac2c97a3122b903
   export-list hash: 4cd9ae15c21e42b2f51d4fbcb65bf292
   orphan hash: 7e6385a5814f642358f6f47adb288527
   flag hash: f3fa5c76493036586b6cf05d250b0635
@@ -92,6 +92,7 @@ import  -/  Lecture6 64a699b0ebe12088221766fb1ea42d4b
   prime 97846132a8330dd6b9a76564e2b3c905
   primeMR 498b3ef2e4e504a565e6aff1c7076a66
   primeTestsF c5cf4f3c0b89101516b7186f8edaa6de
+  primes 97550eb2211241bc30d45c06298ce380
 import  -/  monad-loops-0.4.3:Control.Monad.Loops e76938e3a155629c9760ce247778d85e
 import  -/  random-1.1:System.Random 31994b60c33f032d578c64a928f735f7
 d603030a8e969d88cab3661afbbb8f2f
@@ -156,14 +157,14 @@ e5875966b74dad2d29772660b8a75e33
 d026be77cb9ced20e35a61514e0458aa
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("main"#) -}
-ce0a3e43cec007b9eab0f99d4343cd38
+f964b64dc05e50a353477d8611ff0dda
   $wfindMersennePrimesSimple ::
     GHC.Prim.Int# -> [GHC.Integer.Type.Integer]
   {- Arity: 1, Strictness: <S,U>, Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#) ->
                  case GHC.Prim.<# 0# ww of lwild {
                    DEFAULT -> GHC.Types.[] @ GHC.Integer.Type.Integer
-                   1# -> Main.$wgo2 Main.carmichael_d ww }) -}
+                   1# -> Main.$wgo2 Lecture6.primes ww }) -}
 46d0141d2bd0c8fae355ac79f238d5ab
   $wgenPos ::
     GHC.Prim.ByteArray#
@@ -266,11 +267,11 @@ a45f11dadb1951ef2faf3acbc0bbf6cb
     GHC.Integer.Type.Integer
     -> (# GHC.Integer.Type.Integer, [GHC.Integer.Type.Integer] #)
   {- Arity: 1, Strictness: <S,U>, Inline: [0] -}
-9646e97a76c52a403b8943e71785025b
+a53ebdfeeea2e446e8fb589bc4b53b3e
   $wgo2 ::
-    GHC.Integer.Type.Integer
+    [GHC.Integer.Type.Integer]
     -> GHC.Prim.Int# -> [GHC.Integer.Type.Integer]
-  {- Arity: 2, Strictness: <S,U><S,1*U>m2, Inline: [0] -}
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0] -}
 2d61e738add6b68be55bdbfe4904f952
   $wtestExM ::
     GHC.Integer.Type.Integer
@@ -381,14 +382,14 @@ a3e93b9aba2c35c0bdbfdd852a1c38fd
 0e22e083b19a3b104ac079c81c7786db
   countTillHit4 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 1#) -}
-f4020560b2e6ca1b89615ffefb670210
+aa5e5624ec2dd4ffafd1ba1ba62c3f5f
   findMersennePrimes ::
     (GHC.Types.Int
      -> GHC.Integer.Type.Integer -> GHC.Types.IO GHC.Types.Bool)
     -> GHC.Types.Int
     -> GHC.Integer.Type.Integer
     -> GHC.Types.IO [GHC.Integer.Type.Integer]
-  {- Arity: 4, Strictness: <L,C(C1(C1(U(U,1*U))))><L,U><S,U><S,U>,
+  {- Arity: 4, Strictness: <L,C(C1(C1(U(U,1*U))))><L,U><L,U><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.findMersennePrimes1
                   `cast`
@@ -397,7 +398,7 @@ f4020560b2e6ca1b89615ffefb670210
                  ->_R <GHC.Types.Int>_R
                  ->_R <GHC.Integer.Type.Integer>_R
                  ->_R Sym (GHC.Types.N:IO[0] <[GHC.Integer.Type.Integer]>_R)) -}
-4c2a1baba64d523bdf55136a0d9dd77f
+10c83b76eb3561d97ce7d01de1db8251
   findMersennePrimes1 ::
     (GHC.Types.Int
      -> GHC.Integer.Type.Integer -> GHC.Types.IO GHC.Types.Bool)
@@ -406,53 +407,46 @@ f4020560b2e6ca1b89615ffefb670210
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld,
           [GHC.Integer.Type.Integer] #)
-  {- Arity: 4, Strictness: <L,C(C1(C1(U(U,1*U))))><L,U><S,U><S,U>,
+  {- Arity: 4, Strictness: <L,C(C1(C1(U(U,1*U))))><L,U><L,U><S,U>,
      Unfolding: (\ (algorithm :: GHC.Types.Int
                                  -> GHC.Integer.Type.Integer -> GHC.Types.IO GHC.Types.Bool)
                    (checks :: GHC.Types.Int)
                    (maxNum :: GHC.Integer.Type.Integer)
                    (eta :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  letrec {
-                   go :: GHC.Integer.Type.Integer
+                   go :: [GHC.Integer.Type.Integer]
                          -> GHC.Prim.State# GHC.Prim.RealWorld
                          -> (# GHC.Prim.State# GHC.Prim.RealWorld,
                                [GHC.Integer.Type.Integer] #)
-                     {- Arity: 2, Strictness: <S,U><S,U> -}
-                   = \ (x :: GHC.Integer.Type.Integer)
+                     {- Arity: 2, Strictness: <S,1*U><S,U> -}
+                   = \ (ds1 :: [GHC.Integer.Type.Integer])
                        (eta1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                     case GHC.Integer.Type.gtInteger# x maxNum of wild {
-                       DEFAULT
-                       -> case (algorithm checks x)
-                                 `cast`
-                               (GHC.Types.N:IO[0] <GHC.Types.Bool>_R)
-                                 eta1 of ds1 { (#,#) ipv ipv1 ->
-                          case ipv1 of wild1 {
-                            GHC.Types.False
-                            -> go (GHC.Integer.Type.plusInteger x Main.carmichael_d) ipv
-                            GHC.Types.True
+                     case ds1 of wild {
+                       [] -> (# eta1, GHC.Types.[] @ GHC.Integer.Type.Integer #)
+                       : y ys
+                       -> case GHC.Integer.Type.ltInteger# y maxNum of wild1 {
+                            DEFAULT -> (# eta1, GHC.Types.[] @ GHC.Integer.Type.Integer #)
+                            1#
                             -> case (algorithm
                                        checks
                                        (GHC.Integer.Type.minusInteger
-                                          (GHC.Real.^_$s^ Main.findMersennePrimes2 x)
+                                          (GHC.Real.^_$s^ Main.findMersennePrimes2 y)
                                           Main.carmichael_d))
                                       `cast`
                                     (GHC.Types.N:IO[0] <GHC.Types.Bool>_R)
-                                      ipv of ds2 { (#,#) ipv2 ipv3 ->
-                               case go
-                                      (GHC.Integer.Type.plusInteger x Main.carmichael_d)
-                                      ipv2 of ds3 { (#,#) ipv4 ipv5 ->
-                               (# ipv4,
-                                  case ipv3 of wild2 {
-                                    GHC.Types.False -> ipv5
+                                      eta1 of ds2 { (#,#) ipv ipv1 ->
+                               case go ys ipv of ds3 { (#,#) ipv2 ipv3 ->
+                               (# ipv2,
+                                  case ipv1 of wild2 {
+                                    GHC.Types.False -> ipv3
                                     GHC.Types.True
-                                    -> GHC.Types.: @ GHC.Integer.Type.Integer x ipv5 } #) } } } }
-                       1# -> (# eta1, GHC.Types.[] @ GHC.Integer.Type.Integer #) }
+                                    -> GHC.Types.: @ GHC.Integer.Type.Integer y ipv3 } #) } } } }
                  } in
-                 go Main.carmichael_d eta) -}
+                 go Lecture6.primes eta) -}
 27ccd315880bca85eed970957b03ee9a
   findMersennePrimes2 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (2) -}
-9e7f9a7989607a87a12fc8560f3b1480
+ddacca67b59edb85d7a7a19427b27f24
   findMersennePrimesSimple ::
     GHC.Types.Int -> [GHC.Integer.Type.Integer]
   {- Arity: 1, Strictness: <S(S),1*U(U)>, Inline: [0],
