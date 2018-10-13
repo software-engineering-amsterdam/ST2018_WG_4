@@ -128,7 +128,7 @@ primeTestF n = do
 
 primeTestsF :: Int -> Integer -> IO Bool
 primeTestsF k n = do
- as <- sequence $ fmap (\_-> randomRIO (2,n-1)) [1..k]
+ as <- traverse (\_-> randomRIO (2,n-1)) [1..k]
  return (all (\ a -> exM a (n-1) n == 1) as)
 
 decomp :: Integer -> (Integer,Integer)
