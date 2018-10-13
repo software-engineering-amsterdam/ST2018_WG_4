@@ -13,6 +13,7 @@ import Lecture6
 import Data.Maybe
 
 -- Assignment 1
+-- Time: 220 minutes
 -- Please see the Lecture6.hs file for the code of the exM function.
 -- Result:
 --                    +++ OK, passed 100 tests.
