@@ -421,14 +421,27 @@ listMersennePrimes = do
         print (mpp)
 
 --Exercise 8: Bonus
+-- For RSA public key cryptography, one needs pairs of large primes with the same bitlength
+-- .Such pairs of primes can be found by trial-and-error using
+--  the Miller-Rabin primality check. Write a function for this,
+--  and demonstrate how a pair p,q that you found can be used for
+--  public key encoding and decoding.
+
 
 lengthOfInt :: Integer -> Int
 lengthOfInt i = length(map digitToInt (show i))
 
--- checkPairs
-
+-- Returns list of all passed MillerRabin numbers of n length
 findCryptoPairs :: Int -> IO [Integer]
 findCryptoPairs plength = do
-        let potential_pairs = filter (\p -> lengthOfInt(p) == plength) (takeWhile (\p -> lengthOfInt(p) <= plength) primes)
-        return potential_pairs
+        -- let potential_pairs = filter (\p -> lengthOfInt(p) == plength) (takeWhile (\p -> lengthOfInt(p) <= plength) [1^5..])
+        primes <- filterM (primeMR 1) [(10^(plength-1))..(10^(plength))]
+        return primes
         -- checkPairs potential_pairs
+        -- ifM (primeTestsF k c) (return c) (checkFermat (n+1) k numbers)
+
+-- showCryptoPrimePairs :: IO ()
+-- showCryptoPrimePairs = do
+--         mpp <- findCryptoPairs 3
+--         putStrLn "cryptopairs"
+--         print (mpp)
