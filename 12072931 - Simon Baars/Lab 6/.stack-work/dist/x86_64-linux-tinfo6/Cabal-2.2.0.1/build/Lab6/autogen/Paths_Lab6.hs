@@ -30,7 +30,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab 6/.stack-work/install/x86_64-linux-tinfo6/lts-12.12/8.4.3/bin"
-libdir     = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab 6/.stack-work/install/x86_64-linux-tinfo6/lts-12.12/8.4.3/lib/x86_64-linux-ghc-8.4.3/Lab6-0.1.0.0-FIYKyGCOsAeDsI3h3bfXp9-Lab6"
+libdir     = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab 6/.stack-work/install/x86_64-linux-tinfo6/lts-12.12/8.4.3/lib/x86_64-linux-ghc-8.4.3/Lab6-0.1.0.0-6k3CGQapEPw8gbeIeWkOs2-Lab6"
 dynlibdir  = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab 6/.stack-work/install/x86_64-linux-tinfo6/lts-12.12/8.4.3/lib/x86_64-linux-ghc-8.4.3"
 datadir    = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab 6/.stack-work/install/x86_64-linux-tinfo6/lts-12.12/8.4.3/share/x86_64-linux-ghc-8.4.3/Lab6-0.1.0.0"
 libexecdir = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Lab 6/.stack-work/install/x86_64-linux-tinfo6/lts-12.12/8.4.3/libexec/x86_64-linux-ghc-8.4.3/Lab6-0.1.0.0"
