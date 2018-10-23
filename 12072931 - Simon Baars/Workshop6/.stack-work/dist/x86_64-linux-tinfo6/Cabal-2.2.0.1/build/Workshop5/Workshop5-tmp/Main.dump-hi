@@ -1,12 +1,12 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-23 12:50:50.393430442 UTC
+2018-10-23 16:25:49.081281899 UTC
 
 interface main:Main 8043
-  interface hash: e6df7961494a5df1f4ebc6b4cb10298a
-  ABI hash: 0154b4863ad971812c86b82533965da4
-  export-list hash: e3c257debcb561854d304ddf747d388b
-  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  interface hash: 19615fd8a72f1b9054ad70a1134ecdd8
+  ABI hash: e5bfb001431b79402b69ec5eaaabf3df
+  export-list hash: b4248a067c302ce2f2cd4b8925c6bbaa
+  orphan hash: 20c139e0f03c5ee1daef1332ff283381
   flag hash: c723a510f4121d1810a96bca0985c58f
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
   hpc_hash: 93b885adfe0da089cdf634904fd59f71
@@ -14,8 +14,10 @@ interface main:Main 8043
   used TH splices: False
   where
 exports:
-  Main.collect
+  Main.-->
   Main.collect'
+  Main.collect2
+  Main.coprime
   Main.count
   Main.count'
   Main.depth
@@ -24,33 +26,78 @@ exports:
   Main.example2
   Main.example3
   Main.exampleTree
+  Main.fGcd
+  Main.fctGcd
   Main.foldT
+  Main.grow
+  Main.growCountExample
+  Main.infTree
   Main.leafCount
   Main.main
   Main.mapB
   Main.mapT
+  Main.mapT'
+  Main.propListEqual
+  Main.propTreeGrowthFormula
+  Main.step1list
+  Main.step2
+  Main.takeT
+  Main.tree
+  Main.tree2
+  Main.tree2list
   Main.Blt{Main.Leaf Main.Node}
   Main.Tree{Main.T}
 module dependencies:
-package dependencies: base-4.11.1.0* ghc-prim-0.5.2.0
-                      integer-gmp-1.0.2.0
-orphans: base-4.11.1.0:GHC.Float base-4.11.1.0:GHC.Base
+package dependencies: QuickCheck-2.11.3 array-0.5.2.0
+                      base-4.11.1.0* containers-0.5.11.0 deepseq-1.4.3.0
+                      ghc-boot-th-8.4.3 ghc-prim-0.5.2.0 integer-gmp-1.0.2.0
+                      pretty-1.1.3.6 primitive-0.6.3.0 random-1.1
+                      template-haskell-2.13.0.0 tf-random-0.5 time-1.8.0.2
+                      transformers-0.5.5.0
+orphans: transformers-0.5.5.0:Control.Monad.Trans.Error
+         time-1.8.0.2:Data.Time.Format.Parse
+         time-1.8.0.2:Data.Time.LocalTime.Internal.ZonedTime
+         time-1.8.0.2:Data.Time.LocalTime.Internal.LocalTime
+         time-1.8.0.2:Data.Time.Calendar.Gregorian base-4.11.1.0:GHC.Float
+         base-4.11.1.0:GHC.Base
 family instance modules: base-4.11.1.0:Control.Applicative
+                         base-4.11.1.0:Data.Complex base-4.11.1.0:Data.Functor.Compose
                          base-4.11.1.0:Data.Functor.Const
-                         base-4.11.1.0:Data.Functor.Identity base-4.11.1.0:Data.Monoid
-                         base-4.11.1.0:Data.Semigroup.Internal base-4.11.1.0:GHC.Generics
-                         base-4.11.1.0:GHC.IO.Exception
+                         base-4.11.1.0:Data.Functor.Identity
+                         base-4.11.1.0:Data.Functor.Product base-4.11.1.0:Data.Functor.Sum
+                         base-4.11.1.0:Data.Monoid base-4.11.1.0:Data.Semigroup
+                         base-4.11.1.0:Data.Semigroup.Internal base-4.11.1.0:Data.Version
+                         base-4.11.1.0:Data.Void base-4.11.1.0:GHC.Exts
+                         base-4.11.1.0:GHC.Generics base-4.11.1.0:GHC.IO.Exception
+                         containers-0.5.11.0:Data.IntMap.Internal
+                         containers-0.5.11.0:Data.IntSet.Internal
+                         containers-0.5.11.0:Data.Map.Internal
+                         containers-0.5.11.0:Data.Sequence.Internal
+                         containers-0.5.11.0:Data.Set.Internal
+                         ghc-boot-th-8.4.3:GHC.ForeignSrcLang.Type
+                         ghc-boot-th-8.4.3:GHC.LanguageExtensions.Type
+                         pretty-1.1.3.6:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.6:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.3.0:Control.Monad.Primitive
+                         primitive-0.6.3.0:Data.Primitive.ByteArray
+                         template-haskell-2.13.0.0:Language.Haskell.TH.Syntax
+import  -/  QuickCheck-2.11.3:Test.QuickCheck e00d138ee3234e83a31cc3113c8c8ffb
+import  -/  QuickCheck-2.11.3:Test.QuickCheck.Modifiers ac69053852b38b6b92f9a1761d7c4517
 import  -/  base-4.11.1.0:Data.Char 3e89818e2b8ef1a2cc5393163484da72
 import  -/  base-4.11.1.0:Data.Foldable 8ed35c38958063956af33c935ea03444
 import  -/  base-4.11.1.0:Data.List 83dc843e47bfc0c5af51e19c6f3476d5
+import  -/  base-4.11.1.0:Data.OldList 1b35aa3c6805ff7c8887a35a866fe006
 import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
 import  -/  base-4.11.1.0:GHC.List 1e4357702d8d00cded0703bd293e50e8
 import  -/  base-4.11.1.0:GHC.Num 8e54b26dce4495382dc4b50cf36ab754
+import  -/  base-4.11.1.0:GHC.Real b4beb0389ba1ad5d9640aae67848c5d3
 import  -/  base-4.11.1.0:GHC.Show 73be67392447c974f19c3befd83c46c0
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
 import  -/  base-4.11.1.0:System.IO 1c239be44126f7b1ba512ea61300f4dc
 import  -/  ghc-prim-0.5.2.0:GHC.Classes 122abfcd7450c6c11602933c9ca5f80d
 import  -/  ghc-prim-0.5.2.0:GHC.Types d9b3023de7feae4a5308d643da5543f7
+import  -/  integer-gmp-1.0.2.0:GHC.Integer.Type f3d5169c3d3830854b19f6565b265403
+fixities infix 1 -->
 80edc6ccea06a84e4332112c28fcc458
   $fEqBlt :: GHC.Classes.Eq a => GHC.Classes.Eq (Main.Blt a)
   DFunId
@@ -293,6 +340,36 @@ aefb992cc11b35e1ec05a423ec157485
                  case w1 of ww { GHC.Types.I# ww1 ->
                  case w2 of ww2 { Main.T ww3 ww4 ->
                  Main.$w$cshowsPrec1 @ a w ww1 ww3 ww4 } }) -}
+d614c8d4b920b6060795727815bdff5b
+  $s$fEq(,) ::
+    GHC.Classes.Eq (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+  {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                  (GHC.Classes.$fEq(,)_$c==
+                     @ GHC.Integer.Type.Integer
+                     @ GHC.Integer.Type.Integer
+                     GHC.Integer.Type.$fEqInteger
+                     GHC.Integer.Type.$fEqInteger)
+                  Main.$s$fEq(,)_$s$fEq(,)_$c/= -}
+01461503d3e02100beaffade72298f5c
+  $s$fEq(,)_$s$fEq(,)_$c/= ::
+    (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+    -> (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+    -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(SL),1*U(1*U,1*U)><S(SL),1*U(1*U,1*U)>,
+     Inline: (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ (x :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer))
+                   (y :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)) ->
+                 case x of wild { (,) a1 a2 ->
+                 case y of wild1 { (,) b1 b2 ->
+                 case GHC.Integer.Type.eqInteger# a1 b1 of wild2 {
+                   DEFAULT -> GHC.Types.True
+                   1#
+                   -> case GHC.Integer.Type.eqInteger# a2 b2 of wild3 {
+                        DEFAULT -> GHC.Types.True 1# -> GHC.Types.False } } } }) -}
 5c905f665d9a2cb0706c2c7912f05cb4
   $tc'Leaf :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
@@ -416,29 +493,186 @@ aefb992cc11b35e1ec05a423ec157485
     GHC.Prim.Int# -> a -> [Main.Tree a] -> GHC.Show.ShowS
   {- Arity: 4, HasNoCafRefs,
      Strictness: <L,U(C(C1(C(U))),A,A)><S,U><L,U><L,U>, Inline: [0] -}
+fb5133dc24090e5e1a185290b0cb6b10
+  $wfctGcd ::
+    GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> (# GHC.Integer.Type.Integer, GHC.Integer.Type.Integer #)
+  {- Arity: 2, Strictness: <L,U><S,U>, Inline: [0] -}
 76a52dc4d66b669b5ae80bc35189d2c1
   $wfoldT :: (a -> [b] -> b) -> a -> [Main.Tree a] -> b
   {- Arity: 3, HasNoCafRefs,
      Strictness: <C(C(S)),C(C1(U))><L,U><L,1*U>, Inline: [0] -}
+713d7c82887a7ed13075bf37683377f9
+  $wgrow :: (node -> [node]) -> node -> (# node, [Main.Tree node] #)
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,C(U)><L,U>,
+     Inline: [0] -}
+75f9f786c2410de509f92dd19c583724
+  $wgrowCountExample :: GHC.Types.Int -> GHC.Prim.Int#
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U(U)>, Inline: [0],
+     Unfolding: (\ (w :: GHC.Types.Int) ->
+                 case Main.$wgrow
+                        @ GHC.Types.Int
+                        (\ (x :: GHC.Types.Int) ->
+                         case x of wild { GHC.Types.I# x1 ->
+                         case w of wild1 { GHC.Types.I# y ->
+                         case GHC.Prim.<# x1 y of lwild {
+                           DEFAULT -> GHC.Types.[] @ GHC.Types.Int
+                           1#
+                           -> GHC.Types.:
+                                @ GHC.Types.Int
+                                (GHC.Types.I# (GHC.Prim.+# x1 1#))
+                                (GHC.Types.:
+                                   @ GHC.Types.Int
+                                   (GHC.Types.I# (GHC.Prim.+# x1 1#))
+                                   (GHC.Types.[] @ GHC.Types.Int)) } } })
+                        Main.$fShowBlt1 of ww { (#,#) ww1 ww2 ->
+                 Main.count1 @ GHC.Types.Int ww2 }) -}
 5487f096edb44ffa910da2a1ce4b2e8a
   $wleafCount :: Main.Blt a -> GHC.Prim.Int#
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>, Inline: [0] -}
+39685b6d7c62f9e9fe8a05441138a451
+  $wlvl ::
+    GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Types.Ordering
+  {- Arity: 4, HasNoCafRefs,
+     Strictness: <S,1*U><L,1*U><S,1*U><L,1*U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Integer.Type.Integer)
+                   (ww1 :: GHC.Integer.Type.Integer)
+                   (ww2 :: GHC.Integer.Type.Integer)
+                   (ww3 :: GHC.Integer.Type.Integer) ->
+                 case GHC.Integer.Type.compareInteger ww ww2 of wild {
+                   GHC.Types.LT -> GHC.Types.LT
+                   GHC.Types.EQ -> GHC.Integer.Type.compareInteger ww1 ww3
+                   GHC.Types.GT -> GHC.Types.GT }) -}
 4222b399b4854e0c315b5f21f0a7bfa6
   $wmapT :: (a -> b) -> a -> [Main.Tree a] -> (# b, [Main.Tree b] #)
   {- Arity: 3, HasNoCafRefs, Strictness: <L,C(U)><L,U><L,1*U>,
      Inline: [0] -}
+956399d0e0c728287aa3ee833a7eaa58
+  $wpropTreeGrowthFormula :: GHC.Prim.Int# -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#) ->
+                 case GHC.Prim.<# ww 20# of lwild {
+                   DEFAULT -> GHC.Types.True
+                   1#
+                   -> let {
+                        y0 :: GHC.Prim.Int# = GHC.Prim.+# ww 1#
+                      } in
+                      case GHC.Prim.<# y0 0# of lwild1 {
+                        DEFAULT
+                        -> case y0 of wild1 {
+                             DEFAULT
+                             -> case GHC.Real.$wf1 2# wild1 of ww4 { DEFAULT ->
+                                case Main.$wgrowCountExample (GHC.Types.I# ww) of ww1 { DEFAULT ->
+                                GHC.Prim.tagToEnum#
+                                  @ GHC.Types.Bool
+                                  (GHC.Prim.==# (GHC.Prim.-# ww4 1#) ww1) } }
+                             0#
+                             -> case Main.$wgrowCountExample (GHC.Types.I# ww) of ww1 {
+                                  DEFAULT -> GHC.Types.False 0# -> GHC.Types.True } }
+                        1# -> case GHC.Real.^2 ret_ty GHC.Types.Bool of {} } }) -}
+dbd7d7658aa26ae6756e08ddfb1fc591
+  $wstep1list ::
+    GHC.Integer.Type.Integer
+    -> (a, b) -> [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+  {- Arity: 2, Strictness: <S,U><L,A>, Inline: [0],
+     Unfolding: (\ @ a
+                   @ b
+                   (w :: GHC.Integer.Type.Integer)
+                   (w1 :: (a, b)) ->
+                 letrec {
+                   go :: GHC.Integer.Type.Integer
+                         -> [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+                     {- Arity: 1, Strictness: <S,U> -}
+                   = \ (x :: GHC.Integer.Type.Integer) ->
+                     case GHC.Integer.Type.gtInteger# x w of wild {
+                       DEFAULT
+                       -> let {
+                            n :: [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+                            = go (GHC.Integer.Type.plusInteger x Main.coprime1)
+                          } in
+                          letrec {
+                            go1 :: GHC.Integer.Type.Integer
+                                   -> [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+                              {- Arity: 1, Strictness: <S,U> -}
+                            = \ (x1 :: GHC.Integer.Type.Integer) ->
+                              case GHC.Integer.Type.gtInteger# x1 w of wild1 {
+                                DEFAULT
+                                -> case GHC.Integer.Type.eqInteger#
+                                          (Main.fGcd x x1)
+                                          Main.coprime1 of wild2 {
+                                     DEFAULT -> go1 (GHC.Integer.Type.plusInteger x1 Main.coprime1)
+                                     1#
+                                     -> GHC.Types.:
+                                          @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                                          (x, x1)
+                                          (go1 (GHC.Integer.Type.plusInteger x1 Main.coprime1)) }
+                                1# -> n }
+                          } in
+                          go1 Main.coprime1
+                       1#
+                       -> GHC.Types.[]
+                            @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer) }
+                 } in
+                 go Main.coprime1) -}
+68aa166ef254d9cbfb018f78f6feaf1f
+  $wstep2 ::
+    (GHC.Classes.Ord a, GHC.Num.Num a) => a -> a -> a -> [(a, a)]
+  {- Arity: 5, HasNoCafRefs,
+     Strictness: <S(LLLC(C(S))LLLL),1*U(A,A,A,1*C1(C1(U)),A,A,A,A)><L,U(C(C1(U)),A,A,A,A,A,A)><L,U><L,U><L,U>,
+     Inline: [0],
+     Unfolding: (\ @ a
+                   (w :: GHC.Classes.Ord a)
+                   (w1 :: GHC.Num.Num a)
+                   (w2 :: a)
+                   (ww :: a)
+                   (ww1 :: a) ->
+                 case GHC.Classes.<= @ a w (GHC.Num.+ @ a w1 ww ww1) w2 of wild {
+                   GHC.Types.False -> GHC.Types.[] @ (a, a)
+                   GHC.Types.True
+                   -> GHC.Types.:
+                        @ (a, a)
+                        (GHC.Num.+ @ a w1 ww ww1, ww1)
+                        (GHC.Types.:
+                           @ (a, a)
+                           (ww, GHC.Num.+ @ a w1 ww ww1)
+                           (GHC.Types.[] @ (a, a))) }) -}
+cefaf830ec012b267d15761654352385
+  $wtakeT ::
+    GHC.Prim.Int# -> a -> [Main.Tree a] -> (# a, [Main.Tree a] #)
+  {- Arity: 3, HasNoCafRefs, Strictness: <S,1*U><L,U><L,1*U>,
+     Inline: [0] -}
+6731deec5db1b73d386497bcb1463ae7
+  $wtree2 ::
+    (GHC.Classes.Ord a, GHC.Num.Num a) =>
+    a -> (# (a, a), [Main.Tree (a, a)] #)
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(A,A,A,C(C1(U)),A,A,A,A)><L,U(C(C1(U)),A,A,A,A,A,C(U))><L,U>,
+     Inline: [0],
+     Unfolding: (\ @ a
+                   (w :: GHC.Classes.Ord a)
+                   (w1 :: GHC.Num.Num a)
+                   (w2 :: a) ->
+                 Main.$wgrow
+                   @ (a, a)
+                   (Main.step2 @ a w w1 w2)
+                   (GHC.Num.fromInteger @ a w1 Main.coprime1,
+                    GHC.Num.fromInteger @ a w1 Main.coprime1)) -}
+61b705fcb0cb73ecd2c55bf006808635
+  (-->) :: GHC.Types.Bool -> GHC.Types.Bool -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (p :: GHC.Types.Bool) (q :: GHC.Types.Bool) ->
+                 case p of wild {
+                   GHC.Types.False -> GHC.Types.True GHC.Types.True -> q }) -}
 80edc6ccea06a84e4332112c28fcc458
   data Blt a = Leaf a | Node (Main.Blt a) (Main.Blt a)
 aefb992cc11b35e1ec05a423ec157485
   data Tree a = T a [Main.Tree a]
-d2c41d2bcfd1142a55ccc070a2fa1afe
-  collect :: Main.Tree a -> [a]
-  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U,1*U)>m2,
-     Inline: [0],
-     Unfolding: InlineRule (1, True, False)
-                (\ @ a (w :: Main.Tree a) ->
-                 case w of ww { Main.T ww1 ww2 ->
-                 GHC.Types.: @ a ww1 (Main.collect1 @ a ww2) }) -}
 2de66403dd5741d3512625b513ff2c64
   collect' :: Main.Tree a -> [a]
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U,1*U)>,
@@ -463,27 +697,44 @@ d2c41d2bcfd1142a55ccc070a2fa1afe
 3ef82311d2ef1ffc3a7ec06f06d605eb
   collect1 :: [Main.Tree a] -> [a]
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
-b08a09f24931a78bf6629cc4c47ae5f6
-  count :: Main.Tree a -> GHC.Types.Int
-  {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(A,U)>m,
+dd0ed039029e84a66ff75e9f180807ef
+  collect2 :: Main.Tree a -> [a]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U,1*U)>m2,
      Inline: [0],
      Unfolding: InlineRule (1, True, False)
                 (\ @ a (w :: Main.Tree a) ->
                  case w of ww { Main.T ww1 ww2 ->
-                 case GHC.List.$wlenAcc @ (Main.Tree a) ww2 0# of ww3 { DEFAULT ->
-                 case Main.count1 @ a ww2 of ww4 { DEFAULT ->
-                 GHC.Types.I# (GHC.Prim.+# ww3 ww4) } } }) -}
-f168d33a034917074c9fc68702e7a053
-  count' :: Main.Tree a -> GHC.Types.Int
-  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U,1*U)>m,
+                 GHC.Types.: @ a ww1 (Main.collect1 @ a ww2) }) -}
+bd7f4ccbddae1c4a3b2b14b60ae540e4
+  coprime ::
+    GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer -> GHC.Types.Bool
+  {- Arity: 2, Strictness: <S,1*U><S,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (n :: GHC.Integer.Type.Integer)
+                   (m :: GHC.Integer.Type.Integer) ->
+                 case GHC.Integer.Type.eqInteger#
+                        (Main.fGcd n m)
+                        Main.coprime1 of wild { DEFAULT ->
+                 GHC.Prim.tagToEnum# @ GHC.Types.Bool wild }) -}
+ce3e341a8abffa385354c2697d5d6176
+  coprime1 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (1) -}
+b9419933584db9f527dc894315e196f8
+  count :: Main.Tree a -> GHC.Types.Int
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(A,1*U)>m,
+     Inline: [0],
      Unfolding: InlineRule (1, True, False)
-                (\ @ a (x :: Main.Tree a) ->
-                 case Main.foldT
-                        @ a
-                        @ GHC.Types.Int
-                        (Main.count'1 @ a)
-                        x of wild { GHC.Types.I# x1 ->
-                 GHC.Types.I# (GHC.Prim.-# x1 1#) }) -}
+                (\ @ a (w :: Main.Tree a) ->
+                 case w of ww { Main.T ww1 ww2 ->
+                 case Main.count1 @ a ww2 of ww3 { DEFAULT ->
+                 GHC.Types.I# ww3 } }) -}
+c8c1f41b0012b5a7c225809d2e05a1b5
+  count' :: Main.Tree a -> GHC.Types.Int
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U,1*U)>,
+     Unfolding: (\ @ a (w :: Main.Tree a) ->
+                 case w of ww { Main.T ww1 ww2 ->
+                 Main.$wfoldT @ a @ GHC.Types.Int (Main.count'1 @ a) ww1 ww2 }) -}
 3cccec9a1299cc34e2f9c1cf9bba859a
   count'1 :: a -> [GHC.Types.Int] -> GHC.Types.Int
   {- Arity: 2, HasNoCafRefs, Strictness: <L,A><S,1*U>m,
@@ -538,96 +789,93 @@ bb5b2e7b986278b288eeb6672dcbba57
 800e64d14be7035f01d44ea58d27ad38
   depth1 :: [Main.Tree a] -> GHC.Prim.Int# -> GHC.Prim.Int#
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,U>, Inline: [0] -}
-144ac23b7fd3373dc0094df8ae046107
+26b5357954c7f532cb216d08fb80e744
   example1 :: Main.Tree GHC.Integer.Type.Integer
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (Main.T
                    @ GHC.Integer.Type.Integer
-                   Main.example10
+                   Main.coprime1
                    Main.example4) -}
-c87834c478ece493637d5b55021ead5a
-  example10 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (1) -}
-5ab637671a33f6c7752416efa7faae3d
+f5ba9b4112a1feba532ca918f84c7c2d
+  example10 :: [Main.Tree GHC.Integer.Type.Integer]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Tree GHC.Integer.Type.Integer)
+                   Main.example1
+                   Main.example11) -}
+5fb78945c5f23c7ae84eea8cbf76d89a
   example11 :: [Main.Tree GHC.Integer.Type.Integer]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ (Main.Tree GHC.Integer.Type.Integer)
                    Main.example1
                    Main.example12) -}
-374b5af7907795473b3574571c365eb5
+102664b608c802d4feff3b6338b3301f
   example12 :: [Main.Tree GHC.Integer.Type.Integer]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ (Main.Tree GHC.Integer.Type.Integer)
                    Main.example1
-                   Main.example13) -}
-7998c67e1911fdcf6dfc7026444a6fcf
-  example13 :: [Main.Tree GHC.Integer.Type.Integer]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ (Main.Tree GHC.Integer.Type.Integer)
-                   Main.example1
                    (GHC.Types.[] @ (Main.Tree GHC.Integer.Type.Integer))) -}
-eba2f9e625a400f68919d9d2db8a6424
-  example14 :: GHC.Integer.Type.Integer
+154ba7605e72805ff64c5a264f3ba11f
+  example13 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (0) -}
-894e31712ae7880be3adde841524ec56
-  example15 :: [Main.Tree GHC.Integer.Type.Integer]
+ea97de748494bea50cc987e6e57cc4af
+  example14 :: [Main.Tree GHC.Integer.Type.Integer]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ (Main.Tree GHC.Integer.Type.Integer)
                    Main.example2
-                   Main.example16) -}
-1399cc97b063ce32b638ac4242418fb6
-  example16 :: [Main.Tree GHC.Integer.Type.Integer]
+                   Main.example15) -}
+9d046700984e547c881b1cc7922fc25d
+  example15 :: [Main.Tree GHC.Integer.Type.Integer]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ (Main.Tree GHC.Integer.Type.Integer)
                    Main.example1
+                   Main.example16) -}
+b15b076ba4884a21c513f36536da86e5
+  example16 :: [Main.Tree GHC.Integer.Type.Integer]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Tree GHC.Integer.Type.Integer)
+                   Main.example2
                    Main.example17) -}
-ff7d1bedc9da8ef03a8f9102f6718a74
+61ea31bb72d65be5a5f52267fd21382e
   example17 :: [Main.Tree GHC.Integer.Type.Integer]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ (Main.Tree GHC.Integer.Type.Integer)
                    Main.example2
                    Main.example18) -}
-4ef28c35f02c65d3378a6379edbdfd8e
+846c448962de22703650512a99dbc26e
   example18 :: [Main.Tree GHC.Integer.Type.Integer]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ (Main.Tree GHC.Integer.Type.Integer)
-                   Main.example2
-                   Main.example19) -}
-fc66a6ea00965e19bae276f0299df73a
-  example19 :: [Main.Tree GHC.Integer.Type.Integer]
-  {- HasNoCafRefs, Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ (Main.Tree GHC.Integer.Type.Integer)
                    Main.example1
-                   Main.example20) -}
-12a16e01e901c621840521799b18b600
-  example2 :: Main.Tree GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Strictness: m,
-     Unfolding: (Main.T
-                   @ GHC.Integer.Type.Integer
-                   Main.example14
-                   Main.example11) -}
-9fea44801a29af9091a5541b96692a25
-  example20 :: [Main.Tree GHC.Integer.Type.Integer]
+                   Main.example19) -}
+2cec830570bc6fece13ec0b5205feb88
+  example19 :: [Main.Tree GHC.Integer.Type.Integer]
   {- HasNoCafRefs, Strictness: m2,
      Unfolding: (GHC.Types.:
                    @ (Main.Tree GHC.Integer.Type.Integer)
                    Main.example2
                    (GHC.Types.[] @ (Main.Tree GHC.Integer.Type.Integer))) -}
-80c9cf5f47ad0b68d39b838b13a8cbfe
+f9f0ab90dec82405b3d7787891783f6b
+  example2 :: Main.Tree GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (Main.T
+                   @ GHC.Integer.Type.Integer
+                   Main.example13
+                   Main.example10) -}
+351917a651046488c7a34a4f39696df4
   example3 :: Main.Tree GHC.Integer.Type.Integer
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (Main.T
                    @ GHC.Integer.Type.Integer
-                   Main.example14
-                   Main.example15) -}
+                   Main.example13
+                   Main.example14) -}
 b7fa85c799b291ca1af83ff55f08d60b
   example4 :: [Main.Tree GHC.Integer.Type.Integer]
   {- HasNoCafRefs, Strictness: m2,
@@ -706,6 +954,21 @@ f12a0247a269c65d3858a9cd63104271
 504e9f4c6907520b5f152f3a745b021c
   exampleTree9 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.exampleTree10) -}
+96dea7629d07bbdcfc59f14dcee34fb6
+  fGcd ::
+    GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
+  {- Arity: 2, Strictness: <S,1*U><S,U> -}
+c5ec0178d5c54119b9fbafce874af8b8
+  fctGcd ::
+    GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+  {- Arity: 2, Strictness: <L,U><S,U>m, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: GHC.Integer.Type.Integer)
+                   (w1 :: GHC.Integer.Type.Integer) ->
+                 case Main.$wfctGcd w w1 of ww { (#,#) ww1 ww2 -> (ww1, ww2) }) -}
 9035163d56c75885a32c05973446b948
   foldT :: (a -> [b] -> b) -> Main.Tree a -> b
   {- Arity: 2, HasNoCafRefs,
@@ -714,6 +977,38 @@ f12a0247a269c65d3858a9cd63104271
                 (\ @ a @ b (w :: a -> [b] -> b) (w1 :: Main.Tree a) ->
                  case w1 of ww { Main.T ww1 ww2 ->
                  Main.$wfoldT @ a @ b w ww1 ww2 }) -}
+c44926090c1e7327766c4aeceaad72e4
+  grow :: (node -> [node]) -> node -> Main.Tree node
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,C(U)><L,U>m, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ @ node (w :: node -> [node]) (w1 :: node) ->
+                 case Main.$wgrow @ node w w1 of ww { (#,#) ww1 ww2 ->
+                 Main.T @ node ww1 ww2 }) -}
+aa1395f40df423a102a3469a70f97e02
+  growCountExample :: GHC.Types.Int -> GHC.Types.Int
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U(U)>m, Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: GHC.Types.Int) ->
+                 case Main.$wgrowCountExample w of ww { DEFAULT ->
+                 GHC.Types.I# ww }) -}
+0fa442c345ce42147673e51feb12a684
+  infTree :: Main.Tree GHC.Integer.Type.Integer
+  {- Unfolding: (case Main.$wgrow
+                        @ GHC.Integer.Type.Integer
+                        Main.infTree1
+                        Main.example13 of ww { (#,#) ww1 ww2 ->
+                 Main.T @ GHC.Integer.Type.Integer ww1 ww2 }) -}
+59fc1fca96b5692245939916505a9a83
+  infTree1 :: GHC.Integer.Type.Integer -> [GHC.Integer.Type.Integer]
+  {- Arity: 1, Strictness: <L,U>m2,
+     Unfolding: (\ (n :: GHC.Integer.Type.Integer) ->
+                 GHC.Types.:
+                   @ GHC.Integer.Type.Integer
+                   (GHC.Integer.Type.plusInteger n Main.coprime1)
+                   (GHC.Types.:
+                      @ GHC.Integer.Type.Integer
+                      (GHC.Integer.Type.plusInteger n Main.coprime1)
+                      (GHC.Types.[] @ GHC.Integer.Type.Integer))) -}
 10da1b242c48298790088ced4a4b60ae
   leafCount :: Main.Blt a -> GHC.Types.Int
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>m, Inline: [0],
@@ -721,12 +1016,12 @@ f12a0247a269c65d3858a9cd63104271
                 (\ @ a (w :: Main.Blt a) ->
                  case Main.$wleafCount @ a w of ww { DEFAULT ->
                  GHC.Types.I# ww }) -}
-ee305392bdb3808e495a8f24119bb0f0
+b0df2f565d7b8755a1383f94c9bad0b3
   main :: GHC.Types.IO ()
   {- Arity: 1,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-bb320fd64a2c7b02bda6daa4569519d8
+c2af0f8fd6e51fa8f9d49b97018313d8
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -735,13 +1030,13 @@ bb320fd64a2c7b02bda6daa4569519d8
                    GHC.IO.Handle.FD.stdout
                    Main.main2
                    GHC.Types.True) -}
-4aab2e5263b893debf2ad4a0c173f611
+14973da638b74f2156093a0de2461874
   main2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# Main.main3) -}
-c04efd0f4e385343a4a228adfa7c8864
+dd9922e704554fc11e56cfd5c1be123c
   main3 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("Example tree size: "#) -}
-17fb6b29112344c2ab6f4a65bb83da17
+  {- HasNoCafRefs, Unfolding: ("Hello world"#) -}
+2b16f64f8f73a4fd2880955c8d56a17e
   main4 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -761,11 +1056,181 @@ d9f88d0396c0f72bd1537c60e4fc6a4c
                  case w1 of ww { Main.T ww1 ww2 ->
                  case Main.$wmapT @ a @ b w ww1 ww2 of ww3 { (#,#) ww4 ww5 ->
                  Main.T @ b ww4 ww5 } }) -}
+10a2ce8113abaad29f1072beb8c4ebf9
+  mapT' :: (a -> b) -> Main.Tree a -> Main.Tree b
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,C(U)><S,1*U(U,1*U)>,
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a @ b (f2 :: a -> b) (eta :: Main.Tree a) ->
+                 Main.foldT
+                   @ a
+                   @ (Main.Tree b)
+                   (\ (x :: a) (y :: [Main.Tree b])[OneShot] -> Main.T @ b (f2 x) y)
+                   eta) -}
+de0c83fa40e4e51080167ebb96ff4a35
+  propListEqual :: GHC.Integer.Type.Integer -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (n :: GHC.Integer.Type.Integer) ->
+                 case GHC.Integer.Type.gtInteger# n Main.example13 of wild {
+                   DEFAULT -> GHC.Types.True
+                   1#
+                   -> case Main.$wgrow
+                             @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                             (\ (ds :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)) ->
+                              case ds of wild1 { (,) x y ->
+                              case GHC.Integer.Type.leInteger#
+                                     (GHC.Integer.Type.plusInteger x y)
+                                     n of wild2 {
+                                DEFAULT
+                                -> GHC.Types.[]
+                                     @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                                1#
+                                -> GHC.Types.:
+                                     @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                                     (GHC.Integer.Type.plusInteger x y, y)
+                                     (GHC.Types.:
+                                        @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                                        (x, GHC.Integer.Type.plusInteger x y)
+                                        (GHC.Types.[]
+                                           @ (GHC.Integer.Type.Integer,
+                                              GHC.Integer.Type.Integer))) } })
+                             Main.propListEqual3 of ww { (#,#) ww1 ww2 ->
+                      GHC.Classes.$fEq[]_$c==
+                        @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                        Main.$s$fEq(,)
+                        (Data.OldList.sortBy
+                           @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                           Main.propListEqual2
+                           (GHC.Types.:
+                              @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                              ww1
+                              (Main.propListEqual1
+                                 @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                                 ww2)))
+                        (Data.OldList.sortBy
+                           @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                           Main.propListEqual2
+                           (Main.$wstep1list
+                              @ GHC.Integer.Type.Integer
+                              @ GHC.Integer.Type.Integer
+                              n
+                              Main.propListEqual3)) } }) -}
+25e2b2f7cb0b7a3f5e263247a795d9d7
+  propListEqual1 :: [Main.Tree a] -> [a]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
+d80d2b69daa6b9171d7bc79bebfe8889
+  propListEqual2 ::
+    (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+    -> (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+    -> GHC.Types.Ordering
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(SL),1*U(1*U,1*U)><S(SL),1*U(1*U,1*U)>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer))
+                   (w1 :: (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)) ->
+                 case w of ww { (,) ww1 ww2 ->
+                 case w1 of ww3 { (,) ww4 ww5 -> Main.$wlvl ww1 ww2 ww4 ww5 } }) -}
+3715786019afdb61137a7296d2e0f9c2
+  propListEqual3 ::
+    (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: ((Main.coprime1, Main.coprime1)) -}
+2790eba5dd1615e2eb0dadef5ec50cf5
+  propTreeGrowthFormula ::
+    Test.QuickCheck.Modifiers.Positive GHC.Types.Int -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S(S),1*U(U)>, Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: Test.QuickCheck.Modifiers.Positive GHC.Types.Int) ->
+                 case w `cast`
+                      (Test.QuickCheck.Modifiers.N:Positive[0]
+                           <GHC.Types.Int>_R) of ww { GHC.Types.I# ww1 ->
+                 Main.$wpropTreeGrowthFormula ww1 }) -}
+feeeeed6d99f43a37abd2ad5264b962e
+  step1list ::
+    GHC.Integer.Type.Integer
+    -> (a, b) -> [(GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)]
+  {- Arity: 2, Strictness: <S,U><S,1*H>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a @ b (w :: GHC.Integer.Type.Integer) (w1 :: (a, b)) ->
+                 case w1 of w2 { (,) ipv ipv1 -> Main.$wstep1list @ a @ b w w2 }) -}
+d6e1e2086db3afcfa7d08255a0a86a26
+  step2 ::
+    (GHC.Classes.Ord a, GHC.Num.Num a) => a -> (a, a) -> [(a, a)]
+  {- Arity: 4, HasNoCafRefs,
+     Strictness: <S(LLLC(C(S))LLLL),1*U(A,A,A,1*C1(C1(U)),A,A,A,A)><L,U(C(C1(U)),A,A,A,A,A,A)><L,U><S,1*U(U,U)>,
+     Inline: [0],
+     Unfolding: InlineRule (4, True, False)
+                (\ @ a
+                   (w :: GHC.Classes.Ord a)
+                   (w1 :: GHC.Num.Num a)
+                   (w2 :: a)
+                   (w3 :: (a, a)) ->
+                 case w3 of ww { (,) ww1 ww2 ->
+                 Main.$wstep2 @ a w w1 w2 ww1 ww2 }) -}
+d18c26f1b7f27bca161589a37c6b7749
+  takeT :: GHC.Types.Int -> Main.Tree a -> Main.Tree a
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(S),1*U(1*U)><S,1*U(U,1*U)>m, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a (w :: GHC.Types.Int) (w1 :: Main.Tree a) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 case w1 of ww2 { Main.T ww3 ww4 ->
+                 case Main.$wtakeT @ a ww1 ww3 ww4 of ww5 { (#,#) ww6 ww7 ->
+                 Main.T @ a ww6 ww7 } } }) -}
+b3f90839dc1ac8c69cd02c002416a446
+  tree ::
+    GHC.Integer.Type.Integer
+    -> Main.Tree (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+  {- Arity: 1, Strictness: <L,U>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (n :: GHC.Integer.Type.Integer) ->
+                 Main.grow
+                   @ (GHC.Integer.Type.Integer, GHC.Integer.Type.Integer)
+                   (Main.step1list
+                      @ GHC.Integer.Type.Integer
+                      @ GHC.Integer.Type.Integer
+                      n)
+                   Main.propListEqual3) -}
+cf60ad8a988c6d38c6123c1299548c7b
+  tree2 ::
+    (GHC.Classes.Ord a, GHC.Num.Num a) => a -> Main.Tree (a, a)
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(A,A,A,C(C1(U)),A,A,A,A)><L,U(C(C1(U)),A,A,A,A,A,C(U))><L,U>m,
+     Inline: [0],
+     Unfolding: InlineRule (3, True, False)
+                (\ @ a (w :: GHC.Classes.Ord a) (w1 :: GHC.Num.Num a) (w2 :: a) ->
+                 case Main.$wtree2 @ a w w1 w2 of ww { (#,#) ww1 ww2 ->
+                 Main.T @ (a, a) ww1 ww2 }) -}
+613dfbb996b873e037412b96db1634fa
+  tree2list :: Main.Tree a -> [a]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U,1*U)>m2,
+     Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ @ a (w :: Main.Tree a) ->
+                 case w of ww { Main.T ww1 ww2 ->
+                 GHC.Types.: @ a ww1 (Main.propListEqual1 @ a ww2) }) -}
 instance [safe] GHC.Classes.Eq [Main.Blt] = Main.$fEqBlt
 instance [safe] GHC.Classes.Eq [Main.Tree] = Main.$fEqTree
 instance [safe] GHC.Classes.Ord [Main.Tree] = Main.$fOrdTree
 instance [safe] GHC.Show.Show [Main.Blt] = Main.$fShowBlt
 instance [safe] GHC.Show.Show [Main.Tree] = Main.$fShowTree
+"SPEC/Main $fEq(,) @ Integer @ Integer" [orphan] forall (v1 :: GHC.Classes.Eq
+                                                                 GHC.Integer.Type.Integer)
+                                                        (v :: GHC.Classes.Eq
+                                                                GHC.Integer.Type.Integer)
+  GHC.Classes.$fEq(,) @ GHC.Integer.Type.Integer
+                      @ GHC.Integer.Type.Integer
+                      v
+                      v1
+  = Main.$s$fEq(,)
+"SPEC/Main $fEq(,)_$c/= @ Integer @ Integer" [orphan] forall ($dEq1 :: GHC.Classes.Eq
+                                                                         GHC.Integer.Type.Integer)
+                                                             ($dEq :: GHC.Classes.Eq
+                                                                        GHC.Integer.Type.Integer)
+  GHC.Classes.$fEq(,)_$c/= @ GHC.Integer.Type.Integer
+                           @ GHC.Integer.Type.Integer
+                           $dEq
+                           $dEq1
+  = Main.$s$fEq(,)_$s$fEq(,)_$c/=
 vectorised variables:
 vectorised tycons:
 vectorised reused tycons:

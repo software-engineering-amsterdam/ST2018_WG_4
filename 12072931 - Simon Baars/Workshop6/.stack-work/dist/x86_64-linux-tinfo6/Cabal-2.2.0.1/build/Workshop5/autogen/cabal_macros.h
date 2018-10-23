@@ -22,6 +22,39 @@
   (major1) == 4 && (major2) == 11 && (minor) <= 1)
 #endif /* MIN_VERSION_base */
 
+/* package random-1.1 */
+#ifndef VERSION_random
+#define VERSION_random "1.1"
+#endif /* VERSION_random */
+#ifndef MIN_VERSION_random
+#define MIN_VERSION_random(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  1 || \
+  (major1) == 1 && (major2) == 1 && (minor) <= 0)
+#endif /* MIN_VERSION_random */
+
+/* package QuickCheck-2.11.3 */
+#ifndef VERSION_QuickCheck
+#define VERSION_QuickCheck "2.11.3"
+#endif /* VERSION_QuickCheck */
+#ifndef MIN_VERSION_QuickCheck
+#define MIN_VERSION_QuickCheck(major1,major2,minor) (\
+  (major1) <  2 || \
+  (major1) == 2 && (major2) <  11 || \
+  (major1) == 2 && (major2) == 11 && (minor) <= 3)
+#endif /* MIN_VERSION_QuickCheck */
+
+/* package monad-loops-0.4.3 */
+#ifndef VERSION_monad_loops
+#define VERSION_monad_loops "0.4.3"
+#endif /* VERSION_monad_loops */
+#ifndef MIN_VERSION_monad_loops
+#define MIN_VERSION_monad_loops(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  4 || \
+  (major1) == 0 && (major2) == 4 && (minor) <= 3)
+#endif /* MIN_VERSION_monad_loops */
+
 /* tool cpphs-1.20.8 */
 #ifndef TOOL_VERSION_cpphs
 #define TOOL_VERSION_cpphs "1.20.8"
@@ -133,7 +166,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "Workshop5-0.1.0.0-KFr80MUv01gHBSMjyrbH5Z-Workshop5"
+#define CURRENT_COMPONENT_ID "Workshop5-0.1.0.0-5NQURA5y7SREhNgOgbMO6M-Workshop5"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"
