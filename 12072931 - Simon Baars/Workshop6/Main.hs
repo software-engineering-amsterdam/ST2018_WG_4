@@ -25,6 +25,7 @@ data Tree a = T a [Tree a] deriving (Eq,Ord,Show)
 
 example1 = T 1 [T 2 [], T 3 []]
 example2 = T 0 [example1,example1,example1]
+example3 = T 0 [example2,example1,example2,example2,example1,example2]
 
 count :: Tree a -> Int
 count (T x nodes) = length nodes + foldr (\x acc -> acc + count x) 0 nodes
@@ -47,14 +48,14 @@ foldT :: (a -> [b] -> b) -> Tree a -> b
 foldT f (T x ts) = f x (map (foldT f) ts)
 
 count' :: Tree a -> Int
-count' x = foldT (\x y -> 1 + sum y) x - 1
+count' x = foldT (\i j -> 1 + sum j) x - 1
 
 depth' :: Tree a -> Int
 depth' (T _ []) = 0
-depth' (T _ ts) = foldl max 0 (map depth ts) + 1
+depth' l = foldT (\x y -> if not (null y) then head y + 1 else 0) l
 
 collect' :: Tree a -> [a]
-collect' (T x nodes) = x : foldr (\x acc -> collect x++acc) [] nodes
+collect' = foldT (\x y -> x:concat y)
 
 main :: IO ()
 main = putStrLn "Example tree size: "

@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-10 13:16:02.509336816 UTC
+2018-10-23 12:50:50.393430442 UTC
 
 interface main:Main 8043
-  interface hash: 879331b532e36a0a846db17780d5bc79
-  ABI hash: 58d393104dedf3c0fcf27ba7f301f357
-  export-list hash: 92c8a0b86c95bacee3d5dd49305262f0
+  interface hash: e6df7961494a5df1f4ebc6b4cb10298a
+  ABI hash: 0154b4863ad971812c86b82533965da4
+  export-list hash: e3c257debcb561854d304ddf747d388b
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: c723a510f4121d1810a96bca0985c58f
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -22,6 +22,7 @@ exports:
   Main.depth'
   Main.example1
   Main.example2
+  Main.example3
   Main.exampleTree
   Main.foldT
   Main.leafCount
@@ -43,6 +44,7 @@ import  -/  base-4.11.1.0:Data.Char 3e89818e2b8ef1a2cc5393163484da72
 import  -/  base-4.11.1.0:Data.Foldable 8ed35c38958063956af33c935ea03444
 import  -/  base-4.11.1.0:Data.List 83dc843e47bfc0c5af51e19c6f3476d5
 import  -/  base-4.11.1.0:GHC.Base 604111500e81281298777e721c75643b
+import  -/  base-4.11.1.0:GHC.List 1e4357702d8d00cded0703bd293e50e8
 import  -/  base-4.11.1.0:GHC.Num 8e54b26dce4495382dc4b50cf36ab754
 import  -/  base-4.11.1.0:GHC.Show 73be67392447c974f19c3befd83c46c0
 import  -/  base-4.11.1.0:Prelude 0750c25585e2b797cd78291d423d39dd
@@ -437,17 +439,27 @@ d2c41d2bcfd1142a55ccc070a2fa1afe
                 (\ @ a (w :: Main.Tree a) ->
                  case w of ww { Main.T ww1 ww2 ->
                  GHC.Types.: @ a ww1 (Main.collect1 @ a ww2) }) -}
-2690aa47861edfea398bd956d13dc68a
+2de66403dd5741d3512625b513ff2c64
   collect' :: Main.Tree a -> [a]
-  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U,1*U)>m2,
-     Inline: [0],
-     Unfolding: InlineRule (1, True, False)
-                (\ @ a (w :: Main.Tree a) ->
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U,1*U)>,
+     Unfolding: (\ @ a (w :: Main.Tree a) ->
                  case w of ww { Main.T ww1 ww2 ->
-                 GHC.Types.: @ a ww1 (Main.collect'1 @ a ww2) }) -}
-21978ae5b7d595b8c93093c2693880f4
-  collect'1 :: [Main.Tree a] -> [a]
-  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
+                 Main.$wfoldT @ a @ [a] (Main.collect'1 @ a) ww1 ww2 }) -}
+9d71b385e75470c5cf064bc955cb81cd
+  collect'1 :: a -> [[a]] -> [a]
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,1*U>m2, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a (w :: a) (w1 :: [[a]]) ->
+                 GHC.Types.:
+                   @ a
+                   w
+                   (letrec {
+                      go :: [[a]] -> [a] {- Arity: 1, Strictness: <S,U> -}
+                      = \ (ds :: [[a]]) ->
+                        case ds of wild {
+                          [] -> GHC.Types.[] @ a : y ys -> GHC.Base.++ @ a y (go ys) }
+                    } in
+                    go w1)) -}
 3ef82311d2ef1ffc3a7ec06f06d605eb
   collect1 :: [Main.Tree a] -> [a]
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
@@ -461,7 +473,7 @@ b08a09f24931a78bf6629cc4c47ae5f6
                  case GHC.List.$wlenAcc @ (Main.Tree a) ww2 0# of ww3 { DEFAULT ->
                  case Main.count1 @ a ww2 of ww4 { DEFAULT ->
                  GHC.Types.I# (GHC.Prim.+# ww3 ww4) } } }) -}
-085a99a76d8c93c2a5730304e5603152
+f168d33a034917074c9fc68702e7a053
   count' :: Main.Tree a -> GHC.Types.Int
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U(U,1*U)>m,
      Unfolding: InlineRule (1, True, False)
@@ -472,22 +484,22 @@ b08a09f24931a78bf6629cc4c47ae5f6
                         (Main.count'1 @ a)
                         x of wild { GHC.Types.I# x1 ->
                  GHC.Types.I# (GHC.Prim.-# x1 1#) }) -}
-4d6cb42d5f343918b41e27ccdbf5fe38
+3cccec9a1299cc34e2f9c1cf9bba859a
   count'1 :: a -> [GHC.Types.Int] -> GHC.Types.Int
   {- Arity: 2, HasNoCafRefs, Strictness: <L,A><S,1*U>m,
      Unfolding: InlineRule (2, True, False)
-                (\ @ a (x :: a) (y :: [GHC.Types.Int]) ->
+                (\ @ a (i :: a) (j :: [GHC.Types.Int]) ->
                  letrec {
                    go :: [GHC.Types.Int] -> GHC.Types.Int -> GHC.Types.Int
                      <join 2> {- Arity: 2 -}
                    = \ (ds :: [GHC.Types.Int]) (eta :: GHC.Types.Int) ->
                      case ds of wild {
                        []
-                       -> case eta of wild1 { GHC.Types.I# y1 ->
-                          GHC.Types.I# (GHC.Prim.+# 1# y1) }
-                       : y1 ys -> go ys (GHC.Num.$fNumInt_$c+ eta y1) }
+                       -> case eta of wild1 { GHC.Types.I# y ->
+                          GHC.Types.I# (GHC.Prim.+# 1# y) }
+                       : y ys -> go ys (GHC.Num.$fNumInt_$c+ eta y) }
                  } in
-                 go y Main.$fShowBlt1) -}
+                 go j Main.$fShowBlt1) -}
 bd47a93bd53fda3cbb9c063505f0eeba
   count1 :: [Main.Tree a] -> GHC.Prim.Int#
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>, Inline: [0] -}
@@ -503,21 +515,26 @@ b37e1f86581fa5e706983fc68875b0a1
                    : ipv ipv1
                    -> case Main.depth1 @ a wild 0# of ww3 { DEFAULT ->
                       GHC.Types.I# ww3 } } }) -}
-74af5ef5cd44909919df302e9a7be7a5
+bb5b2e7b986278b288eeb6672dcbba57
   depth' :: Main.Tree a -> GHC.Types.Int
-  {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(A,1*U)>m,
-     Inline: [0],
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(U,1*U)>,
      Unfolding: InlineRule (1, True, False)
-                (\ @ a (w :: Main.Tree a) ->
-                 case w of ww { Main.T ww1 ww2 ->
-                 case ww2 of wild {
-                   [] -> GHC.Types.I# 0#
+                (\ @ a (ds :: Main.Tree a) ->
+                 case ds of wild { Main.T ds1 ds2 ->
+                 case ds2 of wild1 {
+                   [] -> Main.$fShowBlt1
                    : ipv ipv1
-                   -> case Main.depth'1 @ a wild 0# of ww3 { DEFAULT ->
-                      GHC.Types.I# ww3 } } }) -}
-71201d72491b73b12922c9ff8063bd0b
-  depth'1 :: [Main.Tree a] -> GHC.Prim.Int# -> GHC.Prim.Int#
-  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,U>, Inline: [0] -}
+                   -> Main.foldT @ a @ GHC.Types.Int (Main.depth'1 @ a) wild } }) -}
+4e6bea6ce2a8140c8d450447cdd45675
+  depth'1 :: a -> [GHC.Types.Int] -> GHC.Types.Int
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,A><S,1*U>m,
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a (x :: a) (y :: [GHC.Types.Int]) ->
+                 case y of wild {
+                   [] -> Main.$fShowBlt1
+                   : ds1 ds2
+                   -> case ds1 of wild1 { GHC.Types.I# x1 ->
+                      GHC.Types.I# (GHC.Prim.+# x1 1#) } }) -}
 800e64d14be7035f01d44ea58d27ad38
   depth1 :: [Main.Tree a] -> GHC.Prim.Int# -> GHC.Prim.Int#
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,U>, Inline: [0] -}
@@ -555,6 +572,41 @@ c87834c478ece493637d5b55021ead5a
 eba2f9e625a400f68919d9d2db8a6424
   example14 :: GHC.Integer.Type.Integer
   {- HasNoCafRefs, Unfolding: (0) -}
+894e31712ae7880be3adde841524ec56
+  example15 :: [Main.Tree GHC.Integer.Type.Integer]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Tree GHC.Integer.Type.Integer)
+                   Main.example2
+                   Main.example16) -}
+1399cc97b063ce32b638ac4242418fb6
+  example16 :: [Main.Tree GHC.Integer.Type.Integer]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Tree GHC.Integer.Type.Integer)
+                   Main.example1
+                   Main.example17) -}
+ff7d1bedc9da8ef03a8f9102f6718a74
+  example17 :: [Main.Tree GHC.Integer.Type.Integer]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Tree GHC.Integer.Type.Integer)
+                   Main.example2
+                   Main.example18) -}
+4ef28c35f02c65d3378a6379edbdfd8e
+  example18 :: [Main.Tree GHC.Integer.Type.Integer]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Tree GHC.Integer.Type.Integer)
+                   Main.example2
+                   Main.example19) -}
+fc66a6ea00965e19bae276f0299df73a
+  example19 :: [Main.Tree GHC.Integer.Type.Integer]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Tree GHC.Integer.Type.Integer)
+                   Main.example1
+                   Main.example20) -}
 12a16e01e901c621840521799b18b600
   example2 :: Main.Tree GHC.Integer.Type.Integer
   {- HasNoCafRefs, Strictness: m,
@@ -562,6 +614,20 @@ eba2f9e625a400f68919d9d2db8a6424
                    @ GHC.Integer.Type.Integer
                    Main.example14
                    Main.example11) -}
+9fea44801a29af9091a5541b96692a25
+  example20 :: [Main.Tree GHC.Integer.Type.Integer]
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (Main.Tree GHC.Integer.Type.Integer)
+                   Main.example2
+                   (GHC.Types.[] @ (Main.Tree GHC.Integer.Type.Integer))) -}
+80c9cf5f47ad0b68d39b838b13a8cbfe
+  example3 :: Main.Tree GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (Main.T
+                   @ GHC.Integer.Type.Integer
+                   Main.example14
+                   Main.example15) -}
 b7fa85c799b291ca1af83ff55f08d60b
   example4 :: [Main.Tree GHC.Integer.Type.Integer]
   {- HasNoCafRefs, Strictness: m2,
