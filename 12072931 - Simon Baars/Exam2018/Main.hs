@@ -52,6 +52,46 @@ propExample (NonNegative n) (Positive k) (BoundedNumber i) (LargeNumber l) = tra
 -- Answer: λx → x > A
 -- Reason: λx 7→ x > 5 is not always valid.
 
+-- Assignment 1c
+-- Answer: ??
+
+-- Assignment 1d
+-- Answer λn → n>=-1 ∧ n<=1
+-- Reason: When we plot this formula, it is a parabool between 0 and 1 for any n
+
+-- Assignment 2a
+-- Only the equivalence {(0,0),(1,1),(2,2),(0,1),(1,0),(2,0),(0,2),(1,2),(2,1)} with partition {{0,1,2}} has no singleton subsets.
+-- Reason: There is a singleton subset if no relations between a certain element and other elements are present (∀x ∈ A ∃y ∈ A, x \= y). This is only the case for this relation.
+
+-- Assignment 2b
+-- The number of non-singleton equivalences s on a set with n elements is s=0 for n=0 and s=fib(n-1) for n>0. This can be proven as follows:
+-- Base case: n=0 (empty set). As indicated, an empty set has no non-singleton equivalences, so the base case is correct.
+-- Additional base case n=1 (singleton relation). A singleton relation has no singleton relations. s = fib(1-1) = fib(0) = 0, so this base case is also correct.
+-- Induction step: assume that for n the formula is correct: s=0 for n=0 and s=fib(n-1) for n>0
+-- Prove that for n+1 it still holds: s=fib(n) for n>1
+-- ??? I have no idea how to continue...
+
+-- Assignment 2c
+-- ∆A = {(0,0),(1,1),(2,2),(3,3)}
+-- 
+
+-- Assignment 3a
+-- R⁺ = {(0,0),(0,2),(1,3),(2,0),(2,2)}
+-- Reason: I used my trClos function that I wrote for Lab 4 to determine the transitive closure. This implementation was correct, so this transitive closure is correct.
+
+-- Assignment 3b
+-- S = R⁺ ∪ ∆A = {(0,0),(0,2),(1,3),(2,0),(2,2)} ∪ {(0,0),(1,1),(2,2),(3,3)} = {(0,0),(0,2),(1,1),(1,3),(2,0),(2,2),(3,3)}
+-- An equivalence is a relation which is reflexive, symmetric, transitive.
+-- This relation is reflexive because it contains (0,0) and (1,1) and (2,2) and (3,3)
+-- However, this relation is not symmetric because (1,3) ∈ S but not (3,1) ∈ S
+-- So this is not an equivalence.
+
+-- Assignment 3c
+-- Prove by induction: `aClos s = s ◦ s ∪ s` is the transitive closure of a relation s.
+-- Base case s=Ø (empty relation). Ø ◦ Ø ∪ Ø = Ø. Ø is indeed the transitive closure of a relation Ø, so the base case holds.
+-- Induction step: assume that for s the formula is correct: aClos s = s ◦ s ∪ s.
+-- Prove for ???? again no idea how to continue...
+
 -- Assignment 4a
 type Rel a = [(a,a)]
 isSerial :: Eq a => [a] -> Rel a -> Bool
@@ -145,7 +185,7 @@ tree n = grow (step611 n) (6,11)
 step611 n (x,y) = if x+y <= 60+n then [(x+y,x),(x,x+y)] else []
 
 -- Assignment 7
--- See exam paper for explanation
+-- See exam paper for explaination
 gordon1 d0 n g r = d0*(1-((1+g)/(1+r))^n)/(1-(1+g)/(1+r))
 gordon2 d0 n g r = d0*sum [((1+g)/(1+r))^k|k <-[1..n]]
 gordon3 d0 n g r = d0*(1-((1+g)/(1+r))^n)/(r-g)*(1+g)
