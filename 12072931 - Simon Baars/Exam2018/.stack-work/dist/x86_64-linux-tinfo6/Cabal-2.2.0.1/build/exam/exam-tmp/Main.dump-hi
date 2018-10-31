@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-10-24 12:49:23.380061875 UTC
+2018-10-26 15:00:50.769427918 UTC
 
 interface main:Main 8043
-  interface hash: 31751668db07caf1302798aab08f039c
-  ABI hash: b3b2c428558af7f4fe8f20cd044ded51
-  export-list hash: 32a1680bd263167209e629aafbaef826
+  interface hash: 12fffba5d5c1385d6fa269d82cb041e5
+  ABI hash: b72a665cdac1ff98a42fc9c29c989376
+  export-list hash: 3f8badb858634dde8b89b896744da350
   orphan hash: 83a97092530c6cee84b4317f79830876
   flag hash: 259cd8c781a7fc7b4d4d733743ed9a5d
   opt_hash: 14e536840aca4e889cad654e6f9b79c1
@@ -19,6 +19,7 @@ exports:
   Main.form1
   Main.form2
   Main.form3
+  Main.givenRelation
   Main.gordon1
   Main.gordon2
   Main.gordon3
@@ -2106,6 +2107,46 @@ fd170988a0248dcd6039043c2933d2db
   form9 :: Main.Form
   {- HasNoCafRefs, Strictness: m5,
      Unfolding: (Main.Impl Main.p Main.q) -}
+03002b5d0f5461fe591009aa137b6552
+  givenRelation ::
+    [(GHC.Types.Int, GHC.Types.Int)]
+    -> Test.QuickCheck.Modifiers.Positive GHC.Types.Int
+    -> [(GHC.Types.Int, GHC.Types.Int)]
+  {- Arity: 2, Strictness: <S,1*U><L,U(U)>,
+     Unfolding: (\ (set :: [(GHC.Types.Int, GHC.Types.Int)])
+                   (ds :: Test.QuickCheck.Modifiers.Positive GHC.Types.Int) ->
+                 letrec {
+                   go :: [(GHC.Types.Int, GHC.Types.Int)]
+                         -> [(GHC.Types.Int, GHC.Types.Int)]
+                     {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds1 :: [(GHC.Types.Int, GHC.Types.Int)]) ->
+                     case ds1 of wild {
+                       [] -> GHC.Types.[] @ (GHC.Types.Int, GHC.Types.Int)
+                       : y ys
+                       -> case y of wild1 { (,) x y1 ->
+                          case x of wild2 { GHC.Types.I# x1 ->
+                          case ds
+                                 `cast`
+                               (Test.QuickCheck.Modifiers.N:Positive[0]
+                                    <GHC.Types.Int>_R) of ww { GHC.Types.I# ww1 ->
+                          case ww1 of wild3 {
+                            DEFAULT
+                            -> case y1 of wild4 { GHC.Types.I# x2 ->
+                               case GHC.Classes.modInt# x2 wild3 of ww2 { DEFAULT ->
+                               case GHC.Prim.==# x1 ww2 of lwild {
+                                 DEFAULT -> go ys
+                                 1#
+                                 -> GHC.Types.: @ (GHC.Types.Int, GHC.Types.Int) wild1 (go ys) } } }
+                            -1#
+                            -> case x1 of wild4 {
+                                 DEFAULT -> go ys
+                                 0# -> GHC.Types.: @ (GHC.Types.Int, GHC.Types.Int) wild1 (go ys) }
+                            0#
+                            -> case GHC.Real.divZeroError
+                               ret_ty [(GHC.Types.Int, GHC.Types.Int)]
+                               of {} } } } } }
+                 } in
+                 go set) -}
 44ddfbac1233a4468c2a71a73f675d6d
   gordon1 ::
     (GHC.Real.Fractional a, GHC.Real.Integral b) =>

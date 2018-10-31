@@ -73,7 +73,7 @@ propExample (NonNegative n) (Positive k) (BoundedNumber i) (LargeNumber l) = tra
 
 -- Assignment 2c
 -- ∆A = {(0,0),(1,1),(2,2),(3,3)}
--- 
+-- R = How to interpret this relation?
 
 -- Assignment 3a
 -- R⁺ = {(0,0),(0,2),(1,3),(2,0),(2,2)}
@@ -105,6 +105,11 @@ propNotSerialIfRelationHasLowerSize s r = length r < length s --> not (isSerial 
 -- If the relation is reflexive on the domain, it is always serial.
 propReflexiveAlwaysSerial :: [Int] -> Bool
 propReflexiveAlwaysSerial s = isSerial s [(x,x)|x<-s]
+
+-- Assignment 4c
+-- I can test whether R is is serial by using my isSerial function on the following object for any natural number n (chosen by quickCheck):
+givenRelation :: [(Int,Int)] -> Positive Int -> [(Int,Int)]
+givenRelation domain (Positive n) = [(x,y)|(x,y)<-set, x==y `mod` n]
 
 -- Assignment 5a
 type Name = Int

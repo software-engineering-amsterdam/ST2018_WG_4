@@ -29,12 +29,12 @@ version :: Version
 version = Version [1,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "/home/simon/haskell/exam/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/bin"
-libdir     = "/home/simon/haskell/exam/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/lib/x86_64-linux-ghc-8.4.3/exam-1.0-AKwYJmnrQc5GJt2ALOvmbN-exam"
-dynlibdir  = "/home/simon/haskell/exam/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/lib/x86_64-linux-ghc-8.4.3"
-datadir    = "/home/simon/haskell/exam/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/share/x86_64-linux-ghc-8.4.3/exam-1.0"
-libexecdir = "/home/simon/haskell/exam/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/libexec/x86_64-linux-ghc-8.4.3/exam-1.0"
-sysconfdir = "/home/simon/haskell/exam/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/etc"
+bindir     = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Exam2018/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/bin"
+libdir     = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Exam2018/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/lib/x86_64-linux-ghc-8.4.3/exam-1.0-AKwYJmnrQc5GJt2ALOvmbN-exam"
+dynlibdir  = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Exam2018/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/lib/x86_64-linux-ghc-8.4.3"
+datadir    = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Exam2018/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/share/x86_64-linux-ghc-8.4.3/exam-1.0"
+libexecdir = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Exam2018/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/libexec/x86_64-linux-ghc-8.4.3/exam-1.0"
+sysconfdir = "/home/simon/haskell/ST2018_WG_4/12072931 - Simon Baars/Exam2018/.stack-work/install/x86_64-linux-tinfo6/lts-12.14/8.4.3/etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "exam_bindir") (\_ -> return bindir)
